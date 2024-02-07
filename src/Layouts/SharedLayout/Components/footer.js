@@ -70,7 +70,7 @@ export const Footer = () => {
 
 
 const Container = styled.footer`
-
+    height: auto;
 `
 
 const Icon = styled.div`
