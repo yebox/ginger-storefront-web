@@ -1,11 +1,8 @@
-import './App.css';
-import { SharedLayout } from './Layouts';
-import { SharedRoutes } from "./Routes"
+import "./App.css";
+import { AppRoute } from "./Routes";
 
 function App() {
-  return (
-    <SharedRoutes/>
-  );
+  return <AppRoute />;
 }
 
 export default App;

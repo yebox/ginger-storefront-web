@@ -1,20 +1,21 @@
-import { Suspense } from "react";
+import React from "react";
+import { authRoutes } from "./data";
 import { Route, Routes } from "react-router-dom";
-import { SharedLayout } from "../Layouts";
-import { routes } from "./data";
+import { Suspense } from "react";
+import AuthLayout from "../Layouts/AuthLayout";
 
-export const SharedRoutes = () => {
+export const AuthRoutes = () => {
   return (
     <Routes>
-      {routes.map(({ path, element: Element }, index) => (
+      {authRoutes.map(({ path, element: Element }, index) => (
         <Route
           key={index}
           path={path}
           element={
             <Suspense fallback={null}>
-              <SharedLayout>
+              <AuthLayout>
                 <Element />
-              </SharedLayout>
+              </AuthLayout>
             </Suspense>
           }
         />
