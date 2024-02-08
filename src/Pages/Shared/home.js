@@ -61,13 +61,13 @@ const Home = () => {
                         </Barber>
                         <NailSkinContianer>
                             <Nails>
-                                <CatShopBottom>
+                                {/* <CatShopBottom>
                                     <h6>Nails</h6>
 
                                     <Shopbutton>
                                         Shop Now
                                     </Shopbutton>
-                                </CatShopBottom>
+                                </CatShopBottom> */}
                             </Nails>
                             <Skin>
 
@@ -235,22 +235,22 @@ const CatSecondBox = styled.div`
     background-size: cover;
     background-repeat: no-repeat;
     transition: all 0.3s ease;
-    position: relative; /* Ensure positioning context for pseudo-elements */
+    position: relative;
     
     &:hover {
-        background-size: 105%; /* Zoom in the background image on hover */
+        background-size: 105%; 
     }
 
     &::after {
         content: '';
         position: absolute;
-        top: 0; /* Position at the top of the box */
+        top: 0;
         left: 0;
         width: 100%;
-        height: 100%; /* Cover the entire box */
-        background-color: rgba(0, 0, 0, 0); /* Dark overlay with initial transparency */
-        z-index: 1; /* Ensure overlay is above background image */
-        transition: background-color 0.3s ease; /* Add transition for smooth effect */
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0);
+        z-index: 1; 
+        transition: background-color 0.3s ease;
     }
 
     &:hover::after {
@@ -273,10 +273,10 @@ const Barber = styled.div`
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
-    transition: all 0.3s ease; /* Add transition for smooth effect */
+    transition: all 0.3s ease; 
     
     &:hover {
-        background-size: 105%; /* Zoom in the background image on hover */
+        background-size: 105%; 
     }
 
     &::after {
@@ -286,13 +286,13 @@ const Barber = styled.div`
         left: 0;
         width: 100%;
         height: 100%;
-        background-color: rgba(0, 0, 0, 0); /* Initial transparent overlay */
+        background-color: rgba(0, 0, 0, 0);
         z-index: 1;
-        transition: background-color 0.3s ease; /* Add transition for smooth effect */
+        transition: background-color 0.3s ease;
     }
 
     &:hover::after {
-        background-color: rgba(0, 0, 0, 0.3); /* Dark overlay on hover */
+        background-color: rgba(0, 0, 0, 0.3);
     }
 `;
 
