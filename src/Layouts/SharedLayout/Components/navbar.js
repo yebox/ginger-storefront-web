@@ -1,3 +1,4 @@
+import React from 'react'
 import { Link } from 'react-router-dom'
 import { styled } from 'styled-components'
 import { Account, Cart, Dollar, DownArrow, Like, Logo, Search } from '../../../Assets/Svgs'
@@ -63,11 +64,11 @@ const Utility = styled.div`
     align-items: center;
     gap:1.5rem;
 `
-const AccountCart = styled.div`
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-`
+// const AccountCart = styled.div`
+//     display: flex;
+//     align-items: center;
+//     gap: 1.5rem;
+// `
 
 const Flex = styled.div`
     display: flex;

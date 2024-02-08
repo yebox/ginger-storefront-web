@@ -1,3 +1,4 @@
+import React from "react"
 import { Link } from "react-router-dom"
 import { styled } from "styled-components"
 import { Facebook, Instagram, LinkedIn, Logo, Twitter } from "../../../Assets/Svgs"
@@ -117,9 +118,9 @@ const BottomItems = styled.div`
     flex-direction: column;
     gap: 10px;
 `
-const BigLogo = styled(Logo)`
-    transform: scale(1.2);
-`
+// const BigLogo = styled(Logo)`
+//     transform: scale(1.2);
+// `
 
 const LogoContainer = styled.div`
     p{
