@@ -72,6 +72,10 @@ h3 {
   font-size: clamp(1rem, 5em, 2rem);
   font-family: "Roboto Serif", serif;
 }
+h4 {
+  font-size: clamp(1rem,3em, 2rem);
+  font-family: 'Roboto Serif', serif;
+}
 
 h6 {
   font-weight: 500;
