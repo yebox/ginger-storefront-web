@@ -9,6 +9,21 @@ import { ReactComponent as Instagram } from "./instagram.svg"
 import { ReactComponent as Facebook } from "./facebook.svg"
 import { ReactComponent as Twitter } from "./twitter.svg"
 import { ReactComponent as LinkedIn } from "./linkedin.svg"
+import { ReactComponent as Star } from "./star.svg"
+import { ReactComponent as DollarShield } from "./dollarShield.svg"
+import { ReactComponent as VectorBackground } from "./vectorBackground.svg"
+import { ReactComponent as CircularText } from "./circularText.svg"
+import { ReactComponent as UpArrow } from "./upArrow.svg"
+import { ReactComponent as RightArrow } from "./rightArrow.svg"
+import { ReactComponent as LeftArrow } from "./leftArrow.svg"
+import { ReactComponent as RedRightArrow} from "./redRightArrow.svg"
+
+
+
+
+
+
+
 
 
 
@@ -24,5 +39,13 @@ export {
     LinkedIn,
     Instagram,
     Facebook,
-    Twitter
+    Twitter,
+    Star,
+    DollarShield,
+    VectorBackground,
+    CircularText,
+    UpArrow,
+    RightArrow,
+    LeftArrow,
+    RedRightArrow
 }

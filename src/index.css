@@ -32,8 +32,11 @@ code {
   --hover-color: #ff9d8a;
   --dashboardBackground: #f5f5f5;
   --black: #0F0F0F;
+  --lower-nav:#F9F9F9;
   --gray-200:#E8E8E8;
   --gray-100:#F1F1F1;
+  --gray-50:#FDFDFD;
+  --light-primary:#FBE9EB;
   --gray-300:#626262;
 }
 
