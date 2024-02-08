@@ -392,10 +392,10 @@ const CatFirstBox = styled.div`
 `
 const CatSecondBox = styled.div`
     flex: 0.5;
-    /* display: flex;
-    flex-direction: column; */
-    /* padding: 1.2rem; */
-    /* justify-content: flex-end; */
+    display: flex;
+    flex-direction: column;
+    padding: 1.2rem;
+    justify-content: flex-end;
     background-image: url('https://images.unsplash.com/photo-1682101853262-8c0344518d15?q=80&w=3401&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
     background-position: center;
     background-color: aquamarine;
@@ -487,6 +487,26 @@ const Nails = styled.div`
     background-repeat: no-repeat;
     position: relative;
 
+    &:hover {
+        background-size: 100%; 
+    }
+
+    &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0);
+        z-index: 1;
+        transition: background-color 0.3s ease;
+    }
+
+    &:hover::after {
+        background-color: rgba(0, 0, 0, 0.3);
+    }
+
 `
 
 const Skin = styled.div`
@@ -494,7 +514,7 @@ const Skin = styled.div`
     flex-direction: column;
     position: relative;
     display: flex;
-    /* padding: 1.2rem; */
+    padding: 1.2rem;
     /* padding-right: 2rem; */
     justify-content: flex-end;
     padding-bottom: 20px;
@@ -503,14 +523,35 @@ const Skin = styled.div`
     height: 40vh;
     background-size: cover;
     background-repeat: no-repeat;
+
+
+    &:hover {
+        background-size: 105%; 
+    }
+
+    &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0);
+        z-index: 1;
+        transition: background-color 0.3s ease;
+    }
+
+    &:hover::after {
+        background-color: rgba(0, 0, 0, 0.3);
+    }
 `
 
 const CatShopBottom = styled.div`
-    position: absolute;
+    /* position: absolute; */
     z-index: 4;
-    bottom: 1.2rem;
+    /* bottom: 1.2rem; */
     /* left: 1.2rem; */
-    width: 94%;
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content:space-between;
@@ -577,6 +618,7 @@ const AdContainer = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+    gap:20px;
     h4{
         font-size: 3rem;
         font-family: "Roboto Serif";
