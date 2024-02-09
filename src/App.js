@@ -1,12 +1,9 @@
-import './App.css';
-import React from 'react';
-// import { SharedLayout } from './Layouts';
-import { SharedRoutes } from "./Routes"
+import "./App.css";
+import { AppRoute } from "./Routes";
+import React from "react";
 
 function App() {
-  return (
-    <SharedRoutes/>
-  );
+  return <AppRoute />;
 }
 
 export default App;
