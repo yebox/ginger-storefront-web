@@ -5,6 +5,7 @@ import { styled } from "styled-components";
 export const Button = ({
   label,
   width,
+  type,
   outline,
   icon,
   isLoading,
@@ -14,6 +15,7 @@ export const Button = ({
   return (
     <ButtonEl
       width={width}
+      type={type}
       outline={outline}
       {...otherProps}
       disabled={isDisabled}
@@ -42,7 +44,7 @@ const ButtonEl = styled.button`
   align-items: center;
   justify-content: center;
   font-size: 1rem;
-  width: ${({ width }) => (width ? width + "px" : "100%")};
+  width: ${({ width }) => (width ? width : "100%")};
   border-radius: 2px;
   outline: none;
   border: ${({ outline }) => (outline ? "1px solid var(--black)" : "none")};

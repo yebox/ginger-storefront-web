@@ -11,6 +11,8 @@ import { ReactComponent as Twitter } from "./twitter.svg";
 import { ReactComponent as LinkedIn } from "./linkedin.svg";
 import { ReactComponent as WhiteLogo } from "./logo_white.svg";
 import { ReactComponent as GoogleIcon } from "./Google.svg";
+import { ReactComponent as EyeSlash } from "./eye_slash.svg";
+import { ReactComponent as AppleIcon } from "./apple_auth.svg";
 
 export {
   Logo,
@@ -25,5 +27,7 @@ export {
   Facebook,
   Twitter,
   WhiteLogo,
+  EyeSlash,
   GoogleIcon,
+  AppleIcon,
 };
