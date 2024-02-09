@@ -10,6 +10,8 @@ export const Button = ({
   icon,
   isLoading,
   isDisabled,
+  alternate,
+  alternateOutline,
   ...otherProps
 }) => {
   return (
@@ -17,8 +19,10 @@ export const Button = ({
       width={width}
       type={type}
       outline={outline}
-      {...otherProps}
       disabled={isDisabled}
+      alternate={alternate}
+      alternateOutline={alternateOutline}
+      {...otherProps}
     >
       {isLoading ? (
         <Spinner color={outline ? "var(--black)" : "white"} />
@@ -35,11 +39,19 @@ export const Button = ({
 const ButtonEl = styled.button`
   display: flex;
   align-items: center;
-  background-color: ${({ outline }) =>
-    outline ? "transparent" : "var(--black)"};
-  color: ${({ outline }) => (outline ? "var(--black)" : "white")};
+  background-color: ${({ outline, alternate, alternateOutline }) =>
+    outline
+      ? "transparent"
+      : alternate
+      ? "white"
+      : alternateOutline
+      ? "transparent"
+      : "var(--black)"};
+  color: ${({ outline, alternate }) =>
+    outline || alternate ? "var(--black)" : "#ffffff"};
   font-weight: 500;
-  padding: 1rem 2rem;
+  padding: 1rem 1.5rem;
+  gap: 5px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -47,7 +59,12 @@ const ButtonEl = styled.button`
   width: ${({ width }) => (width ? width : "100%")};
   border-radius: 2px;
   outline: none;
-  border: ${({ outline }) => (outline ? "1px solid var(--black)" : "none")};
+  border: ${({ outline, alternateOutline }) =>
+    outline
+      ? "1px solid var(--black)"
+      : alternateOutline
+      ? "1px solid white"
+      : "none"};
   cursor: pointer;
 
   &:disabled {

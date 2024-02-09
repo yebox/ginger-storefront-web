@@ -13,6 +13,14 @@ import { ReactComponent as WhiteLogo } from "./logo_white.svg";
 import { ReactComponent as GoogleIcon } from "./Google.svg";
 import { ReactComponent as EyeSlash } from "./eye_slash.svg";
 import { ReactComponent as AppleIcon } from "./apple_auth.svg";
+import { ReactComponent as Star } from "./star.svg";
+import { ReactComponent as DollarShield } from "./dollarShield.svg";
+import { ReactComponent as VectorBackground } from "./vectorBackground.svg";
+import { ReactComponent as CircularText } from "./circularText.svg";
+import { ReactComponent as UpArrow } from "./upArrow.svg";
+import { ReactComponent as RightArrow } from "./rightArrow.svg";
+import { ReactComponent as LeftArrow } from "./leftArrow.svg";
+import { ReactComponent as RedRightArrow } from "./redRightArrow.svg";
 
 export {
   Logo,
@@ -30,4 +38,12 @@ export {
   EyeSlash,
   GoogleIcon,
   AppleIcon,
+  Star,
+  DollarShield,
+  VectorBackground,
+  CircularText,
+  UpArrow,
+  RightArrow,
+  LeftArrow,
+  RedRightArrow,
 };
