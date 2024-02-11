@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { AppleIcon, GoogleIcon } from "../../../Assets/Svgs";
-import { Button } from "../../../Ui_elements";
+import { GButton } from "../../../Ui_elements";
 import { TextField } from "../../../Ui_elements/TextField";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -51,7 +51,7 @@ const Login = () => {
         />
         <ForgotPassword>Forgot password?</ForgotPassword>
         <BtnWrapper>
-          <Button
+          <GButton
             width={"60%"}
             isLoading={isSubmitting}
             type={"submit"}
@@ -65,7 +65,7 @@ const Login = () => {
         </BtnWrapper>
       </Form>
       <AuthLinkTxt>
-        Don’t have an account? <SignUpTxt>Sign up</SignUpTxt>
+        Don’t have an account? <SignUpTxt to={"/signup"}>Sign up</SignUpTxt>
       </AuthLinkTxt>
     </>
   );

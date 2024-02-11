@@ -2,7 +2,7 @@ import { devices } from "../../Utils";
 import { Spinner } from "../Spinner/spinner";
 import { styled } from "styled-components";
 
-export const Button = ({
+export const GButton = ({
   label,
   width,
   type,
@@ -66,6 +66,7 @@ const ButtonEl = styled.button`
       ? "1px solid white"
       : "none"};
   cursor: pointer;
+  transition: all 0.25s ease;
 
   &:disabled {
     background: var(--black50);

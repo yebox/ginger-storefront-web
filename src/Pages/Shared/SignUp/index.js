@@ -1,22 +1,45 @@
 import React from "react";
 import styled from "styled-components";
 import { AppleIcon, GoogleIcon } from "../../../Assets/Svgs";
-import { Button } from "../../../Ui_elements";
+import { GButton } from "../../../Ui_elements";
 import { TextField } from "../../../Ui_elements/TextField";
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { SignUpSchema } from "./validation";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import GSpacer from "../../../Ui_elements/Spacer";
 import { GSelectField } from "../../../Ui_elements/SelectField";
+import GCheckbox from "../../../Ui_elements/Checkbox";
 
 const countryData = [
   { label: "Nigeria", value: "nigeria" },
   { label: "Ghana", value: "ghana" },
   { label: "China", value: "china" },
+  { label: "China", value: "china" },
+  { label: "China", value: "china" },
+  { label: "China", value: "china" },
+  { label: "China", value: "china" },
+  { label: "China", value: "china" },
+  { label: "China", value: "china" },
+  { label: "China", value: "china" },
+  { label: "China", value: "china" },
+  { label: "China", value: "china" },
+  { label: "China", value: "china" },
+  { label: "China", value: "china" },
+  { label: "China", value: "china" },
+  { label: "China", value: "china" },
+  { label: "China", value: "china" },
+  { label: "China", value: "china" },
+  { label: "China", value: "china" },
+  { label: "China", value: "china" },
+  { label: "China", value: "china" },
+  { label: "China", value: "china" },
+  { label: "China", value: "china" },
+  { label: "China", value: "china" },
 ];
 
 const SignUp = () => {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -26,7 +49,13 @@ const SignUp = () => {
     resolver: yupResolver(SignUpSchema),
   });
 
+  const handleTermsNav = (e) => {
+    e.stopPropagation();
+    navigate("/");
+  };
+
   const onSubmit = () => {};
+  console.log({ errors });
 
   return (
     <>
@@ -35,25 +64,37 @@ const SignUp = () => {
         Create an account to keep track of your orders and pay for orders.
       </Subtitle>
       <Form onSubmit={handleSubmit(onSubmit)}>
+        <NameInputWrapper>
+          <TextField
+            id="firstName"
+            placeholder="First name"
+            inputType="firstName"
+            name="firstName"
+            register={register}
+            error={!!errors.firstName}
+            errorText={errors.firstName && errors.firstName.message}
+            required
+          />
+          <TextField
+            id="lastName"
+            placeholder="Last name"
+            inputType="lastName"
+            name="lastName"
+            register={register}
+            error={!!errors.lastName}
+            errorText={errors.lastName && errors.lastName.message}
+            required
+          />
+        </NameInputWrapper>
+        <GSpacer size={32} />
         <TextField
           id="email"
           placeholder="Email / Phone number"
-          inputType="email"
+          inputType="text"
           name="email"
           register={register}
-          error={errors.email}
+          error={!!errors.email}
           errorText={errors.email && errors.email.message}
-          required
-        />
-        <GSpacer size={32} />
-        <TextField
-          id="fullName"
-          placeholder="Full name"
-          inputType="fullName"
-          name="fullName"
-          register={register}
-          error={errors.fullName}
-          errorText={errors.fullName && errors.fullName.message}
           required
         />
         <GSpacer size={32} />
@@ -63,11 +104,11 @@ const SignUp = () => {
           inputType="password"
           name="password"
           register={register}
-          error={errors.password}
+          error={!!errors.password}
           errorText={errors.password && errors.password.message}
           required
         />
-        <GSpacer size={32} />
+        <GSpacer size={25} />
         <Controller
           name="country"
           control={control}
@@ -79,13 +120,22 @@ const SignUp = () => {
               options={countryData}
               id="country"
               searchable={true}
-              isError={!!errors.subCategoryId}
+              isError={!!errors.country}
+              errorText={errors.country && errors.country.message}
             />
           )}
         />
-        <TermsWrapper></TermsWrapper>
+        <TermsWrapper>
+          <GCheckbox />
+          <TermsTxt>
+            I agree to{" "}
+            <TermsTxtLink onClick={handleTermsNav}>
+              Terms and Conditions
+            </TermsTxtLink>
+          </TermsTxt>
+        </TermsWrapper>
         <BtnWrapper>
-          <Button
+          <GButton
             width={"60%"}
             isLoading={isSubmitting}
             type={"submit"}
@@ -99,10 +149,7 @@ const SignUp = () => {
         </BtnWrapper>
       </Form>
       <AuthLinkTxt>
-        Already have an account? <LoginUpTxt>Log in</LoginUpTxt>
-      </AuthLinkTxt>
-      <AuthLinkTxt>
-        Are you a brand? <span>Sign up to sell on Ginger</span>
+        Already have an account? <LoginUpTxt to={"/login"}>Log in</LoginUpTxt>
       </AuthLinkTxt>
     </>
   );
@@ -153,23 +200,47 @@ const AuthLinkTxt = styled.p`
   }
 `;
 
-const TermsWrapper = styled.div`
+const NameInputWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 18px;
+`;
+
+const TermsWrapper = styled.label`
   display: flex;
   align-items: center;
   gap: 8px;
-  margin: 20px 0 58px;
+  margin: 20px 0 55px;
+  cursor: pointer;
+`;
+
+const TermsTxtLink = styled.span`
+  color: var(--Primary-500, #ff4623);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 120%;
+`;
+
+const TermsTxt = styled.p`
+  color: var(--Black-100, #b6b6b6);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 120%;
 `;
 
 const BtnWrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 25px;
-  margin-bottom: 32px;
+  margin-bottom: 24px;
 
   & > svg {
     width: 65.083px;
     height: 55px;
     flex-shrink: 0;
+    cursor: pointer;
   }
 `;
 
@@ -191,6 +262,7 @@ const GoogleSignupBtn = styled.div`
   align-items: center;
   flex-shrink: 0;
   border: 0.917px solid var(--Black-100, #b6b6b6);
+  cursor: pointer;
 
   & > svg {
     width: 28.665px;

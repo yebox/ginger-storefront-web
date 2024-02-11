@@ -1,23 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
 import Select from "react-select";
 import { styled } from "styled-components";
 
 const selectStyles = () => ({
   input: (styles) => ({
     ...styles,
+    margin: "0px",
     "&:not(.aui-no-focusvisible) :focus-visible": {
       boxShadow: "none",
       border: "none",
     },
   }),
-
+  option: (styles, { isSelected }) => ({
+    ...styles,
+    backgroundColor: isSelected ? "var(--Primary-50, #FFECE9)" : "white",
+    color: "var(--Black-500, #151515)",
+    cursor: "pointer",
+  }),
   menu: (provided) => ({
     ...provided,
     overflowY: "auto",
-    scrollbarColor: "transparent",
+    scrollbarColor: "var(--Primary-500, #FF4623)",
     scrollbarWidth: "thin",
     "&::-webkit-scrollbar": {
-      width: "7px",
+      width: "4px",
     },
     "&::-webkit-scrollbar-thumb": {
       backgroundColor: "transparent !important",
@@ -37,36 +43,49 @@ const selectStyles = () => ({
     borderRadius: "4px",
     border: "none",
     boxShadow: isFocused ? 0 : 0,
+    cursor: "pointer",
     "&:hover": {
       border: "none",
     },
-    // border: `1px solid ${isError ? "red" : "#dfe1e6"}`,
     minHeight: "40px",
     color: isDisabled ? "3" : "#97a0af",
-    backgroundColor: isDisabled ? "#f4f5f7" : "var(--dark-bg-text-color)",
+    backgroundColor: isDisabled ? `var(--Black-100, #B6B6B6)` : "transparent",
   }),
-  placeholder: (styles) => ({
+  placeholder: (styles, { isDisabled }) => ({
     ...styles,
-    fontSize: "14px",
-    fontWeight: 450,
-    lineHeight: "20px",
-    color: "#97a0af",
+    fontSize: "16px",
+    fontWeight: 400,
+    fontFamily: "Barlow",
+    opacity: "0.5",
+    lineHeight: "120%",
+    color: isDisabled ? "#D21F37" : "#151515",
+    margin: "0px",
   }),
-  valueContainer: (styles) => ({
+  valueContainer: (styles, { isDisabled }) => ({
     ...styles,
     borderLeft: "none",
-    fontSize: "14px",
+    fontSize: "16px",
+    fontFamily: "Barlow",
+    fontWeight: "400",
+    paddingBottom: "14px",
     minHeight: "40px",
+    color: isDisabled ? "#D21F37" : "#151515",
+    padding: `0px`,
   }),
   indicatorSeparator: (styles) => ({
     ...styles,
     display: "none",
     fontSize: "14px",
   }),
-  dropdownIndicator: (styles) => ({
+  dropdownIndicator: (styles, { isFocused }) => ({
     ...styles,
-    color: "#42526E",
+    color: isFocused ? "#151515" : "#B6B6B6",
+    marginBottom: "6px",
     fontSize: "14px",
+    transition: "all 0.25s ease",
+    "&:hover": {
+      color: "#151515",
+    },
   }),
   autosizeInput: (styles) => ({
     ...styles,
@@ -89,6 +108,8 @@ export const GSelectField = ({
   errorText = "",
   ...field
 }) => {
+  const [isFocus, setIsFocus] = useState(false);
+
   const handleChange = async (value) => {
     const awaitedValue = await value;
     onChange(awaitedValue);
@@ -96,7 +117,7 @@ export const GSelectField = ({
 
   return (
     <Container>
-      <InputWrapper $width={width}>
+      <InputWrapper $width={width} $isFocus={isFocus} $isError={isError}>
         <Select
           {...field}
           options={options}
@@ -105,6 +126,8 @@ export const GSelectField = ({
           styles={selectStyles()}
           isDisabled={disabled}
           isLoading={loading}
+          onFocus={() => setIsFocus(true)}
+          onBlur={() => setIsFocus(false)}
           defaultInputValue={defaultInputValue}
           value={value}
           isSearchable={searchable}
@@ -116,13 +139,14 @@ export const GSelectField = ({
   );
 };
 
-const Container = styled.div``;
+const Container = styled.div`
+  width: 100%;
+`;
 
 const InputWrapper = styled.label`
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 0 0 16px;
   width: ${({ $width }) => ($width ? $width : "100%")};
   box-shadow: ${({ $isFocus, $isError }) =>
     $isError
@@ -131,6 +155,10 @@ const InputWrapper = styled.label`
       ? `0 -1px 0 #151515 inset`
       : `0 -1px 0 #E8E8E8 inset`};
   transition: all 0.25s ease;
+
+  & > div {
+    width: 100%;
+  }
 
   &.error {
     border: 1px solid #d21f37;

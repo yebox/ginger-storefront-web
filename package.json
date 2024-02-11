@@ -4,7 +4,10 @@
   "private": true,
   "dependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@emotion/styled": "^11.11.0",
     "@hookform/resolvers": "^2.8.3",
+    "@mui/material": "^5.15.9",
+    "@mui/styled-engine-sc": "^6.0.0-alpha.16",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -15,6 +18,7 @@
     "react-router-dom": "6",
     "react-scripts": "5.0.1",
     "react-select": "^5.8.0",
+    "react-verification-input": "^4.1.0",
     "styled-components": "^6.1.8",
     "web-vitals": "^2.1.4",
     "yup": "^0.32.11"
