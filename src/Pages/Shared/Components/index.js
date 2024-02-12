@@ -1,5 +1,4 @@
 export * from "../../../Ui_elements/ProductCard/product"
-export * from "./chip"
 export * from "./sellerCard"
 export * from "./blogCard"
 export * from "./guideCard"

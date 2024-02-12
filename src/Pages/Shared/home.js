@@ -1,5 +1,5 @@
 import styled, { keyframes } from "styled-components";
-import { GButton, Product, GTextField } from "../../Ui_elements";
+import { GButton, Product, GTextField, Chip } from "../../Ui_elements";
 import React, { memo, useState } from "react";
 import Vector from "../../Assets/Images/vector-background.png";
 import AddPicture from "../../Assets/Images/ad-picture.png";
@@ -17,8 +17,7 @@ import {
 import { topSellerCategories } from "../../Utils";
 import Footerimage from "../../Assets/Images/footer.png";
 import { useNavigate } from "react-router-dom";
-// import { Carousel } from "../../Ui_elements/Carousel/Carousel"
-// import { UpArrow } from "../../Assets/Svgs"
+
 const Home = () => {
   const navigate = useNavigate();
   const [selectCat, setSelectCat] = useState(0);
@@ -29,6 +28,7 @@ const Home = () => {
       <p>Subscribe</p>
     </EndIconContainer>
   );
+
   return (
     <Container>
       <Hero>
@@ -37,9 +37,12 @@ const Home = () => {
           <h3>Discover the convenience of</h3>
           <h3>wholesale markeplace</h3>
           <ButtonContainer>
-            <GButton label="Sign up for free" />
+            <Button
+              label="Sign up for free"
+              onClick={() => navigate("/login")}
+            />
 
-            <GButton
+            <Button
               outline
               onClick={() => navigate("/sell-on-ginger")}
               label="Sell on ginger"
@@ -146,7 +149,7 @@ const Home = () => {
             <h4>Become a seller on Ginger</h4>
             <p>Browse more top selling products from top brands</p>
             <div>
-              <GButton label="Sign up now" />
+              <GButton label="Sign up now" onClick={() => navigate("/login")} />
               <GButton
                 outline
                 onClick={() => navigate("/sell-on-ginger")}
@@ -206,7 +209,7 @@ const Home = () => {
           </p>
           <div>
             <GButton label="Get started" alternate />
-            <GButton
+            <Button
               label="Learn more"
               alternateOutline
               onClick={() => navigate("/how-to-buy-wholesale")}

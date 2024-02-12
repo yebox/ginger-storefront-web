@@ -9,6 +9,7 @@ const SellOnGinger = lazy(() => import("../Pages/Shared/sellOnGinger"));
 const SignUp = lazy(() => import("../Pages/Shared/SignUp"));
 const Login = lazy(() => import("../Pages/Shared/Login"));
 const ForgotPassword = lazy(() => import("../Pages/Shared/ForgotPassword"));
+const Categories = lazy(() => import("../Pages/Shared/Categories/Categories"));
 
 export const sharedRoutes = [
   {
@@ -26,6 +27,31 @@ export const sharedRoutes = [
   {
     path: "/sell-on-ginger",
     element: SellOnGinger,
+  },
+
+  {
+    path: "/categories/all",
+    element: Categories,
+  },
+  {
+    path: "/categories/hair",
+    element: Categories,
+  },
+  {
+    path: "/categories/nails",
+    element: Categories,
+  },
+  {
+    path: "/categories/eyelashes",
+    element: Categories,
+  },
+  {
+    path: "/categories/skin",
+    element: Categories,
+  },
+  {
+    path: "/categories/equipiment",
+    element: Categories,
   },
 ];
 
