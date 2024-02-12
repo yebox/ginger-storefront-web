@@ -3,6 +3,8 @@ import { BreadCrumbs, Chip } from '../../../Ui_elements'
 import { memo } from 'react';
 import { categoriesData } from './data';
 import { useState } from 'react';
+import { DownArrow } from '../../../Assets/Svgs';
+import { FilterDropdown } from '../Components';
 
 const Categories = () => {
     const [selectCat, setSelectCat] = useState(0)
@@ -34,6 +36,33 @@ const Categories = () => {
                     </Chip>
                 ))}
             </ChipContainer>
+
+            <FilterContainer>
+                <div>
+                    <p>Filter by</p>
+                    <div>
+                        <DownArrow />
+                    </div>
+
+                </div>
+                <div>
+                    <p>Sort by</p>
+                    <div>
+                        <DownArrow />
+                    </div>
+                </div>
+            </FilterContainer>
+
+
+            <ProductFilterContainer>
+                <AsideFilters>
+                    <FilterDropdown />
+                    <FilterDropdown />
+                </AsideFilters>
+                <ProductDisplay>
+                    
+                </ProductDisplay>
+            </ProductFilterContainer>
 
 
         </Container>
@@ -90,4 +119,41 @@ const ChipContainer = styled.div`
     gap: 10px;
     margin-left: 5%;
     margin-top: 5%;
+`
+
+const FilterContainer = styled.section`
+    width: auto;
+    margin: 5%;
+    border-bottom: 1px solid var(--gray-200);
+    padding-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+    div{
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        p{
+            color: var(--gray-300);
+        }
+
+        div{
+            cursor: pointer;
+        }
+    }
+`
+
+const ProductFilterContainer = styled.section`
+    display: flex;
+    position: relative;
+`
+
+const AsideFilters = styled.aside`
+    position: sticky;
+    top:10px;
+    flex: 0.2;
+`
+
+const ProductDisplay = styled.aside`
+    
 `
