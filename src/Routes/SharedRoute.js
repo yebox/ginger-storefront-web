@@ -1,12 +1,12 @@
 import { Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 import { SharedLayout } from "../Layouts";
-import { routes } from "./data";
+import { sharedRoutes } from "./data";
 
 export const SharedRoutes = () => {
   return (
     <Routes>
-      {routes.map(({ path, element: Element }, index) => (
+      {sharedRoutes.map(({ path, element: Element }, index) => (
         <Route
           key={index}
           path={path}

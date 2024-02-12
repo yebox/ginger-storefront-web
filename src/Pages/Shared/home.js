@@ -1,21 +1,26 @@
-import styled from "styled-components"
-import { Button } from "../../Ui_elements"
+import styled, { keyframes } from "styled-components"
+import { Button, Product, TextField } from "../../Ui_elements"
 import React, { memo, useState } from "react"
 import Vector from "../../Assets/Images/vector-background.png"
 import AddPicture from "../../Assets/Images/ad-picture.png"
 import CallToActionImg from "../../Assets/Images/call-to-action.png"
-import { BlogCard, Chip, FeatureProducts, SellerCard } from "./Components"
+import { BlogCard, Chip, SellerCard } from "./Components"
 import Partners from "../../Assets/Images/partners.png"
 import HeroImage from "../../Assets/Images/hero-image.png"
-import { LeftArrow, RedRightArrow, RightArrow, } from "../../Assets/Svgs"
+import { CircleText, LeftArrow, Mail, RedRightArrow, RightArrow, } from "../../Assets/Svgs"
 import { topSellerCategories } from "../../Utils"
 import Footerimage from "../../Assets/Images/footer.png"
+import { useNavigate } from "react-router-dom"
 // import { Carousel } from "../../Ui_elements/Carousel/Carousel"
 // import { UpArrow } from "../../Assets/Svgs"
 const Home = () => {
-
+    const navigate = useNavigate()
     const [selectCat, setSelectCat] = useState(0)
 
+    const EndIcon = () => <EndIconContainer>
+        <Mail />
+        <p>Subscribe</p>
+    </EndIconContainer>
     return (
         <Container>
             <Hero>
@@ -34,6 +39,7 @@ const Home = () => {
 
                         <Button
                             outline
+                            onClick={() => navigate('/sell-on-ginger')}
                             label="Sell on ginger"
                         />
                     </ButtonContainer>
@@ -116,7 +122,7 @@ const Home = () => {
                 <h4>Featured Products</h4>
                 <FeaturedItemContainer>
                     {[...Array(4)].map((_, index) => (
-                        <FeatureProducts key={index} />
+                        <Product key={index} />
 
                     ))}
                 </FeaturedItemContainer>
@@ -135,6 +141,7 @@ const Home = () => {
                     <div>
                         <img src={AddPicture} />
                     </div>
+
                     <div>
                         <h4>Pain relief CBD salve oil</h4>
                         <p>Place your order now and buy get a better resale value</p>
@@ -143,11 +150,14 @@ const Home = () => {
                             outline
                         />
                     </div>
-
-                    <CircleItem>
-                        {/* <CircularTextSVG/> */}
-                    </CircleItem>
                 </AdContainer>
+
+                <CircleItem>
+                    <div>
+                        <CircleText />
+                    </div>
+                    <h5>01</h5>
+                </CircleItem>
             </LargeAd>
 
             <CallToAction>
@@ -162,7 +172,7 @@ const Home = () => {
                             />
                             <Button
                                 outline
-                                // icon={<UpArrow/>}
+                                onClick={() => navigate('/sell-on-ginger')}
                                 label={"Learn more"}
                             />
                         </div>
@@ -218,8 +228,9 @@ const Home = () => {
                             alternate
                         />
                         <Button
-                            label="Get started"
+                            label="Learn more"
                             alternateOutline
+                            onClick={() => navigate('/how-to-buy-wholesale')}
 
                         />
                     </div>
@@ -249,6 +260,10 @@ const Home = () => {
             <Subscribe>
                 <div>
                     <h4>Subscribe to get 30% discount!</h4>
+                    <TextField
+                        endIcon={<EndIcon />}
+                        placeholder={"Enter your email"}
+                    />
                 </div>
             </Subscribe>
 
@@ -604,6 +619,7 @@ const FeaturedItemContainer = styled.div`
 
 const LargeAd = styled.section`
     padding: 10% 5%;
+    width: 100%;
     margin-top: 5%;
     display: flex;
     align-items: center;
@@ -611,14 +627,17 @@ const LargeAd = styled.section`
     background-image: url(${Vector});
     background-position: center;
     background-size: cover;
+    position: relative;
     background-repeat: no-repeat;
 
 `
 const AdContainer = styled.div`
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap:20px;
+    justify-content: space-evenly;
+    position: relative;
+    width: 100%;
+    /* gap:2rem; */
     h4{
         font-size: 3rem;
         font-family: "Roboto Serif";
@@ -634,10 +653,47 @@ const AdContainer = styled.div`
         /* max-width: 400px; */
     }
 `
+const rotateAnimation = keyframes`
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+`;
+
 
 const CircleItem = styled.div`
-    position: relative;
+    position: absolute;
+    left: 45%;
+    background-color: white;
+    width: 255px;
+    height: 255px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+
+    /* Apply animation */
+    animation: ${rotateAnimation} 10s linear infinite; /* Adjust duration and timing function as needed */
+
+    div {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    h5 {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 6rem;
+        color: var(--light-lavendar);
+    }
 `;
+
 
 
 const CallToAction = styled.section`
@@ -793,6 +849,8 @@ const BlogPosts = styled.section`
 
 `
 
+
+
 const BlogPostHeader = styled.div`
     width: 100%;
     display: flex;
@@ -851,6 +909,13 @@ const Subscribe = styled.section`
         font-weight: 400;
 
     }
+    >div{
+        width: 30%;
+        display: flex;
+        gap: 4rem;
+        flex-direction: column;
+        align-items: center;
+    }
 `
 
 const Footer = styled.section`
@@ -862,3 +927,16 @@ const Footer = styled.section`
         width:100%;
     }
 `
+
+const EndIconContainer = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    p{
+        font-size: 1rem;
+        color: var(--black);
+        font-weight: 500;
+    }
+
+`
+
