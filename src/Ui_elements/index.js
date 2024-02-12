@@ -1,3 +1,5 @@
 export * from "./Button/button"
 export * from "./ProductCard/product"
 export * from "./TextField/index"
+export * from "./Breadcrumbs/index"
+export * from "./Chip/index"
