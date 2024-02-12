@@ -22,6 +22,7 @@ import { ReactComponent as RightArrow } from "./rightArrow.svg";
 import { ReactComponent as LeftArrow } from "./leftArrow.svg";
 import { ReactComponent as RedRightArrow } from "./redRightArrow.svg";
 import { ReactComponent as LogoWhiteRed } from "./logo_white_red.svg";
+import { ReactComponent as CaretLeft } from "./caretLeft.svg";
 
 export {
   Logo,
@@ -48,4 +49,5 @@ export {
   LeftArrow,
   RedRightArrow,
   LogoWhiteRed,
+  CaretLeft,
 };
