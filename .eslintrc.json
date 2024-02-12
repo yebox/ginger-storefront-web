@@ -15,6 +15,7 @@
   "rules": {
     // Adjustments to make ESLint more lenient
     "react/prop-types": "off", // Disable prop-types validation
-    "react/react-in-jsx-scope": "off" // Disable requirement for React in JSX scope
+    "react/react-in-jsx-scope": "off", // Disable requirement for React in JSX scope
+    "no-unused-vars": ["error", { "vars": "all", "args": "none" }] // Disable warning for unused variables and enable it for function arguments
   }
 }

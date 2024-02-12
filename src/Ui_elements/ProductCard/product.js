@@ -1,10 +1,13 @@
 import styled from "styled-components";
-import { DollarShield, Star } from "../../../Assets/Svgs";
-import { GButton } from "../../../Ui_elements";
-export const FeatureProducts = () => {
+import { DollarShield, Star } from "../../Assets/Svgs";
+
+export const Product = () => {
   return (
     <Container>
-      <img src="https://images.unsplash.com/photo-1616683693504-3ea7e9ad6fec?q=80&w=3387&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" />
+      <ImgContainer>
+        <img src="https://images.unsplash.com/photo-1616683693504-3ea7e9ad6fec?q=80&w=3387&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" />
+      </ImgContainer>
+
       <SellerRate>
         <div>
           <p>Seller:</p>
@@ -41,7 +44,7 @@ const Container = styled.div`
 
   img {
     width: inherit;
-    height: 19rem;
+    height: 16rem;
     object-fit: cover;
   }
 `;
@@ -60,7 +63,7 @@ const SellerRate = styled.div`
 `;
 
 const Itemdetail = styled.div`
-  margin-top: 1rem;
+  margin-top: 0.6rem;
   p {
     font-size: 1.2rem;
   }
@@ -73,13 +76,22 @@ const RRPContainer = styled.div`
   margin: 1rem 0;
   > div {
     display: flex;
-    gap: 8px;
-    align-items: center;
+    width: 100%;
+    gap: 1rem;
+    margin: 0.6rem 0;
+    > div {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
   }
 `;
 
 const Price = styled.h6`
   font-size: 1.8rem;
   font-weight: 400;
-  margin-bottom: 1rem;
+  margin-bottom: 0.6rem;
+`;
+const ImgContainer = styled.div`
+  background-color: aliceblue;
 `;

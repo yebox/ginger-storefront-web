@@ -1,8 +1,16 @@
-import React from "react"
+import { TextField } from "../../../Ui_elements"
+
 import { Link } from "react-router-dom"
 import { styled } from "styled-components"
-import { Facebook, Instagram, LinkedIn, Logo, Twitter } from "../../../Assets/Svgs"
+import { Facebook, Instagram, LinkedIn, Logo, Twitter, Mail } from "../../../Assets/Svgs"
 export const Footer = () => {
+
+    const EndIcon = () => <EndIconContainer>
+        <Mail />
+        <p>Subscribe</p>
+    </EndIconContainer>
+
+
     return (
         <Container>
             <FooterBody>
@@ -42,6 +50,13 @@ export const Footer = () => {
                         Stay up to date
                     </h6>
                     <p>Join over 5,000+ people in our community!</p>
+
+                    <SubscribeContainer>
+                        <TextField
+                            placeholder="Enter your email"
+                            endIcon={EndIcon}
+                        />
+                    </SubscribeContainer>
                 </div>
             </FooterBody>
 
@@ -126,4 +141,21 @@ const LogoContainer = styled.div`
     p{
         margin-top: 10px;
     }
+`
+
+
+const EndIconContainer = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    p{
+        font-size: 1rem;
+        color: var(--black);
+        font-weight: 500;
+    }
+
+`
+
+const SubscribeContainer = styled.div`
+    margin-top: 2rem;
 `

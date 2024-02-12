@@ -2,11 +2,13 @@ import { lazy } from "react";
 
 const Home = lazy(() => import("../Pages/Shared/home"));
 const MarketPlace = lazy(() => import("../Pages/Shared/MarketPlace"));
+const HowToBuyWholesale = lazy(() => import("../Pages/Shared/howToBuyWholeSale"));
+const SellOnGinger = lazy(()=>import("../Pages/Shared/sellOnGinger"))
 const SignUp = lazy(() => import("../Pages/Shared/SignUp"));
 const Login = lazy(() => import("../Pages/Shared/Login"));
 const ForgotPassword = lazy(() => import("../Pages/Shared/ForgotPassword"));
 
-export const routes = [
+export const sharedRoutes = [
   {
     path: "/",
     element: Home,
@@ -15,7 +17,17 @@ export const routes = [
     path: "/marketplace",
     element: MarketPlace,
   },
+    path: "/how-to-buy-wholesale",
+    element: HowToBuyWholesale,
+  },
+  {
+    path: "/sell-on-ginger",
+    element: SellOnGinger,
+  }
 ];
+
+
+
 
 export const authRoutes = [
   {
