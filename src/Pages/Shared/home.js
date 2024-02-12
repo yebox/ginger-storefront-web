@@ -4,7 +4,7 @@ import React, { memo, useState } from "react";
 import Vector from "../../Assets/Images/vector-background.png";
 import AddPicture from "../../Assets/Images/ad-picture.png";
 import CallToActionImg from "../../Assets/Images/call-to-action.png";
-import { BlogCard, Chip, SellerCard } from "./Components";
+import { BlogCard, SellerCard } from "./Components";
 import Partners from "../../Assets/Images/partners.png";
 import HeroImage from "../../Assets/Images/hero-image.png";
 import {
@@ -37,12 +37,12 @@ const Home = () => {
           <h3>Discover the convenience of</h3>
           <h3>wholesale markeplace</h3>
           <ButtonContainer>
-            <Button
+            <GButton
               label="Sign up for free"
               onClick={() => navigate("/login")}
             />
 
-            <Button
+            <GButton
               outline
               onClick={() => navigate("/sell-on-ginger")}
               label="Sell on ginger"
@@ -209,7 +209,7 @@ const Home = () => {
           </p>
           <div>
             <GButton label="Get started" alternate />
-            <Button
+            <GButton
               label="Learn more"
               alternateOutline
               onClick={() => navigate("/how-to-buy-wholesale")}
