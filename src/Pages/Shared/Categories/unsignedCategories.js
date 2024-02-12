@@ -1,17 +1,22 @@
 import styled from 'styled-components'
-import { BreadCrumbs, Chip, GPagination, GButton, Product } from '../../../Ui_elements'
+import {
+    BreadCrumbs,
+    Chip,
+    GButton,
+    Product
+} from '../../../Ui_elements'
 import { memo } from 'react';
 import { categoriesData } from './data';
 import { useState } from 'react';
 import { DownArrow } from '../../../Assets/Svgs';
-import { FilterDropdown } from '../Components';
+import { FilterDropdown, SellerCard } from '../Components';
 import { Pricefilter, TopStores } from '../Components';
 import { useNavigate } from 'react-router-dom';
 import CallToActionImg from "../../../Assets/Images/call-to-action.png"
 import FooterImage from "../../../Assets/Images/footer.png"
 
 
-const Categories = () => {
+const UnsignedCategories = () => {
     const [selectCat, setSelectCat] = useState(0)
     const [openFilter, setopenFilter] = useState(false)
     const navigate = useNavigate()
@@ -75,15 +80,36 @@ const Categories = () => {
                     />
                 </AsideFilters>
                 <ProductDisplay>
-                    <ItemDisplay>
+                    <SectionTags>Top Stores</SectionTags>
+                    <StoresDisplay>
+                        {[...Array(4)].map((_, index) => (
+                            <SellerCard key={index} />
+                        ))}
+                    </StoresDisplay>
+
+                    <SectionTags>New Arrivals</SectionTags>
+
+                    <NewArrivalsDisplay>
+                        {[...Array(4)].map((_, index) => (
+                            <Product key={index} />
+                        ))}
+                    </NewArrivalsDisplay>
+
+                    <SectionTags>Best Selling</SectionTags>
+
+                    <BestSellingDisplay>
                         {[...Array(10)].map((_, index) => (
                             <Product key={index} />
                         ))}
-                    </ItemDisplay>
+                    </BestSellingDisplay>
 
-                    <PaginationContainer>
-                        <GPagination />
-                    </PaginationContainer>
+
+                    <SeeMoreContainer>
+                        <GButton
+                            outline
+                            label={"See More"}
+                        />
+                    </SeeMoreContainer>
                 </ProductDisplay>
             </ProductFilterContainer>
 
@@ -115,7 +141,7 @@ const Categories = () => {
     )
 }
 
-export default memo(Categories)
+export default memo(UnsignedCategories)
 
 const Container = styled.main`
 
@@ -203,20 +229,28 @@ const ProductDisplay = styled.aside`
     flex: 1;
     
 `
-const ItemDisplay = styled.div`
+const StoresDisplay = styled.div`
+    /* flex: 1; */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+`
+
+const NewArrivalsDisplay = styled.div`
+    /* flex: 1; */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+`
+
+const BestSellingDisplay = styled.div`
     flex: 1;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(18.3rem, 1fr));
-    gap: 15px;
-`
-
-const PaginationContainer = styled.div`
-    width: 100%;
-    margin-top: 5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-`
+    gap: 1.2rem;
+    grid-row-gap: 1.2rem;
+    justify-content: space-between;
+`;
 
 const FilterComp = styled.div`
     display: flex;
@@ -286,3 +320,15 @@ const Footer = styled.section`
     width: 100%;
   }
 `;
+
+const SectionTags = styled.h6`
+    font-size: 2.2rem;
+    font-weight: 500;
+    margin: 5% 0;
+`
+
+const SeeMoreContainer = styled.div`
+    margin: 10% auto;
+    text-align: center;
+    width: 200px;
+`
