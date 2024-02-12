@@ -1,13 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 import { AppleIcon, GoogleIcon } from "../../../Assets/Svgs";
-import { GButton } from "../../../Ui_elements";
-import { TextField } from "../../../Ui_elements/TextField";
+import { GTextField, GSpacer, GButton } from "../../../Ui_elements";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { LoginSchema } from "./validation";
 import { Link } from "react-router-dom";
-import GSpacer from "../../../Ui_elements/Spacer";
 
 const Login = () => {
   const {
@@ -28,7 +26,7 @@ const Login = () => {
         orders
       </Subtitle>
       <Form onSubmit={handleSubmit(onSubmit)}>
-        <TextField
+        <GTextField
           id="email"
           placeholder="Email / Phone number"
           inputType="text"
@@ -39,7 +37,7 @@ const Login = () => {
           required
         />
         <GSpacer size={40} />
-        <TextField
+        <GTextField
           id="password"
           placeholder="Password"
           inputType="password"

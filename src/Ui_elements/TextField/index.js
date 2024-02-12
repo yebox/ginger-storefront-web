@@ -9,7 +9,7 @@ import { styled } from "styled-components";
  * endIcon is any component that displays at the end of the text field
  */
 
-const GTextField = ({
+export const GTextField = ({
   placeholder,
   isDisabled = false,
   required,
@@ -74,8 +74,6 @@ const GTextField = ({
     </InputContainer>
   );
 };
-
-export { GTextField as TextField };
 
 const InputContainer = styled.div`
   display: flex;

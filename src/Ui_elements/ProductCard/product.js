@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { DollarShield, Star } from "../../Assets/Svgs";
+import { GButton } from "../Button/button";
 
 export const Product = () => {
   return (

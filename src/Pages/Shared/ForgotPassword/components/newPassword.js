@@ -1,14 +1,14 @@
 import React from "react";
 import { styled } from "styled-components";
-import { TextField } from "../../../../Ui_elements/TextField";
-import GSpacer from "../../../../Ui_elements/Spacer";
+import { GTextField } from "../../../../Ui_elements";
+import { GSpacer } from "../../../../Ui_elements";
 
 const NewPassword = ({ errors, register }) => {
   return (
     <>
       <Title>Set New Password</Title>
       <Subtitle>Kindly set your new password</Subtitle>
-      <TextField
+      <GTextField
         id="password"
         placeholder="Password"
         inputType="password"
@@ -19,7 +19,7 @@ const NewPassword = ({ errors, register }) => {
         required
       />
       <GSpacer size={40} />
-      <TextField
+      <GTextField
         id="confirmPassword"
         placeholder="Confirm password"
         inputType="password"

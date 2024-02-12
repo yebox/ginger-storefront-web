@@ -1,5 +1,5 @@
 import styled, { keyframes } from "styled-components";
-import { Button, Product, TextField } from "../../Ui_elements";
+import { GButton, Product, GTextField } from "../../Ui_elements";
 import React, { memo, useState } from "react";
 import Vector from "../../Assets/Images/vector-background.png";
 import AddPicture from "../../Assets/Images/ad-picture.png";
@@ -37,9 +37,9 @@ const Home = () => {
           <h3>Discover the convenience of</h3>
           <h3>wholesale markeplace</h3>
           <ButtonContainer>
-            <Button label="Sign up for free" />
+            <GButton label="Sign up for free" />
 
-            <Button
+            <GButton
               outline
               onClick={() => navigate("/sell-on-ginger")}
               label="Sell on ginger"
@@ -102,7 +102,7 @@ const Home = () => {
         </CatergoryGridContainer>
 
         <ViewAllCat>
-          <Button outline label="See all categories" />
+          <GButton outline label="See all categories" />
         </ViewAllCat>
       </Category>
 
@@ -116,7 +116,7 @@ const Home = () => {
       </FeatureProductsContainer>
 
       <ViewAllCat>
-        <Button outline label="Shop more" />
+        <GButton outline label="Shop more" />
       </ViewAllCat>
 
       <LargeAd>
@@ -128,7 +128,7 @@ const Home = () => {
           <div>
             <h4>Pain relief CBD salve oil</h4>
             <p>Place your order now and buy get a better resale value</p>
-            <Button label={"Shop now"} outline />
+            <GButton label={"Shop now"} outline />
           </div>
         </AdContainer>
 
@@ -146,8 +146,8 @@ const Home = () => {
             <h4>Become a seller on Ginger</h4>
             <p>Browse more top selling products from top brands</p>
             <div>
-              <Button label="Sign up now" />
-              <Button
+              <GButton label="Sign up now" />
+              <GButton
                 outline
                 onClick={() => navigate("/sell-on-ginger")}
                 label={"Learn more"}
@@ -205,8 +205,8 @@ const Home = () => {
             Start exploring thousands of brands and enjoy wholesale purchases
           </p>
           <div>
-            <Button label="Get started" alternate />
-            <Button
+            <GButton label="Get started" alternate />
+            <GButton
               label="Learn more"
               alternateOutline
               onClick={() => navigate("/how-to-buy-wholesale")}
@@ -237,7 +237,7 @@ const Home = () => {
       <Subscribe>
         <div>
           <h4>Subscribe to get 30% discount!</h4>
-          <TextField endIcon={<EndIcon />} placeholder={"Enter your email"} />
+          <GTextField endIcon={<EndIcon />} placeholder={"Enter your email"} />
         </div>
       </Subscribe>
 

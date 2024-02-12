@@ -51,6 +51,6 @@ function BpCheckbox(props) {
   );
 }
 
-export default function GCheckbox() {
+export const GCheckbox = () => {
   return <BpCheckbox />;
-}
+};

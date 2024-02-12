@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-const GStepper = ({ totalSteps, activeStep }) => {
+export const GStepper = ({ totalSteps, activeStep }) => {
   const steps = [];
   const currentStep =
     activeStep < 0 ? 0 : totalSteps >= activeStep ? activeStep : totalSteps;
@@ -18,8 +18,6 @@ const GStepper = ({ totalSteps, activeStep }) => {
     </Container>
   );
 };
-
-export default GStepper;
 
 const Container = styled.div`
   display: flex;

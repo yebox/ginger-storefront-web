@@ -1,15 +1,17 @@
 import React from "react";
 import styled from "styled-components";
 import { AppleIcon, GoogleIcon } from "../../../Assets/Svgs";
-import { GButton } from "../../../Ui_elements";
-import { TextField } from "../../../Ui_elements/TextField";
+import {
+  GButton,
+  GSpacer,
+  GSelectField,
+  GCheckbox,
+  GTextField,
+} from "../../../Ui_elements";
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { SignUpSchema } from "./validation";
 import { Link, useNavigate } from "react-router-dom";
-import GSpacer from "../../../Ui_elements/Spacer";
-import { GSelectField } from "../../../Ui_elements/SelectField";
-import GCheckbox from "../../../Ui_elements/Checkbox";
 
 const countryData = [
   { label: "Nigeria", value: "nigeria" },
@@ -65,7 +67,7 @@ const SignUp = () => {
       </Subtitle>
       <Form onSubmit={handleSubmit(onSubmit)}>
         <NameInputWrapper>
-          <TextField
+          <GTextField
             id="firstName"
             placeholder="First name"
             inputType="firstName"
@@ -75,7 +77,7 @@ const SignUp = () => {
             errorText={errors.firstName && errors.firstName.message}
             required
           />
-          <TextField
+          <GTextField
             id="lastName"
             placeholder="Last name"
             inputType="lastName"
@@ -87,7 +89,7 @@ const SignUp = () => {
           />
         </NameInputWrapper>
         <GSpacer size={32} />
-        <TextField
+        <GTextField
           id="email"
           placeholder="Email / Phone number"
           inputType="text"
@@ -98,7 +100,7 @@ const SignUp = () => {
           required
         />
         <GSpacer size={32} />
-        <TextField
+        <GTextField
           id="password"
           placeholder="Password"
           inputType="password"

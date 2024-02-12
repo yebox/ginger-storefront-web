@@ -1,6 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
-import { TextField } from "../../../../Ui_elements/TextField";
+import { GTextField } from "../../../../Ui_elements";
 
 const EmailForm = ({ register, errors }) => {
   return (
@@ -10,7 +10,7 @@ const EmailForm = ({ register, errors }) => {
         Kindly input the email/phone number you registered with to reset
         password
       </Subtitle>
-      <TextField
+      <GTextField
         id="email"
         placeholder="Email / Phone number"
         inputType="text"
