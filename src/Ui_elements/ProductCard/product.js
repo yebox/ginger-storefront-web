@@ -47,12 +47,6 @@ export const Product = () => {
 
 const Container = styled.div`
     width: 18.3rem;
-
-    img{
-        width: inherit;
-        height: 16rem;
-        object-fit: cover;
-    }
 `
 
 const SellerRate = styled.div`
@@ -94,4 +88,10 @@ const Price = styled.h6`
 `
 const ImgContainer = styled.div`
     background-color: aliceblue;
+
+    img{
+        width: 100%;
+        height: 16rem;
+        object-fit: cover;
+    }
 `

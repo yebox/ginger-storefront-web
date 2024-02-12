@@ -35,6 +35,7 @@ const Home = () => {
                     <ButtonContainer>
                         <Button
                             label="Sign up for free"
+                            onClick={()=>navigate("/login")}
                         />
 
                         <Button
@@ -168,7 +169,7 @@ const Home = () => {
                         <div>
                             <Button
                                 label="Sign up now"
-
+                                onClick={()=>navigate("/login")}
                             />
                             <Button
                                 outline
