@@ -42,12 +42,12 @@ export const Navbar = () => {
             </Container>
             <LowerNav>
                 <div>
-                    <NavLink to={'all-products'}>All</NavLink>
-                    <NavLink to={'hair'}>Hair</NavLink>
-                    <NavLink to={'nails'}>Nails</NavLink>
-                    <NavLink to={'eyelashes'}>Eyelashes</NavLink>
-                    <NavLink to={'skin'}>Skin and Body</NavLink>
-                    <NavLink to={'equipment'}>Equipment</NavLink>
+                    <NavLink to={'/categories/all'}>All</NavLink>
+                    <NavLink to={'/categories/hair'}>Hair</NavLink>
+                    <NavLink to={'/categories/nails'}>Nails</NavLink>
+                    <NavLink to={'/categories/eyelashes'}>Eyelashes</NavLink>
+                    <NavLink to={'/categories/skin'}>Skin and Body</NavLink>
+                    <NavLink to={'/categories/equipment'}>Equipment</NavLink>
                 </div>
             </LowerNav>
 
