@@ -1,7 +1,7 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import { styled } from 'styled-components'
-import { Account, Cart, Dollar, DownArrow, Like,Logo, Search } from '../../../Assets/Svgs'
+import { Account, Cart, Dollar, DownArrow, Like, Logo, Search } from '../../../Assets/Svgs'
 
 
 export const Navbar = () => {
@@ -9,12 +9,14 @@ export const Navbar = () => {
         <OuterContainer>
             <Container>
                 <Links>
-                    <Link>About us</Link>
-                    <Link>Sell on ginger</Link>
+                    <NavLink to={'/about-us'}>About us</NavLink>
+                    <NavLink to={"/sell-on-ginger"}>Sell on ginger</NavLink>
                 </Links>
 
                 <LogoContainer>
-                    <Logo />
+                    <NavLink to={'/'}>
+                        <Logo />
+                    </NavLink>
                 </LogoContainer>
 
                 <Utility>
@@ -40,12 +42,12 @@ export const Navbar = () => {
             </Container>
             <LowerNav>
                 <div>
-                    <Link>All</Link>
-                    <Link>Hair</Link>
-                    <Link>Nails</Link>
-                    <Link>Eyelashes</Link>
-                    <Link>Skin and Body</Link>
-                    <Link>Equipment</Link>
+                    <NavLink to={'all-products'}>All</NavLink>
+                    <NavLink to={'hair'}>Hair</NavLink>
+                    <NavLink to={'nails'}>Nails</NavLink>
+                    <NavLink to={'eyelashes'}>Eyelashes</NavLink>
+                    <NavLink to={'skin'}>Skin and Body</NavLink>
+                    <NavLink to={'equipment'}>Equipment</NavLink>
                 </div>
             </LowerNav>
 
