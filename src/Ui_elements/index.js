@@ -7,3 +7,5 @@ export * from "./Spacer";
 export * from "./SelectField";
 export * from "./Breadcrumbs/index";
 export * from "./Chip/index";
+export * from "./Pagination/index"
+

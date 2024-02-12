@@ -2,14 +2,48 @@ import * as React from "react";
 import { styled } from "@mui/material/styles";
 import Checkbox from "@mui/material/Checkbox";
 
-const BpIcon = styled("span")(() => ({
+
+export const GCheckbox = ({
+  outline,
+  ...props
+}) => {
+  return <BpCheckbox
+    outline={outline}
+    {...props}
+  />;
+};
+
+
+const BpCheckbox = ({ outline, ...props }) => {
+  return (
+    <Checkbox
+      sx={{
+        padding: "0px",
+      }}
+      disableRipple
+      color="default"
+      checkedIcon={<BpCheckedIcon />}
+      icon={
+        <BpIcon
+          outline={outline}
+        />}
+      inputProps={{ "aria-label": "Checkbox demo" }}
+      {...props}
+    />
+  );
+}
+
+
+
+const BpIcon = styled("span")(({ outline }) => ({
   borderRadius: 2,
   width: 16,
   height: 16,
-  backgroundColor: "var(--Primary-500, #FF4623)",
+  backgroundColor: outline ? "transparent" : "var(--Primary-500, var(--primary-color))",
+  border: outline ? "1px solid gray" : "none", // Conditional border based on outline prop
 
   ".Mui-focusVisible &": {
-    outline: "2px auto #FF4623",
+    outline: outline ? "2px auto var(--primary-color)" : "2px auto var(--primary-color)",
     outlineOffset: 2,
   },
   "input:disabled ~ &": {
@@ -35,22 +69,3 @@ const BpCheckedIcon = styled(BpIcon)({
   },
 });
 
-function BpCheckbox(props) {
-  return (
-    <Checkbox
-      sx={{
-        padding: "0px",
-      }}
-      disableRipple
-      color="default"
-      checkedIcon={<BpCheckedIcon />}
-      icon={<BpIcon />}
-      inputProps={{ "aria-label": "Checkbox demo" }}
-      {...props}
-    />
-  );
-}
-
-export const GCheckbox = () => {
-  return <BpCheckbox />;
-};
