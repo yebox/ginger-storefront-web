@@ -11,7 +11,7 @@ const Login = lazy(() => import("../Pages/Shared/Login"));
 const ForgotPassword = lazy(() => import("../Pages/Shared/ForgotPassword"));
 const Categories = lazy(() => import("../Pages/Shared/Categories/categories"));
 const UnsignedCategories = lazy(()=>import("../Pages/Shared/Categories/unsignedCategories"));
-
+//
 export const sharedRoutes = [
   {
     path: "/",
