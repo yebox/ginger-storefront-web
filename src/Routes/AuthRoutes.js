@@ -7,15 +7,19 @@ import AuthLayout from "../Layouts/AuthLayout";
 export const AuthRoutes = () => {
   return (
     <Routes>
-      {authRoutes.map(({ path, element: Element }, index) => (
+      {authRoutes.map(({ path, hasLayout, element: Element }, index) => (
         <Route
           key={index}
           path={path}
           element={
             <Suspense fallback={null}>
-              <AuthLayout>
+              {hasLayout ? (
+                <AuthLayout>
+                  <Element />
+                </AuthLayout>
+              ) : (
                 <Element />
-              </AuthLayout>
+              )}
             </Suspense>
           }
         />

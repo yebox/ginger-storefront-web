@@ -9,7 +9,7 @@ import { styled } from "styled-components";
  * endIcon is any component that displays at the end of the text field
  */
 
-export const TextField = ({
+export const GTextField = ({
   placeholder,
   isDisabled = false,
   required,
@@ -46,7 +46,6 @@ export const TextField = ({
           {...props}
           type={inputType === "password" ? togglePassword() : inputData?.type}
           id={props.name}
-          isError={error}
           className={errorClass}
           placeholder={placeholder}
           disabled={isDisabled}
@@ -75,8 +74,6 @@ export const TextField = ({
     </InputContainer>
   );
 };
-
-// export { TextField };
 
 const InputContainer = styled.div`
   display: flex;
@@ -166,6 +163,7 @@ const InputIcon = styled.div`
   justify-content: center;
   width: 24px;
   height: 24px;
+  margin-right: 8px;
   flex-shrink: 0;
 
   & > svg {

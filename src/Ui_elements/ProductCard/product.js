@@ -1,97 +1,104 @@
-import styled from "styled-components"
-import { DollarShield, Star } from "../../Assets/Svgs"
-import { Button } from ".."
+import styled from "styled-components";
+import { DollarShield, Star } from "../../Assets/Svgs";
+import { GButton } from "../Button/button";
+
 export const Product = () => {
-    return (
-        <Container>
-            <ImgContainer>
-                <img
-                    src="https://images.unsplash.com/photo-1616683693504-3ea7e9ad6fec?q=80&w=3387&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                />
-            </ImgContainer>
+  return (
+    <Container>
+      <ImgContainer>
+        <img src="https://images.unsplash.com/photo-1616683693504-3ea7e9ad6fec?q=80&w=3387&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" />
+      </ImgContainer>
 
-            <SellerRate>
-                <div>
-                    <p>Seller:</p>
-                    <p>Rosalind</p>
-                </div>
+      <SellerRate>
+        <div>
+          <p>Seller:</p>
+          <p>Rosalind</p>
+        </div>
 
-                <div>
-                    <p>4.5</p>
-                    <Star />
-                </div>
+        <div>
+          <p>4.5</p>
+          <Star />
+        </div>
+      </SellerRate>
+      <Itemdetail>
+        <p>Nairobi Wrapp-It Shine Foaming Lotion 8oz</p>
+      </Itemdetail>
 
-            </SellerRate>
-            <Itemdetail>
-                <p>Nairobi Wrapp-It Shine Foaming Lotion 8oz</p>
-            </Itemdetail>
+      <RRPContainer>
+        <div>
+          <DollarShield />
+          <p>RRP</p>
+        </div>
 
-            <RRPContainer>
-                <div>
-                    <DollarShield />
-                    <p>RRP</p>
-                </div>
+        <p>₦5,500</p>
+      </RRPContainer>
 
-                <p>₦5,500</p>
-            </RRPContainer>
+      <Price>₦87,260</Price>
 
-            <Price>₦87,260</Price>
-
-            <Button
-                label={"Add to Cart"}
-            />
-        </Container>
-    )
-}
-
+      <GButton label={"Add to Cart"} />
+    </Container>
+  );
+};
 
 const Container = styled.div`
-    width: 18.3rem;
-`
+  width: 18.3rem;
+
+  img {
+    width: inherit;
+    height: 16rem;
+    object-fit: cover;
+  }
+`;
 
 const SellerRate = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.8rem;
+  > div {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 0.8rem;
-    >div{
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 8px;
-    }
-`
+    gap: 8px;
+  }
+`;
 
 const Itemdetail = styled.div`
-    margin-top: 0.6rem;
-    p{
-        font-size: 1.2rem;
-    }
-`
+  margin-top: 0.6rem;
+  p {
+    font-size: 1.2rem;
+  }
+`;
 
 const RRPContainer = styled.div`
+  display: flex;
+  width: 100%;
+  gap: 1rem;
+  margin: 1rem 0;
+  > div {
     display: flex;
     width: 100%;
     gap: 1rem;
     margin: 0.6rem 0;
-    >div{
-        display: flex;
-        gap: 8px;
-        align-items: center;
+    > div {
+      display: flex;
+      gap: 8px;
+      align-items: center;
     }
-`
+  }
+`;
 
 const Price = styled.h6`
-    font-size: 1.8rem;
-    font-weight: 400;
-    margin-bottom: 0.6rem;
-`
+  font-size: 1.8rem;
+  font-weight: 400;
+  margin-bottom: 0.6rem;
+`;
 const ImgContainer = styled.div`
-    background-color: aliceblue;
+  background-color: aliceblue;
 
-    img{
-        width: 100%;
-        height: 16rem;
-        object-fit: cover;
-    }
-`
+  img {
+    width: 100%;
+    height: 16rem;
+    object-fit: cover;
+  }
+`;

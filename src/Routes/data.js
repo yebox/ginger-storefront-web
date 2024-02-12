@@ -1,16 +1,24 @@
 import { lazy } from "react";
 
 const Home = lazy(() => import("../Pages/Shared/home"));
-const HowToBuyWholesale = lazy(() => import("../Pages/Shared/howToBuyWholeSale"));
-const SellOnGinger = lazy(()=>import("../Pages/Shared/sellOnGinger"))
+const MarketPlace = lazy(() => import("../Pages/Shared/MarketPlace"));
+const HowToBuyWholesale = lazy(() =>
+  import("../Pages/Shared/howToBuyWholeSale")
+);
+const SellOnGinger = lazy(() => import("../Pages/Shared/sellOnGinger"));
 const SignUp = lazy(() => import("../Pages/Shared/SignUp"));
 const Login = lazy(() => import("../Pages/Shared/Login"));
-const Categories = lazy(()=>import("../Pages/Shared/Categories/Categories"))
+const ForgotPassword = lazy(() => import("../Pages/Shared/ForgotPassword"));
+const Categories = lazy(() => import("../Pages/Shared/Categories/Categories"));
 
 export const sharedRoutes = [
   {
     path: "/",
     element: Home,
+  },
+  {
+    path: "/marketplace",
+    element: MarketPlace,
   },
   {
     path: "/how-to-buy-wholesale",
@@ -47,16 +55,20 @@ export const sharedRoutes = [
   },
 ];
 
-
-
-
 export const authRoutes = [
   {
     path: "/signup",
     element: SignUp,
+    hasLayout: true,
   },
   {
     path: "/login",
     element: Login,
+    hasLayout: true,
+  },
+  {
+    path: "/forgot-password",
+    element: ForgotPassword,
+    hasLayout: false,
   },
 ];

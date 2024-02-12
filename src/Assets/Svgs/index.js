@@ -21,14 +21,12 @@ import { ReactComponent as UpArrow } from "./upArrow.svg";
 import { ReactComponent as RightArrow } from "./rightArrow.svg";
 import { ReactComponent as LeftArrow } from "./leftArrow.svg";
 import { ReactComponent as RedRightArrow } from "./redRightArrow.svg";
+import { ReactComponent as LogoWhiteRed } from "./logo_white_red.svg";
+import { ReactComponent as CaretLeft } from "./caretLeft.svg";
 import { ReactComponent as GuideCheck } from "./guideCheck.svg";
 import { ReactComponent as LocationTag } from "./locationTag.svg";
 import { ReactComponent as CircleText } from "./circleText.svg";
-import { ReactComponent as Mail} from "./mail.svg";
-
-
-
-
+import { ReactComponent as Mail } from "./mail.svg";
 
 export {
   Logo,
@@ -54,8 +52,10 @@ export {
   RightArrow,
   LeftArrow,
   RedRightArrow,
+  LogoWhiteRed,
+  CaretLeft,
   GuideCheck,
   LocationTag,
   CircleText,
-  Mail
+  Mail,
 };
