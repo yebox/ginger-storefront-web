@@ -5,3 +5,6 @@ export * from "./guideCard";
 export * from "./testimonialCard";
 export * from "./accordion";
 export * from "./becomeSellerSection";
+export * from "./filterDropdown";
+export * from "./pricefilter";
+export * from "./topStores";

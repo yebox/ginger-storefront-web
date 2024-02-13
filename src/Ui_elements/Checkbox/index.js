@@ -12,7 +12,9 @@ const BpIcon = styled("span")(({ size, isTransparent = false }) => ({
     : "var(--Primary-500, #FF4623)",
 
   ".Mui-focusVisible &": {
-    outline: "2px auto #FF4623",
+    outline: outline
+      ? "2px auto var(--primary-color)"
+      : "2px auto var(--primary-color)",
     outlineOffset: 2,
   },
   "input:disabled ~ &": {
