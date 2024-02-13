@@ -1,5 +1,6 @@
 import styled, { keyframes } from "styled-components";
 import { GButton, Product, GTextField, Chip, GModal } from "../../Ui_elements";
+import { GButton, Product, GTextField, Chip, GModal } from "../../Ui_elements";
 import React, { memo, useState } from "react";
 import Vector from "../../Assets/Images/vector-background.png";
 import AddPicture from "../../Assets/Images/ad-picture.png";
@@ -13,6 +14,7 @@ import {
   RedRightArrow,
   RightArrow,
   WhiteX,
+  WhiteX,
 } from "../../Assets/Svgs";
 import { topSellerCategories } from "../../Utils";
 import { useNavigate } from "react-router-dom";
@@ -21,6 +23,8 @@ import { useNavigate } from "react-router-dom";
 const Home = () => {
   const navigate = useNavigate();
   const [selectCat, setSelectCat] = useState(0);
+  const [openCookie, setOpenCookie] = useState(true)
+  const [openModal, setOpenModal] = useState(true)
   const [openCookie, setOpenCookie] = useState(true)
   const [openModal, setOpenModal] = useState(true)
 
