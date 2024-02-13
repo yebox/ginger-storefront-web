@@ -1,10 +1,58 @@
 import React from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import { styled } from 'styled-components'
+// import { GTextField } from '../../../Ui_elements'
 import { Account, Cart, Dollar, DownArrow, Like, Logo, Search } from '../../../Assets/Svgs'
+import { useState } from 'react';
+import { useEffect } from 'react';
 
+
+
+
+const imageLinks = [
+    "https://images.unsplash.com/photo-1546877625-cb8c71916608?q=80&w=3270&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "https://images.unsplash.com/photo-1557353425-6c61136de070?q=80&w=3271&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "https://images.unsplash.com/photo-1474648676916-0558486e7fa0?q=80&w=3000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+]
 
 export const Navbar = () => {
+    const [currentImage, setCurrentImage] = useState([0])
+    const [showFullOptions, setShowFullOptions] = useState(false);
+    const [fullOptionsHovered, setFullOptionsHovered] = useState(false);
+
+
+
+    useEffect(() => {
+        imageLinks.forEach((link) => {
+            const image = new Image()
+            image.src = link
+        })
+    },[])
+
+    const handleNavLinkHover = (index) => {
+        setCurrentImage(imageLinks[index]);
+        setShowFullOptions(true);
+    };
+
+    const handleFullOptionsHover = () => {
+        setShowFullOptions(true);
+        setFullOptionsHovered(true);
+    };
+
+    const handleFullOptionsLeave = () => {
+        setFullOptionsHovered(false);
+        setShowFullOptions(false);
+        // if (!fullOptionsHovered) {
+        //     setShowFullOptions(false);
+        // }
+    };
+
+    const handleLowerNavLeave = () => {
+        if (!fullOptionsHovered) {
+            setShowFullOptions(false);
+        }
+    };
+
     return (
         <OuterContainer>
             <Container>
@@ -23,11 +71,11 @@ export const Navbar = () => {
                     <>
                         <Flex>
                             <Account />
-                            <Link>Account</Link>
+                            <Link>Sign up</Link>
                         </Flex>
                         <Flex>
                             <Cart />
-                            <Link>Account</Link>
+                            <Link>Cart</Link>
                         </Flex>
                     </>
 
@@ -40,16 +88,53 @@ export const Navbar = () => {
 
                 </Utility>
             </Container>
-            <LowerNav>
+            <LowerNav onMouseLeave={handleLowerNavLeave}>
                 <div>
-                    <NavLink to={'/categories/all'}>All</NavLink>
-                    <NavLink to={'/categories/hair'}>Hair</NavLink>
-                    <NavLink to={'/categories/nails'}>Nails</NavLink>
-                    <NavLink to={'/categories/eyelashes'}>Eyelashes</NavLink>
-                    <NavLink to={'/categories/skin'}>Skin and Body</NavLink>
-                    <NavLink to={'/categories/equipment'}>Equipment</NavLink>
+                    <NavLink to={'/categories/all'} onMouseEnter={() => handleNavLinkHover(0)}>All</NavLink>
+                    <NavLink to={'/categories/hair'} onMouseEnter={() => handleNavLinkHover(1)}>Hair</NavLink>
+                    <NavLink to={'/categories/nails'} onMouseEnter={() => handleNavLinkHover(2)}>Nails</NavLink>
+                    <NavLink to={'/categories/eyelashes'} onMouseEnter={() => handleNavLinkHover(0)}>Eyelashes</NavLink>
+                    <NavLink to={'/categories/skin'} onMouseEnter={() => handleNavLinkHover(1)}>Skin and Body</NavLink>
+                    <NavLink to={'/categories/equipment'} onMouseEnter={() => handleNavLinkHover(2)}>Equipment</NavLink>
                 </div>
             </LowerNav>
+
+
+            {
+                showFullOptions &&   <FullOptions onMouseEnter={handleFullOptionsHover} onMouseLeave={handleFullOptionsLeave}>
+                <div>
+                    <div>
+                        <NavLink to="/haircare" onMouseEnter={()=>setCurrentImage(imageLinks[0])}>Haircare</NavLink>
+                        <NavLink to="/haircoloring" onMouseEnter={()=>setCurrentImage(imageLinks[1])}>Hair colouring</NavLink>
+                        <NavLink to="/hair-tools" onMouseEnter={()=>setCurrentImage(imageLinks[2])}>Hair tools</NavLink>
+                        <NavLink to="/hair-acessories" onMouseEnter={()=>setCurrentImage(imageLinks[1])}>Hair accessories</NavLink>
+                        <NavLink to="/hair-styling" onMouseEnter={()=>setCurrentImage(imageLinks[2])}>Styling</NavLink>
+                    </div>
+                
+                    <div>
+                        <NavLink to="/perm" onMouseEnter={()=>setCurrentImage(imageLinks[0])}>Perm and relaxer</NavLink>
+                            <NavLink to="/texturizer" onMouseEnter={()=>setCurrentImage(imageLinks[1])}>Texturizer</NavLink>
+                        <NavLink to="/wig" onMouseEnter={()=>setCurrentImage(imageLinks[2])}>Wigs and extensions</NavLink>
+                        <NavLink to="/wig-tools" onMouseEnter={()=>setCurrentImage(imageLinks[1])}>Wig tools</NavLink>
+                    </div>
+                </div>
+                    
+                <div>
+                    <img
+                        src={ currentImage}
+                    />
+                </div>
+                </FullOptions>
+            }
+          
+
+            {/* <SearchContainer>
+                <p>Search</p>
+                <GTextField
+                    endIcon={<Search />}
+                />
+                <Cancel />
+            </SearchContainer> */}
 
         </OuterContainer>
 
@@ -59,7 +144,7 @@ export const Navbar = () => {
 
 const OuterContainer = styled.nav`
     width: 100%;
-
+    position: relative;
 `
 const Container = styled.div`
     width: 100%;
@@ -115,12 +200,18 @@ const LowerNav = styled.div`
     align-items: center;
     justify-content: center;
 
-    a{
+    >a{
         transition: all 0.3s ease;
         &:hover{
-            color: var(--primary);
+            color: var(--primary-color) !important;
         }
     }
+    >a.active{
+        color: var(--black);
+        border-bottom: 1px solid var(--primary-color) !important;
+        padding-bottom: 3px !important;
+    }
+    
     div{
         display: flex;
         align-items: center;
@@ -132,3 +223,58 @@ const LogoContainer = styled.div`
     left: 50%;
     transform: translateX(-50%);
 `
+
+const FullOptions = styled.div`
+    background-color: white;
+    display: flex;
+    justify-content:center;
+    width: 100%;
+    height: 40vh;
+    gap:20%;
+    padding: 5%;
+    position: absolute;
+    top: 18vh;
+    left: 0;
+    z-index: 3;
+
+    img{
+        width: 24rem;
+        height: 15.2rem;
+    }
+
+    >div:nth-child(1){
+        display: flex;
+        width: fit-content;
+        justify-content: center;
+        min-width: 400px;
+        gap: 20%;
+        div{
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+    }
+`
+
+
+// const SearchContainer = styled.div`
+//     display: flex;  
+//     align-items: center;
+//     gap:2rem;
+//     width: 100%;
+//     padding: 2% 5%;
+//     p{
+//         font-size: 2rem;
+//         font-weight: 500;
+//     }
+// `
+// const Cancel = styled(BlackX)`
+//     cursor: pointer;
+//     transition: all 0.3s ease;
+//     &:hover{
+//         transform: scale(1.1);
+//     }
+    
+// `
+
+

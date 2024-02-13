@@ -27,6 +27,14 @@ import { ReactComponent as GuideCheck } from "./guideCheck.svg";
 import { ReactComponent as LocationTag } from "./locationTag.svg";
 import { ReactComponent as CircleText } from "./circleText.svg";
 import { ReactComponent as Mail } from "./mail.svg";
+import { ReactComponent as LockIcon } from "./lockIcon.svg";
+import { ReactComponent as Heart } from "./heart.svg";
+import { ReactComponent as WhiteX } from "./whiteX.svg";
+import { ReactComponent as BlackX} from "./blackX.svg";
+
+
+
+
 
 export {
   Logo,
@@ -58,4 +66,8 @@ export {
   LocationTag,
   CircleText,
   Mail,
+  LockIcon,
+  Heart,
+  WhiteX,
+  BlackX
 };

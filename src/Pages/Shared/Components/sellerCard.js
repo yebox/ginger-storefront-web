@@ -4,7 +4,7 @@ export const SellerCard = () => {
   return (
     <Container>
       <div>
-        <img src="https://images.unsplash.com/photo-1561828995-aa79a2db86dd?q=80&w=3280&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" />
+        <img src="https://images.unsplash.com/photo-1560879311-370fd4561a0d?q=80&w=3343&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" />
         <h6>Met Beauty Store</h6>
       </div>
 
@@ -17,7 +17,7 @@ export const SellerCard = () => {
 
 const Container = styled.div`
   position: relative;
-  min-width: 20rem;
+  min-width: 25rem;
   height: 20rem;
   display: flex;
   align-items: flex-end;
@@ -52,7 +52,8 @@ const Container = styled.div`
     position: absolute;
     top: 0;
     left: 0;
-    min-width: 20rem;
+    min-width: 25rem;
+    width: 100%;
     height: 20rem;
     object-fit: cover;
     transition: all 0.3s ease;
