@@ -2,9 +2,9 @@ import styled from "styled-components";
 import { DollarShield, Star } from "../../Assets/Svgs";
 import { GButton } from "../Button/button";
 
-export const Product = () => {
+export const Product = ({ width }) => {
   return (
-    <Container>
+    <Container $width={width}>
       <ImgContainer>
         <img src="https://images.unsplash.com/photo-1616683693504-3ea7e9ad6fec?q=80&w=3387&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" />
       </ImgContainer>
@@ -41,7 +41,8 @@ export const Product = () => {
 };
 
 const Container = styled.div`
-  width: 18.3rem;
+  width: ${({ $width }) => ($width ? $width : "18.3rem")};
+  flex-shrink: 0;
 
   img {
     width: inherit;

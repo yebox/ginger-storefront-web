@@ -1,10 +1,9 @@
 import styled, { keyframes } from "styled-components";
-import { GButton, Product, GTextField, Chip } from "../../Ui_elements";
+import { GButton, Product, Chip, GTextField } from "../../Ui_elements";
 import React, { memo, useState } from "react";
 import Vector from "../../Assets/Images/vector-background.png";
 import AddPicture from "../../Assets/Images/ad-picture.png";
-import CallToActionImg from "../../Assets/Images/call-to-action.png";
-import { BlogCard, SellerCard } from "./Components";
+import { BecomeSellerSection, BlogCard, SellerCard } from "./Components";
 import Partners from "../../Assets/Images/partners.png";
 import HeroImage from "../../Assets/Images/hero-image.png";
 import {
@@ -15,8 +14,8 @@ import {
   RightArrow,
 } from "../../Assets/Svgs";
 import { topSellerCategories } from "../../Utils";
-import Footerimage from "../../Assets/Images/footer.png";
 import { useNavigate } from "react-router-dom";
+import InstaFooter from "./Components/instaFooter";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -143,22 +142,7 @@ const Home = () => {
         </CircleItem>
       </LargeAd>
 
-      <CallToAction>
-        <div>
-          <div>
-            <h4>Become a seller on Ginger</h4>
-            <p>Browse more top selling products from top brands</p>
-            <div>
-              <GButton label="Sign up now" onClick={() => navigate("/login")} />
-              <GButton
-                outline
-                onClick={() => navigate("/sell-on-ginger")}
-                label={"Learn more"}
-              />
-            </div>
-          </div>
-        </div>
-      </CallToAction>
+      <BecomeSellerSection />
 
       <TopSellerContainer>
         <TopSellerHeader>
@@ -244,9 +228,7 @@ const Home = () => {
         </div>
       </Subscribe>
 
-      <Footer>
-        <img src={Footerimage} />
-      </Footer>
+      <InstaFooter />
     </Container>
   );
 };
@@ -664,49 +646,6 @@ const CircleItem = styled.div`
   }
 `;
 
-const CallToAction = styled.section`
-  background-image: url(${CallToActionImg});
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-  height: 50vh;
-  position: relative;
-
-  > div {
-    position: absolute;
-    left: 50%;
-    bottom: -20vh;
-    transform: translateX(-50%);
-    width: 50vw;
-    height: 40vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: var(--gray-50);
-    border: 1px solid var(--light-primary);
-    > div {
-      h4 {
-        font-size: 2.5rem;
-        font-weight: 500;
-        margin-bottom: 1.3rem;
-      }
-      p {
-        font-size: 1.1rem;
-        text-align: center;
-        margin-bottom: 1.6rem;
-      }
-
-      > div {
-        display: flex;
-        align-items: center;
-        width: 70%;
-        margin: 0 auto;
-        gap: 1rem;
-      }
-    }
-  }
-`;
-
 const TopSellerContainer = styled.section`
   margin-top: 30vh;
   width: 100%;
@@ -873,16 +812,6 @@ const Subscribe = styled.section`
     gap: 4rem;
     flex-direction: column;
     align-items: center;
-  }
-`;
-
-const Footer = styled.section`
-  display: flex;
-  align-items: center;
-  width: 100%;
-  margin: 5% 0;
-  img {
-    width: 100%;
   }
 `;
 
