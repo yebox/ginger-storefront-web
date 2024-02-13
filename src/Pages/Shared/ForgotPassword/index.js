@@ -65,7 +65,7 @@ const ForgotPassword = () => {
   return (
     <Container>
       <BgImage src={bgImage} />
-      <LogoWhiteRed />
+      <LogoWhite />
       <ContentWrapper>
         <GStepper totalSteps={3} activeStep={activeStep} />
         <Form onSubmit={handleSubmit(onSubmit)}>
@@ -112,23 +112,26 @@ const Container = styled.div`
   position: relative;
   width: 100vw;
   height: 100vh;
-  background: #6f6c6c;
+  background: #0e0e0e;
+`;
 
-  & > svg {
-    width: 195px;
-    height: 37.157px;
-    flex-shrink: 0;
-    z-index: 1;
-  }
+const LogoWhite = styled(LogoWhiteRed)`
+  width: 195px;
+  height: 37.157px;
+  flex-shrink: 0;
+  z-index: 1;
 `;
 
 const BgImage = styled.img`
   width: 100%;
   height: 100%;
+  opacity: 0.3;
   position: absolute;
   top: 0;
   left: 0;
   z-index: 0;
+  filter: blur(0.7px) brightness(0.92);
+  mix-blend-mode: hard-light;
 `;
 
 const ContentWrapper = styled.div`

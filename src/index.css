@@ -7,6 +7,15 @@
   box-sizing: border-box;
 }
 
+*::-webkit-scrollbar {
+  width: 1px;
+  height: 1px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: #ff4623;
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -42,7 +51,7 @@ code {
   --gray-100: #f1f1f1;
   --gray-50: #fdfdfd;
   --light-primary: #fbe9eb;
-  --light-lavendar: #E2E3FF;
+  --light-lavendar: #e2e3ff;
 }
 
 h1,
