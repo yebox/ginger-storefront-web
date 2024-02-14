@@ -6,6 +6,7 @@ export * from "./testimonialCard";
 export * from "./accordion";
 export * from "./becomeSellerSection";
 export * from "./filterDropdown";
+export * from "./priceFilter";
 export * from "./topStores";
 export * from "./featuredComponents";
 export * from "./instaFooter";
