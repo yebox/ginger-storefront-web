@@ -71,7 +71,7 @@ export const Navbar = () => {
                     <>
                         <Flex>
                             <Account />
-                            <Link>Sign up</Link>
+                            <Link to={"/signup"}>Sign up</Link>
                         </Flex>
                         <Flex>
                             <Cart />
