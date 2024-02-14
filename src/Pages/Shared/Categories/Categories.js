@@ -1,24 +1,35 @@
 import styled from 'styled-components'
-import { BreadCrumbs, Chip, GPagination, GButton, Product } from '../../../Ui_elements'
+import {
+    GBreadCrumbs,
+    Chip,
+    GButton,
+    GAccordion,
+    Product,
+    GDropdown,
+    GPagination,
+} from '../../../Ui_elements'
 import { memo } from 'react';
 import { categoriesData } from './data';
 import { useState } from 'react';
-import { DownArrow } from '../../../Assets/Svgs';
-import { FilterDropdown } from '../Components';
-import { Pricefilter, TopStores } from '../Components';
-import { useNavigate } from 'react-router-dom';
-import CallToActionImg from "../../../Assets/Images/call-to-action.png"
-import FooterImage from "../../../Assets/Images/footer.png"
+import Fade from "@mui/material/Fade";
+import {
+    BecomeSellerSection,
+    InstaFooter,
+    PriceFilter,
+    TopStoresFilter
+} from '../Components';
+import ArrowForwardIosSharpIcon from "@mui/icons-material/ArrowForwardIosSharp";
+
 
 
 const Categories = () => {
     const [selectCat, setSelectCat] = useState(0)
-    const [openFilter, setopenFilter] = useState(false)
-    const navigate = useNavigate()
+    const [label, setLabel] = useState("All");
+    const [openFilter, setOpenFilter] = useState(false)
     return (
         <Container>
             <Breadcrumb>
-                <BreadCrumbs />
+                <GBreadCrumbs />
             </Breadcrumb>
 
             <Banner>
@@ -44,73 +55,52 @@ const Categories = () => {
                 ))}
             </ChipContainer>
 
-            <FilterContainer>
-                <FilterComp onClick={() => setopenFilter(!openFilter)}>
-                    <p>Filter by</p>
-                    <div>
-                        <DownArrow />
-                    </div>
+            <SortWrapper>
+                <SortBox onClick={() => setOpenFilter(!openFilter)} $isOpen={openFilter}>
+                    <SortTxt>Filter by</SortTxt>
+                    <ArrowForwardIosSharpIcon/>
+                </SortBox>
+                <SortBox>
+                    <SortTxt>Sort by:</SortTxt>
+                    <GDropdown
+                        label={label}
+                        setLabel={setLabel}
+                        options={["All", "Last week"]}
+                    />
+                </SortBox>
+            </SortWrapper>
 
-                </FilterComp>
-                <FilterComp onClick={() => setopenFilter(!openFilter)}>
-                    <p>Sort by</p>
-                    <div>
-                        <DownArrow />
-                    </div>
-                </FilterComp>
-            </FilterContainer>
 
-
-            <ProductFilterContainer>
-                <AsideFilters
-                    isOpen={openFilter}
+            <ContentWrapper>
+                <Fade
+                    in={openFilter}
+                    style={{ transformOrigin: "0 0 0" }}
+                    {...(openFilter ? { timeout: 500 } : {})}
                 >
-                    <FilterDropdown
-                        title={"Price (₦)"}
-                        content={<Pricefilter />}
-                    />
-                    <FilterDropdown
-                        title={"Top Stores"}
-                        content={<TopStores />}
-                    />
-                </AsideFilters>
-                <ProductDisplay>
-                    <ItemDisplay>
-                        {[...Array(10)].map((_, index) => (
-                            <Product key={index} />
+                    <FilterBox $isOpen={openFilter}>
+                        <GAccordion title={"Price (₦)"} content={<PriceFilter />} />
+                        <GAccordion title={"Top Stores"} content={<TopStoresFilter />} />
+                    </FilterBox>
+                </Fade>
+                <RightContent>
+                    <ProductsWrapper>
+                        {[...Array(12)].map((_, index) => (
+                            <Product key={index} width={`17.3rem`} />
                         ))}
-                    </ItemDisplay>
+                    </ProductsWrapper>
+                    <GButton label={"See more"} outline width={"172px"} />
+                </RightContent>
+            </ContentWrapper>
 
-                    <PaginationContainer>
-                        <GPagination />
-                    </PaginationContainer>
-                </ProductDisplay>
-            </ProductFilterContainer>
+            <PaginationContainer>
+                <GPagination />
+            </PaginationContainer>
 
-            <CallToAction>
-                <div>
-                    <div>
-                        <h4>Become a seller on Ginger</h4>
-                        <p>Browse more top selling products from top brands</p>
-                        <div>
-                            <GButton label="Sign up now" onClick={() => navigate("/login")} />
-                            <GButton
-                                outline
-                                onClick={() => navigate("/sell-on-ginger")}
-                                label={"Learn more"}
-                            />
-                        </div>
-                    </div>
-                </div>
-            </CallToAction>
+            <BecomeSellerContainer>
+                <BecomeSellerSection />
+            </BecomeSellerContainer>
 
-
-            <Footer>
-                <img src={FooterImage} />
-            </Footer>
-
-
-
+            <InstaFooter />
         </Container>
     )
 }
@@ -159,6 +149,47 @@ const Banner = styled.section`
     }
 `;
 
+const SortWrapper = styled.div`
+  display: flex;
+  margin-top: 50px;
+  align-items: center;
+  gap: 60px;
+  padding: 20px 5%;
+  border-radius: 12px 12px 0px 0px;
+  border-bottom: 1px solid #f1f1f1;
+`;
+
+
+const SortBox = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  cursor: pointer;
+
+  & > svg {
+    transform: rotate(90deg);
+    transform: ${({ $isOpen }) =>
+        $isOpen ? `rotate(270deg)` : "rotate(90deg)"};
+    width: 14px;
+    transition: all 0.25s ease;
+  }
+`;
+
+const SortTxt = styled.p`
+  color: var(--Black-300, #626262);
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 120%; /* 16.8px */
+`;
+
+
+const BecomeSellerContainer = styled.div`
+    margin-bottom: 30%;
+`
+
+
+
 const ChipContainer = styled.div`
     width: fit-content;
     display: flex;
@@ -168,121 +199,49 @@ const ChipContainer = styled.div`
     margin-top: 5%;
 `
 
-const FilterContainer = styled.section`
-    width: auto;
-    margin: 5%;
-    border-bottom: 1px solid var(--gray-200);
-    padding-bottom: 2rem;
-    display: flex;
-    align-items: center;
-    gap: 3rem;
-
-`
-
-const ProductFilterContainer = styled.section`
-    display: flex;
-    position: relative;
-    gap: 2%;
-    padding: 5%;
-`
-
-const AsideFilters = styled.aside`
-    position: sticky;
-    top: 50px; 
-    left: 0;
-    padding-right: 20px;
-    display: ${({ isOpen }) => (isOpen ? 'flex' : 'none')};
-    flex-direction: column;
-    gap: 1rem;
-    width: ${({ isOpen }) => (isOpen ? '250px' : '0')};
-    border-right: 1px solid var(--gray-200);
-    transition: width 0.3s ease; 
-`
-
-const ProductDisplay = styled.aside`
-    flex: 1;
-    
-`
-const ItemDisplay = styled.div`
-    flex: 1;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(18.3rem, 1fr));
-    gap: 15px;
-`
 
 const PaginationContainer = styled.div`
     width: 100%;
-    margin-top: 5rem;
+    margin-bottom: 10%;
     display: flex;
     align-items: center;
     justify-content: center;
 `
 
-const FilterComp = styled.div`
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    gap: 10px;
-    p{
-        color: var(--gray-300);
-    }
-
-    div{
-        cursor: pointer;
-    }
-
-`
+const ContentWrapper = styled.div`
+  display: flex;
+  padding: 0 5%;
+`;
 
 
-const CallToAction = styled.section`
-  background-image: url(${CallToActionImg});
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-  height: 50vh;
-  position: relative;
+const FilterBox = styled.div`
+  display: inline-flex;
+  padding: ${({ $isOpen }) => ($isOpen ? `43px 30px 40px 0` : "0px")};
+  width: ${({ $isOpen }) => ($isOpen ? `320px` : "0px")};
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+  flex-shrink: 0;
+  border-right: 1px solid #f1f1f1;
+  transition: all 0.25s ease;
 
-  > div {
-    position: absolute;
-    left: 50%;
-    bottom: -20vh;
-    transform: translateX(-50%);
-    width: 50vw;
-    height: 40vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: var(--gray-50);
-    border: 1px solid var(--light-primary);
-    > div {
-      h4 {
-        font-size: 2.5rem;
-        font-weight: 500;
-        margin-bottom: 1.3rem;
-      }
-      p {
-        font-size: 1.1rem;
-        text-align: center;
-        margin-bottom: 1.6rem;
-      }
-
-      > div {
-        display: flex;
-        align-items: center;
-        width: 70%;
-        margin: 0 auto;
-        gap: 1rem;
-      }
-    }
+  & > div {
+    width: 100%;
+    visibility: ${({ $isOpen }) => ($isOpen ? `show` : "hidden")};
   }
 `;
 
-const Footer = styled.section`
+const RightContent = styled.div`
   display: flex;
+  flex-direction: column;
   align-items: center;
+  gap: 62px;
+  padding: 38px 0 108px 18px;
+`;
+
+const ProductsWrapper = styled.div`
   width: 100%;
-  margin-top:25%;
-  img {
-    width: 100%;
-  }
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px 20px;
 `;

@@ -7,6 +7,15 @@
   box-sizing: border-box;
 }
 
+*::-webkit-scrollbar {
+  width: 1px;
+  height: 1px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: #ff4623;
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -35,6 +44,7 @@ code {
   --light-yellow: #FFFBF6;
   --black50: #e8e8e8;
   --gray-300: #626262;
+  --gray-250:#B6B6B6;
   --gray-400: #858585;
   --black: #0f0f0f;
   --lower-nav: #f9f9f9;
@@ -42,7 +52,7 @@ code {
   --gray-100: #f1f1f1;
   --gray-50: #fdfdfd;
   --light-primary: #fbe9eb;
-  --light-lavendar: #E2E3FF;
+  --light-lavendar: #e2e3ff;
 }
 
 h1,

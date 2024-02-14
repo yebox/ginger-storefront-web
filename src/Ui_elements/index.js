@@ -5,7 +5,9 @@ export * from "./Stepper";
 export * from "./Checkbox";
 export * from "./Spacer";
 export * from "./SelectField";
-export * from "./Breadcrumbs/index";
+export * from "./Breadcrumbs";
 export * from "./Chip/index";
+export * from "./Accordion";
+export * from "./Dropdown";
 export * from "./Pagination/index"
-
+export * from "./Modal/index"
