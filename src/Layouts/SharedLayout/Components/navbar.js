@@ -235,7 +235,7 @@ const FullOptions = styled.div`
     position: absolute;
     top: 18vh;
     left: 0;
-    z-index: 3;
+    z-index: 10;
 
     img{
         width: 24rem;

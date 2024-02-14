@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { styled } from "styled-components";
 import ArrowForwardIosSharpIcon from "@mui/icons-material/ArrowForwardIosSharp";
-import { CaretLeft } from "../../../Assets/Svgs";
+import { CaretLeft } from "../../Assets/Svgs";
 import {
   GBreadCrumbs,
   GAccordion,
@@ -9,15 +9,20 @@ import {
   GDropdown,
   GSpacer,
   Product,
-} from "../../../Ui_elements";
-import PriceFilter from "./components/priceFilter";
-import TopStoresFilter from "./components/topStores";
-import Fade from "@mui/material/Fade";
-import { BecomeSellerSection } from "../Components/becomeSellerSection";
-import RelatedItems from "./components/relatedItems";
-import InstaFooter from "../Components/instaFooter";
+} from "../../Ui_elements";
+import {
+  PriceFilter,
+  TopStoresFilter,
+  InstaFooter,
+  BecomeSellerSection,
+  RelatedItems,
+} from "./Components";
 
-const MarketPlace = () => {
+import Fade from "@mui/material/Fade";
+
+
+
+const MarketPlace = () => { 
   const [label, setLabel] = useState("All");
   const [isOpen, setIsOpen] = useState(false);
 
@@ -123,7 +128,7 @@ const SortBox = styled.div`
   & > svg {
     transform: rotate(90deg);
     transform: ${({ $isOpen }) =>
-      $isOpen ? `rotate(270deg)` : "rotate(90deg)"};
+    $isOpen ? `rotate(270deg)` : "rotate(90deg)"};
     width: 14px;
     transition: all 0.25s ease;
   }
@@ -168,7 +173,8 @@ const RightContent = styled.div`
 `;
 
 const ProductsWrapper = styled.div`
+  width: 100%;
   display: flex;
   flex-wrap: wrap;
-  gap: 58px 45px;
+  gap: 20px 20px;
 `;

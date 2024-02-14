@@ -16,7 +16,7 @@ import {
 } from "../../Assets/Svgs";
 import { topSellerCategories } from "../../Utils";
 import { useNavigate } from "react-router-dom";
-import InstaFooter from "./Components/instaFooter";
+// import InstaFooter from "./Components/instaFooter";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -181,8 +181,10 @@ const Home = () => {
         </ChipContainer>
 
         <SellerCardsContainer>
-          {[...Array(8)].map((_, index) => (
-            <SellerCard key={index} />
+          {[...Array(4)].map((_, index) => (
+            <SellerCard
+              key={index}
+            />
           ))}
         </SellerCardsContainer>
       </TopSellerContainer>
@@ -230,10 +232,6 @@ const Home = () => {
           <GTextField endIcon={<EndIcon />} placeholder={"Enter your email"} />
         </div>
       </Subscribe>
-
-      <Footer>
-        <img src={Footerimage} />
-      </Footer>
 
       {
         openCookie &&
@@ -290,7 +288,7 @@ const Home = () => {
           </ModalButton>
 
           <ModalClose onClick={() => setOpenModal(false)}>
-            <WhiteX/>
+            <WhiteX />
           </ModalClose>
 
         </ModalContent>
@@ -772,12 +770,12 @@ const ChipContainer = styled.div`
 `;
 
 const SellerCardsContainer = styled.div`
-  max-width: 100%;
+  max-width: 100vw;
   margin-top: 5%;
   display: flex;
   margin-left: 5%;
-  justify-content: space-between;
-  overflow-x: auto; /* Add this line */
+  gap: 1.2rem;
+  overflow-x: auto !important;
 `;
 
 const Wholesale = styled.div`
@@ -859,6 +857,7 @@ const BlogPostHeader = styled.div`
 const BlogBody = styled.div`
   width: 100%;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   padding: 0 5%;

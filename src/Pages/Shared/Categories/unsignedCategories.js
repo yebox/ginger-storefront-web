@@ -3,16 +3,13 @@ import { GBreadCrumbs, Chip, GButton, Product } from "../../../Ui_elements";
 import { memo } from "react";
 import { categoriesData } from "./data";
 import { useState } from "react";
-import { DownArrow } from "../../../Assets/Svgs";
-import { FilterDropdown, SellerCard } from "../Components";
-import { Pricefilter, TopStores } from "../Components";
+import { SellerCard } from "../Components";
 import { useNavigate } from "react-router-dom";
 import CallToActionImg from "../../../Assets/Images/call-to-action.png";
 import FooterImage from "../../../Assets/Images/footer.png";
 
 const UnsignedCategories = () => {
   const [selectCat, setSelectCat] = useState(0);
-  const [openFilter, setopenFilter] = useState(false);
   const navigate = useNavigate();
   return (
     <Container>
@@ -43,26 +40,8 @@ const UnsignedCategories = () => {
         ))}
       </ChipContainer>
 
-      <FilterContainer>
-        <FilterComp onClick={() => setopenFilter(!openFilter)}>
-          <p>Filter by</p>
-          <div>
-            <DownArrow />
-          </div>
-        </FilterComp>
-        <FilterComp onClick={() => setopenFilter(!openFilter)}>
-          <p>Sort by</p>
-          <div>
-            <DownArrow />
-          </div>
-        </FilterComp>
-      </FilterContainer>
 
       <ProductFilterContainer>
-        <AsideFilters isOpen={openFilter}>
-          <FilterDropdown title={"Price (₦)"} content={<Pricefilter />} />
-          <FilterDropdown title={"Top Stores"} content={<TopStores />} />
-        </AsideFilters>
         <ProductDisplay>
           <SectionTags>Top Stores</SectionTags>
           <StoresDisplay>
@@ -74,7 +53,7 @@ const UnsignedCategories = () => {
           <SectionTags>New Arrivals</SectionTags>
 
           <NewArrivalsDisplay>
-            {[...Array(4)].map((_, index) => (
+            {[...Array(5)].map((_, index) => (
               <Product key={index} />
             ))}
           </NewArrivalsDisplay>
@@ -168,75 +147,39 @@ const ChipContainer = styled.div`
   margin-top: 5%;
 `;
 
-const FilterContainer = styled.section`
-  width: auto;
-  margin: 5%;
-  border-bottom: 1px solid var(--gray-200);
-  padding-bottom: 2rem;
-  display: flex;
-  align-items: center;
-  gap: 3rem;
-`;
-
 const ProductFilterContainer = styled.section`
   display: flex;
   position: relative;
   gap: 2%;
-  padding: 5%;
+  padding: 1% 5%;
 `;
 
-const AsideFilters = styled.aside`
-  position: sticky;
-  top: 50px;
-  left: 0;
-  padding-right: 20px;
-  display: ${({ isOpen }) => (isOpen ? "flex" : "none")};
-  flex-direction: column;
-  gap: 1rem;
-  width: ${({ isOpen }) => (isOpen ? "250px" : "0")};
-  border-right: 1px solid var(--gray-200);
-  transition: width 0.3s ease;
-`;
 
 const ProductDisplay = styled.aside`
   flex: 1;
 `;
 const StoresDisplay = styled.div`
-  /* flex: 1; */
+  max-width: 100vw;
+  margin-top: 5%;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  gap: 1.2rem;
+  overflow-x: auto;
 `;
-
 const NewArrivalsDisplay = styled.div`
-  /* flex: 1; */
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
+  gap: 1.2rem;
 `;
 
 const BestSellingDisplay = styled.div`
-  flex: 1;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(18.3rem, 1fr));
-  gap: 1.2rem;
-  grid-row-gap: 1.2rem;
-  justify-content: space-between;
-`;
-
-const FilterComp = styled.div`
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  cursor: pointer;
-  gap: 10px;
-  p {
-    color: var(--gray-300);
-  }
-
-  div {
-    cursor: pointer;
-  }
+  gap: 1.2rem;
+  
 `;
+
 
 const CallToAction = styled.section`
   background-image: url(${CallToActionImg});

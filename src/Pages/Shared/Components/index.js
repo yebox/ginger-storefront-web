@@ -6,5 +6,8 @@ export * from "./testimonialCard";
 export * from "./accordion";
 export * from "./becomeSellerSection";
 export * from "./filterDropdown";
-export * from "./pricefilter";
+export * from "./priceFilter";
 export * from "./topStores";
+export * from "./instaFooter"
+export * from "./priceFilter"
+export * from"./relatedItems"
