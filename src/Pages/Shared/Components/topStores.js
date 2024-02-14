@@ -1,51 +1,61 @@
-import styled from "styled-components"
-import { GCheckbox } from "../../../Ui_elements"
-export const TopStores = () => {
-    return (
-        <Container>
-            <Items>
-                <PriceItems>
-                    <GCheckbox outline />
-                    <p>OLAPLEX</p>
-                </PriceItems>
-                <PriceItems>
-                    <GCheckbox outline />
-                    <p>KeraCare</p>
-                </PriceItems>
-                <PriceItems>
-                    <GCheckbox outline />
-                    <p>L’OREAL</p>
-                </PriceItems>
-                <PriceItems>
-                    <GCheckbox outline />
-                    <p>Rosalind</p>
-                </PriceItems>
-                <PriceItems>
-                    <GCheckbox outline />
-                    <p>Meldiv beauty</p>
-                </PriceItems>
+import React from "react";
+import { styled } from "styled-components";
+import { GCheckbox } from "../../../Ui_elements";
 
-            </Items>
-        </Container>
-    )
-}
+export const TopStoresFilter = () => {
+  return (
+    <Container>
+      <CheckWrapper>
+        <GCheckbox size={`20px`} isTransparent={true} />
+        <FilterLabel>OLAPLEX</FilterLabel>
+      </CheckWrapper>
+      <CheckWrapper>
+        <GCheckbox size={`20px`} isTransparent={true} />
+        <FilterLabel>ELF</FilterLabel>
+      </CheckWrapper>
+      <CheckWrapper>
+        <GCheckbox size={`20px`} isTransparent={true} />
+        <FilterLabel>CANTU SHEA BUTTER</FilterLabel>
+      </CheckWrapper>
+      <CheckWrapper>
+        <GCheckbox size={`20px`} isTransparent={true} />
+        <FilterLabel>MIZANI</FilterLabel>
+      </CheckWrapper>
+      <CheckWrapper>
+        <GCheckbox size={`20px`} isTransparent={true} />
+        <FilterLabel>L’OREAL</FilterLabel>
+      </CheckWrapper>
+      <CheckWrapper>
+        <GCheckbox size={`20px`} isTransparent={true} />
+        <FilterLabel>O.P.I</FilterLabel>
+      </CheckWrapper>
+      <CheckWrapper>
+        <GCheckbox size={`20px`} isTransparent={true} />
+        <FilterLabel>JUVIA’S PLACE</FilterLabel>
+      </CheckWrapper>
+    </Container>
+  );
+};
+
 
 const Container = styled.div`
-    width: auto;
-`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`;
 
+const CheckWrapper = styled.label`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 4px 0;
+  cursor: pointer;
+`;
 
-const Items = styled.div`
-    display:flex;
-    flex-direction: column;
-    gap: 1rem;
-    margin-top: 1rem;
-`
-const PriceItems = styled.div`
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    p{
-        font-weight: 500;
-    }
-`
+const FilterLabel = styled.p`
+  color: var(--Black-500, #151515);
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 120%; /* 14.4px */
+`;

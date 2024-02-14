@@ -3,7 +3,7 @@ import { styled } from "styled-components";
 import { Instagram } from "../../../Assets/Svgs";
 import footerimage from "../../../Assets/Images/footer.png";
 
-const InstaFooter = () => {
+export const InstaFooter = () => {
   return (
     <Container>
       <Bg src={footerimage} />
@@ -15,7 +15,6 @@ const InstaFooter = () => {
   );
 };
 
-export default InstaFooter;
 
 const Container = styled.div`
   position: relative;
@@ -31,6 +30,7 @@ const Bg = styled.img`
   width: 100%;
   height: 100%;
   z-index: -1;
+  object-fit: cover;
 `;
 
 const Button = styled.button`
