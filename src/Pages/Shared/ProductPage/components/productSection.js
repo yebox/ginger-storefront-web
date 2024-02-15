@@ -138,6 +138,7 @@ const ImageBox = styled.img`
   height: 140px;
   flex-shrink: 0;
   border-radius: 2px;
+  object-fit: cover;
   cursor: pointer;
 `;
 
