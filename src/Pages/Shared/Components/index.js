@@ -7,6 +7,7 @@ export * from "./accordion";
 export * from "./becomeSellerSection";
 export * from "./filterDropdown";
 export * from "./topStores";
-export * from "./instaFooter"
-export * from "./pricefilter"
-export * from"./relatedItems"
+export * from "./featuredComponents";
+export * from "./instaFooter";
+export * from "./pricefilter";
+export * from "./relatedItems";

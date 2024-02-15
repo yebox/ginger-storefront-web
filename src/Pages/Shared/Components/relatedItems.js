@@ -27,7 +27,6 @@ export const RelatedItems = () => {
   );
 };
 
-
 const Container = styled.section`
   margin-top: 30vh;
   width: 100%;

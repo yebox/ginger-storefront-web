@@ -27,14 +27,18 @@ import { ReactComponent as GuideCheck } from "./guideCheck.svg";
 import { ReactComponent as LocationTag } from "./locationTag.svg";
 import { ReactComponent as CircleText } from "./circleText.svg";
 import { ReactComponent as Mail } from "./mail.svg";
+import { ReactComponent as Minus } from "./minus.svg";
+import { ReactComponent as Plus } from "./plus.svg";
+import { ReactComponent as Helpful } from "./helpful.svg";
 import { ReactComponent as LockIcon } from "./lockIcon.svg";
 import { ReactComponent as Heart } from "./heart.svg";
 import { ReactComponent as WhiteX } from "./whiteX.svg";
-import { ReactComponent as BlackX} from "./blackX.svg";
-
-
-
-
+import { ReactComponent as BlackX } from "./blackX.svg";
+import { ReactComponent as Eye } from "./eye.svg";
+import { ReactComponent as AccountLeftStar } from "./accountLeftStar.svg";
+import { ReactComponent as AccountRightStar } from "./accountRightStar.svg";
+import { ReactComponent as EditIcon } from "./editIcon.svg";
+import { ReactComponent as WalletIcon } from "./walletIcon.svg";
 
 export {
   Logo,
@@ -66,8 +70,16 @@ export {
   LocationTag,
   CircleText,
   Mail,
+  Minus,
+  Plus,
+  Helpful,
   LockIcon,
   Heart,
   WhiteX,
-  BlackX
+  BlackX,
+  AccountLeftStar,
+  AccountRightStar,
+  WalletIcon,
+  EditIcon,
+  Eye,
 };

@@ -9,5 +9,7 @@ export * from "./Breadcrumbs";
 export * from "./Chip/index";
 export * from "./Accordion";
 export * from "./Dropdown";
-export * from "./Pagination/index"
-export * from "./Modal/index"
+export * from "./Pagination/index";
+export * from "./FavoriteIcon";
+export * from "./RatingIcon";
+export * from "./Modal/index";

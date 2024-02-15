@@ -10,8 +10,11 @@ const SignUp = lazy(() => import("../Pages/Shared/SignUp"));
 const Login = lazy(() => import("../Pages/Shared/Login"));
 const ForgotPassword = lazy(() => import("../Pages/Shared/ForgotPassword"));
 const Categories = lazy(() => import("../Pages/Shared/Categories/Categories"));
-const UnsignedCategories = lazy(()=>import("../Pages/Shared/Categories/unsignedCategories"));
-//test
+const ProductPage = lazy(() => import("../Pages/Shared/ProductPage"));
+const UnsignedCategories = lazy(() =>
+  import("../Pages/Shared/Categories/unsignedCategories")
+);
+
 export const sharedRoutes = [
   {
     path: "/",
@@ -53,6 +56,10 @@ export const sharedRoutes = [
   {
     path: "/categories/equipiment",
     element: Categories,
+  },
+  {
+    path: "/product/:id",
+    element: ProductPage,
   },
 ];
 
