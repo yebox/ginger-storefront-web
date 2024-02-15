@@ -34,6 +34,11 @@ import { ReactComponent as LockIcon } from "./lockIcon.svg";
 import { ReactComponent as Heart } from "./heart.svg";
 import { ReactComponent as WhiteX } from "./whiteX.svg";
 import { ReactComponent as BlackX } from "./blackX.svg";
+import { ReactComponent as Eye } from "./eye.svg";
+import { ReactComponent as AccountLeftStar } from "./accountLeftStar.svg";
+import { ReactComponent as AccountRightStar } from "./accountRightStar.svg";
+import { ReactComponent as EditIcon } from "./editIcon.svg";
+import { ReactComponent as WalletIcon } from "./walletIcon.svg";
 
 export {
   Logo,
@@ -72,4 +77,9 @@ export {
   Heart,
   WhiteX,
   BlackX,
+  AccountLeftStar,
+  AccountRightStar,
+  WalletIcon,
+  EditIcon,
+  Eye,
 };

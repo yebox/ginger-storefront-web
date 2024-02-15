@@ -2,9 +2,8 @@ import React from "react";
 import { styled } from "styled-components";
 import ProductSection from "./components/productSection";
 import ReviewSection from "./components/reviewSection";
-import { BecomeSellerSection, FeaturedItems } from "../Components";
+import { BecomeSellerSection, FeaturedItems, InstaFooter } from "../Components";
 import { GSpacer } from "../../../Ui_elements";
-import InstaFooter from "../Components/instaFooter";
 
 const ProductPage = () => {
   return (
