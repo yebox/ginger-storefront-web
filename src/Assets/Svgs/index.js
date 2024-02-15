@@ -27,6 +27,9 @@ import { ReactComponent as GuideCheck } from "./guideCheck.svg";
 import { ReactComponent as LocationTag } from "./locationTag.svg";
 import { ReactComponent as CircleText } from "./circleText.svg";
 import { ReactComponent as Mail } from "./mail.svg";
+import { ReactComponent as Minus } from "./minus.svg";
+import { ReactComponent as Plus } from "./plus.svg";
+import { ReactComponent as Helpful } from "./helpful.svg";
 
 export {
   Logo,
@@ -58,4 +61,7 @@ export {
   LocationTag,
   CircleText,
   Mail,
+  Minus,
+  Plus,
+  Helpful,
 };

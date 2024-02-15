@@ -10,3 +10,5 @@ export * from "./Chip/index";
 export * from "./Accordion";
 export * from "./Dropdown";
 export * from "./Pagination/index";
+export * from "./FavoriteIcon";
+export * from "./RatingIcon";

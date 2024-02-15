@@ -8,3 +8,4 @@ export * from "./becomeSellerSection";
 export * from "./filterDropdown";
 export * from "./pricefilter";
 export * from "./topStores";
+export * from "./featuredComponents";

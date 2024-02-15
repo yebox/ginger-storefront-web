@@ -1,7 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
-import { Product } from "../../Components";
 import { LeftArrow, RightArrow } from "../../../../Assets/Svgs";
+import { Product } from "../../Components";
 
 const RelatedItems = () => {
   return (
