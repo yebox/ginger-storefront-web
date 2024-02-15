@@ -1,7 +1,7 @@
 import { lazy } from "react";
 
 const Home = lazy(() => import("../Pages/Shared/home"));
-const MarketPlace = lazy(() => import("../Pages/Shared/MarketPlace"));
+const MarketPlace = lazy(() => import("../Pages/Shared/marketPlace"));
 const HowToBuyWholesale = lazy(() =>
   import("../Pages/Shared/howToBuyWholeSale")
 );

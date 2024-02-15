@@ -30,6 +30,10 @@ import { ReactComponent as Mail } from "./mail.svg";
 import { ReactComponent as Minus } from "./minus.svg";
 import { ReactComponent as Plus } from "./plus.svg";
 import { ReactComponent as Helpful } from "./helpful.svg";
+import { ReactComponent as LockIcon } from "./lockIcon.svg";
+import { ReactComponent as Heart } from "./heart.svg";
+import { ReactComponent as WhiteX } from "./whiteX.svg";
+import { ReactComponent as BlackX } from "./blackX.svg";
 
 export {
   Logo,
@@ -64,4 +68,8 @@ export {
   Minus,
   Plus,
   Helpful,
+  LockIcon,
+  Heart,
+  WhiteX,
+  BlackX,
 };

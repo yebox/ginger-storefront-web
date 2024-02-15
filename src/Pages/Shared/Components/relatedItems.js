@@ -1,9 +1,9 @@
 import React from "react";
 import { styled } from "styled-components";
-import { LeftArrow, RightArrow } from "../../../../Assets/Svgs";
-import { Product } from "../../Components";
+import { Product } from ".";
+import { LeftArrow, RightArrow } from "../../../Assets/Svgs";
 
-const RelatedItems = () => {
+export const RelatedItems = () => {
   return (
     <Container>
       <Header>
@@ -26,8 +26,6 @@ const RelatedItems = () => {
     </Container>
   );
 };
-
-export default RelatedItems;
 
 const Container = styled.section`
   margin-top: 30vh;

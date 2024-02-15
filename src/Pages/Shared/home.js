@@ -1,5 +1,5 @@
 import styled, { keyframes } from "styled-components";
-import { GButton, Product, Chip, GTextField } from "../../Ui_elements";
+import { GButton, Product, GTextField, Chip, GModal } from "../../Ui_elements";
 import React, { memo, useState } from "react";
 import Vector from "../../Assets/Images/vector-background.png";
 import AddPicture from "../../Assets/Images/ad-picture.png";
@@ -12,14 +12,17 @@ import {
   Mail,
   RedRightArrow,
   RightArrow,
+  WhiteX,
 } from "../../Assets/Svgs";
 import { topSellerCategories } from "../../Utils";
 import { useNavigate } from "react-router-dom";
-import InstaFooter from "./Components/instaFooter";
+// import InstaFooter from "./Components/instaFooter";
 
 const Home = () => {
   const navigate = useNavigate();
   const [selectCat, setSelectCat] = useState(0);
+  const [openCookie, setOpenCookie] = useState(true)
+  const [openModal, setOpenModal] = useState(true)
 
   const EndIcon = () => (
     <EndIconContainer>
@@ -111,7 +114,7 @@ const Home = () => {
       <FeatureProductsContainer>
         <h4>Featured Products</h4>
         <FeaturedItemContainer>
-          {[...Array(4)].map((_, index) => (
+          {[...Array(5)].map((_, index) => (
             <Product key={index} />
           ))}
         </FeaturedItemContainer>
@@ -178,8 +181,10 @@ const Home = () => {
         </ChipContainer>
 
         <SellerCardsContainer>
-          {[...Array(8)].map((_, index) => (
-            <SellerCard key={index} />
+          {[...Array(4)].map((_, index) => (
+            <SellerCard
+              key={index}
+            />
           ))}
         </SellerCardsContainer>
       </TopSellerContainer>
@@ -211,7 +216,7 @@ const Home = () => {
           </div>
         </BlogPostHeader>
         <BlogBody>
-          {[...Array(4)].map((_, index) => (
+          {[...Array(5)].map((_, index) => (
             <BlogCard key={index} />
           ))}
         </BlogBody>
@@ -228,8 +233,68 @@ const Home = () => {
         </div>
       </Subscribe>
 
-      <InstaFooter />
+      {
+        openCookie &&
+        <CookieContainer>
+          <div>
+            <h6>Accept all Cookies</h6>
+
+            <p>This website uses cookies to optimize your experience and to
+              provide us insight on how to interact with the site.
+              All information shared with us through cookies are secure and
+              covered by our data privacy obligations. You can access our
+              Privacy Policy here
+            </p>
+          </div>
+
+          <div>
+            <button onClick={() => setOpenCookie(false)}>
+              Accept only essential
+            </button>
+            <button onClick={() => setOpenCookie(false)}>
+              Accept
+            </button>
+          </div>
+        </CookieContainer>
+      }
+
+      <GModal
+        open={openModal}
+        handleClose={() => setOpenModal(false)}
+      >
+        <ModalContent>
+          <img
+            src="https://images.unsplash.com/photo-1500336624523-d727130c3328?q=80&w=3200&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          />
+
+          <ModalRedbanner>
+            <p>Never miss out on our discounts and promos</p>
+          </ModalRedbanner>
+
+          <ModalSub>
+            <b>Subscribe to get 30% discount!</b>
+          </ModalSub>
+
+          <ModalFieldContainer>
+            <GTextField
+              placeholder={"Enter your email"}
+            />
+          </ModalFieldContainer>
+
+          <ModalButton>
+            <GButton
+              label={"Subscribe"}
+            />
+          </ModalButton>
+
+          <ModalClose onClick={() => setOpenModal(false)}>
+            <WhiteX />
+          </ModalClose>
+
+        </ModalContent>
+      </GModal>
     </Container>
+
   );
 };
 
@@ -256,6 +321,10 @@ const HeroImageContainer = styled.div`
   flex: 1;
   height: 75vh;
   position: relative;
+  background-position: center;
+  background-color: aquamarine;
+  background-size: cover;
+  background-repeat: no-repeat;
 
   img {
     height: 75vh;
@@ -282,27 +351,27 @@ const HeroImageContainer = styled.div`
   }
 `;
 const HeroDetails = styled.div`
-  flex: 0.5;
+  flex: 0.39;
   height: 75vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  /* align-items: center; */
-  gap: 23vh;
-
+  gap: 22vh;
   position: relative;
   p {
+    font-size: 18px;
     font-weight: 500;
+    color: var(--gray-300);
   }
   h3 {
     background-color: white;
     position: absolute;
     padding: 10px 20px;
     white-space: nowrap;
-    font-size: 4rem;
+    font-size: 3.7rem;
     font-weight: 500;
     z-index: 1;
-    left: -3%;
+    left: -5%;
     /* transform: translateX(-50%); */
   }
   h3:nth-child(3) {
@@ -316,7 +385,7 @@ const HeroDetails = styled.div`
 const ButtonContainer = styled.div`
   display: flex;
   gap: 20px;
-  width: 80%;
+  width:calc(100% - 57px);
 `;
 
 const Category = styled.section`
@@ -326,21 +395,24 @@ const CategoryHeader = styled.div`
   display: flex;
   align-items: center;
   /* width: 100%; */
-  padding: 5%;
+  padding: 10% 5%;
   h4 {
     font-weight: 500;
     font-size: 2.5rem;
-    flex: 0.8;
+    flex: 0.3;
+    width: 100%;
   }
   div {
     display: flex;
     align-items: center;
     padding-left: 2rem;
+    flex: 0.7;
     height: 10vh;
     border-left: 1px solid var(--gray-200);
 
     p {
-      width: 45%;
+      width: 50%;
+      font-size: 1.25rem;
     }
   }
 `;
@@ -446,13 +518,13 @@ const NailSkinContianer = styled.div`
 const Nails = styled.div`
   width: 100%;
   background-color: beige;
-  height: 40vh;
+  height: 38vh;
   display: flex;
   flex-direction: column;
   padding: 1.2rem;
   justify-content: flex-end;
   padding-bottom: 20px;
-  background-image: url("https://images.unsplash.com/photo-1519014816548-bf5fe059798b?q=80&w=2848&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+  background-image: url("https://images.unsplash.com/photo-1604902396830-aca29e19b067?q=80&w=3387&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
@@ -490,7 +562,7 @@ const Skin = styled.div`
   padding-bottom: 20px;
   background-image: url("https://images.unsplash.com/photo-1561228987-8e7379dde477?q=80&w=3387&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
   background-position: center;
-  height: 40vh;
+  height: 38vh;
   background-size: cover;
   background-repeat: no-repeat;
 
@@ -601,6 +673,7 @@ const AdContainer = styled.div`
   }
   > div:nth-child(2) {
     /* flex: 0.5; */
+    margin-left: -40px;
     width: 320px;
     height: inherit;
     /* max-width: 400px; */
@@ -627,13 +700,14 @@ const CircleItem = styled.div`
   border-radius: 50%;
 
   /* Apply animation */
-  animation: ${rotateAnimation} 10s linear infinite; /* Adjust duration and timing function as needed */
+   /* Adjust duration and timing function as needed */
 
   div {
     position: absolute;
-    left: 50%;
-    top: 50%;
+    left: 10%;
+    top: 10%;
     transform: translate(-50%, -50%);
+    animation: ${rotateAnimation} 10s linear infinite;
   }
 
   h5 {
@@ -660,10 +734,11 @@ const TopSellerHeader = styled.div`
     h4 {
       font-size: 2.5rem;
       font-weight: 500;
-      /* margin-bottom: 1.3rem; */
+      margin-bottom: 1.75rem;
     }
     p {
       width: 80%;
+      font-size: 1.25rem;
     }
   }
 
@@ -695,12 +770,12 @@ const ChipContainer = styled.div`
 `;
 
 const SellerCardsContainer = styled.div`
-  max-width: 100%;
+  max-width: 100vw;
   margin-top: 5%;
   display: flex;
   margin-left: 5%;
-  justify-content: space-between;
-  overflow-x: auto; /* Add this line */
+  gap: 1.2rem;
+  overflow-x: auto !important;
 `;
 
 const Wholesale = styled.div`
@@ -747,18 +822,20 @@ const Wholesale = styled.div`
   }
 `;
 
-const BlogPosts = styled.section``;
+const BlogPosts = styled.section`
+  margin-bottom: 10%;
+`;
 
 const BlogPostHeader = styled.div`
   width: 100%;
   display: flex;
-  padding: 5%;
+  padding: 0 5%;
+  margin-top: 10%;
   justify-content: space-between;
-  align-items: center;
   h4 {
     font-size: 2.5rem;
     font-weight: 500;
-    margin-bottom: 1.3rem;
+    margin-bottom: 2rem;
   }
 
   div {
@@ -780,9 +857,10 @@ const BlogPostHeader = styled.div`
 const BlogBody = styled.div`
   width: 100%;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  padding: 5%;
+  padding: 0 5%;
 `;
 
 const PartnerSection = styled.section`
@@ -825,3 +903,115 @@ const EndIconContainer = styled.div`
     font-weight: 500;
   }
 `;
+
+const CookieContainer = styled.div`
+  background-color: var(--black);
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 5%;
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+  left: 0;
+  div:nth-child(1) {
+    width: 56%;
+    h6{
+      color: #FFF;
+      font-family: "Roboto Serif";
+      font-size: 18px;
+      font-style: normal;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    p{
+      font-size: 1rem;
+      color: white;
+    }
+  }
+
+  div:nth-child(2){
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    button{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      outline: none;
+      padding: 1rem 2rem;
+      border-radius: 100px;
+      border: none;
+      min-width: 150px;
+      cursor: pointer;
+    }
+
+    button:nth-child(1){
+      color: white;
+      background-color: var(--black);
+    }
+    button:nth-child(2){
+      background-color: white;
+      color: black;
+      
+    }
+  }
+`
+
+const ModalContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+
+  img{
+    height: 30vh;
+    width: 50vw;
+    object-fit: cover;
+    margin-bottom: 0;
+    filter: brightness(0.8);
+  }
+`
+const ModalRedbanner = styled.div`
+  background-color: var(--primary-color);
+  margin-top: -3px;
+  padding: 12px 0;
+  width: 100%;
+  p{
+    text-align: center;
+    color: white;
+  }
+`
+const ModalSub = styled.div`
+width: 100%;
+display:flex;
+align-items: center;
+justify-content: center;
+margin-top: 46px;
+margin-bottom: 50px;
+  b{
+    font-size: 1.75rem;
+    font-weight: 500;
+    text-align: center;
+  }
+`
+const ModalFieldContainer = styled.div`
+  width: 70%;
+  margin-bottom: 40px;
+
+`
+
+const ModalButton = styled.div`
+  width: 60%;
+  margin-bottom: 45px;
+`
+
+const ModalClose = styled.div`
+  position: absolute;
+  top:40px;
+  right:40px;
+  cursor: pointer;
+`
