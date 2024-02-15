@@ -59,6 +59,9 @@ import { ReactComponent as AccountLeftStar } from "./accountLeftStar.svg";
 import { ReactComponent as AccountRightStar } from "./accountRightStar.svg";
 import { ReactComponent as EditIcon } from "./editIcon.svg";
 import { ReactComponent as WalletIcon } from "./walletIcon.svg";
+import { ReactComponent as Minus } from "./minus.svg";
+import { ReactComponent as Plus } from "./plus.svg";
+import { ReactComponent as Helpful } from "./helpful.svg";
 
 export {
   Logo,
@@ -117,6 +120,9 @@ export {
   ShareIcon,
   MinimumSpendIcon,
   DiscountBannerVector,
+  Minus,
+  Plus,
+  Helpful,
   AccountLeftStar,
   AccountRightStar,
   WalletIcon,

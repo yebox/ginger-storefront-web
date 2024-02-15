@@ -8,8 +8,8 @@ export * from "./becomeSellerSection";
 export * from "./filterDropdown";
 export * from "./priceFilter";
 export * from "./topStores";
-export * from "./featuredComponents";
 export * from "./instaFooter";
 export * from "./pricefilter";
 export * from  "./relatedItems"
 export * from"./discountBanner";
+export * from "./featuredComponents";

@@ -15,3 +15,5 @@ export * from "./Table"
 export * from "./RadioSelect"
 export * from "./Spinner"
 export * from "./Tooltip"
+export * from "./FavoriteIcon";
+export * from "./RatingIcon";
