@@ -67,6 +67,11 @@ import { ReactComponent as AccountLeftStar } from "./accountLeftStar.svg";
 import { ReactComponent as AccountRightStar } from "./accountRightStar.svg";
 import { ReactComponent as EditIcon } from "./editIcon.svg";
 import { ReactComponent as WalletIcon } from "./walletIcon.svg";
+import { ReactComponent as Eye } from "./eye.svg";
+import { ReactComponent as AccountLeftStar } from "./accountLeftStar.svg";
+import { ReactComponent as AccountRightStar } from "./accountRightStar.svg";
+import { ReactComponent as EditIcon } from "./editIcon.svg";
+import { ReactComponent as WalletIcon } from "./walletIcon.svg";
 
 export {
   Logo,
@@ -128,6 +133,11 @@ export {
   Minus,
   Plus,
   Helpful,
+  AccountLeftStar,
+  AccountRightStar,
+  WalletIcon,
+  EditIcon,
+  Eye,
   AccountLeftStar,
   AccountRightStar,
   WalletIcon,
