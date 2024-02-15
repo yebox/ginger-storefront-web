@@ -1,6 +1,6 @@
-import React, { useMemo, useState } from "react";
-import { inputTypesData } from "./data";
+import React, { useState } from "react";
 import { styled } from "styled-components";
+import { Eye, EyeSlash } from "../../Assets/Svgs";
 
 /**
  * inputType is to choose between "textarea" or 'input'
@@ -27,11 +27,8 @@ export const GTextField = ({
   const [isFocus, setIsFocus] = useState(false);
   const togglePassword = () => (showPassword ? "password" : "text");
 
-  const inputData = useMemo(
-    () => inputTypesData.find((x) => x.name === inputType),
-    [inputType]
-  );
-  const EndIcon = useMemo(() => inputData?.endIcon, [inputData]);
+  const PasswordEndIcon = showPassword ? EyeSlash : Eye;
+  const isPassword = inputType === "password";
 
   const errorClass = `${error && "error"} ${required ? "required" : ""}`;
 
@@ -44,7 +41,7 @@ export const GTextField = ({
       >
         <Input
           {...props}
-          type={inputType === "password" ? togglePassword() : inputData?.type}
+          type={isPassword ? togglePassword() : inputType}
           id={props.name}
           className={errorClass}
           placeholder={placeholder}
@@ -59,14 +56,14 @@ export const GTextField = ({
 
         {endIcon
           ? endIcon
-          : EndIcon && (
+          : isPassword && (
               <InputIcon
                 $isDisabled={isDisabled}
                 $isFocus={isFocus}
                 onClick={() => setShowPassword((prev) => !prev)}
                 className="clickable"
               >
-                <EndIcon />
+                <PasswordEndIcon />
               </InputIcon>
             )}
       </InputWrapper>
@@ -165,6 +162,7 @@ const InputIcon = styled.div`
   height: 24px;
   margin-right: 8px;
   flex-shrink: 0;
+  cursor: pointer;
 
   & > svg {
     width: 100%;
