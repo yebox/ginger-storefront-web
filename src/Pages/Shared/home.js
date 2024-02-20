@@ -3,7 +3,7 @@ import { GButton, Product, GTextField, Chip, GModal } from "../../Ui_elements";
 import React, { memo, useState } from "react";
 import Vector from "../../Assets/Images/vector-background.png";
 import AddPicture from "../../Assets/Images/ad-picture.png";
-import { BecomeSellerSection, BlogCard, SellerCard } from "./Components";
+import { BecomeSellerSection, BlogCard, InstaFooter, SellerCard } from "./Components";
 import Partners from "../../Assets/Images/partners.png";
 import HeroImage from "../../Assets/Images/hero-image.png";
 import {
@@ -77,7 +77,7 @@ const Home = () => {
               <CatShopBottom>
                 <h6>Barbing</h6>
 
-                <Shopbutton>Shop Now</Shopbutton>
+                <Shopbutton onClick={()=> navigate('/categories/all')}>Shop Now</Shopbutton>
               </CatShopBottom>
             </Barber>
             <NailSkinContianer>
@@ -85,14 +85,14 @@ const Home = () => {
                 <CatShopBottom>
                   <h6>Nails</h6>
 
-                  <Shopbutton>Shop Now</Shopbutton>
+                  <Shopbutton onClick={() => navigate('/categories/nails')} >Shop Now</Shopbutton>
                 </CatShopBottom>
               </Nails>
               <Skin>
                 <CatShopBottom>
                   <h6>Skin & Body</h6>
 
-                  <Shopbutton>Shop Now</Shopbutton>
+                  <Shopbutton onClick={() => navigate('/categories/skin')}>Shop Now</Shopbutton>
                 </CatShopBottom>
               </Skin>
             </NailSkinContianer>
@@ -101,13 +101,13 @@ const Home = () => {
             <CatShopBottom>
               <h6>Braids & Weaves</h6>
 
-              <Shopbutton>Shop Now</Shopbutton>
+              <Shopbutton onClick={() => navigate('/categories/hair')}>Shop Now</Shopbutton>
             </CatShopBottom>
           </CatSecondBox>
         </CatergoryGridContainer>
 
         <ViewAllCat>
-          <GButton outline label="See all categories" />
+          <GButton outline label="See all categories" onClick={() => navigate('/categories/all')} />
         </ViewAllCat>
       </Category>
 
@@ -121,7 +121,7 @@ const Home = () => {
       </FeatureProductsContainer>
 
       <ViewAllCat>
-        <GButton outline label="Shop more" />
+        <GButton outline label="Shop more" onClick={() => navigate('/categories/all')}  />
       </ViewAllCat>
 
       <LargeAd>
@@ -133,7 +133,7 @@ const Home = () => {
           <div>
             <h4>Pain relief CBD salve oil</h4>
             <p>Place your order now and buy get a better resale value</p>
-            <GButton label={"Shop now"} outline />
+            <GButton label={"Shop now"} outline onClick={() => navigate('/categories/all')}  />
           </div>
         </AdContainer>
 
@@ -232,6 +232,8 @@ const Home = () => {
           <GTextField endIcon={<EndIcon />} placeholder={"Enter your email"} />
         </div>
       </Subscribe>
+
+      <InstaFooter/>
 
       {
         openCookie &&

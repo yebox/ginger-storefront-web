@@ -6,8 +6,11 @@ export * from "./testimonialCard";
 export * from "./accordion";
 export * from "./becomeSellerSection";
 export * from "./filterDropdown";
-export * from "./topStores";
-export * from "./featuredComponents";
-export * from "./instaFooter";
 export * from "./pricefilter";
+export * from "./topStores";
+export * from "./relatedItems"
+export * from "./discountBanner";
+export * from "./featuredComponents";
 export * from "./relatedItems";
+export * from "./instaFooter"
+export * from"./discountBanner"

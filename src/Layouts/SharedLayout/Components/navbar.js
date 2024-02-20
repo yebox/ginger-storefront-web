@@ -2,11 +2,9 @@ import React from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import { styled } from 'styled-components'
 // import { GTextField } from '../../../Ui_elements'
+// import { GTextField } from '../../../Ui_elements'
 import { Account, Cart, Dollar, DownArrow, Like, Logo, Search } from '../../../Assets/Svgs'
-import { useState } from 'react';
-import { useEffect } from 'react';
-
-
+import { useState, useEffect  } from 'react';
 
 
 const imageLinks = [
@@ -19,7 +17,6 @@ export const Navbar = () => {
     const [currentImage, setCurrentImage] = useState([0])
     const [showFullOptions, setShowFullOptions] = useState(false);
     const [fullOptionsHovered, setFullOptionsHovered] = useState(false);
-
 
 
     useEffect(() => {
@@ -71,16 +68,19 @@ export const Navbar = () => {
                     <>
                         <Flex>
                             <Account />
-                            <Link>Sign up</Link>
+                            <Link to={"/signup"}>Sign up</Link>
                         </Flex>
                         <Flex>
                             <Cart />
-                            <Link>Cart</Link>
+                            <Link to={'/cart'}>Cart</Link>
                         </Flex>
                     </>
 
                     <Icons>
-                        <Like />
+                        <Link to="/wish-list">
+                            <Like />
+                        </Link>
+                    
                         <Search />
                         <Dollar />
                         <DownArrow />
@@ -136,6 +136,7 @@ export const Navbar = () => {
                 <Cancel />
             </SearchContainer> */}
 
+
         </OuterContainer>
 
     )
@@ -144,6 +145,7 @@ export const Navbar = () => {
 
 const OuterContainer = styled.nav`
     width: 100%;
+    position: relative;
     position: relative;
 `
 const Container = styled.div`
@@ -204,6 +206,7 @@ const LowerNav = styled.div`
         transition: all 0.3s ease;
         &:hover{
             color: var(--primary-color) !important;
+            color: var(--primary-color) !important;
         }
     }
     >a.active{
@@ -211,6 +214,7 @@ const LowerNav = styled.div`
         border-bottom: 1px solid var(--primary-color) !important;
         padding-bottom: 3px !important;
     }
+    
     
     div{
         display: flex;
@@ -236,6 +240,7 @@ const FullOptions = styled.div`
     top: 18vh;
     left: 0;
     z-index: 10;
+    border: 1px solid var(--gray-200);
 
     img{
         width: 24rem;
