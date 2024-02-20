@@ -11,4 +11,5 @@ export * from "./topStores";
 export * from "./featuredComponents";
 export * from "./instaFooter";
 export * from "./pricefilter";
-export * from "./relatedItems";
+export * from  "./relatedItems"
+export * from"./discountBanner";

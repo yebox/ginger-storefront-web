@@ -34,6 +34,26 @@ import { ReactComponent as LockIcon } from "./lockIcon.svg";
 import { ReactComponent as Heart } from "./heart.svg";
 import { ReactComponent as WhiteX } from "./whiteX.svg";
 import { ReactComponent as BlackX } from "./blackX.svg";
+import { ReactComponent as EmptyCartIcon } from './emptyCartIcon.svg'
+import { ReactComponent as NoWishList } from './no-wish.svg'
+import { ReactComponent as GrayCart } from './grayCart.svg'
+import { ReactComponent as RadioSelect } from './cirleRadio.svg'
+import { ReactComponent as Visa } from './visa.svg'
+import { ReactComponent as Mastercard } from './mastercard.svg'
+import { ReactComponent as AmericanExpress} from './americanExpress.svg'
+import { ReactComponent as LogoPayment} from './logoPayment.svg'
+import { ReactComponent as Paypal} from './paypal.svg'
+import { ReactComponent as Sofort } from './sofort.svg'
+import { ReactComponent as ErrorPaymentVector } from './errorPaymentVector.svg'
+import { ReactComponent as PaymentProcessingVector } from './paymentProcessingVector.svg'
+import { ReactComponent as PaymentError} from './paymentError.svg'
+import { ReactComponent as PaymentProcessing} from './paymentProcessing.svg'
+import { ReactComponent as PaymentSuccess} from './paymentSucess.svg'
+import { ReactComponent as SuccessPaymentVector } from './successPaymentVector.svg'
+import { ReactComponent as InfoIcon } from './infoIcon.svg'
+import { ReactComponent as ShareIcon } from './share.svg'
+import { ReactComponent as MinimumSpendIcon } from './minimumSpend.svg'
+import { ReactComponent as DiscountBannerVector } from './discountVector.svg'
 import { ReactComponent as Eye } from "./eye.svg";
 import { ReactComponent as AccountLeftStar } from "./accountLeftStar.svg";
 import { ReactComponent as AccountRightStar } from "./accountRightStar.svg";
@@ -77,6 +97,26 @@ export {
   Heart,
   WhiteX,
   BlackX,
+  EmptyCartIcon,
+  NoWishList,
+  GrayCart,
+  RadioSelect,
+  Visa,
+  Mastercard,
+  AmericanExpress,
+  LogoPayment,
+  Paypal,
+  Sofort,
+  ErrorPaymentVector,
+  PaymentError,
+  PaymentProcessing,
+  PaymentSuccess,
+  SuccessPaymentVector,
+  PaymentProcessingVector,
+  InfoIcon,
+  ShareIcon,
+  MinimumSpendIcon,
+  DiscountBannerVector,
   AccountLeftStar,
   AccountRightStar,
   WalletIcon,

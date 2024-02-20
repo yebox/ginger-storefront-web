@@ -10,10 +10,14 @@ const SignUp = lazy(() => import("../Pages/Shared/SignUp"));
 const Login = lazy(() => import("../Pages/Shared/Login"));
 const ForgotPassword = lazy(() => import("../Pages/Shared/ForgotPassword"));
 const Categories = lazy(() => import("../Pages/Shared/Categories/Categories"));
-const ProductPage = lazy(() => import("../Pages/Shared/ProductPage"));
-const UnsignedCategories = lazy(() =>
-  import("../Pages/Shared/Categories/unsignedCategories")
-);
+const UnsignedCategories = lazy(() => import("../Pages/Shared/Categories/unsignedCategories"));
+const Cart = lazy(() => import("../Pages/Shared/cart"));
+const WishList = lazy(() => import("../Pages/Shared/wishList"));
+const Checkout = lazy(() => import("../Pages/Shared/checkout/checkout"));
+const Address = lazy(() => import("../Pages/Shared/checkout/address"));
+const Payment = lazy(() => import("../Pages/Shared/checkout/payment"));
+const SellerStore = lazy(() => import("../Pages/Shared/SellerStore"))
+
 
 export const sharedRoutes = [
   {
@@ -56,6 +60,34 @@ export const sharedRoutes = [
   {
     path: "/categories/equipiment",
     element: Categories,
+  },
+  {
+    path: "/product/:id",
+    element: ProductPage,
+  },
+  {
+    path: '/cart',
+    element: Cart
+  },
+  {
+    path: '/wish-list',
+    element: WishList
+  },
+  {
+    path: '/cart/information',
+    element: Checkout
+  },
+  {
+    path: '/cart/information/address',
+    element: Address
+  },
+  {
+    path: '/cart/information/payment',
+    element: Payment
+  },
+  {
+    path: '/shopname',
+    element: SellerStore
   },
   {
     path: "/product/:id",

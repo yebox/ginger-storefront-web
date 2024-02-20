@@ -1,5 +1,5 @@
 import { devices } from "../../Utils";
-import { Spinner } from "../Spinner/spinner";
+import { Spinner } from "../Spinner";
 import { styled } from "styled-components";
 
 export const GButton = ({

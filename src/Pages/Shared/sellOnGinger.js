@@ -19,6 +19,7 @@ const SellOnGinger = () => {
       </Banner>
 
       <GuideContainer>
+        <h4>Easy guide to selling <br/> on ginger</h4>
         <Guide>
           <GuideActivities>
             <div>
@@ -89,7 +90,7 @@ export default memo(SellOnGinger);
 const Container = styled.main``;
 
 const GuideContainer = styled.section`
-  padding: 10%;
+  padding: 5% 10%;
   h4 {
     font-weight: 500;
     font-size: 2.5rem;
@@ -230,7 +231,7 @@ const Footer = styled.div`
 `;
 
 const TestimonyContainer = styled.section`
-  padding: 10%;
+  padding: 5% 10%;
 
   h6 {
     text-align: center;
