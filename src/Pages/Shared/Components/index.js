@@ -6,10 +6,10 @@ export * from "./testimonialCard";
 export * from "./accordion";
 export * from "./becomeSellerSection";
 export * from "./filterDropdown";
-export * from "./priceFilter";
+export * from "./pricefilter";
 export * from "./topStores";
-export * from  "./relatedItems"
-export * from"./discountBanner";
+export * from "./relatedItems"
+export * from "./discountBanner";
 export * from "./featuredComponents";
 export * from "./relatedItems";
 export * from "./instaFooter"
