@@ -137,7 +137,6 @@ export {
   AccountRightStar,
   WalletIcon,
   EditIcon,
-  Eye,
   AccountLeftStar,
   AccountRightStar,
   WalletIcon,
