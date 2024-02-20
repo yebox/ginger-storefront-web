@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { useState, useMemo } from 'react';
 import { EmptyCartIcon, InfoIcon } from '../../Assets/Svgs';
-import { GBreadCrumbs, GButton, GTable,GTooltip } from '../../Ui_elements';
+import { GBreadCrumbs, GButton, GTable, GTooltip } from '../../Ui_elements';
 import { InstaFooter } from './Components';
 import { indexOf } from 'lodash';
 import { useNavigate } from 'react-router-dom';
@@ -13,7 +13,7 @@ export default function Cart() {
     const [noItem, setNoItem] = useState(true);
     const navigate = useNavigate()
 
-    const data = [
+    const data = useMemo(() => [
         {
             image: "",
             product: "Clairol BW2 Tub Powder Lightener Extra-Strength",
@@ -46,7 +46,7 @@ export default function Cart() {
             total: "₦4,500",
             remove: ""
         },
-    ]
+    ], []);
     const columns = useMemo(
         () => [
             {
@@ -107,7 +107,7 @@ export default function Cart() {
             {
                 Header: () => <SpendHeader>
                     <p>Minimum spend</p>
-                    <GTooltip 
+                    <GTooltip
                         info={"The minimum amount you can spend from that particular brand."}
                     >
                         <InfoIcon />

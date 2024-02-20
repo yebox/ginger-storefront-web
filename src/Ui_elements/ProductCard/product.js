@@ -2,14 +2,15 @@ import styled from "styled-components";
 import { DollarShield, Heart, LockIcon, Star } from "../../Assets/Svgs";
 import { GButton } from "../Button/button";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export const Product = ({ width }) => {
   const navigate = useNavigate();
 
   const isUser = false;
   return (
-    <Container $width={width} onClick={() => navigate("/product/1")}>
-      <ImgContainer>
+    <Container $width={width}>
+      <ImgContainer onClick={() => navigate("/product/1")}>
         <img src="https://images.unsplash.com/photo-1629198688000-71f23e745b6e?q=80&w=3280&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" />
         <div>
           <Heart />
@@ -19,7 +20,7 @@ export const Product = ({ width }) => {
       <SellerRate>
         <div>
           <p>Seller:</p>
-          <p>Rosalind</p>
+          <Link to="/shopname">Rosalind</Link>
         </div>
 
         <div>

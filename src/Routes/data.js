@@ -90,10 +90,6 @@ export const sharedRoutes = [
     path: '/shopname',
     element: SellerStore
   },
-  {
-    path: "/product/:id",
-    element: ProductPage,
-  },
 ];
 
 export const authRoutes = [

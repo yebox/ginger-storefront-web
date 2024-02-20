@@ -28,7 +28,6 @@ import { ReactComponent as LocationTag } from "./locationTag.svg";
 import { ReactComponent as CircleText } from "./circleText.svg";
 import { ReactComponent as Mail } from "./mail.svg";
 import { ReactComponent as Minus } from "./minus.svg";
-import { ReactComponent as Plus } from "./plus.svg";
 import { ReactComponent as Helpful } from "./helpful.svg";
 import { ReactComponent as LockIcon } from "./lockIcon.svg";
 import { ReactComponent as Heart } from "./heart.svg";
@@ -54,22 +53,10 @@ import { ReactComponent as InfoIcon } from './infoIcon.svg'
 import { ReactComponent as ShareIcon } from './share.svg'
 import { ReactComponent as MinimumSpendIcon } from './minimumSpend.svg'
 import { ReactComponent as DiscountBannerVector } from './discountVector.svg'
-import { ReactComponent as Eye } from "./eye.svg";
-import { ReactComponent as AccountLeftStar } from "./accountLeftStar.svg";
 import { ReactComponent as AccountRightStar } from "./accountRightStar.svg";
-import { ReactComponent as EditIcon } from "./editIcon.svg";
-import { ReactComponent as WalletIcon } from "./walletIcon.svg";
-import { ReactComponent as Minus } from "./minus.svg";
 import { ReactComponent as Plus } from "./plus.svg";
-import { ReactComponent as Helpful } from "./helpful.svg";
 import { ReactComponent as Eye } from "./eye.svg";
 import { ReactComponent as AccountLeftStar } from "./accountLeftStar.svg";
-import { ReactComponent as AccountRightStar } from "./accountRightStar.svg";
-import { ReactComponent as EditIcon } from "./editIcon.svg";
-import { ReactComponent as WalletIcon } from "./walletIcon.svg";
-import { ReactComponent as Eye } from "./eye.svg";
-import { ReactComponent as AccountLeftStar } from "./accountLeftStar.svg";
-import { ReactComponent as AccountRightStar } from "./accountRightStar.svg";
 import { ReactComponent as EditIcon } from "./editIcon.svg";
 import { ReactComponent as WalletIcon } from "./walletIcon.svg";
 
@@ -103,9 +90,6 @@ export {
   LocationTag,
   CircleText,
   Mail,
-  Minus,
-  Plus,
-  Helpful,
   LockIcon,
   Heart,
   WhiteX,
@@ -133,13 +117,9 @@ export {
   Minus,
   Plus,
   Helpful,
-  AccountLeftStar,
-  AccountRightStar,
-  WalletIcon,
   EditIcon,
   AccountLeftStar,
   AccountRightStar,
   WalletIcon,
-  EditIcon,
   Eye,
 };
