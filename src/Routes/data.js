@@ -10,6 +10,7 @@ const SignUp = lazy(() => import("../Pages/Shared/SignUp"));
 const Login = lazy(() => import("../Pages/Shared/Login"));
 const ForgotPassword = lazy(() => import("../Pages/Shared/ForgotPassword"));
 const Categories = lazy(() => import("../Pages/Shared/Categories/Categories"));
+const ProductPage = lazy(() => import("../Pages/Shared/ProductPage"));
 const UnsignedCategories = lazy(() => import("../Pages/Shared/Categories/unsignedCategories"));
 const Cart = lazy(() => import("../Pages/Shared/cart"));
 const WishList = lazy(() => import("../Pages/Shared/wishList"));

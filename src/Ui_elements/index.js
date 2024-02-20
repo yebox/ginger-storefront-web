@@ -17,3 +17,10 @@ export * from "./Spinner"
 export * from "./Tooltip"
 export * from "./FavoriteIcon";
 export * from "./RatingIcon";
+export * from "./Modal/index";
+export * from "./Pagination"
+export * from "./Modal"
+export * from "./Table"
+export * from "./RadioSelect"
+export * from "./Spinner"
+export * from "./Tooltip"
