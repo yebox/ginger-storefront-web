@@ -8,9 +8,10 @@ export * from "./becomeSellerSection";
 export * from "./filterDropdown";
 export * from "./pricefilter";
 export * from "./topStores";
-export * from "./relatedItems"
+export * from "./relatedItems";
 export * from "./discountBanner";
 export * from "./featuredComponents";
 export * from "./relatedItems";
-export * from "./instaFooter"
-export * from"./discountBanner"
+export * from "./tabBody";
+export * from "./instaFooter";
+export * from "./discountBanner";

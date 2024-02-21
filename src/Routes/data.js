@@ -11,14 +11,28 @@ const Login = lazy(() => import("../Pages/Shared/Login"));
 const ForgotPassword = lazy(() => import("../Pages/Shared/ForgotPassword"));
 const Categories = lazy(() => import("../Pages/Shared/Categories/Categories"));
 const ProductPage = lazy(() => import("../Pages/Shared/ProductPage"));
-const UnsignedCategories = lazy(() => import("../Pages/Shared/Categories/unsignedCategories"));
+const AccountPage = lazy(() => import("../Pages/Shared/Account"));
+const UnsignedCategories = lazy(() =>
+  import("../Pages/Shared/Categories/unsignedCategories")
+);
+const PersonalInformation = lazy(() =>
+  import("../Pages/Shared/Account/sections/personalInformation")
+);
+const OrderHistory = lazy(() =>
+  import("../Pages/Shared/Account/sections/orderHistory")
+);
+const OrderDetails = lazy(() =>
+  import("../Pages/Shared/Account/sections/orderHistory/orderDetails")
+);
+const ReportOrder = lazy(() =>
+  import("../Pages/Shared/Account/sections/orderHistory/reportOrder")
+);
 const Cart = lazy(() => import("../Pages/Shared/cart"));
 const WishList = lazy(() => import("../Pages/Shared/wishList"));
 const Checkout = lazy(() => import("../Pages/Shared/checkout/checkout"));
 const Address = lazy(() => import("../Pages/Shared/checkout/address"));
 const Payment = lazy(() => import("../Pages/Shared/checkout/payment"));
-const SellerStore = lazy(() => import("../Pages/Shared/SellerStore"))
-
+const SellerStore = lazy(() => import("../Pages/Shared/SellerStore"));
 
 export const sharedRoutes = [
   {
@@ -59,7 +73,7 @@ export const sharedRoutes = [
     element: Categories,
   },
   {
-    path: "/categories/equipiment",
+    path: "/categories/equipment",
     element: Categories,
   },
   {
@@ -67,28 +81,40 @@ export const sharedRoutes = [
     element: ProductPage,
   },
   {
-    path: '/cart',
-    element: Cart
+    path: "/account",
+    element: AccountPage,
   },
   {
-    path: '/wish-list',
-    element: WishList
+    path: "/account/order/:id",
+    element: OrderDetails,
   },
   {
-    path: '/cart/information',
-    element: Checkout
+    path: "/report/:id",
+    element: ReportOrder,
   },
   {
-    path: '/cart/information/address',
-    element: Address
+    path: "/cart",
+    element: Cart,
   },
   {
-    path: '/cart/information/payment',
-    element: Payment
+    path: "/wish-list",
+    element: WishList,
   },
   {
-    path: '/shopname',
-    element: SellerStore
+    path: "/cart/information",
+    element: Checkout,
+  },
+  {
+    path: "/cart/information/address",
+    element: Address,
+  },
+  {
+    path: "/cart/information/payment",
+    element: Payment,
+  },
+  {
+    path: "/shopname",
+    element: SellerStore,
   },
 ];
 
@@ -107,5 +133,20 @@ export const authRoutes = [
     path: "/forgot-password",
     element: ForgotPassword,
     hasLayout: false,
+  },
+];
+
+export const accountRoutes = [
+  {
+    path: "/account",
+    element: AccountPage,
+  },
+  {
+    path: "/account/personal-information",
+    element: PersonalInformation,
+  },
+  {
+    path: "/account/order-history",
+    element: OrderHistory,
   },
 ];
