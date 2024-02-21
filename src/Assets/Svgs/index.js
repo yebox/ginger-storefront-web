@@ -39,6 +39,15 @@ import { ReactComponent as AccountLeftStar } from "./accountLeftStar.svg";
 import { ReactComponent as AccountRightStar } from "./accountRightStar.svg";
 import { ReactComponent as EditIcon } from "./editIcon.svg";
 import { ReactComponent as WalletIcon } from "./walletIcon.svg";
+import { ReactComponent as OrderTrackIcon } from "./orderTrackIcon.svg";
+import { ReactComponent as OrderTrackStar } from "./orderTrackStar.svg";
+import { ReactComponent as OrderRateIcon } from "./orderRateIcon.svg";
+import { ReactComponent as SuccessIcon } from "./success.svg";
+import { ReactComponent as UploadIcon } from "./uploadIcon.svg";
+import { ReactComponent as Visa } from "./Visa.svg";
+import { ReactComponent as InfoIcon } from "./infoIcon.svg";
+import { ReactComponent as Cancel } from "./cancel.svg";
+import { ReactComponent as Check } from "./check.svg";
 
 export {
   Logo,
@@ -82,4 +91,13 @@ export {
   WalletIcon,
   EditIcon,
   Eye,
+  OrderRateIcon,
+  OrderTrackIcon,
+  OrderTrackStar,
+  SuccessIcon,
+  UploadIcon,
+  Visa,
+  InfoIcon,
+  Cancel,
+  Check,
 };

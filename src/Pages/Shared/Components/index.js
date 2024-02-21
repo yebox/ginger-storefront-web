@@ -11,3 +11,4 @@ export * from "./featuredComponents";
 export * from "./instaFooter";
 export * from "./pricefilter";
 export * from "./relatedItems";
+export * from "./tabBody";

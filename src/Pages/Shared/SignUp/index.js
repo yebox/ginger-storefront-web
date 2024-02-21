@@ -12,33 +12,7 @@ import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { SignUpSchema } from "./validation";
 import { Link, useNavigate } from "react-router-dom";
-
-const countryData = [
-  { label: "Nigeria", value: "nigeria" },
-  { label: "Ghana", value: "ghana" },
-  { label: "China", value: "china" },
-  { label: "China", value: "china" },
-  { label: "China", value: "china" },
-  { label: "China", value: "china" },
-  { label: "China", value: "china" },
-  { label: "China", value: "china" },
-  { label: "China", value: "china" },
-  { label: "China", value: "china" },
-  { label: "China", value: "china" },
-  { label: "China", value: "china" },
-  { label: "China", value: "china" },
-  { label: "China", value: "china" },
-  { label: "China", value: "china" },
-  { label: "China", value: "china" },
-  { label: "China", value: "china" },
-  { label: "China", value: "china" },
-  { label: "China", value: "china" },
-  { label: "China", value: "china" },
-  { label: "China", value: "china" },
-  { label: "China", value: "china" },
-  { label: "China", value: "china" },
-  { label: "China", value: "china" },
-];
+import { countryData } from "./data";
 
 const SignUp = () => {
   const navigate = useNavigate();

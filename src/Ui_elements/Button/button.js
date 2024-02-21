@@ -6,18 +6,24 @@ export const GButton = ({
   label,
   width,
   type,
+  fontsize,
+  paddingProp,
   outline,
   icon,
   isLoading,
   isDisabled,
   alternate,
   alternateOutline,
+  onClick,
   ...otherProps
 }) => {
   return (
     <ButtonEl
       width={width}
+      $fontsize={fontsize}
+      $paddingProp={paddingProp}
       type={type}
+      onClick={onClick}
       outline={outline}
       disabled={isDisabled}
       alternate={alternate}
@@ -50,12 +56,13 @@ const ButtonEl = styled.button`
   color: ${({ outline, alternate }) =>
     outline || alternate ? "var(--black)" : "#ffffff"};
   font-weight: 500;
-  padding: 1rem 1.5rem;
+  padding: ${({ $paddingProp }) =>
+    $paddingProp ? $paddingProp : "1rem 1.5rem"};
   gap: 5px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1rem;
+  font-size: ${({ $fontsize }) => ($fontsize ? $fontsize : "1rem")};
   width: ${({ width }) => (width ? width : "100%")};
   border-radius: 2px;
   outline: none;

@@ -12,4 +12,5 @@ export * from "./Dropdown";
 export * from "./Pagination/index";
 export * from "./FavoriteIcon";
 export * from "./RatingIcon";
-export * from "./Modal/index";
+export * from "./Modal";
+export * from "./ImageUpload";

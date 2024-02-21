@@ -11,8 +11,21 @@ const Login = lazy(() => import("../Pages/Shared/Login"));
 const ForgotPassword = lazy(() => import("../Pages/Shared/ForgotPassword"));
 const Categories = lazy(() => import("../Pages/Shared/Categories/Categories"));
 const ProductPage = lazy(() => import("../Pages/Shared/ProductPage"));
+const AccountPage = lazy(() => import("../Pages/Shared/Account"));
 const UnsignedCategories = lazy(() =>
   import("../Pages/Shared/Categories/unsignedCategories")
+);
+const PersonalInformation = lazy(() =>
+  import("../Pages/Shared/Account/sections/personalInformation")
+);
+const OrderHistory = lazy(() =>
+  import("../Pages/Shared/Account/sections/orderHistory")
+);
+const OrderDetails = lazy(() =>
+  import("../Pages/Shared/Account/sections/orderHistory/orderDetails")
+);
+const ReportOrder = lazy(() =>
+  import("../Pages/Shared/Account/sections/orderHistory/reportOrder")
 );
 
 export const sharedRoutes = [
@@ -54,12 +67,24 @@ export const sharedRoutes = [
     element: Categories,
   },
   {
-    path: "/categories/equipiment",
+    path: "/categories/equipment",
     element: Categories,
   },
   {
     path: "/product/:id",
     element: ProductPage,
+  },
+  {
+    path: "/account",
+    element: AccountPage,
+  },
+  {
+    path: "/account/order/:id",
+    element: OrderDetails,
+  },
+  {
+    path: "/report/:id",
+    element: ReportOrder,
   },
 ];
 
@@ -78,5 +103,20 @@ export const authRoutes = [
     path: "/forgot-password",
     element: ForgotPassword,
     hasLayout: false,
+  },
+];
+
+export const accountRoutes = [
+  {
+    path: "/account",
+    element: AccountPage,
+  },
+  {
+    path: "/account/personal-information",
+    element: PersonalInformation,
+  },
+  {
+    path: "/account/order-history",
+    element: OrderHistory,
   },
 ];
