@@ -91,6 +91,8 @@ export const sharedRoutes = [
   {
     path: "/report/:id",
     element: ReportOrder,
+  },
+  {
     path: "/cart",
     element: Cart,
   },
