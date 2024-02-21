@@ -27,6 +27,12 @@ const OrderDetails = lazy(() =>
 const ReportOrder = lazy(() =>
   import("../Pages/Shared/Account/sections/orderHistory/reportOrder")
 );
+const Cart = lazy(() => import("../Pages/Shared/cart"));
+const WishList = lazy(() => import("../Pages/Shared/wishList"));
+const Checkout = lazy(() => import("../Pages/Shared/checkout/checkout"));
+const Address = lazy(() => import("../Pages/Shared/checkout/address"));
+const Payment = lazy(() => import("../Pages/Shared/checkout/payment"));
+const SellerStore = lazy(() => import("../Pages/Shared/SellerStore"));
 
 export const sharedRoutes = [
   {
@@ -85,6 +91,28 @@ export const sharedRoutes = [
   {
     path: "/report/:id",
     element: ReportOrder,
+    path: "/cart",
+    element: Cart,
+  },
+  {
+    path: "/wish-list",
+    element: WishList,
+  },
+  {
+    path: "/cart/information",
+    element: Checkout,
+  },
+  {
+    path: "/cart/information/address",
+    element: Address,
+  },
+  {
+    path: "/cart/information/payment",
+    element: Payment,
+  },
+  {
+    path: "/shopname",
+    element: SellerStore,
   },
 ];
 

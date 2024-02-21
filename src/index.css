@@ -53,6 +53,7 @@ code {
   --gray-50: #fdfdfd;
   --light-primary: #fbe9eb;
   --light-lavendar: #e2e3ff;
+  --table-yellow: #FFF6E9;
 }
 
 h1,
@@ -67,7 +68,7 @@ i,
 ul,
 li,
 a,
-span,
+/* span, */
 button,
 input,
 label,

@@ -18,7 +18,7 @@ const SellOnGinger = () => {
       </Banner>
 
       <GuideContainer>
-        <h4>Easy guide to making a purchase</h4>
+        <h4>Easy guide <br/> to making a purchase</h4>
 
         <Guide>
           <GuideActivities>
@@ -47,6 +47,8 @@ const SellOnGinger = () => {
           <Product />
           <Product />
           <Product />
+          <Product />
+
         </Recommended>
       </RecommendedContainer>
 
@@ -166,8 +168,7 @@ const GuideImages = styled.div`
 `;
 
 const RecommendedContainer = styled.section`
-  padding: 5%;
-
+  padding: 2% 5%;
   h5 {
     text-align: center;
     font-size: 2.3rem;
@@ -184,6 +185,8 @@ const Recommended = styled.div`
 
 const Footer = styled.div`
   position: relative;
+  margin-top: 5%;
+  height: auto;
   img {
     position: absolute;
     object-fit: cover;
