@@ -1,5 +1,7 @@
 import React from "react";
-import { AuthRoutes, PrivateRoutes, SharedRoutes } from ".";
+import { SharedRoutes } from "./SharedRoute";
+import { AuthRoutes } from "./AuthRoutes";
+import { SellerAuthRoutes } from "./SellerAuthRoutes";
 import ScrollToTop from "../Utils/scrollToTop";
 
 export const AppRoute = () => {
@@ -8,7 +10,7 @@ export const AppRoute = () => {
       <ScrollToTop />
       <SharedRoutes />
       <AuthRoutes />
-      <PrivateRoutes />
+      <SellerAuthRoutes />
     </>
   );
 };

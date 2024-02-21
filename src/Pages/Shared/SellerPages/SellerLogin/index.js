@@ -1,13 +1,13 @@
 import React from "react";
 import styled from "styled-components";
-import { AppleIcon, GoogleIcon } from "../../../Assets/Svgs";
-import { GTextField, GSpacer, GButton } from "../../../Ui_elements";
+import { AppleIcon, GoogleIcon } from "../../../../Assets/Svgs";
+import { GTextField, GSpacer, GButton } from "../../../../Ui_elements";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { LoginSchema } from "./validation";
 import { Link } from "react-router-dom";
 
-const Login = () => {
+const SellerLogin = () => {
   const {
     register,
     handleSubmit,
@@ -69,7 +69,7 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default SellerLogin;
 
 const Title = styled.h2`
   font-size: 40px;
@@ -77,7 +77,7 @@ const Title = styled.h2`
   line-height: 110%;
   letter-spacing: 0em;
   text-align: left;
-  color: var(--Primary-500, #ff4623);
+  color: var(--black);
 `;
 
 const Subtitle = styled.p`
