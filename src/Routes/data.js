@@ -37,11 +37,13 @@ const SellerStore = lazy(() => import("../Pages/Shared/SellerStore"))
 
 //seller Auth routes 
 
-const SellerLogin = lazy(() => import('../Pages/Shared/SellerPages/SellerLogin'))
+// const SellerLogin = lazy(() => import('../Pages/Shared/SellerPages/SellerLogin'))
 const SellerSignup = lazy(() => import('../Pages/Shared/SellerPages/SellerSignUp'))
 const SellerForgotPassword = lazy(() => import('../Pages/Shared/SellerPages/SellerForgotPassword'))
 const SellerSignUpPersonalInformation = lazy(() => import('../Pages/Shared/SellerPages/SellerPersonalInformation'))
-const SellerSignUpBusinessInformation = lazy(()=> import( '../Pages/Shared/SellerPages/SellerBusinessInformation'))
+const SellerSignUpBusinessInformation = lazy(() => import('../Pages/Shared/SellerPages/SellerBusinessInformation'))
+const SellerSignUpBusinessDocument = lazy(() => import('../Pages/Shared/SellerPages/SellerBusinessDocument'))
+
 
 
 
@@ -156,11 +158,11 @@ export const sellerAuthRoutes = [
     element: SellerSignup,
     hasLayout: true,
   },
-  {
-    path: "seller/login",
-    element: SellerLogin,
-    hasLayout: true,
-  },
+  // {
+  //   path: "seller/login",
+  //   element: SellerLogin,
+  //   hasLayout: true,
+  // },
   {
     path: "seller/forgot-password",
     element: SellerForgotPassword,
@@ -174,6 +176,11 @@ export const sellerAuthRoutes = [
   {
     path: "seller/signup/business_information",
     element: SellerSignUpBusinessInformation,
+    hasLayout: true,
+  },
+  {
+    path: "seller/signup/business_document",
+    element: SellerSignUpBusinessDocument,
     hasLayout: true,
   },
 ];

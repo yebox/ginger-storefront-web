@@ -5,7 +5,7 @@ import { GTextField, GSpacer, GButton, GCheckbox, GSelectField } from "../../../
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { SignUpSchema } from "./validation";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import { Controller } from "react-hook-form";
 
 const countryData = [
@@ -51,7 +51,7 @@ const SellerBusinessInformation = () => {
   // };
 
   const onSubmit = () => { };
-  console.log({ errors });
+  // console.log({ errors });
 
   return (
     <>
@@ -129,16 +129,6 @@ const SellerBusinessInformation = () => {
         />
         <GSpacer size={32} />
 
-        {/* <TermsWrapper>
-          <GCheckbox />
-          <TermsTxt>
-            I agree to{" "}
-            <TermsTxtLink onClick={handleTermsNav}>
-              Terms and Conditions
-            </TermsTxtLink>
-          </TermsTxt>
-        </TermsWrapper> */}
-
         <ProductTypeContainer>
           <ProductHeadText>What type of products are you looking for?</ProductHeadText>
           <div>
@@ -173,9 +163,9 @@ const SellerBusinessInformation = () => {
         </BtnWrapper>
        
       </Form>
-      <AuthLinkTxt>
+      {/* <AuthLinkTxt>
         Already have an account? <LoginUpTxt to={"/login"}>Log in</LoginUpTxt>
-      </AuthLinkTxt>
+      </AuthLinkTxt> */}
     </>
   );
 };
@@ -230,30 +220,24 @@ const Form = styled.form`
   margin: 77px 0 24px;
 `;
 
-const AuthLinkTxt = styled.p`
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 21px;
-  letter-spacing: 0em;
-  text-align: center;
-  color: #b6b6b6;
+// const AuthLinkTxt = styled.p`
+//   font-size: 16px;
+//   font-weight: 400;
+//   line-height: 21px;
+//   letter-spacing: 0em;
+//   text-align: center;
+//   color: #b6b6b6;
 
-  & > span {
-    font-size: 16px;
-    font-weight: 500;
-    line-height: 19px;
-    letter-spacing: 0em;
-    text-align: left;
-    color: #ff4623;
-    cursor: pointer;
-  }
-`;
-
-const NameInputWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 18px;
-`;
+//   & > span {
+//     font-size: 16px;
+//     font-weight: 500;
+//     line-height: 19px;
+//     letter-spacing: 0em;
+//     text-align: left;
+//     color: #ff4623;
+//     cursor: pointer;
+//   }
+// `;
 
 const CheckWrapper = styled.label`
   display: flex;
@@ -261,14 +245,6 @@ const CheckWrapper = styled.label`
   gap: 8px;
   margin: 20px 0 0px;
   cursor: pointer;
-`;
-
-const TermsTxtLink = styled.span`
-  color: var(--Primary-500, #ff4623);
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 120%;
 `;
 
 const TermsTxt = styled.p`
@@ -293,37 +269,11 @@ const BtnWrapper = styled.div`
   }
 `;
 
-const OrTxt = styled.p`
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 17px;
-  letter-spacing: 0em;
-  text-align: left;
-`;
 
-const GoogleSignupBtn = styled.div`
-  display: flex;
-  align-items: center;
-  width: 65.083px;
-  height: 55px;
-  padding: 12.833px 18.085px 12.833px 18.333px;
-  justify-content: center;
-  align-items: center;
-  flex-shrink: 0;
-  border: 0.917px solid var(--Black-100, #b6b6b6);
-  cursor: pointer;
-
-  & > svg {
-    width: 28.665px;
-    height: 29.333px;
-    flex-shrink: 0;
-  }
-`;
-
-const LoginUpTxt = styled(Link)`
-  color: var(--Primary-500, #ff4623);
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 130%;
-`;
+// const LoginUpTxt = styled(Link)`
+//   color: var(--Primary-500, #ff4623);
+//   font-size: 16px;
+//   font-style: normal;
+//   font-weight: 500;
+//   line-height: 130%;
+// `;

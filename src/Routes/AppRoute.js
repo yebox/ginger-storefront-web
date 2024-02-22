@@ -4,6 +4,8 @@ import { AuthRoutes } from "./AuthRoutes";
 import { SellerAuthRoutes } from "./SellerAuthRoutes";
 import ScrollToTop from "../Utils/scrollToTop";
 
+// import { SellerDashboardLayout } from "../Layouts/SellerDashboardLayout";
+
 export const AppRoute = () => {
   return (
     <>
@@ -12,5 +14,7 @@ export const AppRoute = () => {
       <AuthRoutes />
       <SellerAuthRoutes />
     </>
+
+    // <SellerDashboardLayout/>
   );
 };

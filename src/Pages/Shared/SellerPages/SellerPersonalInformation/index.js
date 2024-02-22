@@ -148,11 +148,6 @@ const SellerSignUpPersonalInformation = () => {
             type={"submit"}
             label={"Sign up for free"}
           />
-          {/* <OrTxt>or</OrTxt>
-          <GoogleSignupBtn>
-            <GoogleIcon />
-          </GoogleSignupBtn>
-          <AppleIcon /> */}
         </BtnWrapper>
       </Form>
       <AuthLinkTxt>
@@ -266,32 +261,6 @@ const BtnWrapper = styled.div`
   }
 `;
 
-const OrTxt = styled.p`
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 17px;
-  letter-spacing: 0em;
-  text-align: left;
-`;
-
-const GoogleSignupBtn = styled.div`
-  display: flex;
-  align-items: center;
-  width: 65.083px;
-  height: 55px;
-  padding: 12.833px 18.085px 12.833px 18.333px;
-  justify-content: center;
-  align-items: center;
-  flex-shrink: 0;
-  border: 0.917px solid var(--Black-100, #b6b6b6);
-  cursor: pointer;
-
-  & > svg {
-    width: 28.665px;
-    height: 29.333px;
-    flex-shrink: 0;
-  }
-`;
 
 const LoginUpTxt = styled(Link)`
   color: var(--Primary-500, #ff4623);

@@ -2,6 +2,7 @@ import "./App.css";
 import { AppRoute } from "./Routes";
 import React from "react";
 import { Toaster } from "react-hot-toast";
+import 'swiper/css';
 
 function App() {
   return (

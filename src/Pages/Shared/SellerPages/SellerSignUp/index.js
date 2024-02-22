@@ -8,10 +8,11 @@ import {
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { SignUpSchema } from "./validation";
-import { Link} from "react-router-dom";
+import { Link, useNavigate} from "react-router-dom";
 
 
 const SellerSignUp = () => {
+  const navigate = useNavigate()
   const {
     register,
     handleSubmit,
@@ -19,6 +20,7 @@ const SellerSignUp = () => {
   } = useForm({
     resolver: yupResolver(SignUpSchema),
   });
+  
 
 
   const onSubmit = () => { };
@@ -46,6 +48,7 @@ const SellerSignUp = () => {
             width={"100%"}
             isLoading={isSubmitting}
             type={"submit"}
+
             label={"Sign up for free"}
           />
 
@@ -66,6 +69,7 @@ const SellerSignUp = () => {
             width={"100%"}
             isLoading={isSubmitting}
             type={"submit"}
+            onClick={()=>navigate('/seller/signup/personal_information')}
             outline
             label={() =>
               <ButtonLabel>
