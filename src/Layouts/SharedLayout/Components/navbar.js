@@ -5,6 +5,8 @@ import { styled } from 'styled-components'
 // import { GTextField } from '../../../Ui_elements'
 import { Account, Cart, Dollar, DownArrow, Like, Logo, Search } from '../../../Assets/Svgs'
 import { useState, useEffect  } from 'react';
+import { useSelector } from 'react-redux';
+import { Avatar } from '@mui/material';
 
 
 const imageLinks = [
@@ -17,6 +19,7 @@ export const Navbar = () => {
     const [currentImage, setCurrentImage] = useState([0])
     const [showFullOptions, setShowFullOptions] = useState(false);
     const [fullOptionsHovered, setFullOptionsHovered] = useState(false);
+    const user = useSelector(state=>state.user)
 
 
     useEffect(() => {
@@ -66,10 +69,27 @@ export const Navbar = () => {
 
                 <Utility>
                     <>
-                        <Flex>
+                        {user ?
+                            <Flex>
+                                <Avatar
+                                    sx={{
+                                        bgcolor: "var(--primary-color)",
+                                        width: "24px",
+                                        height: "24px"
+                                    }}
+                                    alt="Remy Sharp"
+                                    src="https://images.unsplash.com/photo-1574169208507-84376144848b?q=80&w=3279&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                                />
+
+                                <p>{user.firstName}</p>
+                            </Flex>
+                            :
+                            <Flex>
                             <Account />
                             <Link to={"/signup"}>Sign up</Link>
                         </Flex>
+                        }
+                        
                         <Flex>
                             <Cart />
                             <Link to={'/cart'}>Cart</Link>

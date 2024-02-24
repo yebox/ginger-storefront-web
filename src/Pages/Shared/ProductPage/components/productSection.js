@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { styled } from "styled-components";
-import { GFavoriteIcon, GBreadCrumbs } from "../../../../Ui_elements";
+import { GFavoriteIcon, GBreadCrumbs, Carousel } from "../../../../Ui_elements";
 import QuantityCounter from "./quantityCounter";
 import { imgsUrl } from "./data";
 import { LeftArrow, RightArrow } from "../../../../Assets/Svgs";
@@ -8,6 +8,24 @@ import { LeftArrow, RightArrow } from "../../../../Assets/Svgs";
 const ProductSection = () => {
   const [activeIdx, setActiveIdx] = useState(1);
   const [mainImg, setMainImg] = useState(imgsUrl[0]);
+  const sliderRef = useRef(null)
+
+
+  const slideNext = () => {
+    if (sliderRef.current) {
+      sliderRef.current.swiper.slideNext();
+    }
+  };
+
+
+  const slidePrev = () => {
+    if (sliderRef.current) {
+      sliderRef.current.swiper.slidePrev();
+    }
+  };
+
+
+
   return (
     <Container>
       <GBreadCrumbs />
@@ -16,13 +34,25 @@ const ProductSection = () => {
           <MainImg src={mainImg} />
           <MoreImagesWrapper>
             <ArrowCircle $pos={"left"}>
-              <LeftArrow />
+              <LeftArrow onClick={slidePrev} />
             </ArrowCircle>
-            {imgsUrl.map((src, idx) => (
+            {/* {imgsUrl.map((src, idx) => (
               <ImageBox src={src} key={idx} onClick={() => setMainImg(src)} />
-            ))}
+            ))} */}
+
+            <Carousel
+              data={imgsUrl}
+              ref={sliderRef}
+              width={"100%"}
+              renderCard={(item, index) => {
+                return <ImageBox key={index} src={item} />
+              }}
+            />
+
+
             <ArrowCircle $pos={"right"}>
-              <RightArrow />
+              <RightArrow onClick={slideNext}
+              />
             </ArrowCircle>
           </MoreImagesWrapper>
         </ImagesWrapper>
@@ -124,6 +154,7 @@ const ArrowCircle = styled.div`
   border-radius: 31.359px;
   border: 1px solid #fafafa;
   background: #fafafa;
+  z-index:5; 
   cursor: pointer;
 
   & > svg {
@@ -134,7 +165,7 @@ const ArrowCircle = styled.div`
 `;
 
 const ImageBox = styled.img`
-  width: 25%;
+  width: 100%;
   height: 140px;
   flex-shrink: 0;
   border-radius: 2px;

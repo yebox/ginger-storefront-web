@@ -3,11 +3,12 @@ import { DollarShield, Heart, LockIcon, Star } from "../../Assets/Svgs";
 import { GButton } from "../Button/button";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { useSelector } from 'react-redux';
 
 export const Product = ({ width }) => {
   const navigate = useNavigate();
+  const user = useSelector(state => state.user)
 
-  const isUser = false;
   return (
     <Container $width={width}>
       <ImgContainer onClick={() => navigate("/product/1")}>
@@ -39,7 +40,7 @@ export const Product = ({ width }) => {
         <p>₦5,500</p>
       </RRPContainer>
 
-      {isUser ? (
+      {user ? (
         <>
           <Price>₦87,260</Price>
           <GButton label={"Add to Cart"} />

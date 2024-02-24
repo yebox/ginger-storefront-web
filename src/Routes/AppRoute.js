@@ -1,6 +1,10 @@
 import React from "react";
-import { AuthRoutes, PrivateRoutes, SharedRoutes } from ".";
+import { SharedRoutes } from "./SharedRoute";
+import { AuthRoutes } from "./AuthRoutes";
+import { SellerAuthRoutes } from "./SellerAuthRoutes";
 import ScrollToTop from "../Utils/scrollToTop";
+
+// import { SellerDashboardLayout } from "../Layouts/SellerDashboardLayout";
 
 export const AppRoute = () => {
   return (
@@ -8,7 +12,9 @@ export const AppRoute = () => {
       <ScrollToTop />
       <SharedRoutes />
       <AuthRoutes />
-      <PrivateRoutes />
+      <SellerAuthRoutes />
     </>
+
+    // <SellerDashboardLayout/>
   );
 };

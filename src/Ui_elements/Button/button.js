@@ -34,7 +34,7 @@ export const GButton = ({
         <Spinner color={outline ? "var(--black)" : "white"} />
       ) : (
         <>
-          {label}
+          {typeof label === 'string' ? label : label()}
           {icon && <div>{icon}</div>}
         </>
       )}
@@ -49,10 +49,10 @@ const ButtonEl = styled.button`
     outline
       ? "transparent"
       : alternate
-      ? "white"
-      : alternateOutline
-      ? "transparent"
-      : "var(--black)"};
+        ? "white"
+        : alternateOutline
+          ? "transparent"
+          : "var(--black)"};
   color: ${({ outline, alternate }) =>
     outline || alternate ? "var(--black)" : "#ffffff"};
   font-weight: 500;
@@ -70,8 +70,8 @@ const ButtonEl = styled.button`
     outline
       ? "1px solid var(--black)"
       : alternateOutline
-      ? "1px solid white"
-      : "none"};
+        ? "1px solid white"
+        : "none"};
   cursor: pointer;
   transition: all 0.25s ease;
 

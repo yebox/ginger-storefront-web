@@ -66,6 +66,10 @@ import { ReactComponent as SuccessIcon } from "./success.svg";
 import { ReactComponent as UploadIcon } from "./uploadIcon.svg";
 import { ReactComponent as Cancel } from "./cancel.svg";
 import { ReactComponent as Check } from "./check.svg";
+import { ReactComponent as DocumentIcon } from "./document.svg";
+import { ReactComponent as NotificationIcon } from "./notification.svg";
+
+
 
 export {
   Logo,
@@ -136,4 +140,6 @@ export {
   UploadIcon,
   Cancel,
   Check,
+  DocumentIcon,
+  NotificationIcon
 };

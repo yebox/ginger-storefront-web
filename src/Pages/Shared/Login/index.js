@@ -47,7 +47,7 @@ const Login = () => {
           errorText={errors.password && errors.password.message}
           required
         />
-        <ForgotPassword>Forgot password?</ForgotPassword>
+        <ForgotPassword to={"/forgot-password"}>Forgot password?</ForgotPassword>
         <BtnWrapper>
           <GButton
             width={"60%"}

@@ -18,3 +18,4 @@ export * from "./Tooltip";
 export * from "./FavoriteIcon";
 export * from "./RatingIcon";
 export * from "./ImageUpload";
+export * from "./Carousel"
