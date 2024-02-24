@@ -31,7 +31,10 @@ export const GButton = ({
       {...otherProps}
     >
       {isLoading ? (
-        <Spinner color={outline ? "var(--black)" : "white"} />
+        <Spinner
+          width={20}
+          height={20}
+          color={outline ? "var(--black)" : "white"} />
       ) : (
         <>
           {typeof label === 'string' ? label : label()}

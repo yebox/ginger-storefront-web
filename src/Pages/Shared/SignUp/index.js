@@ -38,6 +38,9 @@ const SignUp = () => {
       dispatch(setUser(data))
       toast.success(`Account created successfully.`)
       navigate("/")
+    },
+    (error) => {
+      toast.error(error.message)
     }
   )
 
@@ -153,7 +156,7 @@ const SignUp = () => {
         <BtnWrapper>
           <GButton
             width={"60%"}
-            isLoading={isSubmitting}
+            isLoading={isSubmitting || isPending}
             type={"submit"}
             label={"Sign up for free"}
           />
