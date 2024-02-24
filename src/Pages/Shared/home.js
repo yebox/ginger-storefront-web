@@ -176,11 +176,11 @@ const Home = () => {
             </p>
           </div>
           <div>
-            <div>
-              <LeftArrow onClick={slidePrev} />
+            <div onClick={slidePrev} >
+              <LeftArrow />
             </div>
-            <div>
-              <RightArrow onClick={slideNext} />
+            <div onClick={slideNext}>
+              <RightArrow />
             </div>
           </div>
         </TopSellerHeader>

@@ -12,38 +12,38 @@ export const Carousel = forwardRef(({
 }, ref) => {
   return (
     <Container>
-    <Swiper
-      autoplay
-      ref={ref}
-      slidesPerView={(window.innerWidth / width) || 4}
-      spaceBetween={10}
-      pagination={{
-        clickable: true,
-      }}
-      modules={[Pagination]}
-    >
-      {data ? (
-        data.map((item, index) => (
-          <SwiperSlide
-            key={index}
-          >
-            {renderCard(item, index)}
-          </SwiperSlide>
-        ))
-      ) : (
-        [...Array(12)].map((_, index) => (
-          <SwiperSlide
-            style={{
-              backgroundColor: "green",
-            }}
-            key={index}
-          >
-            {renderCard(null, index)}
-          </SwiperSlide>
-        ))
-      )}
-    </Swiper>
-  </Container>
+      <Swiper
+        autoplay
+        ref={ref}
+        slidesPerView={(window.innerWidth / width) || 4}
+        spaceBetween={10}
+        pagination={{
+          clickable: true,
+        }}
+        modules={[Pagination]}
+      >
+        {data ? (
+          data.map((item, index) => (
+            <SwiperSlide
+              key={index}
+            >
+              {renderCard && renderCard(item, index)}
+            </SwiperSlide>
+          ))
+        ) : (
+          [...Array(12)].map((_, index) => (
+            <SwiperSlide
+              style={{
+                backgroundColor: "green",
+              }}
+              key={index}
+            >
+              <SellerCard/>
+            </SwiperSlide>
+          ))
+        )}
+      </Swiper>
+    </Container>
   );
 });
 

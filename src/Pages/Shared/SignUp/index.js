@@ -13,9 +13,15 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { SignUpSchema } from "./validation";
 import { Link, useNavigate } from "react-router-dom";
 import { countryData } from "./data";
+import { useApiSend } from "../../../Hooks/api";
+import { registerUser } from "../../../Urls"
+import { useDispatch } from "react-redux";
+import { setUser } from "../../../Redux";
+import { toast } from "react-hot-toast";
 
 const SignUp = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch()
   const {
     register,
     handleSubmit,
@@ -25,13 +31,34 @@ const SignUp = () => {
     resolver: yupResolver(SignUpSchema),
   });
 
+
+  const { mutate, isPending } = useApiSend(
+    registerUser,
+    (data) => {
+      dispatch(setUser(data))
+      toast.success(`Account created successfully.`)
+      navigate("/")
+    }
+  )
+
   const handleTermsNav = (e) => {
     e.stopPropagation();
     navigate("/");
   };
 
-  const onSubmit = () => {};
-  console.log({ errors });
+  const onSubmit = (data) => {
+    const body = {
+      firstName: data.firstName,
+      lastName: data.lastName,
+      email: data.email,
+      phoneNumber: data.phoneNumber,
+      password: data.password,
+      country: data.country.value,
+      role: "buyer"
+    }
+    mutate(body)
+  };
+  // console.log({ errors });
 
   return (
     <>
@@ -65,7 +92,7 @@ const SignUp = () => {
         <GSpacer size={32} />
         <GTextField
           id="email"
-          placeholder="Email / Phone number"
+          placeholder="Email"
           inputType="text"
           name="email"
           register={register}
@@ -74,6 +101,19 @@ const SignUp = () => {
           required
         />
         <GSpacer size={32} />
+
+        <GTextField
+          id="phoneNumber"
+          placeholder="Phone number"
+          inputType="text"
+          name="phoneNumber"
+          register={register}
+          error={!!errors.phoneNumber}
+          errorText={errors.phoneNumber && errors.phoneNumber.message}
+          required
+        />
+        <GSpacer size={32} />
+
         <GTextField
           id="password"
           placeholder="Password"
