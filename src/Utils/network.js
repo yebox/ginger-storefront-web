@@ -1,6 +1,5 @@
 import axios from "axios";
-import Cookies from "js-cookie";
-
+import { store } from "../Redux/store";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -9,23 +8,26 @@ const client = axios.create({
 })
 
 export const request = async (options) => {
-    var accessToken = Cookies.get("gingerToken")
-    var token = ""
-
-    if (accessToken) {
-        token = JSON.parse(accessToken)
+    let token
+    const state = store.getState()
+    const userState = state?.user
+    if (userState === null) {
+        token = ""
+    }
+    else {
+        const { accessToken } = userState
+        token = accessToken
     }
 
-    token !== "" &&
-        (client.defaults.headers.common['Authorization'] = `Bearer ${token?.token}`)
+    token !== "" && (client.defaults.headers.common.Authorization = `Bearer ${token}`);
 
     const onSuccess = (response) => {
-        return response?.data
-    }
+        return response?.data?.data;
+    };
 
     const onError = (error) => {
-        return Promise.reject(error.response?.data?.message);
+        return Promise.reject(error.response?.data);
     };
-    return client(options).then(onSuccess).catch(onError);
 
-}
+    return client(options).then(onSuccess).catch(onError);
+};
