@@ -12,10 +12,13 @@ import {
   GTextField,
 } from "../../../../../../Ui_elements";
 import { useNavigate } from "react-router-dom";
+import { accountStore } from "../../../store";
+import { useSnapshot } from "valtio";
 
 const RateProduct = () => {
   const [checkedCount, setCheckedCount] = useState(0);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const accountSnap = useSnapshot(accountStore);
 
   const navigate = useNavigate();
   return (
@@ -40,7 +43,10 @@ const RateProduct = () => {
         </SubmittedWrapper>
       ) : (
         <ContentWrapper>
-          <RateTxt>How would you rate this product</RateTxt>
+          <RateTxt>
+            How would you rate{" "}
+            <span>{accountSnap.selectedOrderItem?.name}</span>
+          </RateTxt>
           <RatingWrapper>
             {[...Array(5)].map((_, index) => (
               <GRatingIcon
@@ -151,6 +157,10 @@ const RateTxt = styled.p`
   font-weight: 500;
   line-height: 130%; /* 20.8px */
   margin-bottom: 16px;
+
+  & > span {
+    color: #151515;
+  }
 `;
 
 const RatingWrapper = styled.div`

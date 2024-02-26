@@ -4,80 +4,75 @@ import {
   GModal,
   GSpacer,
   GTextField,
-} from "../../../../../../../Ui_elements";
+} from "../../../../../../Ui_elements";
 import { styled } from "styled-components";
-import { Cancel } from "../../../../../../../Assets/Svgs";
 import { useForm } from "react-hook-form";
-import { BusinessInformationSchema } from "../../validation";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { toast } from "react-hot-toast";
+import { ChangePasswordSchema } from "../validation";
+import { Cancel } from "../../../../../../Assets/Svgs";
 
-const BusinessModal = ({ isOpen, handleClose }) => {
+const PasswordModal = ({ isOpen, handleClose }) => {
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm({
-    resolver: yupResolver(BusinessInformationSchema),
+    resolver: yupResolver(ChangePasswordSchema),
   });
 
   const onSubmit = () => {
-    toast.success(`Your information has been updated successfully.`);
+    toast.success(`Your passowrd has been updated successfully.`);
     handleClose();
   };
+
   return (
     <GModal open={isOpen} handleClose={handleClose}>
       <Container>
         <Header>
-          <Title>Edit business information</Title>
+          <Title>Update password</Title>
           <Cancel onClick={handleClose} />
         </Header>
         <FormWrapper onSubmit={handleSubmit(onSubmit)}>
           <GTextField
-            id="businessType"
-            placeholder="Enter business type"
-            name="businessType"
+            id="oldPassword"
+            placeholder="Old password"
+            inputType="password"
+            name="oldPassword"
             register={register}
-            error={errors.businessType}
-            errorText={errors.businessType && errors.businessType.message}
+            error={errors.oldPassword}
+            errorText={errors.oldPassword && errors.oldPassword.message}
             required
           />
           <GTextField
-            id="businessName"
-            placeholder="Enter business name"
-            name="businessName"
+            id="newPassword"
+            placeholder="New password"
+            inputType="password"
+            name="newPassword"
             register={register}
-            error={errors.businessName}
-            errorText={errors.businessName && errors.businessName.message}
+            error={errors.newPassword}
+            errorText={errors.newPassword && errors.newPassword.message}
             required
           />
           <GTextField
-            id="website"
-            placeholder="Enter website or social url"
-            name="website"
+            id="confirmPassword"
+            placeholder="Confirm password"
+            inputType="password"
+            name="confirmPassword"
             register={register}
-            error={errors.website}
-            errorText={errors.website && errors.website.message}
-            required
-          />
-          <GTextField
-            id="businessDate"
-            placeholder="Enter business date"
-            name="businessDate"
-            register={register}
-            error={errors.businessDate}
-            errorText={errors.businessDate && errors.businessDate.message}
+            error={errors.confirmPassword}
+            errorText={errors.confirmPassword && errors.confirmPassword.message}
             required
           />
           <GSpacer size={1} />
-          <GButton label={`Save changes`} isDisabled={isSubmitting} />
+          <GButton label={`Update password`} isDisabled={isSubmitting} />
         </FormWrapper>
       </Container>
     </GModal>
   );
 };
 
-export default BusinessModal;
+export default PasswordModal;
 
 const Container = styled.div`
   width: 55vw;

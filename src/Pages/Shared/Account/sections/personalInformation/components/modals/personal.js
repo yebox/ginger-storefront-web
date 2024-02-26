@@ -26,6 +26,7 @@ const PersonalModal = ({ isOpen, handleClose }) => {
 
   const onSubmit = () => {
     toast.success(`Your information has been updated successfully.`);
+    handleClose();
   };
   return (
     <GModal open={isOpen} handleClose={handleClose}>

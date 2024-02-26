@@ -5,7 +5,7 @@ import RateProduct from "./components/rateProduct";
 import OrderTracking from "./components/orderTracking";
 
 const OrderDetails = () => {
-  const isCompleted = true;
+  const isCompleted = false;
   return (
     <Container>
       <Details />

@@ -27,6 +27,7 @@ const Container = styled.div`
   flex-direction: column;
   border: 0.774px solid #eaeaea;
   background: #fff;
+  height: 100%;
 `;
 
 const TopWrapper = styled.div`

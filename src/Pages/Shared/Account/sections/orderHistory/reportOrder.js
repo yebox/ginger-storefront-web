@@ -5,10 +5,12 @@ import { styled } from "styled-components";
 import { CaretLeft } from "../../../../../Assets/Svgs";
 import { useNavigate } from "react-router-dom";
 import ProductUpload from "./components/productUpload";
+import IssueType from "./components/issueType";
+import ResolveOption from "./components/resolveOption";
 
 const ReportOrder = () => {
   const navigate = useNavigate();
-  const [currentStep, setCurrentStep] = useState(0);
+  const [currentStep, setCurrentStep] = useState(1);
 
   const handleGoBack = () => navigate("/account/order/1");
 
@@ -24,10 +26,11 @@ const ReportOrder = () => {
           <Title>Report Issue</Title>
         </TitleWrapper>
         <ReportStepper currentStep={currentStep} steps={reportSteps} />
-        <div onClick={handleNext}>Next</div>
       </LeftWrapper>
       <RightWrapper>
-        <ProductUpload />
+        {currentStep === 1 && <IssueType handleNext={handleNext} />}
+        {currentStep === 2 && <ResolveOption handleNext={handleNext} />}
+        {currentStep === 3 && <ProductUpload />}
       </RightWrapper>
     </Container>
   );
@@ -55,13 +58,13 @@ const TitleWrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
+  cursor: pointer;
 
   & > svg {
     width: 24px;
     height: 24px;
     flex-shrink: 0;
     margin-top: 4px;
-    cursor: pointer;
   }
 `;
 

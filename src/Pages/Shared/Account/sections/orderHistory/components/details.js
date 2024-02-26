@@ -1,15 +1,27 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { styled } from "styled-components";
-import { CaretLeft, DollarShield, Visa } from "../../../../../../Assets/Svgs";
-import { Star } from "@mui/icons-material";
+import { CaretLeft, Visa } from "../../../../../../Assets/Svgs";
 import { GButton } from "../../../../../../Ui_elements";
 import { useNavigate } from "react-router-dom";
 import StatusBagde from "./statusBagde";
-import { orderStatus } from "./data";
+import { itemInfo, orderStatus } from "./data";
+import ItemInfoCard from "./itemInfoCard";
+import { accountStore } from "../../../store";
+import { useSnapshot } from "valtio";
 
 const Details = () => {
   const navigate = useNavigate();
+  const { selectedOrderItem } = useSnapshot(accountStore);
+
+  useEffect(() => {
+    accountStore.selectedOrderItem = itemInfo[0];
+  }, []);
+
   const handleGoBack = () => navigate(`/account`);
+
+  const handleClick = (item) => {
+    accountStore.selectedOrderItem = item;
+  };
 
   return (
     <Container>
@@ -39,30 +51,14 @@ const Details = () => {
       </PriceBox>
       <ItemInfoBox>
         <BoxTitle>Item Information</BoxTitle>
-        <ItemContentWrapper>
-          <LeftWrapper>
-            <ItemImage
-              src={
-                "https://images.unsplash.com/photo-1625753783470-ec2ab4efeeec?q=80&w=2564&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-              }
-            />
-            <DetailsWrapper>
-              <SellerName>
-                Seller: <span>Rosalind</span>
-              </SellerName>
-              <ItemName>Nairobi Wrapp-It Shine Foaming Lotion 8oz</ItemName>
-              <RRPContainer>
-                <DollarShield />
-                <RRPText>MSRP</RRPText>
-                <RRPPriceTxt>₦5,500</RRPPriceTxt>
-              </RRPContainer>
-            </DetailsWrapper>
-          </LeftWrapper>
-          <RatingWrapper>
-            <Rating>4.5</Rating>
-            <Star color="#151515" />
-          </RatingWrapper>
-        </ItemContentWrapper>
+        {itemInfo.map((item) => (
+          <ItemInfoCard
+            key={item?.id}
+            item={item}
+            handleClick={() => handleClick(item)}
+            isSelected={selectedOrderItem?.id === item?.id}
+          />
+        ))}
       </ItemInfoBox>
       <PaymentInfoBox>
         <BoxTitle>Payment Information</BoxTitle>
@@ -114,13 +110,13 @@ const TitleWrapper = styled.div`
   align-items: center;
   gap: 8px;
   margin-left: -16px;
+  cursor: pointer;
 
   & > svg {
     width: 24px;
     height: 24px;
     flex-shrink: 0;
     margin-top: 4px;
-    cursor: pointer;
   }
 `;
 
@@ -178,104 +174,6 @@ const BoxTitle = styled.p`
   font-style: normal;
   font-weight: 500;
   line-height: 120%; /* 16.8px */
-`;
-
-const ItemContentWrapper = styled.div`
-  position: relative;
-  display: flex;
-  gap: 30px;
-`;
-
-const LeftWrapper = styled.div`
-  display: flex;
-  gap: 13px;
-`;
-
-const DetailsWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-  padding: 3px 0;
-`;
-
-const SellerName = styled.p`
-  color: var(--Black-100, #b6b6b6);
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 140%; /* 19.6px */
-
-  & > span {
-    color: var(--Black-300, #626262);
-  }
-`;
-
-const ItemName = styled.p`
-  color: var(--Black-500, #151515);
-  font-size: 22px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 120%; /* 26.4px */
-  width: 80%;
-`;
-
-const RRPContainer = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  margin-top: auto;
-
-  & > svg {
-    width: 20px;
-    height: 20px;
-  }
-`;
-
-const RRPText = styled.p`
-  color: var(--Black-300, #626262);
-  font-size: 18px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 140%; /* 25.2px */
-`;
-
-const RRPPriceTxt = styled.p`
-  color: var(--Black-500, #151515);
-  font-size: 18px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 140%; /* 25.2px */
-  margin-left: 5px;
-`;
-
-const ItemImage = styled.img`
-  width: 116px;
-  height: 116px;
-  flex-shrink: 0;
-  object-fit: cover;
-`;
-
-const RatingWrapper = styled.div`
-  position: absolute;
-  top: 2px;
-  right: 0;
-  display: flex;
-  align-items: center;
-  gap: 3px;
-
-  & > svg {
-    width: 18px;
-    height: 18px;
-    margin-top: -1px;
-  }
-`;
-
-const Rating = styled.p`
-  color: var(--Black-300, #626262);
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 140%; /* 19.6px */
 `;
 
 const PaymentInfoBox = styled.div`

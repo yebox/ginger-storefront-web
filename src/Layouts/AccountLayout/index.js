@@ -2,10 +2,16 @@ import React from "react";
 import { styled } from "styled-components";
 import { accountNavInfo } from "../../Pages/Shared/Account/data";
 import { Link, useLocation } from "react-router-dom";
-import { WalletIcon } from "../../Assets/Svgs";
+import {
+  AccountLeftStar,
+  AccountRightStar,
+  WalletIcon,
+} from "../../Assets/Svgs";
+import { GSpacer } from "../../Ui_elements";
 
 const AccountLayout = ({ children }) => {
   const { pathname } = useLocation();
+
   console.log({ pathname });
   return (
     <Container>
@@ -148,7 +154,6 @@ const ContentWrapper = styled.div`
 const LeftSectionWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100%;
   flex-shrink: 0;
   padding: 48px 147px 48px 5%;
   border: 0.774px solid #eaeaea;
@@ -180,6 +185,10 @@ const SideNav = styled(Link)`
   line-height: 120%;
   transition: all 0.25s ease;
   cursor: pointer;
+
+  &:hover {
+    color: unset;
+  }
 `;
 
 const RightSectionWrapper = styled.div`

@@ -1,85 +1,61 @@
 import React, { useState } from "react";
 import { styled } from "styled-components";
-import { Eye, EyeSlash } from "../../Assets/Svgs";
 
 /**
- * inputType is to choose between 'text' or 'passowrd'
  * error is the error state of the textField
  * errorText holds the error message if you want to show one
- * endIcon is any component that displays at the end of the text field
  */
 
-export const GTextField = ({
+export const GTextAreaField = ({
   placeholder,
   isDisabled = false,
   required,
-  inputType = "text",
   min,
   name = "",
   error = false,
   errorText = "",
+  maxChars,
+  value,
   onChange = () => {},
   register = () => {},
-  endIcon,
   ...props
 }) => {
-  const [showPassword, setShowPassword] = useState(true);
   const [isFocus, setIsFocus] = useState(false);
-  const togglePassword = () => (showPassword ? "password" : "text");
-
-  const PasswordEndIcon = showPassword ? EyeSlash : Eye;
-  const isPassword = inputType === "password";
-
   const errorClass = `${error && "error"} ${required ? "required" : ""}`;
 
   return (
-    <InputContainer>
-      <InputWrapper
-        $isFocus={isFocus}
-        $isError={error}
-        $isDisabled={isDisabled}
-      >
-        <Input
+    <Container>
+      <Wrapper $isFocus={isFocus} $isError={error} $isDisabled={isDisabled}>
+        <TextArea
           {...props}
-          type={isPassword ? togglePassword() : inputType}
+          value={value}
           id={props.name}
           className={errorClass}
           placeholder={placeholder}
           disabled={isDisabled}
           $isDisabled={isDisabled}
+          rows={3}
           min={min}
           onChange={onChange}
           {...register(name, { required })}
           onFocus={() => setIsFocus(true)}
           onBlur={() => setIsFocus(false)}
         />
-
-        {endIcon
-          ? endIcon
-          : isPassword && (
-              <InputIcon
-                $isDisabled={isDisabled}
-                $isFocus={isFocus}
-                onClick={() => setShowPassword((prev) => !prev)}
-                className="clickable"
-              >
-                <PasswordEndIcon />
-              </InputIcon>
-            )}
-      </InputWrapper>
-      <div>{errorText.length > 0 && <Error>{errorText}</Error>}</div>
-    </InputContainer>
+        {maxChars && <MaxChar>{`${value.length || 0}/${maxChars}`}</MaxChar>}
+      </Wrapper>
+      {errorText.length > 0 && <Error>{errorText}</Error>}
+    </Container>
   );
 };
 
-const InputContainer = styled.div`
+const Container = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
   gap: 4px;
 `;
 
-const Input = styled.input`
+const TextArea = styled.textarea`
   display: flex;
   width: 100%;
   align-items: center;
@@ -91,6 +67,7 @@ const Input = styled.input`
   font-weight: 400;
   border: none;
   outline: none;
+  resize: none;
 
   :-webkit-autofill {
     -webkit-text-fill-color: #151515;
@@ -103,7 +80,7 @@ const Input = styled.input`
 
   //can't combine them
   &::-webkit-input-placeholder {
-    color: ${({ $isDisabled }) => ($isDisabled ? "#D21F37" : "#151515")};
+    color: ${({ $isDisabled }) => ($isDisabled ? "#626262" : "#151515")};
     opacity: 0.5;
     font-size: 16px;
     font-weight: 400;
@@ -111,7 +88,7 @@ const Input = styled.input`
   }
 
   &::-moz-placeholder {
-    color: ${({ $isDisabled }) => ($isDisabled ? "#D21F37" : "#151515")};
+    color: ${({ $isDisabled }) => ($isDisabled ? "#626262" : "#151515")};
     opacity: 0.5;
     font-size: 16px;
     font-weight: 400;
@@ -119,7 +96,7 @@ const Input = styled.input`
   }
 
   &::-ms-placeholder {
-    color: ${({ $isDisabled }) => ($isDisabled ? "#D21F37" : "#151515")};
+    color: ${({ $isDisabled }) => ($isDisabled ? "#626262" : "#151515")};
     opacity: 0.5;
     font-size: 16px;
     font-weight: 400;
@@ -127,7 +104,7 @@ const Input = styled.input`
   }
 
   &::placeholder {
-    color: ${({ $isDisabled }) => ($isDisabled ? "#D21F37" : "#151515")};
+    color: ${({ $isDisabled }) => ($isDisabled ? "#626262" : "#151515")};
     opacity: 0.5;
     font-size: 16px;
     font-weight: 400;
@@ -139,7 +116,8 @@ const Input = styled.input`
   }
 `;
 
-const InputWrapper = styled.label`
+const Wrapper = styled.label`
+  position: relative;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -158,27 +136,21 @@ const InputWrapper = styled.label`
   }
 `;
 
-const InputIcon = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 24px;
-  height: 24px;
-  margin-right: 8px;
-  flex-shrink: 0;
-  cursor: pointer;
-
-  & > svg {
-    width: 100%;
-    height: 100%;
-    opacity: ${({ $isDisabled, $isFocus }) =>
-      $isDisabled || !$isFocus ? 0.5 : 1};
-  }
-`;
-
 const Error = styled.div`
   color: #d21f37;
   font-size: 16px;
   font-weight: 400;
   line-height: 120%;
+`;
+
+const MaxChar = styled.p`
+  position: absolute;
+  right: 0;
+  bottom: 12px;
+  color: var(--Black-500, #151515);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 120%; /* 19.2px */
+  opacity: 0.5;
 `;

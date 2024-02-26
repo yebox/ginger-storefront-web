@@ -16,7 +16,7 @@ const Step = ({
     return initialTextObj;
   };
 
-  const { main, sub } = getTextObj();
+  const { main, sub, status } = getTextObj();
 
   return (
     <StepWrapper $active={active} $completed={completed}>
@@ -29,7 +29,7 @@ const Step = ({
               <SubTxt>{time}</SubTxt>
             </>
           ) : (
-            <MainTxt>Awaiting</MainTxt>
+            <Status>{status}</Status>
           )}
         </DateWrapper>
         <Circle $active={active} $completed={completed}>
@@ -75,7 +75,7 @@ const TrackStepper = ({
         time={timeDelivered}
         stepType={TrackStepTypes.delivered}
       />
-      <StepperTail />
+      <StepperTail $completed={dateDelivered} />
     </Container>
   );
 };
@@ -110,6 +110,7 @@ const Connector = styled.span`
 
 const StepperTail = styled(Connector)`
   margin-left: 11px;
+  background: ${({ $completed }) => ($completed ? `#FF4623` : `#CCCCCC`)};
 `;
 
 const Content = styled.div`
@@ -169,7 +170,7 @@ const DateWrapper = styled.div`
   position: absolute;
   width: 125px;
   right: 42px;
-  bottom: 2px;
+  bottom: 5px;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -196,4 +197,9 @@ const SubTxt = styled.p`
   font-weight: 400;
   line-height: 140%; /* 19.6px */
   transition: all 0.25s ease;
+`;
+
+const Status = styled(MainTxt)`
+  font-style: italic;
+  font-size: 14px;
 `;

@@ -26,6 +26,7 @@ const AddressModal = ({ isOpen, handleClose }) => {
 
   const onSubmit = () => {
     toast.success(`You address has been added successfully.`);
+    handleClose();
   };
   return (
     <GModal open={isOpen} handleClose={handleClose}>
