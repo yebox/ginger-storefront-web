@@ -1,6 +1,6 @@
 import styled, { keyframes } from "styled-components";
-import { GButton, Product, GTextField, Chip, GModal } from "../../Ui_elements";
-import React, { memo, useState } from "react";
+import { GButton, Product, GTextField, Chip, GModal, Carousel } from "../../Ui_elements";
+import React, { memo, useState, useRef } from "react";
 import Vector from "../../Assets/Images/vector-background.png";
 import AddPicture from "../../Assets/Images/ad-picture.png";
 import { BecomeSellerSection, BlogCard, InstaFooter, SellerCard } from "./Components";
@@ -15,6 +15,7 @@ import {
   WhiteX,
 } from "../../Assets/Svgs";
 import { topSellerCategories } from "../../Utils";
+import Swiper from "swiper"
 import { useNavigate } from "react-router-dom";
 // import InstaFooter from "./Components/instaFooter";
 
@@ -23,6 +24,23 @@ const Home = () => {
   const [selectCat, setSelectCat] = useState(0);
   const [openCookie, setOpenCookie] = useState(true)
   const [openModal, setOpenModal] = useState(true)
+  const sliderRef = useRef(null)
+  const swiper = new Swiper()
+
+
+  const slideNext = () => {
+    if (sliderRef.current) {
+      sliderRef.current.swiper.slideNext();
+    }
+  };
+
+
+  const slidePrev = () => {
+    if (sliderRef.current) {
+      sliderRef.current.swiper.slidePrev();
+    }
+  };
+
 
   const EndIcon = () => (
     <EndIconContainer>
@@ -77,7 +95,7 @@ const Home = () => {
               <CatShopBottom>
                 <h6>Barbing</h6>
 
-                <Shopbutton onClick={()=> navigate('/categories/all')}>Shop Now</Shopbutton>
+                <Shopbutton onClick={() => navigate('/categories/all')}>Shop Now</Shopbutton>
               </CatShopBottom>
             </Barber>
             <NailSkinContianer>
@@ -121,7 +139,7 @@ const Home = () => {
       </FeatureProductsContainer>
 
       <ViewAllCat>
-        <GButton outline label="Shop more" onClick={() => navigate('/categories/all')}  />
+        <GButton outline label="Shop more" onClick={() => navigate('/categories/all')} />
       </ViewAllCat>
 
       <LargeAd>
@@ -133,7 +151,7 @@ const Home = () => {
           <div>
             <h4>Pain relief CBD salve oil</h4>
             <p>Place your order now and buy get a better resale value</p>
-            <GButton label={"Shop now"} outline onClick={() => navigate('/categories/all')}  />
+            <GButton label={"Shop now"} outline onClick={() => navigate('/categories/all')} />
           </div>
         </AdContainer>
 
@@ -158,10 +176,10 @@ const Home = () => {
             </p>
           </div>
           <div>
-            <div>
+            <div onClick={slidePrev} >
               <LeftArrow />
             </div>
-            <div>
+            <div onClick={slideNext}>
               <RightArrow />
             </div>
           </div>
@@ -181,12 +199,17 @@ const Home = () => {
         </ChipContainer>
 
         <SellerCardsContainer>
-          {[...Array(4)].map((_, index) => (
+          {/* {[...Array(4)].map((_, index) => (
             <SellerCard
               key={index}
             />
-          ))}
+          ))} */}
+          <Carousel
+            width={400}
+            ref={sliderRef} />
+
         </SellerCardsContainer>
+
       </TopSellerContainer>
 
       <Wholesale>
@@ -233,7 +256,7 @@ const Home = () => {
         </div>
       </Subscribe>
 
-      <InstaFooter/>
+      <InstaFooter />
 
       {
         openCookie &&
@@ -748,7 +771,6 @@ const TopSellerHeader = styled.div`
     display: flex;
     align-items: center;
     gap: 10px;
-
     div {
       display: flex;
       align-items: center;
@@ -758,6 +780,10 @@ const TopSellerHeader = styled.div`
       border-radius: 50%;
       background-color: var(--gray-100);
       cursor: pointer;
+      transition: all 0.3s ease;
+      &:hover{
+        transform: scale(1.1);
+      }
     }
   }
 `;
@@ -779,6 +805,7 @@ const SellerCardsContainer = styled.div`
   gap: 1.2rem;
   overflow-x: auto !important;
 `;
+
 
 const Wholesale = styled.div`
   padding: 10% 5%;

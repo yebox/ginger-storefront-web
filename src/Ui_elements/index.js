@@ -21,3 +21,4 @@ export * from "./ImageUpload";
 export * from "./GroupRadioSelect";
 export * from "./TextAreaField";
 export * from "./Switch";
+export * from "./Carousel";

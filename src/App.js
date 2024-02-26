@@ -2,8 +2,11 @@ import "./App.css";
 import { AppRoute } from "./Routes";
 import React from "react";
 import { Toaster } from "react-hot-toast";
+import 'swiper/css';
+import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 
 function App() {
+  const queryClient = new QueryClient()
   return (
     <>
       <Toaster
@@ -36,7 +39,9 @@ function App() {
           },
         }}
       />
-      <AppRoute />
+      <QueryClientProvider client={queryClient}>
+        <AppRoute />
+      </QueryClientProvider>
     </>
   );
 }
