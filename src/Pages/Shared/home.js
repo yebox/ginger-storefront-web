@@ -1,9 +1,21 @@
 import styled, { keyframes } from "styled-components";
-import { GButton, Product, GTextField, Chip, GModal, Carousel } from "../../Ui_elements";
+import {
+  GButton,
+  Product,
+  GTextField,
+  Chip,
+  GModal,
+  Carousel,
+} from "../../Ui_elements";
 import React, { memo, useState, useRef } from "react";
 import Vector from "../../Assets/Images/vector-background.png";
 import AddPicture from "../../Assets/Images/ad-picture.png";
-import { BecomeSellerSection, BlogCard, InstaFooter, SellerCard } from "./Components";
+import {
+  BecomeSellerSection,
+  BlogCard,
+  InstaFooter,
+  SellerCard,
+} from "./Components";
 import Partners from "../../Assets/Images/partners.png";
 import HeroImage from "../../Assets/Images/hero-image.png";
 import {
@@ -15,18 +27,17 @@ import {
   WhiteX,
 } from "../../Assets/Svgs";
 import { topSellerCategories } from "../../Utils";
-import Swiper from "swiper"
+import Swiper from "swiper";
 import { useNavigate } from "react-router-dom";
 // import InstaFooter from "./Components/instaFooter";
 
 const Home = () => {
   const navigate = useNavigate();
   const [selectCat, setSelectCat] = useState(0);
-  const [openCookie, setOpenCookie] = useState(true)
-  const [openModal, setOpenModal] = useState(true)
-  const sliderRef = useRef(null)
-  const swiper = new Swiper()
-
+  const [openCookie, setOpenCookie] = useState(true);
+  const [openModal, setOpenModal] = useState(true);
+  const sliderRef = useRef(null);
+  const swiper = new Swiper();
 
   const slideNext = () => {
     if (sliderRef.current) {
@@ -34,13 +45,11 @@ const Home = () => {
     }
   };
 
-
   const slidePrev = () => {
     if (sliderRef.current) {
       sliderRef.current.swiper.slidePrev();
     }
   };
-
 
   const EndIcon = () => (
     <EndIconContainer>
@@ -95,7 +104,9 @@ const Home = () => {
               <CatShopBottom>
                 <h6>Barbing</h6>
 
-                <Shopbutton onClick={() => navigate('/categories/all')}>Shop Now</Shopbutton>
+                <Shopbutton onClick={() => navigate("/categories/all")}>
+                  Shop Now
+                </Shopbutton>
               </CatShopBottom>
             </Barber>
             <NailSkinContianer>
@@ -103,14 +114,18 @@ const Home = () => {
                 <CatShopBottom>
                   <h6>Nails</h6>
 
-                  <Shopbutton onClick={() => navigate('/categories/nails')} >Shop Now</Shopbutton>
+                  <Shopbutton onClick={() => navigate("/categories/nails")}>
+                    Shop Now
+                  </Shopbutton>
                 </CatShopBottom>
               </Nails>
               <Skin>
                 <CatShopBottom>
                   <h6>Skin & Body</h6>
 
-                  <Shopbutton onClick={() => navigate('/categories/skin')}>Shop Now</Shopbutton>
+                  <Shopbutton onClick={() => navigate("/categories/skin")}>
+                    Shop Now
+                  </Shopbutton>
                 </CatShopBottom>
               </Skin>
             </NailSkinContianer>
@@ -119,13 +134,19 @@ const Home = () => {
             <CatShopBottom>
               <h6>Braids & Weaves</h6>
 
-              <Shopbutton onClick={() => navigate('/categories/hair')}>Shop Now</Shopbutton>
+              <Shopbutton onClick={() => navigate("/categories/hair")}>
+                Shop Now
+              </Shopbutton>
             </CatShopBottom>
           </CatSecondBox>
         </CatergoryGridContainer>
 
         <ViewAllCat>
-          <GButton outline label="See all categories" onClick={() => navigate('/categories/all')} />
+          <GButton
+            outline
+            label="See all categories"
+            onClick={() => navigate("/categories/all")}
+          />
         </ViewAllCat>
       </Category>
 
@@ -139,7 +160,11 @@ const Home = () => {
       </FeatureProductsContainer>
 
       <ViewAllCat>
-        <GButton outline label="Shop more" onClick={() => navigate('/categories/all')} />
+        <GButton
+          outline
+          label="Shop more"
+          onClick={() => navigate("/marketplace")}
+        />
       </ViewAllCat>
 
       <LargeAd>
@@ -151,7 +176,11 @@ const Home = () => {
           <div>
             <h4>Pain relief CBD salve oil</h4>
             <p>Place your order now and buy get a better resale value</p>
-            <GButton label={"Shop now"} outline onClick={() => navigate('/categories/all')} />
+            <GButton
+              label={"Shop now"}
+              outline
+              onClick={() => navigate("/categories/all")}
+            />
           </div>
         </AdContainer>
 
@@ -176,7 +205,7 @@ const Home = () => {
             </p>
           </div>
           <div>
-            <div onClick={slidePrev} >
+            <div onClick={slidePrev}>
               <LeftArrow />
             </div>
             <div onClick={slideNext}>
@@ -204,12 +233,8 @@ const Home = () => {
               key={index}
             />
           ))} */}
-          <Carousel
-            width={400}
-            ref={sliderRef} />
-
+          <Carousel width={400} ref={sliderRef} />
         </SellerCardsContainer>
-
       </TopSellerContainer>
 
       <Wholesale>
@@ -258,17 +283,17 @@ const Home = () => {
 
       <InstaFooter />
 
-      {
-        openCookie &&
+      {openCookie && (
         <CookieContainer>
           <div>
             <h6>Accept all Cookies</h6>
 
-            <p>This website uses cookies to optimize your experience and to
-              provide us insight on how to interact with the site.
-              All information shared with us through cookies are secure and
-              covered by our data privacy obligations. You can access our
-              Privacy Policy here
+            <p>
+              This website uses cookies to optimize your experience and to
+              provide us insight on how to interact with the site. All
+              information shared with us through cookies are secure and covered
+              by our data privacy obligations. You can access our Privacy Policy
+              here
             </p>
           </div>
 
@@ -276,21 +301,14 @@ const Home = () => {
             <button onClick={() => setOpenCookie(false)}>
               Accept only essential
             </button>
-            <button onClick={() => setOpenCookie(false)}>
-              Accept
-            </button>
+            <button onClick={() => setOpenCookie(false)}>Accept</button>
           </div>
         </CookieContainer>
-      }
+      )}
 
-      <GModal
-        open={openModal}
-        handleClose={() => setOpenModal(false)}
-      >
+      <GModal open={openModal} handleClose={() => setOpenModal(false)}>
         <ModalContent>
-          <img
-            src="https://images.unsplash.com/photo-1500336624523-d727130c3328?q=80&w=3200&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-          />
+          <img src="https://images.unsplash.com/photo-1500336624523-d727130c3328?q=80&w=3200&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" />
 
           <ModalRedbanner>
             <p>Never miss out on our discounts and promos</p>
@@ -301,25 +319,19 @@ const Home = () => {
           </ModalSub>
 
           <ModalFieldContainer>
-            <GTextField
-              placeholder={"Enter your email"}
-            />
+            <GTextField placeholder={"Enter your email"} />
           </ModalFieldContainer>
 
           <ModalButton>
-            <GButton
-              label={"Subscribe"}
-            />
+            <GButton label={"Subscribe"} />
           </ModalButton>
 
           <ModalClose onClick={() => setOpenModal(false)}>
             <WhiteX />
           </ModalClose>
-
         </ModalContent>
       </GModal>
     </Container>
-
   );
 };
 
@@ -410,7 +422,7 @@ const HeroDetails = styled.div`
 const ButtonContainer = styled.div`
   display: flex;
   gap: 20px;
-  width:calc(100% - 57px);
+  width: calc(100% - 57px);
 `;
 
 const Category = styled.section`
@@ -725,7 +737,7 @@ const CircleItem = styled.div`
   border-radius: 50%;
 
   /* Apply animation */
-   /* Adjust duration and timing function as needed */
+  /* Adjust duration and timing function as needed */
 
   div {
     position: absolute;
@@ -781,7 +793,7 @@ const TopSellerHeader = styled.div`
       background-color: var(--gray-100);
       cursor: pointer;
       transition: all 0.3s ease;
-      &:hover{
+      &:hover {
         transform: scale(1.1);
       }
     }
@@ -805,7 +817,6 @@ const SellerCardsContainer = styled.div`
   gap: 1.2rem;
   overflow-x: auto !important;
 `;
-
 
 const Wholesale = styled.div`
   padding: 10% 5%;
@@ -946,8 +957,8 @@ const CookieContainer = styled.div`
   left: 0;
   div:nth-child(1) {
     width: 56%;
-    h6{
-      color: #FFF;
+    h6 {
+      color: #fff;
       font-family: "Roboto Serif";
       font-size: 18px;
       font-style: normal;
@@ -955,18 +966,18 @@ const CookieContainer = styled.div`
       margin-bottom: 1rem;
     }
 
-    p{
+    p {
       font-size: 1rem;
       color: white;
     }
   }
 
-  div:nth-child(2){
+  div:nth-child(2) {
     display: flex;
     align-items: center;
     gap: 20px;
 
-    button{
+    button {
       display: flex;
       align-items: center;
       justify-content: center;
@@ -978,17 +989,16 @@ const CookieContainer = styled.div`
       cursor: pointer;
     }
 
-    button:nth-child(1){
+    button:nth-child(1) {
       color: white;
       background-color: var(--black);
     }
-    button:nth-child(2){
+    button:nth-child(2) {
       background-color: white;
       color: black;
-      
     }
   }
-`
+`;
 
 const ModalContent = styled.div`
   display: flex;
@@ -996,51 +1006,50 @@ const ModalContent = styled.div`
   align-items: center;
   position: relative;
 
-  img{
+  img {
     height: 30vh;
     width: 50vw;
     object-fit: cover;
     margin-bottom: 0;
     filter: brightness(0.8);
   }
-`
+`;
 const ModalRedbanner = styled.div`
   background-color: var(--primary-color);
   margin-top: -3px;
   padding: 12px 0;
   width: 100%;
-  p{
+  p {
     text-align: center;
     color: white;
   }
-`
+`;
 const ModalSub = styled.div`
-width: 100%;
-display:flex;
-align-items: center;
-justify-content: center;
-margin-top: 46px;
-margin-bottom: 50px;
-  b{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 46px;
+  margin-bottom: 50px;
+  b {
     font-size: 1.75rem;
     font-weight: 500;
     text-align: center;
   }
-`
+`;
 const ModalFieldContainer = styled.div`
   width: 70%;
   margin-bottom: 40px;
-
-`
+`;
 
 const ModalButton = styled.div`
   width: 60%;
   margin-bottom: 45px;
-`
+`;
 
 const ModalClose = styled.div`
   position: absolute;
-  top:40px;
-  right:40px;
+  top: 40px;
+  right: 40px;
   cursor: pointer;
-`
+`;

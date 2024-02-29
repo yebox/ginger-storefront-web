@@ -1,12 +1,68 @@
-import React from "react";
+import React, { useState } from "react";
 import { styled } from "styled-components";
+import { issueTypeOption } from "./data";
+import {
+  GButton,
+  GRadioButtonsGroup,
+  GSpacer,
+  GTextAreaField,
+} from "../../../../../../Ui_elements";
 
-const IssueType = () => {
+const IssueType = ({ handleNext }) => {
+  const [radioValue, setRadioValue] = useState(issueTypeOption[0].value);
+  const [inputValue, setInputValue] = useState("");
+  const maxChars = 140;
+
+  const handleCheck = (e) => {
+    const value = e.target.value;
+    if (value !== "others") {
+      setInputValue("");
+    }
+    setRadioValue(e.target.value);
+  };
+
+  const handleChange = (e) => {
+    const newText = e.target.value;
+    if (newText.length <= maxChars) {
+      setInputValue(newText);
+    }
+  };
+
+  const handleSubmit = () => {
+    const reason = radioValue !== "others" ? radioValue : inputValue;
+    console.log("reason", reason);
+    handleNext();
+  };
+
   return (
     <Container>
       <Title>Issue type</Title>
       <SubTxt>Please help us with as much information as possible.</SubTxt>
-      <ContentWrapper></ContentWrapper>
+      <ContentWrapper>
+        <GRadioButtonsGroup
+          name={"reason"}
+          options={issueTypeOption}
+          handleChange={handleCheck}
+          value={radioValue}
+        />
+        <GSpacer size={70} />
+        <GTextAreaField
+          id="reason"
+          placeholder="Other reason, specify"
+          name="reason"
+          value={inputValue}
+          isDisabled={!(radioValue === "others")}
+          maxChars={maxChars}
+          onChange={handleChange}
+          required
+        />
+        <GSpacer size={30} />
+        <GButton
+          label={`Submit`}
+          onClick={handleSubmit}
+          isDisabled={radioValue === "others" && !inputValue}
+        />
+      </ContentWrapper>
     </Container>
   );
 };

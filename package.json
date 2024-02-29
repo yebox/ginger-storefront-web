@@ -30,6 +30,7 @@
     "redux-logger": "^3.0.6",
     "redux-persist": "^6.0.0",
     "styled-components": "^6.1.8",
+    "valtio": "^1.13.1",
     "swiper": "^11.0.6",
     "web-vitals": "^2.1.4",
     "yup": "^0.32.11"

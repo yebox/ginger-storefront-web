@@ -18,4 +18,7 @@ export * from "./Tooltip";
 export * from "./FavoriteIcon";
 export * from "./RatingIcon";
 export * from "./ImageUpload";
-export * from "./Carousel"
+export * from "./GroupRadioSelect";
+export * from "./TextAreaField";
+export * from "./Switch";
+export * from "./Carousel";

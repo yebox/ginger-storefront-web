@@ -3,8 +3,17 @@ import { EditIcon } from "../../../../../Assets/Svgs";
 import { orders } from "./components/data";
 import OrderCard from "./components/order";
 import { styled } from "styled-components";
+import { useApiGet } from "../../../../../Hooks/api";
+import { getOrders } from "../../../../../Urls/orders";
 
 const OrderHistory = () => {
+  const { data, isLoading, isError } = useApiGet("get-orders", getOrders, {
+    select: (data) => data.data,
+    onError: (error) => console.log(error),
+  });
+
+  console.log({ data });
+
   return (
     <Container>
       <TopWrapper>
@@ -27,6 +36,7 @@ const Container = styled.div`
   flex-direction: column;
   border: 0.774px solid #eaeaea;
   background: #fff;
+  height: 100%;
 `;
 
 const TopWrapper = styled.div`

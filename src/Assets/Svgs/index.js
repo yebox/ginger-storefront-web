@@ -66,10 +66,13 @@ import { ReactComponent as SuccessIcon } from "./success.svg";
 import { ReactComponent as UploadIcon } from "./uploadIcon.svg";
 import { ReactComponent as Cancel } from "./cancel.svg";
 import { ReactComponent as Check } from "./check.svg";
-import { ReactComponent as DocumentIcon } from "./document.svg";
+import { ReactComponent as TfaIcon } from "./tfa.svg";
 import { ReactComponent as NotificationIcon } from "./notification.svg";
-
-
+import { ReactComponent as NotificationBell } from "./notificationBell.svg";
+import { ReactComponent as TwitterFill } from "./twitterFill.svg";
+import { ReactComponent as LinkedInFill } from "./linkedInFill.svg";
+import { ReactComponent as FacebookFill } from "./facebookFill.svg";
+import { ReactComponent as DocumentIcon } from "./document.svg";
 
 export {
   Logo,
@@ -140,6 +143,11 @@ export {
   UploadIcon,
   Cancel,
   Check,
+  TfaIcon,
+  NotificationBell,
+  NotificationIcon,
+  TwitterFill,
+  LinkedInFill,
+  FacebookFill,
   DocumentIcon,
-  NotificationIcon
 };

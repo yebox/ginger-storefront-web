@@ -21,6 +21,13 @@ const PersonalInformation = lazy(() =>
 const OrderHistory = lazy(() =>
   import("../Pages/Shared/Account/sections/orderHistory")
 );
+const Security = lazy(() =>
+  import("../Pages/Shared/Account/sections/security")
+);
+const Notification = lazy(() =>
+  import("../Pages/Shared/Account/sections/notification")
+);
+const Support = lazy(() => import("../Pages/Shared/Account/sections/support"));
 const OrderDetails = lazy(() =>
   import("../Pages/Shared/Account/sections/orderHistory/orderDetails")
 );
@@ -95,14 +102,6 @@ export const sharedRoutes = [
   {
     path: "/product/:id",
     element: ProductPage,
-  },
-  {
-    path: "/account",
-    element: AccountPage,
-  },
-  {
-    path: "/account/order/:id",
-    element: OrderDetails,
   },
   {
     path: "/report/:id",
@@ -193,9 +192,31 @@ export const accountRoutes = [
   {
     path: "/account/personal-information",
     element: PersonalInformation,
+    hasLayout: true,
   },
   {
     path: "/account/order-history",
     element: OrderHistory,
+    hasLayout: true,
+  },
+  {
+    path: "/account/order/:id",
+    element: OrderDetails,
+    hasLayout: false,
+  },
+  {
+    path: "/account/support",
+    element: Support,
+    hasLayout: true,
+  },
+  {
+    path: "/account/security",
+    element: Security,
+    hasLayout: true,
+  },
+  {
+    path: "/account/notification",
+    element: Notification,
+    hasLayout: true,
   },
 ];

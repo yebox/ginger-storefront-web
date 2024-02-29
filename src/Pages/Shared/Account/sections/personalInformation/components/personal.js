@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import { styled } from "styled-components";
 import { EditIcon } from "../../../../../../Assets/Svgs";
 import PersonalModal from "./modals/personal";
+import { useSelector } from "react-redux";
 
 const Personal = () => {
+  const user = useSelector((state) => state.user);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (

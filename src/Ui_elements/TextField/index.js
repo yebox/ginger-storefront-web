@@ -3,7 +3,7 @@ import { styled } from "styled-components";
 import { Eye, EyeSlash } from "../../Assets/Svgs";
 
 /**
- * inputType is to choose between "textarea" or 'input'
+ * inputType is to choose between 'text' or 'passowrd'
  * error is the error state of the textField
  * errorText holds the error message if you want to show one
  * endIcon is any component that displays at the end of the text field
@@ -23,7 +23,7 @@ export const GTextField = ({
   endIcon,
   ...props
 }) => {
-  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(true);
   const [isFocus, setIsFocus] = useState(false);
   const togglePassword = () => (showPassword ? "password" : "text");
 
@@ -132,6 +132,10 @@ const Input = styled.input`
     font-size: 16px;
     font-weight: 400;
     line-height: 120%;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
   }
 `;
 

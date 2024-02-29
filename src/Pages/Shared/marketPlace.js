@@ -17,12 +17,9 @@ import {
   BecomeSellerSection,
   RelatedItems,
 } from "./Components";
-
 import Fade from "@mui/material/Fade";
 
-
-
-const MarketPlace = () => { 
+const MarketPlace = () => {
   const [label, setLabel] = useState("All");
   const [isOpen, setIsOpen] = useState(false);
 
@@ -128,7 +125,7 @@ const SortBox = styled.div`
   & > svg {
     transform: rotate(90deg);
     transform: ${({ $isOpen }) =>
-    $isOpen ? `rotate(270deg)` : "rotate(90deg)"};
+      $isOpen ? `rotate(270deg)` : "rotate(90deg)"};
     width: 14px;
     transition: all 0.25s ease;
   }
@@ -176,5 +173,5 @@ const ProductsWrapper = styled.div`
   width: 100%;
   display: flex;
   flex-wrap: wrap;
-  gap: 20px 20px;
+  gap: 40px 20px;
 `;

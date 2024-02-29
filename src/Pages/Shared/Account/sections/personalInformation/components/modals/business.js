@@ -23,6 +23,7 @@ const BusinessModal = ({ isOpen, handleClose }) => {
 
   const onSubmit = () => {
     toast.success(`Your information has been updated successfully.`);
+    handleClose();
   };
   return (
     <GModal open={isOpen} handleClose={handleClose}>
@@ -92,6 +93,7 @@ const Header = styled.div`
     width: 40px;
     height: 40px;
     flex-shrink: 0;
+    cursor: pointer;
   }
 `;
 

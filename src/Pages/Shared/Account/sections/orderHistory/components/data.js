@@ -39,7 +39,8 @@ export const TrackStepTypes = {
   processed: {
     initialTextObj: null,
     activeTextObj: {
-      main: `Processing`,
+      main: `Order Procressing`,
+      status: `In progress`,
     },
     completedTxtObj: {
       main: `Order Accepted`,
@@ -47,16 +48,16 @@ export const TrackStepTypes = {
   },
   dispatched: {
     initialTextObj: {
-      main: `Order Dispatched`,
+      main: `Order Dispatch`,
       sub: `You will be notified when your order is dispatched`,
     },
     activeTextObj: {
-      main: `Order Dispatched`,
-      sub: `Your order is on its way to you`,
+      main: `Order Dispatch`,
+      status: `In packaging`,
     },
     completedTxtObj: {
       main: `Order Dispatched`,
-      sub: ``,
+      sub: `Your order is on its way to you`,
     },
   },
   delivered: {
@@ -66,7 +67,7 @@ export const TrackStepTypes = {
     },
     activeTextObj: {
       main: `Order Arrival`,
-      sub: `You will be notified when your driver gets to you`,
+      status: `In transit`,
     },
     completedTxtObj: {
       main: `Order Arrival`,
@@ -80,3 +81,49 @@ export const orderStatus = {
   inTransit: `In transit`,
   processing: `Processing`,
 };
+
+export const issueTypeOption = [
+  {
+    label: "Damaged product",
+    value: "damaged",
+  },
+  {
+    label: "Not what I ordered arrived",
+    value: "wrongOrder",
+  },
+  {
+    label: "Not what I ordered arrived",
+    value: "wrongSize",
+  },
+  {
+    label: "Others",
+    value: "others",
+  },
+];
+
+export const resolveOption = [
+  {
+    label: "I want a refund",
+    value: "refund",
+  },
+  {
+    label: "I want to make a return",
+    value: "return",
+  },
+];
+
+export const itemInfo = [
+  {
+    id: 1,
+    name: `Nairobi Wrapp-It Shine Foaming Lotion 8oz`,
+    price: `₦87,260`,
+    seller: `Rosalind`,
+  },
+
+  {
+    id: 2,
+    name: `Clairol BW2 Tub Powder Lightener Extra-Strength`,
+    price: `₦50,260`,
+    seller: `Rosalind`,
+  },
+];

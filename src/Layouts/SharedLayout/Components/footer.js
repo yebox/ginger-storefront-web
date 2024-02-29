@@ -85,6 +85,7 @@ export const Footer = () => {
 
 const Container = styled.footer`
   height: auto;
+  background: #f9f9f9;
 `;
 
 const Icon = styled.div`
