@@ -5,7 +5,7 @@ const AccountPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    navigate("/account/personal-information");
+    navigate("/account/personal-information", { replace: true });
   }, [navigate]);
 
   return <></>;

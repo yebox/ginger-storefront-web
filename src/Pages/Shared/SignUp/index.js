@@ -14,14 +14,14 @@ import { SignUpSchema } from "./validation";
 import { Link, useNavigate } from "react-router-dom";
 import { countryData } from "./data";
 import { useApiSend } from "../../../Hooks/api";
-import { registerUser } from "../../../Urls"
+import { registerUser } from "../../../Urls";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../../Redux";
 import { toast } from "react-hot-toast";
 
 const SignUp = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const {
     register,
     handleSubmit,
@@ -31,18 +31,18 @@ const SignUp = () => {
     resolver: yupResolver(SignUpSchema),
   });
 
-
   const { mutate, isPending } = useApiSend(
     registerUser,
     (data) => {
-      dispatch(setUser(data))
-      toast.success(`Account created successfully.`)
-      navigate("/")
+      console.log("sign", data);
+      dispatch(setUser(data));
+      toast.success(`Account created successfully.`);
+      navigate("/");
     },
     (error) => {
-      toast.error(error.message)
+      toast.error(error.message);
     }
-  )
+  );
 
   const handleTermsNav = (e) => {
     e.stopPropagation();
@@ -57,9 +57,9 @@ const SignUp = () => {
       phoneNumber: data.phoneNumber,
       password: data.password,
       country: data.country.value,
-      role: "buyer"
-    }
-    mutate(body)
+      role: "buyer",
+    };
+    mutate(body);
   };
   // console.log({ errors });
 
