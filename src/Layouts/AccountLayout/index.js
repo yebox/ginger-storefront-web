@@ -8,9 +8,16 @@ import {
   WalletIcon,
 } from "../../Assets/Svgs";
 import { GSpacer } from "../../Ui_elements";
+import { useDispatch } from "react-redux";
+import { logout } from "../../Redux";
 
 const AccountLayout = ({ children }) => {
   const { pathname } = useLocation();
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    dispatch(logout());
+  };
 
   console.log({ pathname });
   return (
@@ -44,7 +51,9 @@ const AccountLayout = ({ children }) => {
             ))}
           </SideNavWrapper>
           <GSpacer size={120} />
-          <SideNav>Log out</SideNav>
+          <SideNav onClick={handleLogout} to={"/"}>
+            Logs out
+          </SideNav>
         </LeftSectionWrapper>
         <RightSectionWrapper>{children}</RightSectionWrapper>
       </ContentWrapper>

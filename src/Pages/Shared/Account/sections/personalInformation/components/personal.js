@@ -5,7 +5,7 @@ import PersonalModal from "./modals/personal";
 import { useSelector } from "react-redux";
 
 const Personal = () => {
-  const user = useSelector((state) => state.user);
+  const user = useSelector((state) => state.user?.user);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
