@@ -1,9 +1,24 @@
-import React from "react";
+import React, { useRef } from "react";
 import { styled } from "styled-components";
 import { Product } from ".";
 import { LeftArrow, RightArrow } from "../../../Assets/Svgs";
+import Swiper from "swiper";
 
 export const RelatedItems = () => {
+  const sliderRef = useRef(null);
+  const swiper = new Swiper();
+
+  const slideNext = () => {
+    if (sliderRef.current) {
+      sliderRef.current.swiper.slideNext();
+    }
+  };
+
+  const slidePrev = () => {
+    if (sliderRef.current) {
+      sliderRef.current.swiper.slidePrev();
+    }
+  };
   return (
     <Container>
       <Header>
@@ -26,7 +41,6 @@ export const RelatedItems = () => {
     </Container>
   );
 };
-
 
 const Container = styled.section`
   margin-top: 30vh;

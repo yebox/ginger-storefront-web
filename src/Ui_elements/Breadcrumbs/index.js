@@ -36,7 +36,7 @@ const Container = styled.div`
 
 const TextLink = styled.p`
   color: #000;
-  font-size: 12px;
+  font-size: 14px;
   font-style: normal;
   font-weight: 400;
   line-height: 140%; /* 16.8px */

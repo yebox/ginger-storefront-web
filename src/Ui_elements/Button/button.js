@@ -1,23 +1,29 @@
 import { devices } from "../../Utils";
-import { Spinner } from "../Spinner/spinner";
+import { Spinner } from "../Spinner";
 import { styled } from "styled-components";
 
 export const GButton = ({
   label,
   width,
   type,
+  fontsize,
+  paddingProp,
   outline,
   icon,
   isLoading,
   isDisabled,
   alternate,
   alternateOutline,
+  onClick,
   ...otherProps
 }) => {
   return (
     <ButtonEl
       width={width}
+      $fontsize={fontsize}
+      $paddingProp={paddingProp}
       type={type}
+      onClick={onClick}
       outline={outline}
       disabled={isDisabled}
       alternate={alternate}
@@ -25,10 +31,13 @@ export const GButton = ({
       {...otherProps}
     >
       {isLoading ? (
-        <Spinner color={outline ? "var(--black)" : "white"} />
+        <Spinner
+          width={20}
+          height={20}
+          color={outline ? "var(--black)" : "white"} />
       ) : (
         <>
-          {label}
+          {typeof label === 'string' ? label : label()}
           {icon && <div>{icon}</div>}
         </>
       )}
@@ -43,19 +52,20 @@ const ButtonEl = styled.button`
     outline
       ? "transparent"
       : alternate
-      ? "white"
-      : alternateOutline
-      ? "transparent"
-      : "var(--black)"};
+        ? "white"
+        : alternateOutline
+          ? "transparent"
+          : "var(--black)"};
   color: ${({ outline, alternate }) =>
     outline || alternate ? "var(--black)" : "#ffffff"};
   font-weight: 500;
-  padding: 1rem 1.5rem;
+  padding: ${({ $paddingProp }) =>
+    $paddingProp ? $paddingProp : "1rem 1.5rem"};
   gap: 5px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1rem;
+  font-size: ${({ $fontsize }) => ($fontsize ? $fontsize : "1rem")};
   width: ${({ width }) => (width ? width : "100%")};
   border-radius: 2px;
   outline: none;
@@ -63,8 +73,8 @@ const ButtonEl = styled.button`
     outline
       ? "1px solid var(--black)"
       : alternateOutline
-      ? "1px solid white"
-      : "none"};
+        ? "1px solid white"
+        : "none"};
   cursor: pointer;
   transition: all 0.25s ease;
 

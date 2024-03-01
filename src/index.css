@@ -13,7 +13,7 @@
 }
 
 *::-webkit-scrollbar-thumb {
-  background: #ff4623;
+  background: #0f0f0f;
 }
 
 html {
@@ -41,10 +41,10 @@ code {
   --green: #00ac3e;
   --hover-color: #ff9d8a;
   --dashboardBackground: #f5f5f5;
-  --light-yellow: #FFFBF6;
+  --light-yellow: #fffbf6;
   --black50: #e8e8e8;
   --gray-300: #626262;
-  --gray-250:#B6B6B6;
+  --gray-250: #b6b6b6;
   --gray-400: #858585;
   --black: #0f0f0f;
   --lower-nav: #f9f9f9;
@@ -53,6 +53,7 @@ code {
   --gray-50: #fdfdfd;
   --light-primary: #fbe9eb;
   --light-lavendar: #e2e3ff;
+  --table-yellow: #fff6e9;
 }
 
 h1,
@@ -67,7 +68,7 @@ i,
 ul,
 li,
 a,
-span,
+/* span, */
 button,
 input,
 label,

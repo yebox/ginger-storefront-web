@@ -5,9 +5,16 @@ import { GTextField, GSpacer, GButton } from "../../../Ui_elements";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { LoginSchema } from "./validation";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useApiSend } from "../../../Hooks/api";
+import { loginUser } from "../../../Urls";
+import { useDispatch } from "react-redux";
+import { setUser } from "../../../Redux";
+import { toast } from "react-hot-toast";
 
 const Login = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const {
     register,
     handleSubmit,
@@ -16,7 +23,20 @@ const Login = () => {
     resolver: yupResolver(LoginSchema),
   });
 
-  const onSubmit = () => {};
+  const { mutate, isPending } = useApiSend(
+    loginUser,
+    (data) => {
+      dispatch(setUser(data));
+      navigate("/");
+    },
+    (error) => {
+      toast.error(error.message);
+    }
+  );
+
+  const onSubmit = (data) => {
+    mutate(data);
+  };
 
   return (
     <>
@@ -47,11 +67,13 @@ const Login = () => {
           errorText={errors.password && errors.password.message}
           required
         />
-        <ForgotPassword>Forgot password?</ForgotPassword>
+        <ForgotPassword to={"/forgot-password"}>
+          Forgot password?
+        </ForgotPassword>
         <BtnWrapper>
           <GButton
             width={"60%"}
-            isLoading={isSubmitting}
+            isLoading={isSubmitting || isPending}
             type={"submit"}
             label={"Login"}
           />
