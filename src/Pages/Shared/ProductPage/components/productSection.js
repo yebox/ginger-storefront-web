@@ -8,8 +8,7 @@ import { LeftArrow, RightArrow } from "../../../../Assets/Svgs";
 const ProductSection = () => {
   const [activeIdx, setActiveIdx] = useState(1);
   const [mainImg, setMainImg] = useState(imgsUrl[0]);
-  const sliderRef = useRef(null)
-
+  const sliderRef = useRef(null);
 
   const slideNext = () => {
     if (sliderRef.current) {
@@ -17,14 +16,11 @@ const ProductSection = () => {
     }
   };
 
-
   const slidePrev = () => {
     if (sliderRef.current) {
       sliderRef.current.swiper.slidePrev();
     }
   };
-
-
 
   return (
     <Container>
@@ -36,23 +32,24 @@ const ProductSection = () => {
             <ArrowCircle $pos={"left"}>
               <LeftArrow onClick={slidePrev} />
             </ArrowCircle>
-            {/* {imgsUrl.map((src, idx) => (
-              <ImageBox src={src} key={idx} onClick={() => setMainImg(src)} />
-            ))} */}
 
             <Carousel
               data={imgsUrl}
               ref={sliderRef}
               width={"100%"}
               renderCard={(item, index) => {
-                return <ImageBox key={index} src={item} />
+                return (
+                  <ImageBox
+                    key={index}
+                    src={item}
+                    onClick={() => setMainImg(item)}
+                  />
+                );
               }}
             />
 
-
             <ArrowCircle $pos={"right"}>
-              <RightArrow onClick={slideNext}
-              />
+              <RightArrow onClick={slideNext} />
             </ArrowCircle>
           </MoreImagesWrapper>
         </ImagesWrapper>
@@ -154,7 +151,7 @@ const ArrowCircle = styled.div`
   border-radius: 31.359px;
   border: 1px solid #fafafa;
   background: #fafafa;
-  z-index:5; 
+  z-index: 5;
   cursor: pointer;
 
   & > svg {

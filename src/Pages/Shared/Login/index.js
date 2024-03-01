@@ -23,7 +23,7 @@ const Login = () => {
     resolver: yupResolver(LoginSchema),
   });
 
-  const { mutate, isLoading, data } = useApiSend(
+  const { mutate, isPending } = useApiSend(
     loginUser,
     (data) => {
       dispatch(setUser(data));
@@ -73,7 +73,7 @@ const Login = () => {
         <BtnWrapper>
           <GButton
             width={"60%"}
-            isLoading={isSubmitting || isLoading}
+            isLoading={isSubmitting || isPending}
             type={"submit"}
             label={"Login"}
           />

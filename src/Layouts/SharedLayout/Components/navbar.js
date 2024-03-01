@@ -26,7 +26,7 @@ export const Navbar = () => {
   const [currentImage, setCurrentImage] = useState([0]);
   const [showFullOptions, setShowFullOptions] = useState(false);
   const [fullOptionsHovered, setFullOptionsHovered] = useState(false);
-  const user = useSelector((state) => state.user);
+  const user = useSelector((state) => state?.user?.user);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -60,6 +60,8 @@ export const Navbar = () => {
     }
   };
 
+  console.log("use", user?.accessToken);
+
   return (
     <OuterContainer>
       <Container>
@@ -76,7 +78,7 @@ export const Navbar = () => {
 
         <Utility>
           <>
-            {user ? (
+            {user?.accessToken ? (
               <Flex onClick={() => navigate("/account")}>
                 <Avatar
                   sx={{
