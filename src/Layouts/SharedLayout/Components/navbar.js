@@ -3,18 +3,13 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
 // import { GTextField } from '../../../Ui_elements'
 // import { GTextField } from '../../../Ui_elements'
-import {
-  Account,
-  Cart,
-  Dollar,
-  DownArrow,
-  Like,
-  Logo,
-  Search,
-} from "../../../Assets/Svgs";
-import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
-import { Avatar } from "@mui/material";
+import { Account, Cart, Dollar, DownArrow, Like, Logo, Search } from '../../../Assets/Svgs'
+import { useState, useEffect  } from 'react';
+import { useSelector } from 'react-redux';
+import { Avatar } from '@mui/material';
+import { useApiGet } from '../../../Hooks';
+import { getCategories } from '../../../Urls';
+
 
 const imageLinks = [
   "https://images.unsplash.com/photo-1546877625-cb8c71916608?q=80&w=3270&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -29,12 +24,21 @@ export const Navbar = () => {
   const user = useSelector((state) => state?.user?.user);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    imageLinks.forEach((link) => {
-      const image = new Image();
-      image.src = link;
-    });
-  }, []);
+    useEffect(() => {
+        imageLinks.forEach((link) => {
+            const image = new Image()
+            image.src = link
+        })
+    }, [])
+    
+    const { data, isLoading } = useApiGet(
+        ['navbar-categories'],
+        getCategories,
+        {
+            enabled: true,
+            refetchOnWindowFocus: true
+        }
+    )
 
   const handleNavLinkHover = (index) => {
     setCurrentImage(imageLinks[index]);

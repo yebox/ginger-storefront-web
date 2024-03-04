@@ -34,10 +34,10 @@ const SignUp = () => {
   const { mutate, isPending } = useApiSend(
     registerUser,
     (data) => {
-      console.log("sign", data);
-      dispatch(setUser(data));
-      toast.success(`Account created successfully.`);
-      navigate("/");
+      console.log(data, "signup data")
+      dispatch(setUser(data))
+      toast.success(`Account created successfully.`)
+      navigate("/")
     },
     (error) => {
       toast.error(error.message);

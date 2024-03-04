@@ -29,6 +29,8 @@ import {
 import { topSellerCategories } from "../../Utils";
 import Swiper from "swiper";
 import { useNavigate } from "react-router-dom";
+import { useApiGet } from "../../Hooks";
+import { getProducts } from "../../Urls";
 // import InstaFooter from "./Components/instaFooter";
 
 const Home = () => {
@@ -38,6 +40,15 @@ const Home = () => {
   const [openModal, setOpenModal] = useState(true);
   const sliderRef = useRef(null);
   const swiper = new Swiper();
+
+  const {data, isLoading} = useApiGet(
+    ['get-featured-products'],
+    getProducts,
+    {
+      enable:true
+    }
+  )
+
 
   const slideNext = () => {
     if (sliderRef.current) {

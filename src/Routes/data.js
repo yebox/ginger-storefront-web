@@ -56,7 +56,6 @@ const SellerSignUpBusinessDocument = lazy(() => import('../Pages/Shared/SellerPa
 
 
 
-
 export const sharedRoutes = [
   {
     path: "/",
