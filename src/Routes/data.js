@@ -52,8 +52,7 @@ const SellerSignUpBusinessInformation = lazy(() => import('../Pages/Shared/Selle
 const SellerSignUpBusinessDocument = lazy(() => import('../Pages/Shared/SellerPages/SellerBusinessDocument'))
 
 
-
-
+const ErrorPage =lazy(()=> import('../Ui_elements/ErrorPage'))
 
 
 
@@ -62,6 +61,10 @@ export const sharedRoutes = [
     path: "/",
     element: Home,
   },
+  // {
+  //   path: "/*",
+  //   element: ErrorPage
+  // },
   {
     path: "/marketplace",
     element: MarketPlace,
@@ -128,7 +131,7 @@ export const sharedRoutes = [
     element: Payment,
   },
   {
-    path: "/shopname",
+    path: "/shop/:id",
     element: SellerStore,
   },
 ];

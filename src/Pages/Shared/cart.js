@@ -1,63 +1,100 @@
 import styled from 'styled-components'
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { EmptyCartIcon, InfoIcon } from '../../Assets/Svgs';
-import { GBreadCrumbs, GButton, GTable, GTooltip } from '../../Ui_elements';
+import { GBreadCrumbs, GButton, GTable, GTooltip, LineLoader } from '../../Ui_elements';
 import { InstaFooter } from './Components';
 import { indexOf } from 'lodash';
 import { useNavigate } from 'react-router-dom';
+import { useApiGet, useApiSend } from '../../Hooks';
+import { getCartItems, removeCartItem, removeAllCartItem } from '../../Urls';
+import { useSelector } from 'react-redux';
+import { IMAGE_BASE_URL } from '../../Utils';
+import { QueryClient } from '@tanstack/react-query';
+import { toast } from 'react-hot-toast';
+
 
 
 
 
 export default function Cart() {
-    const [noItem, setNoItem] = useState(true);
     const navigate = useNavigate()
+    const user = useSelector(state => state.user)
+    const [totalPrice, setTotalPrice] = useState(0);
+    const [item, setItem] = useState(null)
+    const queryClient = new QueryClient()
 
-    const data = useMemo(() => [
+    const { data: cartItems, isLoading } = useApiGet(
+        ['get-cart-items'],
+        () => getCartItems(user?._id),
         {
-            image: "",
-            product: "Clairol BW2 Tub Powder Lightener Extra-Strength",
-            price: "₦4,500",
-            quantity: 5,
-            total: "₦4,500",
-            remove: ""
+            enabled: true,
+        }
+    )
+
+
+    const { mutate: removeFromCart, isPending: isRemovingFromCart, } = useApiSend(
+        () => removeCartItem(item?._id, item?.quantity),
+        () => {
+            toast.success('Removed from cart')
+            queryClient.invalidateQueries(['cart-data'])
         },
-        {
-            image: "",
-            product: "Clairol BW2 Tub Powder Lightener Extra-Strength",
-            price: "₦4,500",
-            quantity: 5,
-            total: "₦4,500",
-            remove: ""
-        },
-        {
-            image: "",
-            product: "Clairol BW2 Tub Powder Lightener Extra-Strength",
-            price: "₦4,500",
-            quantity: 5,
-            total: "₦4,500",
-            remove: ""
-        },
-        {
-            image: "",
-            product: "Clairol BW2 Tub Powder Lightener Extra-Strength",
-            price: "₦4,500",
-            quantity: 5,
-            total: "₦4,500",
-            remove: ""
-        },
-    ], []);
+        (e) => {
+            toast.error('Could not remove from cart')
+        }
+    )
+
+    const handleRemoveSingleItem = (row) => {
+        setItem(row)
+        removeFromCart()
+    }
+
+    const transformData = useMemo(() => {
+        if (!cartItems) return [];
+
+        return cartItems?.items?.map(cartItem => ({
+            _id: cartItem.productId,
+            image: cartItem.product.mainImage,
+            brandName: cartItem.product.brand.name,
+            product: cartItem.product.name,
+            price: `₦${cartItem.product.price}`,
+            quantity: cartItem.quantity,
+            total: `₦${cartItem.product.price * cartItem.quantity}`,
+            remove: '',
+        }));
+    }, [cartItems?.items]);
+
+
+    useEffect(() => {
+        let totalPriceCalculation = 0;
+        if (transformData) {
+            transformData.forEach(item => {
+                const price = parseFloat(item.price.replace('₦', '').replace(',', ''));
+                totalPriceCalculation += price * item.quantity;
+            });
+            console.log(totalPriceCalculation, "priceaa");
+            setTotalPrice(totalPriceCalculation);
+        }
+    }, [transformData]);
+
+
+
+
+
+
     const columns = useMemo(
         () => [
             {
                 Header: 'Image',
                 accessor: 'image',
-                Cell: ({ row }) => (
-                    <img
-                        style={{ width: '142px', height: '142px', borderRadius: '8px' }}
-                        src='https://images.unsplash.com/photo-1574169208507-84376144848b?q=80&w=3279&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
-                    />
-                )
+                Cell: ({ row }) => {
+                    console.log(row, "image row")
+                    return (
+                        <img
+                            style={{ width: '142px', height: '142px', borderRadius: '8px', objectFit: "cover" }}
+                            src={`${IMAGE_BASE_URL}${row?.image}`}
+                        />
+                    )
+                }
             },
             {
                 Header: 'Product',
@@ -115,13 +152,14 @@ export default function Cart() {
 
                 </SpendHeader>,
                 accessor: 'total',
-                Cell: () => {
+                Cell: ({ row }) => {
                     return (
 
                         <SpendContainer>
                             <GButton
                                 label={"Shop brand"}
                                 outline
+                                onClick={() => navigate(`/shop/${row.brandName}`)}
                             />
                             <Minimumspend>Minimum spend : ₦50,000</Minimumspend>
                             <SpendLeft>₦45,500 left</SpendLeft>
@@ -138,20 +176,22 @@ export default function Cart() {
                 Cell: ({ row }) => (
 
                     <Remove
-                        onClick={() => data.slice(indexOf(row), 1)}
-                    >Remove</Remove>
+                        onClick={handleRemoveSingleItem}
+                    >
+                        Remove
+                    </Remove>
                 )
             }
         ],
-        [data]
+        [transformData]
     );
 
 
 
     const totalData = [
         {
-            description: "Subtotal (2 items)",
-            price: "₦4,500"
+            description: `Subtotal (${transformData.length} items)`,
+            price: totalPrice.toString()
         },
         {
             description: "Shipping and Tax Calculated at checkout",
@@ -196,29 +236,12 @@ export default function Cart() {
                 <GBreadCrumbs />
             </BreadCrumbHolder>
 
-            {noItem ? (
-
-                <NoItemContainer>
-                    <IconHolder>
-                        <EmptyCartIcon />
-                    </IconHolder>
-
-                    <b>You have no item in cart</b>
-
-                    <EmptyButtonHolder>
-                        <GButton
-                            onClick={() => setNoItem(false)}
-                            label={"Continue shopping"}
-                        />
-                    </EmptyButtonHolder>
-                    <InstaFooter />
-                </NoItemContainer>
-            ) : (
+            {transformData.length > 0 ? (
                 <Container>
 
                     <GTable
                         columns={columns}
-                        data={data}
+                        data={transformData}
                     />
 
                     <AlignContainer>
@@ -245,11 +268,29 @@ export default function Cart() {
                             </ButtonContainer>
                         </TotalContainer>
                     </AlignContainer>
-
-
-
                 </Container>
+            ) : (
+                <NoItemContainer>
+                    <IconHolder>
+                        <EmptyCartIcon />
+                    </IconHolder>
+
+                    <b>You have no item in cart</b>
+
+                    <EmptyButtonHolder>
+                        <GButton
+                            onClick={'/categories/all'}
+                            label={"Continue shopping"}
+                        />
+                    </EmptyButtonHolder>
+                    <InstaFooter />
+                </NoItemContainer>
             )}
+            <LineLoader loading={
+                isLoading ||
+                isRemovingFromCart
+            }
+            />
         </>
     );
 }
@@ -268,6 +309,7 @@ const AlignContainer = styled.div`
     display: flex;
     justify-content: flex-end !important;
 `
+
 
 const NoItemContainer = styled.main`
     width: 100%;
