@@ -3,6 +3,7 @@ import { sellerAuthRoutes } from "./data";
 import { Route, Routes } from "react-router-dom";
 import { Suspense } from "react";
 import { SellerAuthLayout } from "../Layouts";
+import { PageLoader } from "../Ui_elements";
 
 export const SellerAuthRoutes = () => {
   return (
@@ -12,7 +13,7 @@ export const SellerAuthRoutes = () => {
           key={index}
           path={path}
           element={
-            <Suspense fallback={null}>
+            <Suspense fallback={<PageLoader/>}>
               {hasLayout ? (
                 <SellerAuthLayout>
                   <Element />

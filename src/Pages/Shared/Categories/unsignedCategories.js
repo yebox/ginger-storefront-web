@@ -7,6 +7,12 @@ import { SellerCard } from "../Components";
 import { useNavigate } from "react-router-dom";
 import CallToActionImg from "../../../Assets/Images/call-to-action.png";
 import FooterImage from "../../../Assets/Images/footer.png";
+import FirstGirl from "../../../Assets/Images/frist_girl.png"
+import Middle from "../../../Assets/Images/middle.png"
+import LastGirl from "../../../Assets/Images/last_girl.png"
+import { CategoryCard } from "./Components";
+import { RedRightArrow } from "../../../Assets/Svgs";
+
 
 const UnsignedCategories = () => {
   const [selectCat, setSelectCat] = useState(0);
@@ -18,50 +24,48 @@ const UnsignedCategories = () => {
       </Breadcrumb>
 
       <Banner>
-        <div>
-          <h2>Eyelashes & Brows</h2>
-          <p>
-            Ginger’s wide network of local and international suppliers gives you
-            access to all of your must-have brands and products in one place.
-          </p>
-        </div>
+        <BannerImageHolder>
+          <img src={FirstGirl} />
+          <img src={Middle} />
+          <img src={LastGirl} />
+        </BannerImageHolder>
+
+        <BannerAdd>
+          <FirstText>
+            <h6>Beauty procurement, <br /> simplified for you</h6>
+          </FirstText>
+          <SecondText>
+            <p>Ginger’s wide network of local and international suppliers
+              gives you access to all of your must-have brands and products
+              in one place.
+            </p>
+          </SecondText>
+        </BannerAdd>
       </Banner>
-
-      <ChipContainer>
-        {categoriesData.map((item, index) => (
-          <Chip
-            activeIndex={selectCat}
-            onClick={() => setSelectCat(index)}
-            index={index}
-            key={index}
-          >
-            {item}
-          </Chip>
-        ))}
-      </ChipContainer>
-
 
       <ProductFilterContainer>
         <ProductDisplay>
-          <SectionTags>Top Stores</SectionTags>
+          <SectionTags>Top Ginger Categories</SectionTags>
           <StoresDisplay>
-            {[...Array(4)].map((_, index) => (
-              <SellerCard key={index} />
+            {[...Array(12)].map((_, index) => (
+              <CategoryCard
+                key={index}
+                width={'24%'}
+              />
+
             ))}
           </StoresDisplay>
 
-          <SectionTags>New Arrivals</SectionTags>
-
-          <NewArrivalsDisplay>
-            {[...Array(5)].map((_, index) => (
-              <Product key={index} />
-            ))}
-          </NewArrivalsDisplay>
-
-          <SectionTags>Best Selling</SectionTags>
+          <FlexContainer>
+            <SectionTags>Top Sellers</SectionTags>
+            <MoreContainer>
+              <p>See more</p>
+              <RedRightArrow/>
+            </MoreContainer>
+          </FlexContainer>
 
           <BestSellingDisplay>
-            {[...Array(10)].map((_, index) => (
+            {[...Array(4)].map((_, index) => (
               <Product key={index} />
             ))}
           </BestSellingDisplay>
@@ -105,38 +109,68 @@ const Breadcrumb = styled.section`
 `;
 
 const Banner = styled.section`
+  width: 100%;
+  padding: 0;
+  position: relative;
+`
+
+const BannerImageHolder = styled.div`
+  width: 100%;
+  display: flex;
+
+  img{
+    width: 100%;
+  }
+`
+
+const MoreContainer = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
-  margin: 0 5%;
-  height: 60vh;
-  background: linear-gradient(to right, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.1)),
-    url("https://images.unsplash.com/photo-1589710751893-f9a6770ad71b?q=80&w=3387&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")
-      center/cover no-repeat;
-  background-color: aquamarine;
-
-  div {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    gap: 2rem;
-    position: relative;
-    z-index: 2;
-    text-align: center;
-    h2 {
-      font-size: 3rem;
-      font-weight: 500;
-      color: white;
-    }
-
-    p {
-      text-align: center;
-      color: white;
-      width: 60%;
-    }
+  p{
+    color: var(--primary-color);
   }
-`;
+`
+
+const BannerAdd = styled.div`
+  position: absolute;
+  left: 0;
+  right: 0;
+  width: 55%;
+  bottom: 10%;
+  display: flex;
+  margin: auto;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.8rem 1rem;
+  border-radius: 20px 20px 0px 0px;
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(8.5px);
+
+
+`
+
+const FlexContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+`
+
+const FirstText = styled.div`
+  flex: 0.5;
+  h6{
+    color:white;
+    flex: 0.5;
+    font-size: 2.2rem;
+  }
+`
+
+const SecondText = styled.div`
+  flex: 0.5;
+  width: 100%;
+  p{
+    color:white;
+  }
+`
 
 const ChipContainer = styled.div`
   width: fit-content;
@@ -163,7 +197,7 @@ const StoresDisplay = styled.div`
   margin-top: 5%;
   display: flex;
   gap: 1.2rem;
-  overflow-x: auto;
+  flex-wrap: wrap;
 `;
 const NewArrivalsDisplay = styled.div`
   display: flex;
@@ -245,3 +279,4 @@ const SeeMoreContainer = styled.div`
   text-align: center;
   width: 200px;
 `;
+

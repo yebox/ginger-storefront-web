@@ -2,6 +2,6 @@ import { request } from "../Utils";
 
 export const getCategories = (param) =>
     request({
-        url: 'products-categories?',
+        url: `product-categories`,
         method: 'GET'
 })

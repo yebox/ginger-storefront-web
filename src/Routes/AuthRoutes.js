@@ -3,6 +3,7 @@ import { authRoutes } from "./data";
 import { Route, Routes } from "react-router-dom";
 import { Suspense } from "react";
 import AuthLayout from "../Layouts/AuthLayout";
+import { PageLoader } from "../Ui_elements";
 
 export const AuthRoutes = () => {
   return (
@@ -12,7 +13,7 @@ export const AuthRoutes = () => {
           key={index}
           path={path}
           element={
-            <Suspense fallback={null}>
+            <Suspense fallback={<PageLoader/>}>
               {hasLayout ? (
                 <AuthLayout>
                   <Element />

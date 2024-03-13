@@ -11,10 +11,12 @@ export const request = async (options) => {
   let token;
   const state = store.getState();
   const userState = state?.user;
+  console.log(userState, "state from user")
   if (userState === null) {
     token = "";
   } else {
     const { accessToken } = userState;
+    console.log(accessToken, "token")
     token = accessToken;
   }
 
@@ -22,7 +24,6 @@ export const request = async (options) => {
     (client.defaults.headers.common.Authorization = `Bearer ${token}`);
 
     const onSuccess = (response) => {
-        console.log(response, "request response")
         return response?.data;
     };
 
