@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { devices } from "../../Utils";
 
 export const GStepper = ({ totalSteps, activeStep }) => {
   const steps = [];
@@ -24,6 +25,10 @@ const Container = styled.div`
   flex-direction: column;
   gap: 17px;
   width: 100%;
+
+  @media ${devices.mobileL} {
+    gap: 9px;
+  }
 `;
 
 const Count = styled.p`
@@ -35,6 +40,10 @@ const Count = styled.p`
   font-style: normal;
   font-weight: 400;
   line-height: 120%;
+
+  @media ${devices.mobileL} {
+    font-size: 14px;
+  }
 `;
 
 const StepperContainer = styled.div`
@@ -50,4 +59,8 @@ const Step = styled.div`
   background-color: ${({ $completed }) => ($completed ? "#FF0000" : "#CCCCCC")};
   border-radius: 5px;
   transition: all 0.25s ease;
+
+  @media ${devices.mobileL} {
+    height: 3px;
+  }
 `;

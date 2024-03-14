@@ -2,6 +2,7 @@ import React from "react";
 import { styled } from "styled-components";
 import { Instagram } from "../../../Assets/Svgs";
 import footerimage from "../../../Assets/Images/footer.png";
+import { devices } from "../../../Utils";
 
 export const InstaFooter = () => {
   return (
@@ -15,7 +16,6 @@ export const InstaFooter = () => {
   );
 };
 
-
 const Container = styled.div`
   position: relative;
   display: flex;
@@ -23,6 +23,10 @@ const Container = styled.div`
   align-items: center;
   width: 100%;
   height: 233px;
+
+  @media ${devices.mobileL} {
+    height: 103px;
+  }
 `;
 
 const Bg = styled.img`
@@ -58,6 +62,17 @@ const Button = styled.button`
     width: 18px;
     height: 18px;
   }
+
+  @media ${devices.mobileL} {
+    height: 25px;
+    width: 100px;
+    gap: 5px;
+
+    & > svg {
+      width: 12px;
+      height: 12px;
+    }
+  }
 `;
 
 const Label = styled.p`
@@ -67,4 +82,8 @@ const Label = styled.p`
   font-style: normal;
   font-weight: 500;
   line-height: 130%; /* 20.8px */
+
+  @media ${devices.mobileL} {
+    font-size: 10px;
+  }
 `;

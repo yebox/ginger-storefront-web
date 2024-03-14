@@ -12,13 +12,13 @@ import {
   GTextField,
 } from "../../../../../../Ui_elements";
 import { useNavigate } from "react-router-dom";
-import { accountStore } from "../../../store";
-import { useSnapshot } from "valtio";
+import { devices } from "../../../../../../Utils";
+import { useSelector } from "react-redux";
 
 const RateProduct = () => {
   const [checkedCount, setCheckedCount] = useState(0);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const accountSnap = useSnapshot(accountStore);
+  const globalStore = useSelector((state) => state?.global);
 
   const navigate = useNavigate();
   return (
@@ -33,65 +33,67 @@ const RateProduct = () => {
         </HeaderContent>
         <OrderRateIcon />
       </Header>
-      {isSubmitted ? (
-        <SubmittedWrapper>
-          <SuccessIcon />
-          <SubmitMainTxt>Thank you for the review!</SubmitMainTxt>
-          <SubmitSubTxt>
-            Happy <span>Ginger</span> shopping
-          </SubmitSubTxt>
-        </SubmittedWrapper>
-      ) : (
-        <ContentWrapper>
-          <RateTxt>
-            How would you rate{" "}
-            <span>{accountSnap.selectedOrderItem?.name}</span>
-          </RateTxt>
-          <RatingWrapper>
-            {[...Array(5)].map((_, index) => (
-              <GRatingIcon
-                key={index}
-                size={`32px`}
-                isClickable={true}
-                onClick={setCheckedCount}
-                iconIndex={index}
-                isChecked={checkedCount > index}
+      <ContentWrapper>
+        {isSubmitted ? (
+          <SubmittedWrapper>
+            <SuccessIcon />
+            <SubmitMainTxt>Thank you for the review!</SubmitMainTxt>
+            <SubmitSubTxt>
+              Happy <span>Ginger</span> shopping
+            </SubmitSubTxt>
+          </SubmittedWrapper>
+        ) : (
+          <>
+            <RateTxt>
+              How would you rate{" "}
+              <span>{globalStore?.selectedOrderItem?.name}</span>
+            </RateTxt>
+            <RatingWrapper>
+              {[...Array(5)].map((_, index) => (
+                <GRatingIcon
+                  key={index}
+                  size={`32px`}
+                  isClickable={true}
+                  onClick={setCheckedCount}
+                  iconIndex={index}
+                  isChecked={checkedCount > index}
+                />
+              ))}
+            </RatingWrapper>
+            <ReviewWrapper>
+              <GTextField
+                id="review"
+                placeholder="Leave us a review"
+                inputType="text"
+                name="review"
               />
-            ))}
-          </RatingWrapper>
-          <ReviewWrapper>
-            <GTextField
-              id="review"
-              placeholder="Leave us a review"
-              inputType="text"
-              name="review"
-            />
-            <GButton
-              label={`Submit`}
-              width={`155px`}
-              onClick={() => setIsSubmitted(true)}
-            />
-          </ReviewWrapper>
-          <ReportWrapper>
-            <InfoIcon />
-            <ReportContent>
-              <ReportTitle>Have an issue with this product?</ReportTitle>
-              <ReportDesc>
-                Should you encounter an issue with the item on arrival and wish
-                to request a refund, you can easily report this issue and submit
-                all necessary information to help us resolve your issue.
-              </ReportDesc>
               <GButton
-                label={`Report issue`}
-                width={`98px`}
-                fontsize={`12px`}
-                paddingProp={`8px 16px`}
-                onClick={() => navigate("/report/1")}
+                label={`Submit`}
+                width={`155px`}
+                onClick={() => setIsSubmitted(true)}
               />
-            </ReportContent>
-          </ReportWrapper>
-        </ContentWrapper>
-      )}
+            </ReviewWrapper>
+          </>
+        )}
+        <ReportWrapper>
+          <InfoIcon />
+          <ReportContent>
+            <ReportTitle>Have an issue with this product?</ReportTitle>
+            <ReportDesc>
+              Should you encounter an issue with the item on arrival and wish to
+              request a refund, you can easily report this issue and submit all
+              necessary information to help us resolve your issue.
+            </ReportDesc>
+            <GButton
+              label={`Report issue`}
+              width={`98px`}
+              fontsize={`12px`}
+              paddingProp={`8px 16px`}
+              onClick={() => navigate("/report/1")}
+            />
+          </ReportContent>
+        </ReportWrapper>
+      </ContentWrapper>
     </Container>
   );
 };
@@ -101,6 +103,11 @@ export default RateProduct;
 const Container = styled.div`
   width: 50%;
   border-left: 1px solid #ececee;
+
+  @media ${devices.mobileL} {
+    margin-top: 70px;
+    width: 100%;
+  }
 `;
 
 const Header = styled.div`
@@ -117,6 +124,16 @@ const Header = styled.div`
     position: absolute;
     left: 0;
     bottom: 0;
+  }
+
+  @media ${devices.mobileL} {
+    padding: 20px;
+    height: 135px;
+    padding-top: 20px;
+
+    & > svg:first-of-type {
+      height: 100%;
+    }
   }
 `;
 
@@ -148,6 +165,10 @@ const ContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
   padding: 57px 5vw 57px 65px;
+
+  @media ${devices.mobileL} {
+    padding: 20px;
+  }
 `;
 
 const RateTxt = styled.p`
@@ -185,6 +206,10 @@ const ReportWrapper = styled.div`
   background: #f6fcfe;
   padding: 21px 80px 21px 26px;
 
+  @media ${devices.mobileL} {
+    padding: 20px;
+  }
+
   & > svg {
     width: 24px;
     height: 24px;
@@ -221,7 +246,13 @@ const SubmittedWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 15px;
-  padding-top: 100px;
+  padding-top: 75px;
+  margin-bottom: 154px;
+
+  @media ${devices.mobileL} {
+    gap: 10px;
+    margin-bottom: 80px;
+  }
 `;
 
 const SubmitMainTxt = styled.p`
@@ -231,6 +262,10 @@ const SubmitMainTxt = styled.p`
   font-weight: 500;
   line-height: 120%; /* 26.4px */
   margin-top: 20px;
+
+  @media ${devices.mobileL} {
+    font-size: 20px;
+  }
 `;
 const SubmitSubTxt = styled.p`
   color: var(--Black-300, #626262);
@@ -245,5 +280,9 @@ const SubmitSubTxt = styled.p`
     font-style: normal;
     font-weight: 700;
     line-height: 120%;
+  }
+
+  @media ${devices.mobileL} {
+    font-size: 14px;
   }
 `;

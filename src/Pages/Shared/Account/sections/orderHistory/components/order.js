@@ -2,6 +2,7 @@ import React from "react";
 import { styled } from "styled-components";
 import { CaretLeft } from "../../../../../../Assets/Svgs";
 import { Link } from "react-router-dom";
+import { devices } from "../../../../../../Utils";
 
 const OrderCard = ({
   imageUrl,
@@ -12,26 +13,28 @@ const OrderCard = ({
 }) => {
   return (
     <Container>
-      <LeftWrapper>
-        <Image src={imageUrl} />
-        <DetailsWrapper>
-          <ProductName>{productName}</ProductName>
-          <OrderName>{`order ${orderNumber}`}</OrderName>
-          {dateDelivered ? (
-            <DeliveryStatus>
-              Delivered on: <span>{dateDelivered}</span>
-            </DeliveryStatus>
-          ) : (
-            <DeliveryStatus>Not delivered</DeliveryStatus>
-          )}
-        </DetailsWrapper>
-      </LeftWrapper>
-      <RightWrapper to={"/account/order/1"}>
-        <TrackTxt>
-          {status.toLowerCase() === "ongoing" ? `Track order` : `See details`}
-        </TrackTxt>
-        <CaretLeft />
-      </RightWrapper>
+      <Image src={imageUrl} />
+      <ContentWrapper>
+        <LeftWrapper>
+          <DetailsWrapper>
+            <ProductName>{productName}</ProductName>
+            <OrderName>{`order ${orderNumber}`}</OrderName>
+            {dateDelivered ? (
+              <DeliveryStatus>
+                Delivered on: <span>{dateDelivered}</span>
+              </DeliveryStatus>
+            ) : (
+              <DeliveryStatus>Not delivered</DeliveryStatus>
+            )}
+          </DetailsWrapper>
+        </LeftWrapper>
+        <RightWrapper to={"/account/order/1"}>
+          <TrackTxt>
+            {status.toLowerCase() === "ongoing" ? `Track order` : `See details`}
+          </TrackTxt>
+          <CaretLeft />
+        </RightWrapper>
+      </ContentWrapper>
       <Status $status={status.toLowerCase()}>
         <StatusBall />
         <StatusTxt>{status}</StatusTxt>
@@ -45,12 +48,19 @@ export default OrderCard;
 const Container = styled.div`
   position: relative;
   display: flex;
-  justify-content: space-between;
+  gap: 16px;
   width: 100%;
   padding: 14px 24px 14px 14px;
   height: 102px;
   border: 1px solid var(--Black-50, #e8e8e8);
   background: var(--White, #fefefe);
+
+  @media ${devices.mobileL} {
+    flex-direction: column;
+    height: auto;
+    padding: 14px;
+    gap: 10px;
+  }
 `;
 
 const Image = styled.img`
@@ -58,6 +68,20 @@ const Image = styled.img`
   height: 73px;
   flex-shrink: 0;
   object-fit: cover;
+
+  @media ${devices.mobileL} {
+    width: 100%;
+  }
+`;
+
+const ContentWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  flex-grow: 1;
+
+  @media ${devices.mobileL} {
+    gap: 30px;
+  }
 `;
 
 const LeftWrapper = styled.div`
@@ -127,6 +151,10 @@ const Status = styled.div`
   & > p {
     color: ${({ $status }) => ($status === "ongoing" ? `#B54708` : `#027A48`)};
   }
+
+  @media ${devices.mobileL} {
+    top: 110px;
+  }
 `;
 
 const StatusBall = styled.span`
@@ -152,6 +180,10 @@ const TrackTxt = styled.p`
   font-weight: 500;
   line-height: 120%; /* 16.8px */
   transition: all 0.25s ease;
+
+  @media ${devices.mobileL} {
+    font-size: 13px;
+  }
 `;
 
 const RightWrapper = styled(Link)`
@@ -182,6 +214,15 @@ const RightWrapper = styled(Link)`
       path {
         stroke: #eb4526;
       }
+    }
+  }
+
+  @media ${devices.mobileL} {
+    flex-shrink: 0;
+
+    & > svg {
+      width: 18px;
+      height: 18px;
     }
   }
 `;

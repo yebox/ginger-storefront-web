@@ -5,6 +5,7 @@ import { styled } from "styled-components";
 export const GButton = ({
   label,
   width,
+  mbWidth,
   type,
   fontsize,
   paddingProp,
@@ -20,6 +21,7 @@ export const GButton = ({
   return (
     <ButtonEl
       width={width}
+      $mbWidth={mbWidth}
       $fontsize={fontsize}
       $paddingProp={paddingProp}
       type={type}
@@ -34,10 +36,11 @@ export const GButton = ({
         <Spinner
           width={20}
           height={20}
-          color={outline ? "var(--black)" : "white"} />
+          color={outline ? "var(--black)" : "white"}
+        />
       ) : (
         <>
-          {typeof label === 'string' ? label : label()}
+          {typeof label === "string" ? label : label()}
           {icon && <div>{icon}</div>}
         </>
       )}
@@ -52,10 +55,10 @@ const ButtonEl = styled.button`
     outline
       ? "transparent"
       : alternate
-        ? "white"
-        : alternateOutline
-          ? "transparent"
-          : "var(--black)"};
+      ? "white"
+      : alternateOutline
+      ? "transparent"
+      : "var(--black)"};
   color: ${({ outline, alternate }) =>
     outline || alternate ? "var(--black)" : "#ffffff"};
   font-weight: 500;
@@ -73,8 +76,8 @@ const ButtonEl = styled.button`
     outline
       ? "1px solid var(--black)"
       : alternateOutline
-        ? "1px solid white"
-        : "none"};
+      ? "1px solid white"
+      : "none"};
   cursor: pointer;
   transition: all 0.25s ease;
 
@@ -83,7 +86,14 @@ const ButtonEl = styled.button`
     cursor: not-allowed;
   }
 
-  @media ${devices.tablet} {
+  /* @media ${devices.tablet} {
     width: 100% !important;
+  } */
+
+  @media ${devices.mobileL} {
+    padding: ${({ $paddingProp }) =>
+      $paddingProp ? $paddingProp : "0.7rem 1rem"};
+    width: ${({ $mbWidth }) => ($mbWidth ? $mbWidth : "100%")};
+    font-size: 14px;
   }
 `;

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { styled } from "styled-components";
 import { Plus } from "../../../../../../Assets/Svgs";
 import AddressModal from "./modals/address";
+import { devices } from "../../../../../../Utils";
 
 const Address = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -57,6 +58,10 @@ const TopWrapper = styled.div`
   justify-content: space-between;
   border-bottom: 1px solid #f3f3f3;
   padding: 32px 5vw 32px 45px;
+
+  @media ${devices.mobileL} {
+    padding: 20px;
+  }
 `;
 
 const Title = styled.p`
@@ -72,11 +77,19 @@ const BottomWrapper = styled.div`
   flex-direction: column;
   gap: 22px;
   padding: 32px 5vw 44px 45px;
+
+  @media ${devices.mobileL} {
+    padding: 20px 20px 36px;
+  }
 `;
 
 const AddressWrapper = styled.div`
   display: flex;
   gap: 15px;
+
+  @media ${devices.mobileL} {
+    flex-direction: column;
+  }
 `;
 
 const AddressBox = styled.div`
@@ -85,6 +98,10 @@ const AddressBox = styled.div`
   padding: 19px 16px;
   border: 0.774px solid #eaeaea;
   background: #fff;
+
+  @media ${devices.mobileL} {
+    width: 100%;
+  }
 `;
 
 const AddressTop = styled.div`

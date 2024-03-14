@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { styled } from "styled-components";
 import { Minus, Plus } from "../../../../Assets/Svgs";
+import { devices } from "../../../../Utils";
 
 const QuantityCounter = () => {
   const [value, setValue] = useState(0);
@@ -51,6 +52,10 @@ const Control = styled.button`
       opacity: 0.5;
     }
   }
+
+  @media ${devices.mobileL} {
+    width: 50px;
+  }
 `;
 
 const ValueBox = styled.p`
@@ -66,4 +71,8 @@ const ValueBox = styled.p`
   font-style: normal;
   font-weight: 500;
   line-height: 120%; /* 40.8px */
+
+  @media ${devices.mobileL} {
+    width: 120px;
+  }
 `;

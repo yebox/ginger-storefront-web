@@ -2,11 +2,10 @@ import React, { useState } from "react";
 import { styled } from "styled-components";
 import { useForm } from "react-hook-form";
 import { GButton, GImageUpload } from "../../../../../../Ui_elements";
-import ReportSuccess from "./reportSuccess";
+import { devices } from "../../../../../../Utils";
 
-const ProductUpload = () => {
+const ProductUpload = ({ handleNext }) => {
   const [files, setFiles] = useState([]);
-  const [hasSubmitted, setHasSubmitted] = useState(false);
 
   const {
     register,
@@ -18,41 +17,33 @@ const ProductUpload = () => {
   const onSubmit = () => {
     // Handle form submission, data contains form values along with uploaded files
     console.log(files);
-    setHasSubmitted(true);
+    handleNext();
   };
 
   return (
-    <>
-      {hasSubmitted ? (
-        <ReportSuccess />
-      ) : (
-        <Container>
-          <Title>Product Uploads</Title>
-          <SubTxt>
-            Kindly submit any image/video to help clarify the item.
-          </SubTxt>
-          <ContentWrapper>
-            <Form onSubmit={handleSubmit(onSubmit)}>
-              <GImageUpload
-                register={register}
-                handleSubmit={handleSubmit}
-                trigger={trigger}
-                errors={errors}
-                files={files}
-                setFiles={setFiles}
-              />
-              <SubmitWrapper>
-                <GButton
-                  label={"Submit"}
-                  width={"158px"}
-                  isDisabled={files.length === 0}
-                />
-              </SubmitWrapper>
-            </Form>
-          </ContentWrapper>
-        </Container>
-      )}
-    </>
+    <Container>
+      <Title>Product evidence</Title>
+      <SubTxt>Kindly submit any image/video to help clarify the item.</SubTxt>
+      <ContentWrapper>
+        <Form onSubmit={handleSubmit(onSubmit)}>
+          <GImageUpload
+            register={register}
+            handleSubmit={handleSubmit}
+            trigger={trigger}
+            errors={errors}
+            files={files}
+            setFiles={setFiles}
+          />
+          <SubmitWrapper>
+            <GButton
+              label={"Submit"}
+              width={"158px"}
+              isDisabled={files.length === 0}
+            />
+          </SubmitWrapper>
+        </Form>
+      </ContentWrapper>
+    </Container>
   );
 };
 
@@ -70,6 +61,10 @@ const Title = styled.p`
   font-weight: 500;
   line-height: 120%; /* 26.4px */
   margin-bottom: 12px;
+
+  @media ${devices.mobileL} {
+    font-size: 20px;
+  }
 `;
 
 const SubTxt = styled.p`
@@ -79,6 +74,10 @@ const SubTxt = styled.p`
   font-weight: 400;
   line-height: 120%; /* 19.2px */
   width: 51%;
+
+  @media ${devices.mobileL} {
+    width: 100%;
+  }
 `;
 
 const ContentWrapper = styled.div`
@@ -86,6 +85,10 @@ const ContentWrapper = styled.div`
   flex-direction: column;
   margin-top: 75px;
   max-width: 664px;
+
+  @media ${devices.mobileL} {
+    margin-top: 40px;
+  }
 `;
 
 const Form = styled.form``;

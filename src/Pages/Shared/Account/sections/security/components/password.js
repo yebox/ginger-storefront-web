@@ -11,6 +11,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { toast } from "react-hot-toast";
 import { ChangePasswordSchema } from "../validation";
 import { Cancel } from "../../../../../../Assets/Svgs";
+import { devices } from "../../../../../../Utils";
 
 const PasswordModal = ({ isOpen, handleClose }) => {
   const {
@@ -77,6 +78,11 @@ export default PasswordModal;
 const Container = styled.div`
   width: 55vw;
   padding: 64px 60px;
+
+  @media ${devices.mobileL} {
+    width: 92vw;
+    padding: 40px 16px 32px;
+  }
 `;
 
 const Header = styled.div`
@@ -90,6 +96,13 @@ const Header = styled.div`
     flex-shrink: 0;
     cursor: pointer;
   }
+
+  @media ${devices.mobileL} {
+    & > svg {
+      width: 25px;
+      height: 25px;
+    }
+  }
 `;
 
 const Title = styled.p`
@@ -98,6 +111,10 @@ const Title = styled.p`
   font-style: normal;
   font-weight: 500;
   line-height: 120%; /* 40.8px */
+
+  @media ${devices.mobileL} {
+    font-size: 16px;
+  }
 `;
 
 const FormWrapper = styled.form`
@@ -105,4 +122,9 @@ const FormWrapper = styled.form`
   flex-direction: column;
   gap: 35px;
   margin-top: 75px;
+
+  @media ${devices.mobileL} {
+    margin-top: 50px;
+    gap: 25px;
+  }
 `;

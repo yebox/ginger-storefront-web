@@ -92,10 +92,6 @@ export const issueTypeOption = [
     value: "wrongOrder",
   },
   {
-    label: "Not what I ordered arrived",
-    value: "wrongSize",
-  },
-  {
     label: "Others",
     value: "others",
   },
