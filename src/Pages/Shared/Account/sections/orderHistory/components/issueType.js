@@ -31,7 +31,6 @@ const IssueType = ({ handleNext }) => {
 
   const handleSubmit = () => {
     const reason = radioValue !== "others" ? radioValue : inputValue;
-    console.log("reason", reason);
     handleNext();
   };
 

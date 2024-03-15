@@ -13,7 +13,6 @@ const OrderHistory = () => {
     onError: (error) => console.log(error),
   });
 
-  console.log({ data });
 
   return (
     <Container>

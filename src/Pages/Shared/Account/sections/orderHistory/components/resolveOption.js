@@ -16,7 +16,6 @@ const ResolveOption = ({ handleNext }) => {
   };
 
   const handleSubmit = () => {
-    console.log("resolveOption", radioValue);
     handleNext();
   };
 

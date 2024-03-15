@@ -6,9 +6,14 @@ import { InstaFooter } from './Components';
 import { indexOf } from 'lodash';
 import { useNavigate } from 'react-router-dom';
 import { useApiGet, useApiSend } from '../../Hooks';
-import { getCartItems, removeCartItem, removeAllCartItem } from '../../Urls';
+import {
+    getCartItems,
+    removeCartItem,
+    removeAllCartItem,
+    addToCart
+} from '../../Urls';
 import { useSelector } from 'react-redux';
-import { IMAGE_BASE_URL } from '../../Utils';
+import { IMAGE_BASE_URL, formatAmount } from '../../Utils';
 import { QueryClient } from '@tanstack/react-query';
 import { toast } from 'react-hot-toast';
 
@@ -20,28 +25,60 @@ export default function Cart() {
     const navigate = useNavigate()
     const user = useSelector(state => state.user)
     const [totalPrice, setTotalPrice] = useState(0);
+    const [deleteQuantity, setDeleteQuantity] = useState(0)
     const [item, setItem] = useState(null)
     const queryClient = new QueryClient()
 
-    const { data: cartItems, isLoading } = useApiGet(
+    const {
+        data: cartItems,
+        isLoading,
+        isFetching,
+        refetch
+    } = useApiGet(
         ['get-cart-items'],
         () => getCartItems(user?._id),
         {
             enabled: true,
+            refetchOnWindowFocus: false
         }
     )
 
 
     const { mutate: removeFromCart, isPending: isRemovingFromCart, } = useApiSend(
-        () => removeCartItem(item?._id, item?.quantity),
+        () => removeCartItem(item?._id, deleteQuantity > 0 ? deleteQuantity : item?.quantity),
         () => {
             toast.success('Removed from cart')
-            queryClient.invalidateQueries(['cart-data'])
+            queryClient.invalidateQueries(['get-cart-items'])
+            refetch()
+        },
+        (e) => {
+            toast.error(`${e.message}`)
+        }
+    )
+
+    const { mutate, isPending, } = useApiSend(
+        (_) => addToCart(_, user?._id),
+        () => {
+            queryClient.invalidateQueries(['get-cart-items'])
+            refetch()
+        },
+        (e) => {
+            toast.error('Error increasing quantity')
+        }
+    )
+
+    const { mutate: removeAllItems, isPending: isRemovingAllItems, } = useApiSend(
+        () => removeAllCartItem(user?._id),
+        () => {
+            toast.success('Removed all items from cart')
+            queryClient.invalidateQueries(['get-cart-items'])
+            refetch()
         },
         (e) => {
             toast.error('Could not remove from cart')
         }
     )
+
 
     const handleRemoveSingleItem = (row) => {
         setItem(row)
@@ -52,33 +89,30 @@ export default function Cart() {
         if (!cartItems) return [];
 
         return cartItems?.items?.map(cartItem => ({
-            _id: cartItem.productId,
-            image: cartItem.product.mainImage,
-            brandName: cartItem.product.brand.name,
-            product: cartItem.product.name,
-            price: `₦${cartItem.product.price}`,
-            quantity: cartItem.quantity,
-            total: `₦${cartItem.product.price * cartItem.quantity}`,
+            _id: cartItem?.productId,
+            image: cartItem?.product?.mainImage,
+            brandName: cartItem?.product?.brand?.name,
+            product: cartItem?.product?.name,
+            price: cartItem?.product?.price,
+            quantity: cartItem?.quantity,
+            total: cartItem?.product?.price * cartItem?.quantity,
             remove: '',
         }));
+
+
     }, [cartItems?.items]);
 
+    const encodeURL = transformData ?  encodeURIComponent(JSON.stringify(transformData)) : null
 
     useEffect(() => {
         let totalPriceCalculation = 0;
         if (transformData) {
-            transformData.forEach(item => {
-                const price = parseFloat(item.price.replace('₦', '').replace(',', ''));
-                totalPriceCalculation += price * item.quantity;
-            });
-            console.log(totalPriceCalculation, "priceaa");
-            setTotalPrice(totalPriceCalculation);
+            totalPriceCalculation = transformData.reduce((total, item) => {
+                return total + (item.price * item.quantity);
+            }, 0);
         }
+        setTotalPrice(totalPriceCalculation);
     }, [transformData]);
-
-
-
-
 
 
     const columns = useMemo(
@@ -87,10 +121,15 @@ export default function Cart() {
                 Header: 'Image',
                 accessor: 'image',
                 Cell: ({ row }) => {
-                    console.log(row, "image row")
                     return (
                         <img
-                            style={{ width: '142px', height: '142px', borderRadius: '8px', objectFit: "cover" }}
+                            style={{
+                                width: '142px',
+                                height: '142px',
+                                borderRadius: '8px',
+                                objectFit: "cover",
+                                backgroundColor: "var(--hover-color)"
+                            }}
                             src={`${IMAGE_BASE_URL}${row?.image}`}
                         />
                     )
@@ -113,7 +152,7 @@ export default function Cart() {
                                 </DiscountTag>
                                 <Slash>₦6500</Slash>
                             </DiscountContainer>
-                            <p>{row.price}</p>
+                            <p>₦{row.price}</p>
                         </PriceContainer>
                     )
                 }
@@ -123,22 +162,41 @@ export default function Cart() {
                 Header: 'Quantity',
                 accessor: 'quantity',
                 Cell: ({ row }) => {
-                    const [quantity, setQuantity] = useState(row.quantity)
+                    const handleIncrement = () => {
+                        if (row.quantity >= 0) {
+                            const item = {
+                                productId: row._id,
+                                quantity: row.quantity + 1
+                            }
+
+                            const body = {
+                                items: [item],
+                                price: row.price
+                            }
+                            mutate(body)
+                        }
+                        else {
+                            toast.error('Item is in negative value')
+                        }
+                    }
+
+                    const handleDecrement = () => {
+                        if (row.quantity >= 0) {
+                            setDeleteQuantity(1)
+                            setItem(row)
+                            removeFromCart()
+                        }
+                        else {
+                            toast.error('Item is in negative value')
+                        }
+                    }
                     return (
                         <QuantityContainer>
-                            <PriceButton
-                                onClick={() => setQuantity(quantity - 1)}
-                            >
-                                -
-                            </PriceButton>
-                            <p>{quantity}</p>
-                            <PriceButton
-                                onClick={() => setQuantity(quantity + 1)}
-                            >
-                                +
-                            </PriceButton>
+                            <PriceButton onClick={handleDecrement}>-</PriceButton>
+                            <p>{row.quantity}</p>
+                            <PriceButton onClick={handleIncrement}>+</PriceButton>
                         </QuantityContainer>
-                    )
+                    );
                 }
             },
             {
@@ -154,7 +212,6 @@ export default function Cart() {
                 accessor: 'total',
                 Cell: ({ row }) => {
                     return (
-
                         <SpendContainer>
                             <GButton
                                 label={"Shop brand"}
@@ -164,9 +221,6 @@ export default function Cart() {
                             <Minimumspend>Minimum spend : ₦50,000</Minimumspend>
                             <SpendLeft>₦45,500 left</SpendLeft>
                         </SpendContainer>
-
-
-
                     )
                 }
             },
@@ -176,7 +230,7 @@ export default function Cart() {
                 Cell: ({ row }) => (
 
                     <Remove
-                        onClick={handleRemoveSingleItem}
+                        onClick={()=>handleRemoveSingleItem(row)}
                     >
                         Remove
                     </Remove>
@@ -186,8 +240,6 @@ export default function Cart() {
         [transformData]
     );
 
-
-
     const totalData = [
         {
             description: `Subtotal (${transformData.length} items)`,
@@ -195,7 +247,7 @@ export default function Cart() {
         },
         {
             description: "Shipping and Tax Calculated at checkout",
-            price: ""
+            price: "0"
         },
 
     ]
@@ -207,7 +259,6 @@ export default function Cart() {
                 Header: 'Cart total',
                 accessor: 'description',
                 Cell: ({ row }) => (
-
                     <TotalDescriptionItem>
                         {row.description}
                     </TotalDescriptionItem>
@@ -218,7 +269,7 @@ export default function Cart() {
                 accessor: 'price',
                 Cell: ({ row }) => (
                     <TotalPriceItem>
-                        {row.price}
+                        ₦{formatAmount(row.price)}
                     </TotalPriceItem>
                 )
             },
@@ -236,9 +287,12 @@ export default function Cart() {
                 <GBreadCrumbs />
             </BreadCrumbHolder>
 
-            {transformData.length > 0 ? (
+            {transformData?.length > 0 ? (
                 <Container>
-
+                    <ClearAll onClick={() => removeAllItems()}>
+                        <p>Clear all</p>
+                        <X>&times;</X>
+                    </ClearAll>
                     <GTable
                         columns={columns}
                         data={transformData}
@@ -256,13 +310,14 @@ export default function Cart() {
 
                             <ButtonContainer>
                                 <GButton
-                                    onClick={() => navigate('/cart/information')}
+                                    onClick={() => navigate(`/cart/checkout?data=${encodeURIComponent(JSON.stringify(transformData))}&totalPrice=${totalPrice.toString()}`)}
                                     label={"Checkout now"}
                                     width={"372px"}
                                 />
                                 <GButton
                                     label={"Continue shopping"}
                                     outline
+                                    onClick={() => navigate('/')}
                                     width={"278px"}
                                 />
                             </ButtonContainer>
@@ -279,7 +334,8 @@ export default function Cart() {
 
                     <EmptyButtonHolder>
                         <GButton
-                            onClick={'/categories/all'}
+
+                            onClick={() => navigate('/categories/all')}
                             label={"Continue shopping"}
                         />
                     </EmptyButtonHolder>
@@ -288,7 +344,10 @@ export default function Cart() {
             )}
             <LineLoader loading={
                 isLoading ||
-                isRemovingFromCart
+                isRemovingFromCart ||
+                isRemovingAllItems ||
+                isPending ||
+                isFetching
             }
             />
         </>
@@ -442,4 +501,29 @@ const SpendContainer = styled.div`
 const SpendLeft = styled.p`
     font-size: 10px;
     color: var(--gray-300);
+`
+
+const ClearAll = styled.div`
+    display: flex;
+    width: fit-content;
+    align-items: center;
+    margin-left: auto;
+    gap: 20px;
+    p{
+        font-size: 1.2rem;
+        color: var(--primary-color);
+        transition: all 0.3s ease;
+    }
+    transition: all 0.3s ease;
+    cursor: pointer;
+
+    &:hover{
+        transform: scale(1.1);
+        p{
+            font-weight: 500;
+        }
+    }
+`
+const X = styled.p`
+    font-size: 1.2rem !important;
 `

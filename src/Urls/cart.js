@@ -2,7 +2,7 @@ import { request } from "../Utils";
 
 export const addToCart = (data, userId) =>
     request({
-        url: `cart?${userId}`,
+        url: `cart?userId=${userId}`,
         method: 'POST',
         data
     })
@@ -19,7 +19,7 @@ export const removeAllCartItem = (userId) =>
         method: 'DELETE',
     })
 
-export const removeCartItem = (productId, quantity) =>
+export const removeCartItem = (productId, quantity) => 
     request({
         url: `cart/${productId}?quantity=${quantity}`,
         method: 'DELETE',

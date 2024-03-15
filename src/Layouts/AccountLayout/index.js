@@ -24,7 +24,8 @@ const AccountLayout = ({ children }) => {
   const handleLogout = () => {
     dispatch(logout());
   };
-  console.log(isMobile);
+
+  console.log({ pathname });
   return (
     <>
       {/* <Navbar /> */}

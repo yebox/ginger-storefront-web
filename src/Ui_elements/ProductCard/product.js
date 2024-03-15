@@ -47,8 +47,8 @@ export const Product = ({ width, item, mbWidth }) => {
     }
   );
 
-  const { mutate: removeFromCart, isPending: isRemovingFromCart } = useApiSend(
-    () => removeCartItem(item?._id, quantity),
+  const { mutate: removeFromCart, isPending: isRemovingFromCart, } = useApiSend(
+    () => removeCartItem(item?._id),
     () => {
       toast.success("Removed from cart");
       queryClient.invalidateQueries(["cart-data"]);
@@ -97,15 +97,13 @@ export const Product = ({ width, item, mbWidth }) => {
       enabled: true,
       refecthOnWindowFocus: true,
     }
-  );
+  )
 
-  // console.log(wishlistData, "wish list")
+
 
   const isWishlist = useMemo(() => {
     if (wishlistData) {
-      const result = wishlistData?.items.some(
-        (data) => data?.product._id === item._id
-      );
+      const result = wishlistData?.items?.some(data => data?.product?._id === item?._id);
       return result;
     }
     return false;
@@ -113,9 +111,7 @@ export const Product = ({ width, item, mbWidth }) => {
 
   const isCart = useMemo(() => {
     if (cartData) {
-      const cartItem = cartData.items.find(
-        (data) => data.product._id === item._id
-      );
+      const cartItem = cartData.items?.find(data => data.product?._id === item?._id);
       if (cartItem) {
         setQuantity(cartItem?.quantity);
         return true;
@@ -245,7 +241,7 @@ export const Product = ({ width, item, mbWidth }) => {
 };
 
 const Container = styled.div`
-  width: ${({ $width }) => ($width ? $width : "auto")};
+  width: ${({ $width }) => ($width ? $width : "17.8rem")};
   flex-shrink: 0;
   cursor: pointer;
 
@@ -253,6 +249,7 @@ const Container = styled.div`
     width: inherit;
     height: 16rem;
     object-fit: cover;
+    background-color: var(--hover-color);
   }
 
   @media ${devices.mobileL} {

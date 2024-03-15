@@ -1,11 +1,11 @@
 import styled from 'styled-components'
 
-export const Total = () => {
+export const Total = ({price}) => {
     return (
         <Container>
             <Item>
                 <p>Total</p>
-                <h6>₦19 000</h6>
+                <h6>₦ {price}</h6>
             </Item>
 
             <Notes>Signature required upon delivery.</Notes>

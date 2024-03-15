@@ -1,30 +1,31 @@
 import styled from 'styled-components'
 import { GrayCart } from '../../../../Assets/Svgs'
+import { formatAmount, IMAGE_BASE_URL } from '../../../../Utils'
 
-export const CheckoutItemCard = () => {
+export const CheckoutItemCard = ({item}) => {
     return (
         <Container>
             <img
-                src='https://images.unsplash.com/photo-1617220822996-83b261d07eec?q=80&w=2784&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
+                src={`${IMAGE_BASE_URL}${item?.image}`}
             />
-            <div>
+            <DetailsContainer>
                 <TitlePrice>
                     <h6>
-                        Clairol BW2 Tub Powder Lightener Extra-Strength
+                        {item?.product}
                     </h6>
 
-                    <b>₦4 500</b>
+                    <b>₦{formatAmount(item?.price)}</b>
                 </TitlePrice>
                 <Details>
                     <div>
                         <GrayCart />
-                        <p>: 1 item</p>
+                        <p>: {item?.quantity} item</p>
                     </div>
-                    <div>
+                    {/* <div>
                         <p>12Floz (276ml)</p>
-                    </div>
+                    </div> */}
                 </Details>
-            </div>
+            </DetailsContainer>
         </Container>
     )
 }
@@ -32,6 +33,7 @@ export const CheckoutItemCard = () => {
 
 const Container = styled.div`
     padding: 10px;
+    width: 40vw;
     display: flex;
     align-items: center;
     gap:30px;
@@ -43,12 +45,19 @@ const Container = styled.div`
         width: 116px;
         height: 116px;
         object-fit: cover;
+        border-radius: 5px;
+        background-color: var(--hover-color);
     }
+`
+
+const DetailsContainer = styled.div`
+    width: 100%;
 `
 
 const TitlePrice = styled.div`
     display: flex;
     width: 100%;
+    align-items: center;
     justify-content: space-between;
     h6{
         width: 70%;
