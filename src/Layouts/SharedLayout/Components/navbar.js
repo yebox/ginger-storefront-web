@@ -43,14 +43,7 @@ export const Navbar = () => {
     }
   )
 
-  const { data: productbrands } = useApiGet(
-    ['product-brands'],
-    () => getProductBrands(),
-    {
-      enabled: true,
-      refetchOnWindowFocus: false
-    }
-  )
+
 
   const handleNavLinkHover = (index) => {
     setCurrentImage(imageLinks[index]);

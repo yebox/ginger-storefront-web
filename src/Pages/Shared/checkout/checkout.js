@@ -6,6 +6,7 @@ import {
     GCheckbox,
     GSelectField,
     GTextField,
+    LineLoader,
 } from '../../../Ui_elements'
 import { InstaFooter } from '../Components'
 import { CheckoutItemCard, PriceDetails, Total } from './components'
@@ -16,11 +17,13 @@ import { CheckoutAddressSchema } from './schema';
 import { Controller } from 'react-hook-form';
 import { countries, formatAmount } from '../../../Utils';
 import { useLocation } from 'react-router-dom';
-import { useApiSend } from '../../../Hooks';
-import { createOrder } from '../../../Urls';
+import { useApiGet, useApiSend } from '../../../Hooks';
+import { createOrder, getUser, updateUserAddress } from '../../../Urls';
 import { toast } from 'react-hot-toast';
 import { SelectCard } from './components';
 import { RedRightArrow } from '../../../Assets/Svgs'
+import { useQueryClient } from '@tanstack/react-query';
+import { useEffect, useMemo } from 'react';
 
 
 
@@ -36,6 +39,8 @@ const Checkout = () => {
     const totalPrice = JSON.parse(decodeURIComponent(totalPriceString))
     const transformData = JSON.parse(decodeURIComponent(transformDataString));
     const shipping = 2000
+
+    const queryClient = useQueryClient()
 
     const {
         register,
@@ -57,17 +62,30 @@ const Checkout = () => {
         }
     )
 
-    const data = [
-        {
-            id: 0,
-            item: "20a wallstreet junction, Ibadan, Nigeria."
+    const { mutate: updateAddress, isPending: isUpdatingAddress } = useApiSend(
+        updateUserAddress,
+        () => {
+            toast.error('Address book updated')
+            queryClient.invalidateQueries( ['get-user-data'])
         },
-        {
-            id: 1,
-            item: "Liberty Estate, Enugu, Nigeria."
-        },
-    ]
+        () => {
+            toast.error(`Something went wrong`)
+        }
+    )
 
+    const { data: userAddress, isLoading:isLoadingUser } = useApiGet(
+        ['get-user-data'],
+        () => getUser(),
+        {
+            enabled: true
+        }
+    )
+
+    const addresses = useMemo(() => {
+        const formatAddress = [userAddress?.address]
+        return formatAddress
+    }, [userAddress])
+    
 
     const {
         address,
@@ -80,29 +98,39 @@ const Checkout = () => {
     } = watch()
 
     const onSubmit = (data) => {
-        const items = transformData.map((item) =>
-            [{
-                productId: item?._id,
-                quantity: item?.quantity
-            }]
-        )
+        // const items = transformData.map((item) =>
+        //     [{
+        //         productId: item?._id,
+        //         quantity: item?.quantity
+        //     }]
+        // )
+        // const body = {
+        //     items,
+        //     price: totalPrice,
+        //     deliveryAddress: {
+        //         line1: data?.address,
+        //         line2: data?.apartment,
+        //         city: data?.city,
+        //         state: data?.state,
+        //         country: data?.country.value,
+        //         postalcode: data?.zipCode
+        //     },
+        //     isWholesale: true,
+        //     deliveryDate: "2024-03-14T22:28:19.058Z",
+        //     dateDelivered: "2024-03-14T22:28:19.058Z"
+        // }
+
         const body = {
-            items,
-            price: totalPrice,
-            deliveryAddress: {
-                line1: data?.address,
-                line2: data?.apartment,
-                city: data?.city,
-                state: data?.state,
-                country: data?.country.value,
-                postalcode: data?.zipCode
-            },
-            isWholesale: true,
-            deliveryDate: "2024-03-14T22:28:19.058Z",
-            dateDelivered: "2024-03-14T22:28:19.058Z"
+            line1: data?.address,
+            line2: data?.apartment,
+            city: data?.city,
+            state: data?.state,
+            country: data?.country.value,
+            postalCode: data?.zipCode
         }
-        mutate(body)
+        updateAddress(body)
     }
+
 
     return (
         <Container>
@@ -115,14 +143,17 @@ const Checkout = () => {
                     <InformationSection onSubmit={handleSubmit(onSubmit)}>
                         <h6>Delivery Information</h6>
 
-                        {data.map((item) => (
+                        {addresses?.map((item, index) => (
                             <SelectCard
-                                key={item.id}
-                                id={item.id}
+                                key={index}
+                                id={index}
                                 selectedCard={selectAddress}
                                 selectedItem={selectAddress}
-                                item={item.item}
-                                onClick={() => setSelectAddress(item.id)}
+                                item={{
+                                    item,
+                                    userName: `${userAddress?.firstName} ${userAddress?.lastName}`
+                                }}
+                                onClick={() => setSelectAddress(index)}
                             />
                         ))}
                         <Add onClick={() => setDisplayForm(!displayForm)}>
@@ -201,7 +232,7 @@ const Checkout = () => {
                                     required
                                 />
 
-                                <GTextField
+                                {/* <GTextField
                                     id="phoneNumber"
                                     placeholder="Phone"
                                     name="phoneNumber"
@@ -209,7 +240,7 @@ const Checkout = () => {
                                     error={errors.phoneNumber}
                                     errorText={errors.phoneNumber && errors.phoneNumber.message}
                                     required
-                                />
+                                /> */}
 
                                 <CheckContainer>
                                     <GCheckbox />
@@ -269,6 +300,12 @@ const Checkout = () => {
                     </PriceDetailsContainer>
                 </ItemDetailsContainer>
             </Body>
+            <LineLoader
+                loading={
+                    isUpdatingAddress ||
+                    isLoadingUser
+                }
+            />
             <InstaFooter />
         </Container>
     )
