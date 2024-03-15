@@ -102,7 +102,7 @@ export default function Cart() {
 
     }, [cartItems?.items]);
 
-    const encodeURL = transformData ?  encodeURIComponent(JSON.stringify(transformData)) : null
+    const encodeURL = transformData ? encodeURIComponent(JSON.stringify(transformData)) : null
 
     useEffect(() => {
         let totalPriceCalculation = 0;
@@ -230,7 +230,7 @@ export default function Cart() {
                 Cell: ({ row }) => (
 
                     <Remove
-                        onClick={()=>handleRemoveSingleItem(row)}
+                        onClick={() => handleRemoveSingleItem(row)}
                     >
                         Remove
                     </Remove>
@@ -242,7 +242,7 @@ export default function Cart() {
 
     const totalData = [
         {
-            description: `Subtotal (${transformData.length} items)`,
+            description: `Subtotal (${transformData?.length} items)`,
             price: totalPrice.toString()
         },
         {

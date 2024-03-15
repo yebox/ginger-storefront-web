@@ -31,7 +31,7 @@ import { topSellerCategories } from "../../Utils";
 import Swiper from "swiper";
 import { useNavigate } from "react-router-dom";
 import { useApiGet } from "../../Hooks";
-import { getCategories, getProducts } from "../../Urls";
+import { getCategories, getProducts,getProductBrands } from "../../Urls";
 import Cookies from 'js-cookie';
 // import InstaFooter from "./Components/instaFooter";
 
@@ -49,6 +49,15 @@ const Home = () => {
     getProducts,
     {
       enable: true,
+      refetchOnWindowFocus: false
+    }
+  )
+
+  const { data: productbrands, isLoading:isLoadingProductBrands } = useApiGet(
+    ['product-brands'],
+    () => getProductBrands(),
+    {
+      enabled: true,
       refetchOnWindowFocus: false
     }
   )
