@@ -9,7 +9,7 @@ import {
 import { GButton } from "../Button/button";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { formatAmount, IMAGE_BASE_URL } from "../../Utils";
 import { useApiGet, useApiSend } from "../../Hooks";
 import {
@@ -29,6 +29,7 @@ import { setSelectedProductName } from "../../Redux/Reducers";
 
 export const Product = ({ width, item, mbWidth }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [items, setItems] = useState([]);
   const [quantity, setQuantity] = useState(0);
   const user = useSelector((state) => state.user);
@@ -163,6 +164,11 @@ export const Product = ({ width, item, mbWidth }) => {
     removeFromCart();
   };
 
+  const handleClick = () => {
+    dispatch(setSelectedProductName(item?.name));
+    navigate(`/categories/${item?.category?.name}/${item?._id}`);
+  };
+
   if (isLoadingWishlist || isLoadingCartData) {
     return <ProductSkeleton />;
   }
@@ -170,7 +176,7 @@ export const Product = ({ width, item, mbWidth }) => {
   return (
     <>
       <Container $width={width} $mbWidth={mbWidth}>
-        <ImgContainer onClick={() => navigate(`/product/${item?._id}`)}>
+        <ImgContainer onClick={handleClick}>
           <img draggable={false} src={`${IMAGE_BASE_URL}${item?.mainImage}`} />
 
           {isWishlist ? (
