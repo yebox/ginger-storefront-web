@@ -4,6 +4,7 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import { styled } from "styled-components";
+import { devices } from "../../Utils";
 
 export const GRadioButtonsGroup = ({ name, value, handleChange, options }) => {
   return (
@@ -54,5 +55,16 @@ const Container = styled(FormControl)`
 
   .MuiFormControlLabel-root {
     gap: 10px;
+  }
+
+  @media ${devices.mobileL} {
+    .MuiTypography-root {
+      font-size: 16px;
+    }
+
+    .MuiFormControlLabel-root,
+    .MuiFormGroup-root {
+      gap: 4px;
+    }
   }
 `;

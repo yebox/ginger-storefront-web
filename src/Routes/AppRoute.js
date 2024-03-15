@@ -10,23 +10,21 @@ import { useApiSend } from "../Hooks";
 import { refreshToken } from "../Urls";
 import ScrollToTop from "../Utils/scrollToTop";
 // import { SellerDashboardLayout } from "../Layouts/SellerDashboardLayout";
-import { useDispatch, useSelector } from 'react-redux';
-import { logout, setTokenOnRefresh } from "../Redux";
+import { useDispatch, useSelector } from "react-redux";
+import { logout, setTokenOnRefresh } from "../Redux/Reducers";
 
 export const AppRoute = () => {
-
-  const user = useSelector(state => state.user);
-  console.log(user, "user")
+  const user = useSelector((state) => state.user);
   const { refreshToken: token } = user;
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const { mutate } = useApiSend(
     refreshToken,
     (data) => {
-      console.log(data, "refereshss")
-      dispatch(setTokenOnRefresh(data?.accessToken))
+      console.log(data, "refereshss");
+      dispatch(setTokenOnRefresh(data?.accessToken));
     },
     () => {
-      dispatch(logout)
+      dispatch(logout);
     }
   );
 
@@ -37,7 +35,6 @@ export const AppRoute = () => {
 
     return () => clearInterval(refreshTokenInterval);
   }, [mutate, token]);
-
 
   return (
     <>

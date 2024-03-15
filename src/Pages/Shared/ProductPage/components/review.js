@@ -2,8 +2,12 @@ import React from "react";
 import { styled } from "styled-components";
 import { GRatingIcon } from "../../../../Ui_elements";
 import { Helpful } from "../../../../Assets/Svgs";
+import { devices } from "../../../../Utils";
+import dayjs from "dayjs";
+var relativeTime = require("dayjs/plugin/relativeTime");
+dayjs.extend(relativeTime);
 
-const Review = ({ rating, time, review, helpfulCount }) => {
+const Review = ({ rating, createdAt, review, helpfulCount }) => {
   return (
     <Container>
       <RatingWrapper>
@@ -11,7 +15,7 @@ const Review = ({ rating, time, review, helpfulCount }) => {
           <GRatingIcon key={index} isChecked={rating > index} />
         ))}
       </RatingWrapper>
-      <Period>{time}</Period>
+      <Period>{dayjs(createdAt).fromNow()}</Period>
       <ReviewTxt>{review}</ReviewTxt>
       <HelpfulWrapper>
         <Helpful />
@@ -34,6 +38,11 @@ const Container = styled.div`
   border: 1px solid #eee;
   background: #fcfcfc;
   padding: 30px;
+
+  @media ${devices.mobileL} {
+    width: 100%;
+    padding: 20px;
+  }
 `;
 
 const RatingWrapper = styled.div`
@@ -48,8 +57,12 @@ const Period = styled.p`
   font-style: normal;
   font-weight: 500;
   line-height: 120%; /* 16.8px */
-  margin-top: 5px;
+  margin-top: 10px;
   opacity: 0.8;
+
+  @media ${devices.mobileL} {
+    font-size: 10px;
+  }
 `;
 
 const ReviewTxt = styled.p`
@@ -59,6 +72,10 @@ const ReviewTxt = styled.p`
   font-weight: 400;
   line-height: 140%; /* 22.4px */
   margin-top: 12px;
+
+  @media ${devices.mobileL} {
+    font-size: 13px;
+  }
 `;
 
 const HelpfulWrapper = styled.div`
@@ -81,5 +98,13 @@ const HelpfulTxt = styled.p`
     font-style: normal;
     font-weight: 400;
     line-height: 140%;
+  }
+
+  @media ${devices.mobileL} {
+    font-size: 12px;
+
+    & > span {
+      font-size: 12px;
+    }
   }
 `;

@@ -4,6 +4,7 @@ import { EditIcon } from "../../../../../Assets/Svgs";
 import Tfa from "./components/tfa";
 import { GButton } from "../../../../../Ui_elements";
 import PasswordModal from "./components/password";
+import { devices } from "../../../../../Utils";
 
 const Security = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -44,6 +45,15 @@ const TopWrapper = styled.div`
   justify-content: space-between;
   border-bottom: 1px solid #f3f3f3;
   padding: 32px 5vw 32px 45px;
+
+  @media ${devices.mobileL} {
+    padding: 20px;
+
+    & > svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
 `;
 
 const BottomWrapper = styled.div`
@@ -52,6 +62,10 @@ const BottomWrapper = styled.div`
   align-items: flex-end;
   gap: 11px;
   padding: 40px 5vw 48px 45px;
+
+  @media ${devices.mobileL} {
+    padding: 20px;
+  }
 `;
 
 const Title = styled.p`

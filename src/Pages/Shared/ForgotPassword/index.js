@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import OtpVerify from "./components/otpVerify";
 import EmailForm from "./components/emailForm";
 import NewPassword from "./components/newPassword";
+import { devices } from "../../../Utils";
 
 const ForgotPassword = () => {
   const [activeStep, setActiveStep] = useState(1);
@@ -84,11 +85,11 @@ const ForgotPassword = () => {
           {activeStep === 3 && (
             <NewPassword errors={errors} register={register} />
           )}
-          <GSpacer size={90} />
+          <GSpacer size={90} mbSize={50} />
           <GButton
             isLoading={isSubmitting}
             type={"submit"}
-            label={"Next"}
+            label={activeStep === 3 ? "Submit" : "Next"}
             isDisabled={btnDisabledHandler()}
           />
           <AuthLinkTxt>
@@ -113,6 +114,11 @@ const Container = styled.div`
   width: 100vw;
   height: 100vh;
   background: #0e0e0e;
+
+  @media ${devices.mobileL} {
+    justify-content: flex-start;
+    padding: 75px 24px;
+  }
 `;
 
 const LogoWhite = styled(LogoWhiteRed)`
@@ -120,6 +126,11 @@ const LogoWhite = styled(LogoWhiteRed)`
   height: 37.157px;
   flex-shrink: 0;
   z-index: 1;
+
+  @media ${devices.mobileL} {
+    width: 125px;
+    height: 24px;
+  }
 `;
 
 const BgImage = styled.img`
@@ -143,6 +154,11 @@ const ContentWrapper = styled.div`
   background: #fff;
   padding: 57px;
   z-index: 1;
+
+  @media ${devices.mobileL} {
+    width: 100%;
+    padding: 25px 17px 30px;
+  }
 `;
 
 const Form = styled.form`
@@ -150,6 +166,10 @@ const Form = styled.form`
   flex-direction: column;
   margin-top: 74px;
   width: 100%;
+
+  @media ${devices.mobileL} {
+    margin-top: 35px;
+  }
 `;
 
 const AuthLinkTxt = styled.p`
@@ -161,6 +181,11 @@ const AuthLinkTxt = styled.p`
   text-align: left;
   color: #b6b6b6;
   margin-top: 35px;
+
+  @media ${devices.mobileL} {
+    margin-top: 20px;
+    font-size: 12px;
+  }
 `;
 
 const LoginUpTxt = styled(Link)`
@@ -169,4 +194,8 @@ const LoginUpTxt = styled(Link)`
   font-style: normal;
   font-weight: 500;
   line-height: 130%;
+
+  @media ${devices.mobileL} {
+    font-size: 12px;
+  }
 `;

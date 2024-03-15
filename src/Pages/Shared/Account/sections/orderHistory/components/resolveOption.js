@@ -6,6 +6,7 @@ import {
   GRadioButtonsGroup,
   GSpacer,
 } from "../../../../../../Ui_elements";
+import { devices } from "../../../../../../Utils";
 
 const ResolveOption = ({ handleNext }) => {
   const [radioValue, setRadioValue] = useState(resolveOption[0].value);
@@ -21,8 +22,10 @@ const ResolveOption = ({ handleNext }) => {
 
   return (
     <Container>
-      <Title>How would you like the issue resolved?</Title>
-      <SubTxt>Select an option for resolution</SubTxt>
+      <Title>Resolve option</Title>
+      <SubTxt>
+        Select an option for how you would like to resolve this issue
+      </SubTxt>
       <ContentWrapper>
         <GRadioButtonsGroup
           name={"resolveOption"}
@@ -51,6 +54,10 @@ const Title = styled.p`
   font-weight: 500;
   line-height: 120%; /* 26.4px */
   margin-bottom: 12px;
+
+  @media ${devices.mobileL} {
+    font-size: 20px;
+  }
 `;
 
 const SubTxt = styled.p`
@@ -60,6 +67,10 @@ const SubTxt = styled.p`
   font-weight: 400;
   line-height: 120%; /* 19.2px */
   width: 51%;
+
+  @media ${devices.mobileL} {
+    width: 100%;
+  }
 `;
 
 const ContentWrapper = styled.div`
@@ -67,4 +78,8 @@ const ContentWrapper = styled.div`
   flex-direction: column;
   margin-top: 75px;
   max-width: 664px;
+
+  @media ${devices.mobileL} {
+    margin-top: 40px;
+  }
 `;

@@ -13,8 +13,11 @@ import { AddressSchema } from "../../validation";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { toast } from "react-hot-toast";
 import { countryData } from "../../../../../SignUp/data";
+import { devices } from "../../../../../../../Utils";
+import { useDeviceCheck } from "../../../../../../../Hooks";
 
 const AddressModal = ({ isOpen, handleClose }) => {
+  const { isMobile } = useDeviceCheck();
   const {
     register,
     handleSubmit,
@@ -108,7 +111,7 @@ const AddressModal = ({ isOpen, handleClose }) => {
             errorText={errors.phoneNumber && errors.phoneNumber.message}
             required
           />
-          <GSpacer size={1} />
+          {!isMobile && <GSpacer size={1} />}
           <GButton label={`Save changes`} isDisabled={isSubmitting} />
         </FormWrapper>
       </Container>
@@ -121,6 +124,12 @@ export default AddressModal;
 const Container = styled.div`
   width: 55vw;
   padding: 64px 60px;
+
+  @media ${devices.mobileL} {
+    width: 92vw;
+    max-height: 96vh;
+    padding: 40px 16px 32px;
+  }
 `;
 
 const Header = styled.div`
@@ -134,6 +143,13 @@ const Header = styled.div`
     flex-shrink: 0;
     cursor: pointer;
   }
+
+  @media ${devices.mobileL} {
+    & > svg {
+      width: 30px;
+      height: 30px;
+    }
+  }
 `;
 
 const Title = styled.p`
@@ -142,6 +158,10 @@ const Title = styled.p`
   font-style: normal;
   font-weight: 500;
   line-height: 120%; /* 40.8px */
+
+  @media ${devices.mobileL} {
+    font-size: 16px;
+  }
 `;
 
 const FormWrapper = styled.form`
@@ -149,6 +169,10 @@ const FormWrapper = styled.form`
   flex-direction: column;
   gap: 35px;
   margin-top: 75px;
+
+  @media ${devices.mobileL} {
+    margin-top: 50px;
+  }
 `;
 
 const Row = styled.div`

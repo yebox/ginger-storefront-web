@@ -39,22 +39,28 @@ const WishList = lazy(() => import("../Pages/Shared/wishList"));
 const Checkout = lazy(() => import("../Pages/Shared/checkout/checkout"));
 const Address = lazy(() => import("../Pages/Shared/checkout/address"));
 const Payment = lazy(() => import("../Pages/Shared/checkout/payment"));
-const SellerStore = lazy(() => import("../Pages/Shared/SellerStore"))
+const SellerStore = lazy(() => import("../Pages/Shared/SellerStore"));
 
-
-//seller Auth routes 
+//seller Auth routes
 
 // const SellerLogin = lazy(() => import('../Pages/Shared/SellerPages/SellerLogin'))
-const SellerSignup = lazy(() => import('../Pages/Shared/SellerPages/SellerSignUp'))
-const SellerForgotPassword = lazy(() => import('../Pages/Shared/SellerPages/SellerForgotPassword'))
-const SellerSignUpPersonalInformation = lazy(() => import('../Pages/Shared/SellerPages/SellerPersonalInformation'))
-const SellerSignUpBusinessInformation = lazy(() => import('../Pages/Shared/SellerPages/SellerBusinessInformation'))
-const SellerSignUpBusinessDocument = lazy(() => import('../Pages/Shared/SellerPages/SellerBusinessDocument'))
+const SellerSignup = lazy(() =>
+  import("../Pages/Shared/SellerPages/SellerSignUp")
+);
+const SellerForgotPassword = lazy(() =>
+  import("../Pages/Shared/SellerPages/SellerForgotPassword")
+);
+const SellerSignUpPersonalInformation = lazy(() =>
+  import("../Pages/Shared/SellerPages/SellerPersonalInformation")
+);
+const SellerSignUpBusinessInformation = lazy(() =>
+  import("../Pages/Shared/SellerPages/SellerBusinessInformation")
+);
+const SellerSignUpBusinessDocument = lazy(() =>
+  import("../Pages/Shared/SellerPages/SellerBusinessDocument")
+);
 
-
-const ErrorPage =lazy(()=> import('../Ui_elements/ErrorPage'))
-
-
+const ErrorPage = lazy(() => import("../Ui_elements/ErrorPage"));
 
 export const sharedRoutes = [
   {
@@ -103,7 +109,7 @@ export const sharedRoutes = [
     element: Categories,
   },
   {
-    path: "/product/:id",
+    path: "/categories/:category/:id",
     element: ProductPage,
   },
   {
@@ -150,7 +156,7 @@ export const authRoutes = [
   {
     path: "/forgot-password",
     element: ForgotPassword,
-    hasLayout: true,
+    hasLayout: false,
   },
 ];
 

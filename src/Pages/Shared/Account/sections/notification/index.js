@@ -3,6 +3,7 @@ import { styled } from "styled-components";
 import { EditIcon, NotificationBell } from "../../../../../Assets/Svgs";
 import { notifications } from "./components/data";
 import NotificationCard from "./components/card";
+import { devices } from "../../../../../Utils";
 
 const Notification = () => {
   return (
@@ -45,6 +46,15 @@ const TopWrapper = styled.div`
   justify-content: space-between;
   border-bottom: 1px solid #f3f3f3;
   padding: 32px 5vw 32px 45px;
+
+  @media ${devices.mobileL} {
+    padding: 20px;
+
+    & > svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
 `;
 
 const BottomWrapper = styled.div`
@@ -52,6 +62,11 @@ const BottomWrapper = styled.div`
   flex-direction: column;
   gap: 11px;
   padding: 40px 5vw 48px 45px;
+
+  @media ${devices.mobileL} {
+    padding: 20px;
+    margin-bottom: 40px;
+  }
 `;
 
 const Title = styled.p`

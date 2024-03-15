@@ -1,6 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
 import { GTextField } from "../../../../Ui_elements";
+import { devices } from "../../../../Utils";
 
 const EmailForm = ({ register, errors }) => {
   return (
@@ -31,7 +32,12 @@ const Title = styled.p`
   font-style: normal;
   font-weight: 500;
   line-height: 120%;
+
+  @media ${devices.mobileL} {
+    font-size: 22px;
+  }
 `;
+
 const Subtitle = styled.p`
   color: var(--Black-300, #626262);
   font-size: 16px;
@@ -39,4 +45,9 @@ const Subtitle = styled.p`
   font-weight: 400;
   line-height: 120%; /* 19.2px */
   margin: 14px 0 65px;
+
+  @media ${devices.mobileL} {
+    font-size: 14px;
+    margin: 10px 0 45px;
+  }
 `;

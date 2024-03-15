@@ -7,6 +7,7 @@ import {
   GSpacer,
   GTextAreaField,
 } from "../../../../../../Ui_elements";
+import { devices } from "../../../../../../Utils";
 
 const IssueType = ({ handleNext }) => {
   const [radioValue, setRadioValue] = useState(issueTypeOption[0].value);
@@ -45,7 +46,7 @@ const IssueType = ({ handleNext }) => {
           handleChange={handleCheck}
           value={radioValue}
         />
-        <GSpacer size={70} />
+        <GSpacer size={70} mbSize={50} />
         <GTextAreaField
           id="reason"
           placeholder="Other reason, specify"
@@ -81,6 +82,10 @@ const Title = styled.p`
   font-weight: 500;
   line-height: 120%; /* 26.4px */
   margin-bottom: 12px;
+
+  @media ${devices.mobileL} {
+    font-size: 20px;
+  }
 `;
 
 const SubTxt = styled.p`
@@ -90,6 +95,10 @@ const SubTxt = styled.p`
   font-weight: 400;
   line-height: 120%; /* 19.2px */
   width: 51%;
+
+  @media ${devices.mobileL} {
+    width: 100%;
+  }
 `;
 
 const ContentWrapper = styled.div`
@@ -97,4 +106,8 @@ const ContentWrapper = styled.div`
   flex-direction: column;
   margin-top: 75px;
   max-width: 664px;
+
+  @media ${devices.mobileL} {
+    margin-top: 40px;
+  }
 `;

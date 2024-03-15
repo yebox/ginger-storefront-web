@@ -1,98 +1,111 @@
 import styled from "styled-components";
-import { DollarShield, Heart, LockIcon, RedHeart, Star } from "../../Assets/Svgs";
+import {
+  DollarShield,
+  Heart,
+  LockIcon,
+  RedHeart,
+  Star,
+} from "../../Assets/Svgs";
 import { GButton } from "../Button/button";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { useSelector } from 'react-redux';
-import { formatAmount, IMAGE_BASE_URL } from "../../Utils";
+import { useDispatch, useSelector } from "react-redux";
+import { devices, formatAmount, IMAGE_BASE_URL } from "../../Utils";
 import { useApiGet, useApiSend } from "../../Hooks";
-import { addToCart, addToWishlist, getCartItems, getWishlist, removeCartItem } from "../../Urls";
+import {
+  addToCart,
+  addToWishlist,
+  getCartItems,
+  getWishlist,
+  removeCartItem,
+} from "../../Urls";
 import { toast } from "react-hot-toast";
-import { useState, useMemo } from 'react';
+import { useState, useMemo } from "react";
 import { ProductSkeleton } from "../ProductCardSkeleton";
 import { LineLoader } from "../LineLoader";
-import { deletItemFromWishlist } from '../../Urls/wishlist';
+import { deletItemFromWishlist } from "../../Urls/wishlist";
 import { useQueryClient } from "@tanstack/react-query";
+import { setSelectedProductName } from "../../Redux/Reducers";
 
-export const Product = ({ width, item }) => {
+export const Product = ({ width, item, mbWidth }) => {
   const navigate = useNavigate();
-  const [items, setItems] = useState([])
-  const [quantity, setQuantity] = useState(0)
-  const user = useSelector(state => state.user)
-  const queryClient = useQueryClient()
+  const dispatch = useDispatch();
+  const [items, setItems] = useState([]);
+  const [quantity, setQuantity] = useState(0);
+  const user = useSelector((state) => state.user);
+  const queryClient = useQueryClient();
 
-  console.log(item, "item")
-  const { mutate, isPending, } = useApiSend(
+  console.log(item, "item");
+  const { mutate, isPending } = useApiSend(
     (_) => addToCart(_, user?._id),
     () => {
-      toast.success('Added to cart')
-      queryClient.invalidateQueries(['cart-data'])
+      toast.success("Added to cart");
+      queryClient.invalidateQueries(["cart-data"]);
     },
     (e) => {
-      toast.error('Could not add to cart')
+      toast.error("Could not add to cart");
     }
-  )
+  );
 
-  const { mutate: removeFromCart, isPending: isRemovingFromCart, } = useApiSend(
+  const { mutate: removeFromCart, isPending: isRemovingFromCart } = useApiSend(
     () => removeCartItem(item?._id, quantity),
     () => {
-      toast.success('Removed from cart')
-      queryClient.invalidateQueries(['cart-data'])
+      toast.success("Removed from cart");
+      queryClient.invalidateQueries(["cart-data"]);
     },
     (e) => {
-      toast.error('Could not remove from cart')
+      toast.error("Could not remove from cart");
     }
-  )
+  );
 
-  const { mutate: addWishlist, isPending: isAddingToWishlist, } = useApiSend(
+  const { mutate: addWishlist, isPending: isAddingToWishlist } = useApiSend(
     (_) => addToWishlist(_, user?._id),
     () => {
-      toast.success('Added to wishliat')
-      queryClient.invalidateQueries(['wishlist-data'])
+      toast.success("Added to wishliat");
+      queryClient.invalidateQueries(["wishlist-data"]);
     },
     (e) => {
-      toast.error('Could not add to wishlist')
+      toast.error("Could not add to wishlist");
     }
-  )
+  );
 
-
-
-  const { mutate: deleteFromWishlist, isPending: isDeletingItemWishlist, } = useApiSend(
-    () => deletItemFromWishlist(user?._id, item?._id),
-    () => {
-      toast.success('Removed from wishliat')
-      queryClient.invalidateQueries(['wishlist-data'])
-    },
-    (e) => {
-      toast.error('Could not remove from wishlist')
-    }
-  )
+  const { mutate: deleteFromWishlist, isPending: isDeletingItemWishlist } =
+    useApiSend(
+      () => deletItemFromWishlist(user?._id, item?._id),
+      () => {
+        toast.success("Removed from wishliat");
+        queryClient.invalidateQueries(["wishlist-data"]);
+      },
+      (e) => {
+        toast.error("Could not remove from wishlist");
+      }
+    );
 
   const { data: wishlistData, isLoading: isLoadingWishlist } = useApiGet(
-    ['wishlist-data'],
+    ["wishlist-data"],
     () => getWishlist(user?._id),
     {
       enabled: true,
-      refecthOnWindowFocus: true
+      refecthOnWindowFocus: true,
     }
-  )
+  );
 
   const { data: cartData, isLoading: isLoadingCartData } = useApiGet(
-    ['cart-data'],
+    ["cart-data"],
     () => getCartItems(user?._id),
     {
       enabled: true,
-      refecthOnWindowFocus: true
+      refecthOnWindowFocus: true,
     }
-  )
-
-
+  );
 
   // console.log(wishlistData, "wish list")
 
   const isWishlist = useMemo(() => {
     if (wishlistData) {
-      const result = wishlistData?.items.some(data => data?.product._id === item._id);
+      const result = wishlistData?.items.some(
+        (data) => data?.product._id === item._id
+      );
       return result;
     }
     return false;
@@ -100,27 +113,28 @@ export const Product = ({ width, item }) => {
 
   const isCart = useMemo(() => {
     if (cartData) {
-      const cartItem = cartData.items.find(data => data.product._id === item._id);
+      const cartItem = cartData.items.find(
+        (data) => data.product._id === item._id
+      );
       if (cartItem) {
-        setQuantity(cartItem?.quantity)
-        return true
+        setQuantity(cartItem?.quantity);
+        return true;
       }
     }
-    setQuantity(0)
-    return false
+    setQuantity(0);
+    return false;
   }, [cartData, item]);
-
 
   const onLike = (e) => {
     e.stopPropagation();
     const singleItem = {
       productId: item?._id,
-      quantity: 1
+      quantity: 1,
     };
     const updatedItems = [singleItem];
     const body = {
       items: updatedItems,
-      price: item?.price
+      price: item?.price,
     };
     addWishlist(body);
   };
@@ -128,48 +142,52 @@ export const Product = ({ width, item }) => {
   const onDeleteFromWishlist = (e) => {
     e.stopPropagation();
     deleteFromWishlist();
-  }
+  };
 
   const onAddToCart = () => {
     const singleItem = {
       productId: item?._id,
-      quantity: 1
+      quantity: 1,
     };
     const updatedItems = [...items, singleItem];
     setItems(updatedItems);
 
     const body = {
       items: updatedItems,
-      price: item?.price
+      price: item?.price,
     };
     mutate(body);
   };
 
   const onRemoveFromCart = (e) => {
-    e.stopPropagation()
-    removeFromCart()
-  }
+    e.stopPropagation();
+    removeFromCart();
+  };
+
+  const handleClick = () => {
+    dispatch(setSelectedProductName(item?.name));
+    navigate(`/categories/${item?.category?.name}/${item?._id}`);
+  };
 
   if (isLoadingWishlist || isLoadingCartData) {
-    return <ProductSkeleton />
+    return <ProductSkeleton />;
   }
 
   return (
     <>
-      <Container $width={width}>
-        <ImgContainer onClick={() => navigate(`/product/${item?._id}`)}>
+      <Container $width={width} $mbWidth={mbWidth}>
+        <ImgContainer onClick={handleClick}>
           <img draggable={false} src={`${IMAGE_BASE_URL}${item?.mainImage}`} />
 
-          {
-            isWishlist ?
-              <Liked onClick={onDeleteFromWishlist}>
-                <RedHeart />
-              </Liked>
-              :
-              <Unliked onClick={onLike}>
-                <Heart />
-              </Unliked>
-          }
+          {isWishlist ? (
+            <Liked onClick={onDeleteFromWishlist}>
+              <RedHeart />
+            </Liked>
+          ) : (
+            <Unliked onClick={onLike}>
+              <Heart />
+            </Unliked>
+          )}
           <GradientOverlay />
         </ImgContainer>
 
@@ -200,7 +218,7 @@ export const Product = ({ width, item }) => {
             <Price>₦{formatAmount(item?.price)}</Price>
             <GButton
               onClick={isCart ? onRemoveFromCart : onAddToCart}
-              label={isCart ? 'Remove from cart' : 'Add to cart'}
+              label={isCart ? "Remove from cart" : "Add to cart"}
               isLoading={isPending || isRemovingFromCart}
             />
           </>
@@ -223,7 +241,6 @@ export const Product = ({ width, item }) => {
         }
       />
     </>
-
   );
 };
 
@@ -237,6 +254,10 @@ const Container = styled.div`
     height: 16rem;
     object-fit: cover;
   }
+
+  @media ${devices.mobileL} {
+    width: ${({ $width, $mbWidth }) => ($mbWidth ? $mbWidth : $width)};
+  }
 `;
 
 const GradientOverlay = styled.div`
@@ -246,7 +267,7 @@ const GradientOverlay = styled.div`
   width: 100%;
   height: 50%;
   background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
-  `;
+`;
 
 const SellerRate = styled.div`
   display: flex;
@@ -264,10 +285,39 @@ const SellerRate = styled.div`
   }
 
   div:nth-child(1) {
-    p:nth-child(1) {
+    p {
       font-size: 14px;
-      color: var(--gray-300);
-      font-weight: lighter;
+      color: var(--Black-100, #b6b6b6);
+      font-weight: 400;
+    }
+
+    a {
+      font-size: 14px;
+      color: var(--Black-100, #626262);
+      font-weight: 400;
+    }
+  }
+
+  @media ${devices.mobileL} {
+    div {
+      gap: 3px;
+    }
+    div:nth-child(1) {
+      p,
+      a {
+        font-size: 10px;
+      }
+    }
+
+    div:nth-child(2) {
+      p {
+        font-size: 10px;
+      }
+
+      svg {
+        width: 10px;
+        height: 10px;
+      }
     }
   }
 `;
@@ -276,6 +326,13 @@ const Itemdetail = styled.div`
   margin-top: 0.6rem;
   p {
     font-size: 1.2rem;
+    color: var(--Black-500, #151515);
+  }
+
+  @media ${devices.mobileL} {
+    p {
+      font-size: 16px;
+    }
   }
 `;
 
@@ -294,10 +351,10 @@ const Unliked = styled.div`
   cursor: pointer;
   transition: all 0.3s ease;
 
-  &:hover{
+  &:hover {
     transform: scale(1.1);
   }
-`
+`;
 
 const Liked = styled.div`
   width: 2.5rem;
@@ -312,8 +369,7 @@ const Liked = styled.div`
   justify-content: center;
   background: var(--hover-color);
   cursor: pointer;
-`
-
+`;
 
 const RRPContainer = styled.div`
   display: flex;
@@ -337,13 +393,32 @@ const RRPContainer = styled.div`
       align-items: center;
     }
   }
+
+  & > div {
+    margin: 0;
+
+    p {
+      font-size: 12px;
+    }
+
+    svg {
+      width: 12px;
+      height: 14px;
+    }
+  }
 `;
 
 const Price = styled.h6`
   font-size: 1.8rem;
   font-weight: 400;
   margin-bottom: 0.6rem;
+
+  @media ${devices.mobileL} {
+    font-size: 18px;
+    margin-bottom: 1rem;
+  }
 `;
+
 const ImgContainer = styled.div`
   background-color: aliceblue;
   position: relative;
@@ -351,6 +426,22 @@ const ImgContainer = styled.div`
     width: 100%;
     height: 16rem;
     object-fit: cover;
+  }
+
+  @media ${devices.mobileL} {
+    img {
+      height: 214px;
+    }
+
+    & > div {
+      width: 32px;
+      height: 32px;
+
+      svg {
+        width: 16px;
+        height: 16px;
+      }
+    }
   }
 `;
 
@@ -373,5 +464,16 @@ const UnAuthPrice = styled.div`
     font-size: 1.8rem;
     font-weight: 400;
     filter: blur(5px);
+  }
+
+  @media ${devices.mobileL} {
+    p {
+      font-size: 16px;
+    }
+
+    div {
+      width: 16px;
+      height: 16px;
+    }
   }
 `;

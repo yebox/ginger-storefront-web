@@ -3,6 +3,7 @@ import { styled } from "styled-components";
 import { SuccessIcon } from "../../../../../../Assets/Svgs";
 import { GButton } from "../../../../../../Ui_elements";
 import { useNavigate } from "react-router-dom";
+import { devices } from "../../../../../../Utils";
 
 const ReportSuccess = () => {
   const navigate = useNavigate();
@@ -33,12 +34,16 @@ const Container = styled.div`
 `;
 
 const MainTxt = styled.p`
-  color: var(--Black-300, #626262);
+  color: var(--Black-300, #151515);
   font-size: 22px;
   font-style: normal;
   font-weight: 500;
   line-height: 120%; /* 26.4px */
   margin-top: 30px;
+
+  @media ${devices.mobileL} {
+    font-size: 20px;
+  }
 `;
 
 const SubTxt = styled.p`
@@ -50,4 +55,9 @@ const SubTxt = styled.p`
   font-weight: 400;
   line-height: 120%; /* 19.2px */
   margin: 15px 0 40px;
+
+  @media ${devices.mobileL} {
+    font-size: 15px;
+    margin: 12px 0 35px;
+  }
 `;

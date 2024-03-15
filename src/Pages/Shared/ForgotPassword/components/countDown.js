@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { styled } from "styled-components";
+import { devices } from "../../../../Utils";
 
 const Countdown = ({ resetTimer, timeUpHandler }) => {
   const initialState = { minutes: 0, seconds: 10 };
@@ -49,4 +50,8 @@ const Container = styled.p`
   font-style: normal;
   font-weight: 500;
   line-height: 130%;
+
+  @media ${devices.mobileL} {
+    font-size: 14px;
+  }
 `;

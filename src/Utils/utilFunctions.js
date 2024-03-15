@@ -1,5 +1,7 @@
 import _ from "lodash";
 
+const BASE_URL = process.env.REACT_APP_BASE_URL;
+
 export const formatUrlName = (url) => {
   const removePercentage = url.replace(/%20/g, " ");
   let removeUnderscoreHyphen = removePercentage.replace(/_/g, " ");
@@ -35,14 +37,20 @@ export function bytesForHuman(sizeBytes) {
   }).format(size);
 }
 
+export const formatImage = (url) => {
+  const base = BASE_URL.split("/")
+    .filter((x) => x)
+    .slice(0, 2)
+    .join("//");
+  return `${base}/${url}`;
+};
 
 export const formatAmount = (amount) => {
   if (amount) {
     let amountStr = amount.toString();
-    let parts = amountStr.split('.');
-    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    let parts = amountStr.split(".");
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
-    return parts.join('.');
+    return parts.join(".");
   }
-
-}
+};

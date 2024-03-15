@@ -1,5 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
+import { devices } from "../../../../../../Utils";
 
 const CancelOrder = () => {
   return (
@@ -18,6 +19,10 @@ const Container = styled.div`
   flex-direction: column;
   margin-top: 88px;
   padding: 0 5vw 0 65px;
+
+  @media ${devices.mobileL} {
+    padding: 20px;
+  }
 `;
 
 const Title = styled.p`
@@ -26,6 +31,10 @@ const Title = styled.p`
   font-style: normal;
   font-weight: 500;
   line-height: 120%; /* 26.4px */
+
+  @media ${devices.mobileL} {
+    font-size: 18px;
+  }
 `;
 
 const Desc = styled.p`
@@ -35,6 +44,10 @@ const Desc = styled.p`
   font-weight: 400;
   line-height: 120%; /* 26.4px */
   margin-top: 10px;
+
+  @media ${devices.mobileL} {
+    font-size: 16px;
+  }
 `;
 
 const CancelBtn = styled.div`
@@ -55,4 +68,8 @@ const CancelBtn = styled.div`
   font-weight: 500;
   line-height: 130%; /* 20.8px */
   cursor: pointer;
+
+  @media ${devices.mobileL} {
+    width: 100%;
+  }
 `;

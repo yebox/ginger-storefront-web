@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { styled } from "styled-components";
 import { Eye, EyeSlash } from "../../Assets/Svgs";
+import { devices } from "../../Utils";
 
 /**
  * inputType is to choose between 'text' or 'passowrd'
@@ -137,6 +138,14 @@ const Input = styled.input`
   &:disabled {
     cursor: not-allowed;
   }
+
+  @media ${devices.mobileL} {
+    font-size: 14px;
+
+    &::placeholder {
+      font-size: 14px;
+    }
+  }
 `;
 
 const InputWrapper = styled.label`
@@ -181,4 +190,8 @@ const Error = styled.div`
   font-size: 16px;
   font-weight: 400;
   line-height: 120%;
+
+  @media ${devices.mobileL} {
+    font-size: 12px;
+  }
 `;
