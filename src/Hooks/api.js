@@ -13,7 +13,6 @@ export const useApiSend = (fn, success, error, invalidateKey, options) => {
     return useMutation({
         mutationFn: fn,
         onSuccess: (data) => {
-            console.log(data, "data in api call ")
             invalidateKey &&
                 invalidateKey.forEach((key) => {
                     queryClient.invalidateQueries(key);

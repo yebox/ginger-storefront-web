@@ -5,6 +5,7 @@ import { GRadioSelect } from '../../../../Ui_elements'
 export const SelectCard = ({
     id,
     selectedCard,
+    selectedItem,
     item,
     ...otherProps
 

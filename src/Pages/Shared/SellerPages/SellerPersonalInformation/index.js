@@ -53,7 +53,6 @@ const SellerSignUpPersonalInformation = () => {
   };
 
   const onSubmit = () => { };
-  console.log({ errors });
 
   return (
     <>

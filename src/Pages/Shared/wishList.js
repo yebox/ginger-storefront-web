@@ -3,11 +3,25 @@ import { useState } from 'react';
 import { NoWishList } from '../../Assets/Svgs';
 import { GBreadCrumbs, GButton, GSpacer, Product } from '../../Ui_elements';
 import { InstaFooter } from './Components';
-
+import { useApiGet } from '../../Hooks';
+import { getWishlist } from '../../Urls';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 
 export default function Wishlist() {
-    const [noItem, setNoItem] = useState(true);
+    const navigate = useNavigate()
+    const user = useSelector(state => state.user)
+
+    const { data: wishlistData, isLoading: isLoadingWishlist } = useApiGet(
+        ['wishlist-data'],
+        () => getWishlist(user?._id),
+        {
+            enabled: true,
+            refecthOnWindowFocus: true
+        }
+    )
+
 
     return (
         <>
@@ -15,50 +29,54 @@ export default function Wishlist() {
                 <GBreadCrumbs />
             </BreadCrumbHolder>
 
-            {noItem ? (
-
-                <NoItemContainer>
-                    <IconHolder>
-                        <NoWishList />
-                    </IconHolder>
-
-                    <b>You have no saved item</b>
-
-                    <EmptyButtonHolder>
-                        <GButton
-                            onClick={() => setNoItem(false)}
-                            label={"Continue shopping"}
-                        />
-                    </EmptyButtonHolder>
-                    <InstaFooter />
-                </NoItemContainer>
-            ) : (
+            {wishlistData?.items?.length > 0 ?
                 <Container>
                     <Header>
                         <div>
                             <p>Saved items</p>
                             <div>
-                                3
+                                {wishlistData?.items?.length}
                             </div>
                         </div>
 
-                        <div>
+                        <ClearAll>
                             <p>Clear all</p>
-                            <p>&times;</p>
-                        </div>
+                            <X>&times;</X>
+                        </ClearAll>
 
                     </Header>
 
                     <CardContainer>
-                        <Product />
-                        <Product />
-                        <Product />
-
+                        {
+                            wishlistData?.items?.map((item, index) =>
+                                <Product item={item?.product} key={index} />
+                            )
+                        }
                     </CardContainer>
                     <GSpacer size={"200"} />
                     <InstaFooter />
                 </Container>
-            )}
+                :
+                (
+
+                    <NoItemContainer>
+                        <IconHolder>
+                            <NoWishList />
+                        </IconHolder>
+
+                        <b>You have no saved item</b>
+
+                        <EmptyButtonHolder>
+                            <GButton
+                                onClick={() => navigate('catagories/all')}
+                                label={"Continue shopping"}
+                            />
+                        </EmptyButtonHolder>
+                        <InstaFooter />
+                    </NoItemContainer>
+                )
+
+            }
         </>
     );
 }
@@ -144,4 +162,22 @@ const CardContainer = styled.section`
     align-items: center;
     margin-top: 40px;
     gap: 20px;
+`
+const ClearAll = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    p{
+        font-size: 1.5rem;
+        color: var(--primary-color);
+    }
+    transition: all 0.3s ease;
+    cursor: pointer;
+
+    &:hover{
+        transform: scale(1.1);
+    }
+`
+const X = styled.p`
+    font-size: 1rem;
 `

@@ -125,7 +125,7 @@ export const sharedRoutes = [
     element: WishList,
   },
   {
-    path: "/cart/information",
+    path: "/cart/checkout",
     element: Checkout,
   },
   {
