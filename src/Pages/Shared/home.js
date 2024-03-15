@@ -6,6 +6,7 @@ import {
   Chip,
   GModal,
   Carousel,
+  ProductSkeleton,
 } from "../../Ui_elements";
 import React, { memo, useState, useRef } from "react";
 import Vector from "../../Assets/Images/vector-background.png";
@@ -29,6 +30,9 @@ import {
 import { topSellerCategories } from "../../Utils";
 import Swiper from "swiper";
 import { useNavigate } from "react-router-dom";
+import { useApiGet } from "../../Hooks";
+import { getCategories, getProducts } from "../../Urls";
+import Cookies from 'js-cookie';
 // import InstaFooter from "./Components/instaFooter";
 
 const Home = () => {
@@ -37,7 +41,37 @@ const Home = () => {
   const [openCookie, setOpenCookie] = useState(true);
   const [openModal, setOpenModal] = useState(true);
   const sliderRef = useRef(null);
+  const acceptCookie = Cookies.get('ginger-cookie-policy')
   const swiper = new Swiper();
+
+  const { data: products, isLoading } = useApiGet(
+    ['get-featured-products'],
+    getProducts,
+    {
+      enable: true,
+      refetchOnWindowFocus: false
+    }
+  )
+
+  const { data: categories, isLoading: isLoadingCategories } = useApiGet(
+    ['categories'],
+    () => getCategories(),
+    {
+      enabled: true,
+      refetchOnWindowFocus: false
+    }
+  )
+
+
+  const getLastFourFeaturedProducts = (products) => {
+    if (products) {
+      const featuredProducts = products.filter(product => product.isFeatured);
+      const lastFourFeaturedProducts = featuredProducts.slice(-4);
+      return lastFourFeaturedProducts;
+    }
+  }
+
+  const lastFourFeaturedProducts = getLastFourFeaturedProducts(products);
 
   const slideNext = () => {
     if (sliderRef.current) {
@@ -153,8 +187,12 @@ const Home = () => {
       <FeatureProductsContainer>
         <h4>Featured Products</h4>
         <FeaturedItemContainer>
-          {[...Array(5)].map((_, index) => (
-            <Product key={index} />
+          {[...Array(4)].map((_, index) => (
+            isLoading ? (
+              <ProductSkeleton key={index} />
+            ) : (
+              <Product item={lastFourFeaturedProducts[index]} key={index} width={`23.8%`} />
+            )
           ))}
         </FeaturedItemContainer>
       </FeatureProductsContainer>
@@ -215,24 +253,19 @@ const Home = () => {
         </TopSellerHeader>
 
         <ChipContainer>
-          {topSellerCategories.map((item, index) => (
+          {categories?.map((item, index) => (
             <Chip
               activeIndex={selectCat}
               onClick={() => setSelectCat(index)}
               index={index}
               key={index}
             >
-              {item}
+              {item?.name}
             </Chip>
           ))}
         </ChipContainer>
 
         <SellerCardsContainer>
-          {/* {[...Array(4)].map((_, index) => (
-            <SellerCard
-              key={index}
-            />
-          ))} */}
           <Carousel width={400} ref={sliderRef} />
         </SellerCardsContainer>
       </TopSellerContainer>
@@ -264,8 +297,8 @@ const Home = () => {
           </div>
         </BlogPostHeader>
         <BlogBody>
-          {[...Array(5)].map((_, index) => (
-            <BlogCard key={index} />
+          {[...Array(4)].map((_, index) => (
+            <BlogCard key={index} width={"23.8%"} />
           ))}
         </BlogBody>
       </BlogPosts>
@@ -283,7 +316,7 @@ const Home = () => {
 
       <InstaFooter />
 
-      {openCookie && (
+      {(openCookie && !acceptCookie) && (
         <CookieContainer>
           <div>
             <h6>Accept all Cookies</h6>
@@ -298,10 +331,16 @@ const Home = () => {
           </div>
 
           <div>
-            <button onClick={() => setOpenCookie(false)}>
+            <button onClick={() => {
+              Cookies.set('ginger-cookie-policy', true);
+              setOpenCookie(false)
+            }}>
               Accept only essential
             </button>
-            <button onClick={() => setOpenCookie(false)}>Accept</button>
+            <button onClick={() => {
+              Cookies.set('ginger-cookie-policy', true);
+              setOpenCookie(false)
+            }}>Accept</button>
           </div>
         </CookieContainer>
       )}
@@ -356,7 +395,7 @@ const HeroImageContainer = styled.div`
   background-image: url(${HeroImage});
   width: 100%;
   flex: 1;
-  height: 75vh;
+  height: 46.8rem;
   position: relative;
   background-position: center;
   background-color: aquamarine;
@@ -364,7 +403,7 @@ const HeroImageContainer = styled.div`
   background-repeat: no-repeat;
 
   img {
-    height: 75vh;
+    height: 46.8rem;
     width: auto;
   }
 
@@ -381,7 +420,7 @@ const HeroImageContainer = styled.div`
       color: white;
     }
     div {
-      width: 300px;
+      width: 18.75rem;
       display: inline;
       border: 1px solid white;
     }
@@ -389,16 +428,17 @@ const HeroImageContainer = styled.div`
 `;
 const HeroDetails = styled.div`
   flex: 0.39;
-  height: 75vh;
+  height: 46.87rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 22vh;
+  gap: 13.75rem;
   position: relative;
   p {
     font-size: 18px;
     font-weight: 500;
     color: var(--gray-300);
+    margin-bottom: 30px;
   }
   h3 {
     background-color: white;
@@ -412,17 +452,17 @@ const HeroDetails = styled.div`
     /* transform: translateX(-50%); */
   }
   h3:nth-child(3) {
-    top: 35vh;
+    top: 21.8rem;
   }
   h3:nth-child(2) {
-    bottom: 40vh;
+    bottom: 25rem;
   }
 `;
 
 const ButtonContainer = styled.div`
   display: flex;
   gap: 20px;
-  width: calc(100% - 57px);
+  width: calc(100% - 3.56rem);
 `;
 
 const Category = styled.section`
@@ -444,7 +484,7 @@ const CategoryHeader = styled.div`
     align-items: center;
     padding-left: 2rem;
     flex: 0.7;
-    height: 10vh;
+    height: 6.25rem;
     border-left: 1px solid var(--gray-200);
 
     p {
@@ -457,13 +497,14 @@ const CategoryHeader = styled.div`
 const CatergoryGridContainer = styled.div`
   display: flex;
   padding: 5%;
-  gap: 5%;
+  gap: 2%;
   height: 100%;
 `;
 
 const CatFirstBox = styled.div`
   flex: 0.5;
-  height: 70vh;
+  width: 100%;
+  height: 43.75rem;
 `;
 const CatSecondBox = styled.div`
   flex: 0.5;
@@ -471,13 +512,14 @@ const CatSecondBox = styled.div`
   flex-direction: column;
   padding: 1.2rem;
   justify-content: flex-end;
-  background-image: url("https://images.unsplash.com/photo-1682101853262-8c0344518d15?q=80&w=3401&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+  background-image: url("https://images.unsplash.com/photo-1572955304332-bf714bd49add?q=80&w=3387&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
   background-position: center;
-  background-color: aquamarine;
+  background-color: var(--hover-color);
   background-size: cover;
   background-repeat: no-repeat;
   transition: all 0.3s ease;
   position: relative;
+  height: 43.75rem;
 
   &:hover {
     background-size: 105%;
@@ -511,11 +553,11 @@ const Barber = styled.div`
   flex-direction: column;
   justify-content: flex-end;
   padding-bottom: 20px;
-  height: 50px; /* Height of the component */
+  height: 50px; 
   padding: 1.2rem;
   margin-bottom: 20px;
-  background-color: purple;
-  height: 30vh; /* Initial height of the component */
+  background-color:  var(--hover-color);
+  height: 18.75rem; 
   background-image: url("https://images.unsplash.com/photo-1567894340315-735d7c361db0?q=80&w=3044&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
   background-position: center;
   background-size: cover;
@@ -548,14 +590,12 @@ const NailSkinContianer = styled.div`
   align-items: center;
   justify-content: center;
   gap: 20px;
-  /* height: 100%; */
-  background-color: aliceblue;
 `;
 
 const Nails = styled.div`
   width: 100%;
-  background-color: beige;
-  height: 38vh;
+  background-color:  var(--hover-color);
+  height: 23.75rem;
   display: flex;
   flex-direction: column;
   padding: 1.2rem;
@@ -599,7 +639,7 @@ const Skin = styled.div`
   padding-bottom: 20px;
   background-image: url("https://images.unsplash.com/photo-1561228987-8e7379dde477?q=80&w=3387&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
   background-position: center;
-  height: 38vh;
+  height: 23.75rem;
   background-size: cover;
   background-repeat: no-repeat;
 
@@ -659,7 +699,7 @@ const Shopbutton = styled.button`
 `;
 
 const ViewAllCat = styled.div`
-  width: 178px;
+  width: 11.12rem;
   margin: 0 auto;
 `;
 const FeatureProductsContainer = styled.section`
@@ -699,6 +739,9 @@ const AdContainer = styled.div`
   justify-content: space-evenly;
   position: relative;
   width: 100%;
+  p{
+    margin-bottom: 1rem;
+  }
   /* gap:2rem; */
   h4 {
     font-size: 3rem;
@@ -711,7 +754,7 @@ const AdContainer = styled.div`
   > div:nth-child(2) {
     /* flex: 0.5; */
     margin-left: -40px;
-    width: 320px;
+    width: 20rem;
     height: inherit;
     /* max-width: 400px; */
   }
@@ -729,8 +772,8 @@ const CircleItem = styled.div`
   position: absolute;
   left: 45%;
   background-color: white;
-  width: 255px;
-  height: 255px;
+  width: 16rem;
+  height: 16rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -758,7 +801,7 @@ const CircleItem = styled.div`
 `;
 
 const TopSellerContainer = styled.section`
-  margin-top: 30vh;
+  margin-top: 18.75rem;
   width: 100%;
 `;
 
@@ -899,7 +942,8 @@ const BlogBody = styled.div`
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
+  gap: 20px;
+  justify-content: flex-start;
   padding: 0 5%;
 `;
 
@@ -1007,7 +1051,7 @@ const ModalContent = styled.div`
   position: relative;
 
   img {
-    height: 30vh;
+    height: 18.75rem;
     width: 50vw;
     object-fit: cover;
     margin-bottom: 0;

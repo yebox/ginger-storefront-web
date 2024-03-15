@@ -1,10 +1,11 @@
 import styled from 'styled-components'
 import {SellerSidebar } from './components'
 
-export const SellerDashboardLayout =()=> {
+export const SellerDashboardLayout =({children})=> {
   return (
       <Container>
-          {/* <SellerNavbar/> */}
+          <SellerNavbar />
+          {children}
           <SellerSidebar/>
       </Container>
   )

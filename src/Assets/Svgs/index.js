@@ -73,6 +73,8 @@ import { ReactComponent as TwitterFill } from "./twitterFill.svg";
 import { ReactComponent as LinkedInFill } from "./linkedInFill.svg";
 import { ReactComponent as FacebookFill } from "./facebookFill.svg";
 import { ReactComponent as DocumentIcon } from "./document.svg";
+import { ReactComponent as RedHeart } from "./redHeart.svg";
+
 
 export {
   Logo,
@@ -150,4 +152,5 @@ export {
   LinkedInFill,
   FacebookFill,
   DocumentIcon,
+  RedHeart
 };

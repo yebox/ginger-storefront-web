@@ -44,3 +44,13 @@ export const formatImage = (url) => {
     .join("//");
   return `${base}/${url}`;
 };
+
+export const formatAmount = (amount) => {
+  if (amount) {
+    let amountStr = amount.toString();
+    let parts = amountStr.split(".");
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+    return parts.join(".");
+  }
+};

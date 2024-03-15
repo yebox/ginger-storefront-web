@@ -34,16 +34,16 @@ const CallToAction = styled.section`
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
-  height: 50vh;
+  height: 31.2rem;
   position: relative;
 
   > div {
     position: absolute;
     left: 50%;
-    bottom: -20vh;
+    bottom: -12.5rem;
     transform: translateX(-50%);
-    width: 50vw;
-    height: 40vh;
+    width:70%;
+    height: 25rem;
     display: flex;
     align-items: center;
     justify-content: center;

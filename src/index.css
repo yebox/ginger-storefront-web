@@ -54,6 +54,7 @@ code {
   --light-primary: #fbe9eb;
   --light-lavendar: #e2e3ff;
   --table-yellow: #fff6e9;
+  --border-color: #fbfbfb;
 }
 
 h1,
@@ -121,6 +122,7 @@ nav a.active {
   color: var(--primary-color);
   font-weight: 600;
 }
+
 
 @media screen and (max-width: 768px) {
   p {

@@ -19,6 +19,7 @@ const AuthLayout = ({ children }) => {
           </LeftSubtitle>
         </LeftTextWrapper>
       </LeftSection>
+      
       <RightSection>
         <ContentWrapper>{children}</ContentWrapper>
       </RightSection>

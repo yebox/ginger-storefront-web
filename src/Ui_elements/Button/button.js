@@ -68,7 +68,7 @@ const ButtonEl = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: ${({ $fontsize }) => ($fontsize ? $fontsize : "1rem")};
+  font-size: ${({ $fontsize }) => ($fontsize ? $fontsize : "0.9vw")};
   width: ${({ width }) => (width ? width : "100%")};
   border-radius: 2px;
   outline: none;
