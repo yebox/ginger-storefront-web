@@ -10,7 +10,7 @@ import { GButton } from "../Button/button";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { formatAmount, IMAGE_BASE_URL } from "../../Utils";
+import { devices, formatAmount, IMAGE_BASE_URL } from "../../Utils";
 import { useApiGet, useApiSend } from "../../Hooks";
 import {
   addToCart,
