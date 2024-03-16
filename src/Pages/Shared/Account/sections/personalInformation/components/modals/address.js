@@ -14,10 +14,14 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { toast } from "react-hot-toast";
 import { countryData } from "../../../../../SignUp/data";
 import { devices } from "../../../../../../../Utils";
-import { useDeviceCheck } from "../../../../../../../Hooks";
+import { useApiSend, useDeviceCheck } from "../../../../../../../Hooks";
+import { updateUserAddress } from "../../../../../../../Urls";
+import { useQueryClient } from "@tanstack/react-query";
 
 const AddressModal = ({ isOpen, handleClose }) => {
   const { isMobile } = useDeviceCheck();
+  const queryClient = useQueryClient();
+
   const {
     register,
     handleSubmit,
@@ -27,10 +31,31 @@ const AddressModal = ({ isOpen, handleClose }) => {
     resolver: yupResolver(AddressSchema),
   });
 
-  const onSubmit = () => {
+  const { mutate: updateAddress, isPending: isUpdatingAddress } = useApiSend(
+    updateUserAddress,
+    () => {
+      toast.error("Address book updated");
+      queryClient.invalidateQueries(["get-user-data"]);
+    },
+    () => {
+      toast.error(`Something went wrong`);
+    }
+  );
+
+  const onSubmit = (data) => {
+    const body = {
+      line1: data?.address,
+      line2: data?.apartment,
+      city: data?.city,
+      state: data?.state,
+      country: data?.country.value,
+      postalCode: data?.zipCode,
+    };
+    updateAddress(body);
     toast.success(`You address has been added successfully.`);
     handleClose();
   };
+
   return (
     <GModal open={isOpen} handleClose={handleClose}>
       <Container>
@@ -102,7 +127,7 @@ const AddressModal = ({ isOpen, handleClose }) => {
             errorText={errors.zipCode && errors.zipCode.message}
             required
           />
-          <GTextField
+          {/* <GTextField
             id="phoneNumber"
             placeholder="Phone"
             name="phoneNumber"
@@ -110,9 +135,13 @@ const AddressModal = ({ isOpen, handleClose }) => {
             error={errors.phoneNumber}
             errorText={errors.phoneNumber && errors.phoneNumber.message}
             required
-          />
+          /> */}
           {!isMobile && <GSpacer size={1} />}
-          <GButton label={`Save changes`} isDisabled={isSubmitting} />
+          <GButton
+            label={`Save changes`}
+            isLoading={isUpdatingAddress}
+            isDisabled={isSubmitting}
+          />
         </FormWrapper>
       </Container>
     </GModal>

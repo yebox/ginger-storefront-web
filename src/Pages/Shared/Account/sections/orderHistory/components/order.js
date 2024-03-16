@@ -2,23 +2,29 @@ import React from "react";
 import { styled } from "styled-components";
 import { CaretLeft } from "../../../../../../Assets/Svgs";
 import { Link } from "react-router-dom";
-import { devices } from "../../../../../../Utils";
+import {
+  devices,
+  formatImage,
+  formatOrderStatus,
+  orderStatusMapping,
+} from "../../../../../../Utils";
 
-const OrderCard = ({
-  imageUrl,
-  productName,
-  orderNumber,
-  dateDelivered,
-  status,
-}) => {
+const OrderCard = ({ items, reference, dateDelivered, status }) => {
+  const itemCount = items?.length;
+  const displayProduct = itemCount > 0 && items[0]?.product;
+  const orderStatus = formatOrderStatus(status);
+
   return (
     <Container>
-      <Image src={imageUrl} />
+      <Image src={formatImage(displayProduct?.mainImage)} />
       <ContentWrapper>
         <LeftWrapper>
           <DetailsWrapper>
-            <ProductName>{productName}</ProductName>
-            <OrderName>{`order ${orderNumber}`}</OrderName>
+            <NameCountWrapper>
+              <ProductName>{displayProduct?.name}</ProductName>
+              {itemCount > 1 && <ItemCount>{itemCount} items</ItemCount>}
+            </NameCountWrapper>
+            <OrderName>{`order ${reference}`}</OrderName>
             {dateDelivered ? (
               <DeliveryStatus>
                 Delivered on: <span>{dateDelivered}</span>
@@ -30,14 +36,16 @@ const OrderCard = ({
         </LeftWrapper>
         <RightWrapper to={"/account/order/1"}>
           <TrackTxt>
-            {status.toLowerCase() === "ongoing" ? `Track order` : `See details`}
+            {orderStatus === orderStatusMapping.pending
+              ? `Track order`
+              : `See details`}
           </TrackTxt>
           <CaretLeft />
         </RightWrapper>
       </ContentWrapper>
-      <Status $status={status.toLowerCase()}>
+      <Status $status={orderStatus}>
         <StatusBall />
-        <StatusTxt>{status}</StatusTxt>
+        <StatusTxt>{orderStatus}</StatusTxt>
       </Status>
     </Container>
   );
@@ -96,12 +104,41 @@ const DetailsWrapper = styled.div`
   padding: 3px 0;
 `;
 
+const NameCountWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+`;
+
 const ProductName = styled.p`
   color: #000;
   font-size: 12px;
   font-style: normal;
   font-weight: 500;
   line-height: 120%; /* 14.4px */
+  width: 80%;
+`;
+
+const ItemCount = styled.span`
+  display: inline-flex;
+  flex-shrink: 0;
+  padding: 2px 9px 3px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border-radius: 100px;
+  background: var(
+    --Black-500,
+    linear-gradient(0deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.2) 100%),
+    linear-gradient(0deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.2) 100%),
+    linear-gradient(0deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.2) 100%),
+    #151515
+  );
+  color: var(--White, #fefefe);
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 120%; /* 12px */
 `;
 
 const OrderName = styled.p`
@@ -134,22 +171,35 @@ const Status = styled.div`
   top: 18px;
   right: 24px;
   display: flex;
-  padding: 2px 8px 2px 6px;
+  padding: 2px 8px 3px 6px;
   justify-content: center;
   align-items: center;
   gap: 6px;
   align-self: stretch;
   border-radius: 16px;
   background: ${({ $status }) =>
-    $status === "ongoing" ? `#fffaeb` : `#ECFDF3`};
+    $status === orderStatusMapping.cancelled
+      ? `#f7dfe2`
+      : $status === orderStatusMapping.completed
+      ? `#ECFDF3`
+      : `#fffaeb`};
 
   & > span {
     background: ${({ $status }) =>
-      $status === "ongoing" ? `#F79009` : `#027A48`};
+      $status === orderStatusMapping.cancelled
+        ? `#E71D36`
+        : $status === orderStatusMapping.completed
+        ? `#027A48`
+        : `#F79009`};
   }
 
   & > p {
-    color: ${({ $status }) => ($status === "ongoing" ? `#B54708` : `#027A48`)};
+    color: ${({ $status }) =>
+      $status === orderStatusMapping.cancelled
+        ? `#E71D36`
+        : $status === orderStatusMapping.completed
+        ? `#027A48`
+        : `#B54708`};
   }
 
   @media ${devices.mobileL} {

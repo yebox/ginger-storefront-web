@@ -54,3 +54,17 @@ export const formatAmount = (amount) => {
     return parts.join(".");
   }
 };
+
+export const orderStatusMapping = {
+  pending: "Ongoing",
+  paid: "Ongoing",
+  processing: "Ongoing",
+  shipped: "In transit",
+  completed: "Delivered",
+  cancelled: "Cancelled",
+};
+
+export const formatOrderStatus = (status) => {
+  const lowercaseStatus = status.toLowerCase();
+  return orderStatusMapping[lowercaseStatus] || "Ongoing";
+};

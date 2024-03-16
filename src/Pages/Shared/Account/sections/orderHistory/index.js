@@ -9,10 +9,9 @@ import { devices } from "../../../../../Utils";
 
 const OrderHistory = () => {
   const { data, isLoading, isError } = useApiGet("get-orders", getOrders, {
-    select: (data) => data.data,
+    select: (data) => data,
     onError: (error) => console.log(error),
   });
-
 
   return (
     <Container>
@@ -21,7 +20,7 @@ const OrderHistory = () => {
         <EditIcon />
       </TopWrapper>
       <BottomWrapepr>
-        {orders.map((order, idx) => (
+        {data?.map((order, idx) => (
           <OrderCard key={idx} {...order} />
         ))}
       </BottomWrapepr>
