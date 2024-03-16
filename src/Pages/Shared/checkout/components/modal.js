@@ -1,96 +1,122 @@
 import styled from 'styled-components'
 import {
-    // ErrorPaymentVector,
+    ErrorPaymentVector,
     PaymentProcessing,
     PaymentProcessingVector,
-    // PaymentSuccess,
-    // SuccessPaymentVector,
-    // PaymentError
+    PaymentSuccess,
+    SuccessPaymentVector,
+    PaymentError
 } from '../../../../Assets/Svgs'
-import {  Spinner } from "../../../../Ui_elements"
-export const Modal = () => {
-
-    const Processing = () => <Container>
-        <Head>
-            <Vector>
-                <PaymentProcessingVector />
-            </Vector>
-
-            <Icon>
-                <PaymentProcessing />
-            </Icon>
-        </Head>
-
-        <Detail>
-            <h5>Processing payment</h5>
-            <p>Please wait while your payment is being processed.</p>
-        </Detail>
-
-        <Footer>
-            <Spinner
-                width={30}
-                height={30}
-            />
-            <p>Processing</p>
-        </Footer>
-
-    </Container>
+import { Spinner, GButton } from "../../../../Ui_elements"
 
 
+export const Modal = ({ type }) => {
+    switch (type) {
+        case 'processing':
+            return (
+                <Container>
+                    <Head>
+                        <Vector>
+                            <PaymentProcessingVector />
+                        </Vector>
 
-    // const Confirmed = () => <Container>
-    //     <SuccessHead>
-    //         <Vector>
-    //             <SuccessPaymentVector />
-    //         </Vector>
+                        <Icon>
+                            <PaymentProcessing />
+                        </Icon>
+                    </Head>
 
-    //         <Icon>
-    //             <PaymentSuccess />
-    //         </Icon>
-    //     </SuccessHead>
+                    <Detail>
+                        <h5>Processing payment</h5>
+                        <p>Please wait while your payment is being processed.</p>
+                    </Detail>
 
-    //     <Detail>
-    //         <h5>Processing Confirmed</h5>
-    //         <p>You payment has been recorded successfully.</p>
-    //     </Detail>
+                    <Footer>
+                        <Spinner
+                            width={30}
+                            height={30}
+                        />
+                        <p>Processing</p>
+                    </Footer>
+                </Container>
+            );
+        case 'confirmed':
+            return (
+                <Container>
+                    <SuccessHead>
+                        <Vector>
+                            <SuccessPaymentVector />
+                        </Vector>
 
-    //     <Footer>
-    //         <GButton
-    //             width={"372px"}
-    //             label={"Continue"}
-    //         />
-    //     </Footer>
+                        <Icon>
+                            <PaymentSuccess />
+                        </Icon>
+                    </SuccessHead>
 
-    // </Container>
+                    <Detail>
+                        <h5>Processing Confirmed</h5>
+                        <p>Your payment has been recorded successfully.</p>
+                    </Detail>
 
+                    <Footer>
+                        <GButton
+                            width={"372px"}
+                            label={"Continue"}
+                        />
+                    </Footer>
+                </Container>
+            );
+        case 'failed':
+            return (
+                <Container>
+                    <FailedHead>
+                        <Vector>
+                            <ErrorPaymentVector />
+                        </Vector>
 
-    // const Failed = () => <Container>
-    //     <FailedHead>
-    //         <Vector>
-    //             <ErrorPaymentVector />
-    //         </Vector>
+                        <Icon>
+                            <PaymentError />
+                        </Icon>
+                    </FailedHead>
 
-    //         <Icon>
-    //             <PaymentError />
-    //         </Icon>
-    //     </FailedHead>
+                    <Detail>
+                        <h5>Processing Failed</h5>
+                        <p>Sorry! we came across an issue with your payment.</p>
+                    </Detail>
 
-    //     <Detail>
-    //         <h5>Processing Failed</h5>
-    //         <p>Sorry! we came across an issue with your payment.</p>
-    //     </Detail>
+                    <Footer>
+                        <GButton
+                            width={"372px"}
+                            label={"Continue"}
+                        />
+                    </Footer>
+                </Container>
+            );
+        default:
+            return (<Container>
+                <Head>
+                    <Vector>
+                        <PaymentProcessingVector />
+                    </Vector>
 
-    //     <Footer>
-    //         <GButton
-    //             width={"372px"}
-    //             label={"Continue"}
-    //         />
-    //     </Footer>
+                    <Icon>
+                        <PaymentProcessing />
+                    </Icon>
+                </Head>
 
-    // </Container>
-    return (
-        <Processing />
-    )
+                <Detail>
+                    <h5>Processing payment</h5>
+                    <p>Please wait while your payment is being processed.</p>
+                </Detail>
+
+                <Footer>
+                    <Spinner
+                        width={30}
+                        height={30}
+                    />
+                    <p>Processing</p>
+                </Footer>
+            </Container>)
+    }
 }
 
 
@@ -148,10 +174,10 @@ const Footer = styled.div`
     gap: 12px;
 `
 
-// const SuccessHead = styled(Head)`
-//     background-color: #F6FFF3;
+const SuccessHead = styled(Head)`
+    background-color: #F6FFF3;
 
-// `
-// const FailedHead = styled(Head)`
-//     background-color: #FFF6F7;
-// `
+`
+const FailedHead = styled(Head)`
+    background-color: #FFF6F7;
+`

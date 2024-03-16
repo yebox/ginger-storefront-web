@@ -10,6 +10,6 @@ export const getOrders = () =>
 export const createOrder = (data) =>
   request({
     url: `orders`,
-    method: "POAST",
+    method: "POST",
     data
   });

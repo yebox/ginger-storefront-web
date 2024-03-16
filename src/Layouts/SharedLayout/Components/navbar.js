@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Avatar, Skeleton } from '@mui/material';
 import { useApiGet } from '../../../Hooks';
-import { GTextField } from "../../../Ui_elements";
+import { GTextField, PopMenu } from "../../../Ui_elements";
 import { getCategories, getProductBrands } from '../../../Urls';
 
 
@@ -59,9 +59,6 @@ export const Navbar = () => {
   const handleFullOptionsLeave = () => {
     setFullOptionsHovered(false);
     setShowFullOptions(false);
-    // if (!fullOptionsHovered) {
-    //     setShowFullOptions(false);
-    // }
   };
 
   const handleLowerNavLeave = () => {
@@ -70,6 +67,10 @@ export const Navbar = () => {
     }
   };
 
+
+  const menuItems = [
+    { item: 'Logout', action: () => console.log('Edit clicked') },
+  ];
 
   return (
     <OuterContainer>
@@ -122,7 +123,9 @@ export const Navbar = () => {
             </Link>
             {/* <Search /> */}
             <Dollar />
-            <DownArrow />
+            <PopMenu menuItems={menuItems}>
+              <DownArrow />
+            </PopMenu>
           </Icons>
         </Utility>
       </Container>

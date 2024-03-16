@@ -11,14 +11,14 @@ const StyledRadio = styled(Radio)`
   }
 `;
 
-export const GRadioSelect = ({ name }) => {
-  const handleChange = (event) => {
-    // Handle change logic here
-  };
-
+export const GRadioSelect = ({ name, value, selected, onChange }) => {
+  
   return (
     <StyledRadio
-      onChange={handleChange}
+      checked={selected}
+      onChange={onChange}
+      value={value}
+      name="radio-buttons"
       inputProps={{ 'aria-label': name }}
     />
   );
