@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { devices } from "../../../../../../Utils";
 
 const Personal = () => {
-  const user = useSelector((state) => state.user?.user);
+  const user = useSelector((state) => state?.user);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
@@ -18,19 +18,19 @@ const Personal = () => {
       <BottomWrapepr>
         <Entry>
           <Label>Full name</Label>
-          <Value>Maxwell Philip</Value>
+          <Value>{`${user?.firstName} ${user?.lastName}`}</Value>
         </Entry>
         <Entry>
           <Label>Phone number</Label>
-          <Value>07096885784</Value>
+          <Value>{user?.phoneNumber}</Value>
         </Entry>
         <Entry>
           <Label>Email address</Label>
-          <Value>okorokingsley250@gmail.com</Value>
+          <Value>{user?.email}</Value>
         </Entry>
         <Entry>
           <Label>Country</Label>
-          <Value>Nigeria</Value>
+          <Value>{user?.country}</Value>
         </Entry>
       </BottomWrapepr>
       <PersonalModal

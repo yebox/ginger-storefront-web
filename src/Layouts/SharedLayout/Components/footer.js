@@ -51,14 +51,14 @@ export const Footer = () => {
           </BottomItems>
         </LinksContainer>
 
-        <div>
+        <LeftWrapper>
           <h6>Stay up to date</h6>
           <p>Join over 5,000+ people in our community!</p>
 
           <SubscribeContainer>
             <GTextField placeholder="Enter your email" endIcon={EndIcon} />
           </SubscribeContainer>
-        </div>
+        </LeftWrapper>
       </FooterBody>
 
       <FooterBottom>
@@ -131,6 +131,12 @@ const BottomItems = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
+`;
+
+const LeftWrapper = styled.div`
+  & > h6 {
+    margin-bottom: 8px;
+  }
 `;
 // const BigLogo = styled(Logo)`
 //     transform: scale(1.2);

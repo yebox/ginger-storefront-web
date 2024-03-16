@@ -27,6 +27,10 @@ const ProductPage = () => {
 
   useEffect(() => {
     dispatch(setSelectedProductName(data?.name));
+
+    return () => {
+      dispatch(setSelectedProductName(""));
+    };
   }, [dispatch, data]);
 
   return (

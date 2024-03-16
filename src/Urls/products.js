@@ -1,6 +1,9 @@
 import { request } from "../Utils";
 
-export const getProducts = () =>
-    request({
-        url: 'products',
-    })
+export const getProducts = (payload) =>
+  request({
+    url: "products",
+    params: {
+      ...payload,
+    },
+  });

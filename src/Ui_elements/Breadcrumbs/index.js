@@ -40,7 +40,7 @@ const Container = styled.div`
 
 const TextLink = styled.p`
   color: #000;
-  font-size: 14px;
+  font-size: 15px;
   font-style: normal;
   font-weight: 400;
   line-height: 140%; /* 16.8px */
@@ -57,7 +57,7 @@ const TextLink = styled.p`
 
 const Text = styled.p`
   color: var(--Color---5, #8c8c8c);
-  font-size: 12px;
+  font-size: 14px;
   font-style: normal;
   font-weight: 400;
   line-height: 140%; /* 16.8px */

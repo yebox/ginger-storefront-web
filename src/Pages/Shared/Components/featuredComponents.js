@@ -2,14 +2,28 @@ import React from "react";
 import { styled } from "styled-components";
 import { GButton, GSpacer, Product } from "../../../Ui_elements";
 import { devices } from "../../../Utils";
+import { useApiGet } from "../../../Hooks";
+import { getProducts } from "../../../Urls";
 
 export const FeaturedItems = () => {
+  const { data, isLoading } = useApiGet(
+    ["get-featured-products"],
+    () => getProducts({ isFeatured: true }),
+    {
+      enable: true,
+      refetchOnWindowFocus: false,
+    }
+  );
+
+  const lastFourFeaturedProducts = data?.slice(-4);
+
+  console.log({ data });
   return (
     <Container>
       <Header>Featured Products</Header>
       <CardsContainer>
-        {[...Array(4)].map((_, index) => (
-          <Product key={index} width={`23.8%`} mbWidth={`47%`} />
+        {lastFourFeaturedProducts?.map((item, index) => (
+          <Product key={index} item={item} width={`23.8%`} mbWidth={`47%`} />
         ))}
       </CardsContainer>
       <GSpacer size={80} mbSize={50} />
@@ -45,12 +59,13 @@ const CardsContainer = styled.div`
   display: flex;
   align-self: flex-start;
   gap: 20px;
-  max-width: 100%;
+  width: 100%;
   margin-top: 70px;
   padding-bottom: 10px;
 
   @media ${devices.mobileL} {
     flex-wrap: wrap;
+    max-width: 100%;
     margin-top: 30px;
   }
 `;

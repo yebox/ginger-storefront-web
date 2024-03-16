@@ -32,9 +32,9 @@ const ReviewSection = () => {
           ))}
         </ReviewWrapper>
       ) : (
-        <EmptyReview>There are no comments yet</EmptyReview>
+        <EmptyReview>There are no reviews yet</EmptyReview>
       )}
-      <GButton label={"See more"} outline width={"172px"} mbWidth={`50%`} />
+      {/* <GButton label={"See more"} outline width={"172px"} mbWidth={`50%`} /> */}
     </Container>
   );
 };
