@@ -15,12 +15,13 @@ export const SelectCard = ({
             {...otherProps}
         >
             <Header>
-                <p>Maxwell Philip</p>
+                <p>{item?.userName}</p>
                 {/* {selectedCard === id && <RadioSelect />} */}
                 <GRadioSelect/>
             </Header>
             <Details>
-                <p>{item}</p>
+                <p>{item?.item?.line1}, {item?.item?.line2}</p>
+                <Postal>{item?.item?.postalCode}, {item?.item?.state}, {item?.item?.country}</Postal>
                 <p>07096885784</p>
             </Details>
         </Container>
@@ -40,6 +41,10 @@ const Container = styled.div`
     }
 `
 
+const Postal = styled.p`
+    font-size: 1rem;
+    margin-bottom: 4px;
+`
 const Header = styled.div`
     display: flex;
     width: 100%;

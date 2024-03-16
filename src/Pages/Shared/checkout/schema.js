@@ -7,5 +7,5 @@ export const CheckoutAddressSchema = yup.object().shape({
     state: yup.string().required("please input your state"),
     country: yup.mixed().required("please select a country"),
     zipCode: yup.string().required("please input your zip code"),
-    phoneNumber: yup.string().required("please input your phone number"),
+    // phoneNumber: yup.string().required("please input your phone number"),
 });

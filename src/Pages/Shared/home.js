@@ -11,12 +11,7 @@ import {
 import React, { memo, useState, useRef } from "react";
 import Vector from "../../Assets/Images/vector-background.png";
 import AddPicture from "../../Assets/Images/ad-picture.png";
-import {
-  BecomeSellerSection,
-  BlogCard,
-  InstaFooter,
-  SellerCard,
-} from "./Components";
+import { BecomeSellerSection, BlogCard, InstaFooter } from "./Components";
 import Partners from "../../Assets/Images/partners.png";
 import HeroImage from "../../Assets/Images/hero-image.png";
 import {
@@ -27,11 +22,10 @@ import {
   RightArrow,
   WhiteX,
 } from "../../Assets/Svgs";
-import { topSellerCategories } from "../../Utils";
 import Swiper from "swiper";
 import { useNavigate } from "react-router-dom";
 import { useApiGet } from "../../Hooks";
-import { getCategories, getProducts } from "../../Urls";
+import { getCategories, getProducts, getProductBrands } from "../../Urls";
 import Cookies from "js-cookie";
 // import InstaFooter from "./Components/instaFooter";
 
@@ -49,6 +43,15 @@ const Home = () => {
     () => getProducts({ isFeatured: true }),
     {
       enable: true,
+      refetchOnWindowFocus: false,
+    }
+  );
+
+  const { data: productbrands, isLoading: isLoadingProductBrands } = useApiGet(
+    ["product-brands"],
+    () => getProductBrands(),
+    {
+      enabled: true,
       refetchOnWindowFocus: false,
     }
   );
