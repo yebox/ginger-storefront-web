@@ -288,33 +288,27 @@ export default function Cart() {
                 data={totalData}
               />
 
-              <ButtonContainer>
-                <GButton
-                  onClick={() =>
-                    navigate(
-                      `/cart/checkout?data=${encodeURIComponent(
-                        JSON.stringify(transformData)
-                      )}&totalPrice=${totalPrice.toString()}`
-                    )
-                  }
-                  label={"Checkout now"}
-                  width={"372px"}
-                />
-                <GButton
-                  label={"Continue shopping"}
-                  outline
-                  onClick={() => navigate("/")}
-                  width={"278px"}
-                />
-              </ButtonContainer>
-            </TotalContainer>
-          </AlignContainer>
-        </Container>
-      ) : (
-        <NoItemContainer>
-          <IconHolder>
-            <EmptyCartIcon />
-          </IconHolder>
+                            <ButtonContainer>
+                                <GButton
+                                    onClick={() => navigate(`/cart/information?data=${encodeURIComponent(JSON.stringify(transformData))}&totalPrice=${totalPrice.toString()}`)}
+                                    label={"Checkout now"}
+                                    width={"372px"}
+                                />
+                                <GButton
+                                    label={"Continue shopping"}
+                                    outline
+                                    onClick={() => navigate('/')}
+                                    width={"278px"}
+                                />
+                            </ButtonContainer>
+                        </TotalContainer>
+                    </AlignContainer>
+                </Container>
+            ) : (
+                <NoItemContainer>
+                    <IconHolder>
+                        <EmptyCartIcon />
+                    </IconHolder>
 
           <b>You have no item in cart</b>
 

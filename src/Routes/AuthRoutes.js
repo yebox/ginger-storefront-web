@@ -7,24 +7,25 @@ import { PageLoader } from "../Ui_elements";
 
 export const AuthRoutes = () => {
   return (
-    <Routes>
-      {authRoutes.map(({ path, hasLayout, element: Element }, index) => (
-        <Route
-          key={index}
-          path={path}
-          element={
-            <Suspense fallback={<PageLoader/>}>
-              {hasLayout ? (
-                <AuthLayout>
-                  <Element />
-                </AuthLayout>
-              ) : (
-                <Element />
-              )}
-            </Suspense>
-          }
-        />
-      ))}
-    </Routes>
+    <></>
+    // <Routes>
+    //   {authRoutes.map(({ path, hasLayout, element: Element }, index) => (
+    //     <Route
+    //       key={index}
+    //       path={path}
+    //       element={
+    //         <Suspense fallback={<PageLoader/>}>
+    //           {hasLayout ? (
+    //             <AuthLayout>
+    //               <Element />
+    //             </AuthLayout>
+    //           ) : (
+    //             <Element />
+    //           )}
+    //         </Suspense>
+    //       }
+    //     />
+    //   ))}
+    // </Routes>
   );
 };

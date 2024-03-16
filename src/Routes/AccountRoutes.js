@@ -6,27 +6,28 @@ import { SharedLayout } from "../Layouts";
 
 export const AccountRoutes = () => {
   return (
-    <Routes>
-      {accountRoutes.map(({ path, hasLayout, element: Element }, index) => (
-        <Route
-          key={index}
-          path={path}
-          element={
-            <Suspense fallback={null}>
-              {hasLayout ? (
-                <SharedLayout>
-                  <AccountLayout>
-                    <Element />
-                  </AccountLayout>
-                </SharedLayout>
+    <></>
+    // <Routes>
+    //   {accountRoutes.map(({ path, hasLayout, element: Element }, index) => (
+    //     <Route
+    //       key={index}
+    //       path={path}
+    //       element={
+    //         <Suspense fallback={null}>
+    //           {hasLayout ? (
+    //             <SharedLayout>
+    //               <AccountLayout>
+    //                 <Element />
+    //               </AccountLayout>
+    //             </SharedLayout>
 
-              ) : (
-                <Element />
-              )}
-            </Suspense>
-          }
-        />
-      ))}
-    </Routes>
+    //           ) : (
+    //             <Element />
+    //           )}
+    //         </Suspense>
+    //       }
+    //     />
+    //   ))}
+    // </Routes>
   );
 };

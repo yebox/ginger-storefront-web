@@ -66,14 +66,14 @@ const Checkout = () => {
         updateUserAddress,
         () => {
             toast.error('Address book updated')
-            queryClient.invalidateQueries( ['get-user-data'])
+            queryClient.invalidateQueries(['get-user-data'])
         },
         () => {
             toast.error(`Something went wrong`)
         }
     )
 
-    const { data: userAddress, isLoading:isLoadingUser } = useApiGet(
+    const { data: userAddress, isLoading: isLoadingUser } = useApiGet(
         ['get-user-data'],
         () => getUser(),
         {
@@ -81,11 +81,13 @@ const Checkout = () => {
         }
     )
 
+    console.log(userAddress, "user data")
+
     const addresses = useMemo(() => {
         const formatAddress = [userAddress?.address]
         return formatAddress
     }, [userAddress])
-    
+
 
     const {
         address,
@@ -97,29 +99,11 @@ const Checkout = () => {
         phoneNumber
     } = watch()
 
-    const onSubmit = (data) => {
-        // const items = transformData.map((item) =>
-        //     [{
-        //         productId: item?._id,
-        //         quantity: item?.quantity
-        //     }]
-        // )
-        // const body = {
-        //     items,
-        //     price: totalPrice,
-        //     deliveryAddress: {
-        //         line1: data?.address,
-        //         line2: data?.apartment,
-        //         city: data?.city,
-        //         state: data?.state,
-        //         country: data?.country.value,
-        //         postalcode: data?.zipCode
-        //     },
-        //     isWholesale: true,
-        //     deliveryDate: "2024-03-14T22:28:19.058Z",
-        //     dateDelivered: "2024-03-14T22:28:19.058Z"
-        // }
+    const handleCardClick = (item) => {
+        setSelectAddress(item);
+    };
 
+    const onSubmit = (data) => {
         const body = {
             line1: data?.address,
             line2: data?.apartment,
@@ -142,18 +126,17 @@ const Checkout = () => {
                     <h5>Checkout</h5>
                     <InformationSection onSubmit={handleSubmit(onSubmit)}>
                         <h6>Delivery Information</h6>
-
                         {addresses?.map((item, index) => (
                             <SelectCard
                                 key={index}
                                 id={index}
-                                selectedCard={selectAddress}
-                                selectedItem={selectAddress}
+                                selected={selectAddress === item}
+                                onChange={() => handleCardClick(item)}
+                                onClick={() => handleCardClick(item)}
                                 item={{
                                     item,
-                                    userName: `${userAddress?.firstName} ${userAddress?.lastName}`
+                                    userName: `${userAddress?.firstName} ${userAddress?.lastName}`,
                                 }}
-                                onClick={() => setSelectAddress(index)}
                             />
                         ))}
                         <Add onClick={() => setDisplayForm(!displayForm)}>
@@ -261,10 +244,21 @@ const Checkout = () => {
                                         !zipCode ||
                                         !phoneNumber
                                     }
-                                // onClick={() => navigate('/cart/information/address')}
                                 />
                             </>
                         }
+
+                        {
+                            !displayForm &&
+                            <GButton
+                                label={"Continue"}
+                                width={"50%"}
+                                type={'submit'}
+                                onClick={() => navigate(`/cart/information/payment?data=${encodeURIComponent(JSON.stringify(transformData))}&totalPrice=${totalPrice.toString()}&address=${encodeURIComponent(JSON.stringify(selectAddress))}&mobileNumber=${encodeURIComponent(JSON.stringify(userAddress?.phoneNumber))}`)}
+                                isDisabled={!selectAddress}
+                            />
+                        }
+
 
 
                     </InformationSection>

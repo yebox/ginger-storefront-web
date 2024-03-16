@@ -40,10 +40,10 @@ export const AppRoute = () => {
     <>
       <ScrollToTop />
       <SharedRoutes />
-      <AuthRoutes />
-      <PrivateRoutes />
+      {/* <AuthRoutes /> */}
+      {/* <PrivateRoutes />
       <AccountRoutes />
-      <SellerAuthRoutes />
+      <SellerAuthRoutes /> */}
     </>
 
     // <SellerDashboardLayout/>
