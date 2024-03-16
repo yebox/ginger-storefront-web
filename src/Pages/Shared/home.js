@@ -11,12 +11,7 @@ import {
 import React, { memo, useState, useRef } from "react";
 import Vector from "../../Assets/Images/vector-background.png";
 import AddPicture from "../../Assets/Images/ad-picture.png";
-import {
-  BecomeSellerSection,
-  BlogCard,
-  InstaFooter,
-  SellerCard,
-} from "./Components";
+import { BecomeSellerSection, BlogCard, InstaFooter } from "./Components";
 import Partners from "../../Assets/Images/partners.png";
 import HeroImage from "../../Assets/Images/hero-image.png";
 import {
@@ -27,12 +22,11 @@ import {
   RightArrow,
   WhiteX,
 } from "../../Assets/Svgs";
-import { topSellerCategories } from "../../Utils";
 import Swiper from "swiper";
 import { useNavigate } from "react-router-dom";
 import { useApiGet } from "../../Hooks";
-import { getCategories, getProducts,getProductBrands } from "../../Urls";
-import Cookies from 'js-cookie';
+import { getCategories, getProducts, getProductBrands } from "../../Urls";
+import Cookies from "js-cookie";
 // import InstaFooter from "./Components/instaFooter";
 
 const Home = () => {
@@ -41,46 +35,37 @@ const Home = () => {
   const [openCookie, setOpenCookie] = useState(true);
   const [openModal, setOpenModal] = useState(true);
   const sliderRef = useRef(null);
-  const acceptCookie = Cookies.get('ginger-cookie-policy')
+  const acceptCookie = Cookies.get("ginger-cookie-policy");
   const swiper = new Swiper();
 
   const { data: products, isLoading } = useApiGet(
-    ['get-featured-products'],
-    getProducts,
+    ["get-featured-products"],
+    () => getProducts({ isFeatured: true }),
     {
       enable: true,
-      refetchOnWindowFocus: false
+      refetchOnWindowFocus: false,
     }
-  )
+  );
 
-  const { data: productbrands, isLoading:isLoadingProductBrands } = useApiGet(
-    ['product-brands'],
+  const { data: productbrands, isLoading: isLoadingProductBrands } = useApiGet(
+    ["product-brands"],
     () => getProductBrands(),
     {
       enabled: true,
-      refetchOnWindowFocus: false
+      refetchOnWindowFocus: false,
     }
-  )
+  );
 
   const { data: categories, isLoading: isLoadingCategories } = useApiGet(
-    ['categories'],
+    ["categories"],
     () => getCategories(),
     {
       enabled: true,
-      refetchOnWindowFocus: false
+      refetchOnWindowFocus: false,
     }
-  )
+  );
 
-
-  const getLastFourFeaturedProducts = (products) => {
-    if (products) {
-      const featuredProducts = products.filter(product => product.isFeatured);
-      const lastFourFeaturedProducts = featuredProducts.slice(-4);
-      return lastFourFeaturedProducts;
-    }
-  }
-
-  const lastFourFeaturedProducts = getLastFourFeaturedProducts(products);
+  const lastFourFeaturedProducts = products?.slice(-4);
 
   const slideNext = () => {
     if (sliderRef.current) {
@@ -196,13 +181,17 @@ const Home = () => {
       <FeatureProductsContainer>
         <h4>Featured Products</h4>
         <FeaturedItemContainer>
-          {[...Array(4)].map((_, index) => (
+          {[...Array(4)].map((_, index) =>
             isLoading ? (
               <ProductSkeleton key={index} />
             ) : (
-              <Product item={lastFourFeaturedProducts[index]} key={index} width={`23.8%`} />
+              <Product
+                item={lastFourFeaturedProducts[index]}
+                key={index}
+                width={`23.8%`}
+              />
             )
-          ))}
+          )}
         </FeaturedItemContainer>
       </FeatureProductsContainer>
 
@@ -325,7 +314,7 @@ const Home = () => {
 
       <InstaFooter />
 
-      {(openCookie && !acceptCookie) && (
+      {openCookie && !acceptCookie && (
         <CookieContainer>
           <div>
             <h6>Accept all Cookies</h6>
@@ -340,16 +329,22 @@ const Home = () => {
           </div>
 
           <div>
-            <button onClick={() => {
-              Cookies.set('ginger-cookie-policy', true);
-              setOpenCookie(false)
-            }}>
+            <button
+              onClick={() => {
+                Cookies.set("ginger-cookie-policy", true);
+                setOpenCookie(false);
+              }}
+            >
               Accept only essential
             </button>
-            <button onClick={() => {
-              Cookies.set('ginger-cookie-policy', true);
-              setOpenCookie(false)
-            }}>Accept</button>
+            <button
+              onClick={() => {
+                Cookies.set("ginger-cookie-policy", true);
+                setOpenCookie(false);
+              }}
+            >
+              Accept
+            </button>
           </div>
         </CookieContainer>
       )}
@@ -562,11 +557,11 @@ const Barber = styled.div`
   flex-direction: column;
   justify-content: flex-end;
   padding-bottom: 20px;
-  height: 50px; 
+  height: 50px;
   padding: 1.2rem;
   margin-bottom: 20px;
-  background-color:  var(--hover-color);
-  height: 18.75rem; 
+  background-color: var(--hover-color);
+  height: 18.75rem;
   background-image: url("https://images.unsplash.com/photo-1567894340315-735d7c361db0?q=80&w=3044&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
   background-position: center;
   background-size: cover;
@@ -603,7 +598,7 @@ const NailSkinContianer = styled.div`
 
 const Nails = styled.div`
   width: 100%;
-  background-color:  var(--hover-color);
+  background-color: var(--hover-color);
   height: 23.75rem;
   display: flex;
   flex-direction: column;
@@ -748,7 +743,7 @@ const AdContainer = styled.div`
   justify-content: space-evenly;
   position: relative;
   width: 100%;
-  p{
+  p {
     margin-bottom: 1rem;
   }
   /* gap:2rem; */

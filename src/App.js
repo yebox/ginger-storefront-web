@@ -21,7 +21,7 @@ function App() {
           style: {
             boxShadow: `none`,
             borderRadius: `2px`,
-            fontSize: `16px`,
+            fontSize: `14px`,
             fontFamily: `Barlow`,
             fontWeight: `600`,
             maxWidth: `unset`,
@@ -35,7 +35,7 @@ function App() {
           },
           error: {
             style: {
-              backgroundColor: `#ADFFB6`,
+              backgroundColor: `#FF4623`,
               color: `#131A23`,
             },
           },

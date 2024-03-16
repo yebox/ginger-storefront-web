@@ -9,14 +9,12 @@ import {
 } from "../../Assets/Svgs";
 import { GSpacer } from "../../Ui_elements";
 import { useDispatch, useSelector } from "react-redux";
-import { Navbar } from "../SharedLayout/Components/navbar";
-import { Footer } from "../SharedLayout/Components/footer";
 import { devices } from "../../Utils";
 import { useDeviceCheck } from "../../Hooks";
 import { logout } from "../../Redux/Reducers";
 
 const AccountLayout = ({ children }) => {
-  const user = useSelector((state) => state.user?.user);
+  const user = useSelector((state) => state?.user);
   const { pathname } = useLocation();
   const dispatch = useDispatch();
   const { isMobile } = useDeviceCheck();
@@ -25,10 +23,8 @@ const AccountLayout = ({ children }) => {
     dispatch(logout());
   };
 
-  console.log({ pathname });
   return (
     <>
-      {/* <Navbar /> */}
       <Container>
         <Header>
           <LeftIcon />
@@ -61,14 +57,13 @@ const AccountLayout = ({ children }) => {
             {!isMobile && <GSpacer size={120} />}
             {!isMobile && (
               <SideNav onClick={handleLogout} to={"/"}>
-                Logs out
+                Log out
               </SideNav>
             )}
           </LeftSectionWrapper>
           <RightSectionWrapper>{children}</RightSectionWrapper>
         </ContentWrapper>
       </Container>
-      {/* <Footer /> */}
     </>
   );
 };
