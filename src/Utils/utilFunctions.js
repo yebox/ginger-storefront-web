@@ -55,14 +55,29 @@ export const formatAmount = (amount) => {
   }
 };
 
+export const orderStatusMapping = {
+  pending: "Ongoing",
+  paid: "Ongoing",
+  processing: "Ongoing",
+  shipped: "In transit",
+  completed: "Delivered",
+  cancelled: "Cancelled",
+};
+
+export const formatOrderStatus = (status) => {
+  const lowercaseStatus = status.toLowerCase();
+  return orderStatusMapping[lowercaseStatus] || "Ongoing";
+};
 
 export const formatCardNumber = (cardNumber) => {
   if (cardNumber) {
-    const numericOnly = cardNumber?.replace(/\D/g, '');
+    const numericOnly = cardNumber?.replace(/\D/g, "");
     const cardNumberFormat = /(\d{4})(\d{4})(\d{4})(\d{4})/;
-    const formattedCardNumber = numericOnly.replace(cardNumberFormat, '$1 $2 $3 $4');
+    const formattedCardNumber = numericOnly.replace(
+      cardNumberFormat,
+      "$1 $2 $3 $4"
+    );
 
     return formattedCardNumber;
   }
-
-}
+};
