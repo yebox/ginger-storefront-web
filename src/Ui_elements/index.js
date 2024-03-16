@@ -25,3 +25,4 @@ export * from "./Carousel";
 export * from "./PageLoader"
 export * from "./ProductCardSkeleton"
 export * from "./LineLoader"
+export * from "./PopMenu"

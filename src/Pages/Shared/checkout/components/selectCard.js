@@ -4,20 +4,18 @@ import { GRadioSelect } from '../../../../Ui_elements'
 
 export const SelectCard = ({
     id,
-    selectedCard,
-    selectedItem,
     item,
+    onClick,
+    selected,
+    onChange,
     ...otherProps
 
 }) => {
     return (
-        <Container
-            {...otherProps}
-        >
+        <Container onClick={onClick} {...otherProps}>
             <Header>
                 <p>{item?.userName}</p>
-                {/* {selectedCard === id && <RadioSelect />} */}
-                <GRadioSelect/>
+                <GRadioSelect value={id} selected={selected} onChange={onChange} />
             </Header>
             <Details>
                 <p>{item?.item?.line1}, {item?.item?.line2}</p>

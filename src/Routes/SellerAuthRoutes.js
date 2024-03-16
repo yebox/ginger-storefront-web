@@ -7,24 +7,25 @@ import { PageLoader } from "../Ui_elements";
 
 export const SellerAuthRoutes = () => {
   return (
-    <Routes>
-      {sellerAuthRoutes.map(({ path, hasLayout, element: Element }, index) => (
-        <Route
-          key={index}
-          path={path}
-          element={
-            <Suspense fallback={<PageLoader/>}>
-              {hasLayout ? (
-                <SellerAuthLayout>
-                  <Element />
-                </SellerAuthLayout>
-              ) : (
-                <Element />
-              )}
-            </Suspense>
-          }
-        />
-      ))}
-    </Routes>
+    <></>
+    // <Routes>
+    //   {sellerAuthRoutes.map(({ path, hasLayout, element: Element }, index) => (
+    //     <Route
+    //       key={index}
+    //       path={path}
+    //       element={
+    //         <Suspense fallback={<PageLoader/>}>
+    //           {hasLayout ? (
+    //             <SellerAuthLayout>
+    //               <Element />
+    //             </SellerAuthLayout>
+    //           ) : (
+    //             <Element />
+    //           )}
+    //         </Suspense>
+    //       }
+    //     />
+    //   ))}
+    // </Routes>
   );
 };

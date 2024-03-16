@@ -7,15 +7,19 @@ import { sharedRoutes } from "./data";
 export const SharedRoutes = () => {
   return (
     <Routes>
-      {sharedRoutes.map(({ path, element: Element }, index) => (
+      {sharedRoutes.map(({ path, element: Element, hasLayout }, index) => (
         <Route
           key={index}
           path={path}
           element={
-            <Suspense fallback={<PageLoader/>}>
-              <SharedLayout>
+            <Suspense fallback={<PageLoader />}>
+              {hasLayout ? (
                 <Element />
-              </SharedLayout>
+              ) : (
+                <SharedLayout>
+                  <Element />
+                </SharedLayout>
+              )}
             </Suspense>
           }
         />
