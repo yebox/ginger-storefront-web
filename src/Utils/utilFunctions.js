@@ -81,3 +81,17 @@ export const formatCardNumber = (cardNumber) => {
     return formattedCardNumber;
   }
 };
+
+
+
+export const generateUrlParams = (obj) => {
+  let generatedUrl = ``;
+  const arrayOfObjectKeys = Object.keys(obj);
+  arrayOfObjectKeys.forEach((key) => {
+    if (obj[key] || obj[key] === false) {
+      generatedUrl += `${key}=${obj[key]}&`;
+    }
+  });
+  return generatedUrl;
+};
+4

@@ -1,38 +1,25 @@
-import React from "react";
+import { useState } from "react";
 import { styled } from "styled-components";
 import { GCheckbox } from "../../../Ui_elements";
 
-export const TopStoresFilter = () => {
+export const TopStoresFilter = ({ options, selectedBrand, setSelectedBrand }) => {
+  const handleCheckboxChange = (item) => {
+    setSelectedBrand(prevSelectedBrand => prevSelectedBrand === item ? '' : item);
+  };
+
   return (
     <Container>
-      <CheckWrapper>
-        <GCheckbox size={`20px`} isTransparent={true} />
-        <FilterLabel>OLAPLEX</FilterLabel>
-      </CheckWrapper>
-      <CheckWrapper>
-        <GCheckbox size={`20px`} isTransparent={true} />
-        <FilterLabel>ELF</FilterLabel>
-      </CheckWrapper>
-      <CheckWrapper>
-        <GCheckbox size={`20px`} isTransparent={true} />
-        <FilterLabel>CANTU SHEA BUTTER</FilterLabel>
-      </CheckWrapper>
-      <CheckWrapper>
-        <GCheckbox size={`20px`} isTransparent={true} />
-        <FilterLabel>MIZANI</FilterLabel>
-      </CheckWrapper>
-      <CheckWrapper>
-        <GCheckbox size={`20px`} isTransparent={true} />
-        <FilterLabel>L’OREAL</FilterLabel>
-      </CheckWrapper>
-      <CheckWrapper>
-        <GCheckbox size={`20px`} isTransparent={true} />
-        <FilterLabel>O.P.I</FilterLabel>
-      </CheckWrapper>
-      <CheckWrapper>
-        <GCheckbox size={`20px`} isTransparent={true} />
-        <FilterLabel>JUVIA’S PLACE</FilterLabel>
-      </CheckWrapper>
+      {options?.map((item, index) => (
+        <CheckWrapper key={index}>
+          <GCheckbox
+            checked={selectedBrand === item}
+            onChange={() => handleCheckboxChange(item)}
+            size={`20px`}
+            isTransparent={true}
+          />
+          <FilterLabel>{item?.name}</FilterLabel>
+        </CheckWrapper>
+      ))}
     </Container>
   );
 };

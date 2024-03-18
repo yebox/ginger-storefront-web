@@ -35,7 +35,6 @@ export const Product = ({ width, item, mbWidth }) => {
   const user = useSelector((state) => state.user);
   const queryClient = useQueryClient();
 
-  console.log(item, "item");
   const { mutate, isPending } = useApiSend(
     (_) => addToCart(_, user?._id),
     () => {
@@ -190,7 +189,7 @@ export const Product = ({ width, item, mbWidth }) => {
         <SellerRate>
           <div>
             <p>Seller:</p>
-            <Link to={`/${item?.brand?.name}`}>{item?.brand?.name}</Link>
+            <Link to={`/${item?.brand?.name}`}>{item?.seller?.firstName} {item?.seller?.lastName}</Link>
           </div>
 
           <div>
@@ -200,6 +199,7 @@ export const Product = ({ width, item, mbWidth }) => {
         </SellerRate>
         <Itemdetail>
           <p>{item?.name}</p>
+          <BrandTag>{item?.brand?.name}</BrandTag>
         </Itemdetail>
         <RRPContainer>
           <div>
@@ -321,6 +321,9 @@ const SellerRate = styled.div`
 
 const Itemdetail = styled.div`
   margin-top: 0.6rem;
+  display: flex;
+  align-items: flex-end !important;
+  gap: 10px;
   p {
     font-size: 1.2rem;
     color: var(--Black-500, #151515);
@@ -352,6 +355,13 @@ const Unliked = styled.div`
     transform: scale(1.1);
   }
 `;
+
+const BrandTag = styled.p`
+  background-color: var(--black50);
+  font-size: 0.6rem !important;
+  padding: 2px 4px;
+  border-radius: 4px;
+`
 
 const Liked = styled.div`
   width: 2.5rem;

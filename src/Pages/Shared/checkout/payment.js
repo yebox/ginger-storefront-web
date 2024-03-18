@@ -40,6 +40,8 @@ const Payment = () => {
     const phoneNumber = JSON.parse(decodeURIComponent(phoneNumberString))
     const shipping = 2000
 
+    console.log(location.pathname, "hit")
+
     const {
         register,
         handleSubmit,
@@ -57,7 +59,7 @@ const Payment = () => {
     const { mutate: makePaymentRequest, isPending: isMakingPayment } = useApiSend(
         makePayment,
         (data) => {
-            toast.success('Your order on is on the way!')
+            toast.success('Order created!')
             setModalType('confirmed')
             window.location.href = data
         },
@@ -73,17 +75,19 @@ const Payment = () => {
         createOrder,
         (data) => {
             setShowModal(true)
+            console.log(data, "order data")
             const body = {
                 orderId: data?.id,
                 userId: user._id,
                 userEmail: user.email,
-                callbackUrl: 'https://ginger-storefront-web.vercel.app'
+                callbackUrl: window.location.ref
             }
             makePaymentRequest(body)
-
+            if (data.statusCode === 400) 
+                toast.error(data.message)
         },
-        () => {
-            toast.error('Something went wrong')
+        (e) => {
+            toast.error(`${e.message}`)
         }
     )
 

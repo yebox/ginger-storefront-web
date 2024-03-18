@@ -2,15 +2,14 @@ import styled from 'styled-components'
 import {
     GBreadCrumbs,
     Chip,
-    GButton,
     GAccordion,
     Product,
-    GDropdown,
     GPagination,
+    LineLoader,
+    Empty,
 } from '../../../Ui_elements'
 import { memo } from 'react';
-import { categoriesData } from './data';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Fade from "@mui/material/Fade";
 import {
     BecomeSellerSection,
@@ -19,22 +18,111 @@ import {
     TopStoresFilter
 } from '../Components';
 import ArrowForwardIosSharpIcon from "@mui/icons-material/ArrowForwardIosSharp";
+import { useApiGet } from '../../../Hooks';
+import { getBrands, getCategories, getProducts } from '../../../Urls';
+import { useSelector } from 'react-redux';
+import { IMAGE_BASE_URL, priceOptions } from '../../../Utils';
+
 
 
 
 const Categories = () => {
+    const category = useSelector(state => state.global?.selectedCategory)
+    const initialSubCatFromStore = useSelector(state => state.global?.initialSubCategory)
     const [selectCat, setSelectCat] = useState(0)
-    const [label, setLabel] = useState("All");
+    const [subCategory, setSubCategory] = useState(null)
+    const [subCategoryId, setSubCategoryId] = useState('')
+    const [selectedBrand, setSelectedBrand] = useState('')
+    const [selectedPrice, setSelectedPrice] = useState(null)
+    // const [label, setLabel] = useState("All");
     const [openFilter, setOpenFilter] = useState(false)
+    const firstPriceSelection = useRef(true)
+    const firstBrandSelection = useRef(true)
+
+
+    const { data, isLoading, refetch: fetchSubCategories } = useApiGet(
+        ['get-catefories'],
+        () => getCategories({ name: category?.name }),
+        {
+            enabled: true
+        }
+    )
+
+    console.log(selectedBrand, "selected breands")
+    const {
+        data: productsData,
+        isLoading: isLoadingProducts,
+        isFetching: isFetchingProducts,
+        refetch: fetchProducts } = useApiGet(
+            ['get-products'],
+            () => getProducts({
+                subCategoryId: subCategoryId,
+                brandId: selectedBrand?._id,
+                price: selectedPrice
+            }),
+            {
+                enabled: false,
+                placeholderData: (previousData) => previousData
+            }
+        );
+
+    // const { data: categoryBrands, isLoading: isLoadingCategoryBrands } = useApiGet(
+    //     ['get-brands'],
+    //     () => getBrandsByCategory({
+    //         categoryId: category?._id,
+    //         subCategoryId: subCategoryId
+    //     }),
+    // )
+
+    const { data: categoryBrands, isLoading: isLoadingCategoryBrands } = useApiGet(
+        ['get-brands'],
+        () => getBrands(),
+    )
+
+
+    useEffect(() => {
+        fetchSubCategories()
+    }, [category?.name])
+
+    useEffect(() => {
+        if (data) {
+            const initialSubCategory = initialSubCatFromStore || data[0]?.subCategories[0]?._id;
+            setSubCategoryId(initialSubCategory?._id);
+            setSubCategory(initialSubCategory);
+        }
+    }, [data, initialSubCatFromStore]);
+
+    useEffect(() => {
+        if (subCategoryId) {
+            fetchProducts();
+        }
+    }, [subCategoryId, selectCat]);
+
+    useEffect(() => {
+        if (!firstBrandSelection.current && selectedBrand) {
+            fetchProducts();
+        }
+        firstBrandSelection.current = false;
+    }, [selectedBrand, firstBrandSelection]);
+
+    useEffect(() => {
+        if (!firstPriceSelection.current && selectedPrice) {
+            fetchProducts();
+        }
+        firstPriceSelection.current = false;
+    }, [selectedPrice, firstPriceSelection]);
+
+
+
     return (
         <Container>
             <Breadcrumb>
                 <GBreadCrumbs />
             </Breadcrumb>
 
-            <Banner>
+            <Banner subCategory={subCategory}>
                 <div>
-                    <h2>Eyelashes & Brows</h2>
+                    <h2>{category?.name}</h2>
                     <p>Ginger’s wide network of local and international suppliers
                         gives you access to all of your must-have brands
                         and products in one place.
@@ -42,32 +130,45 @@ const Categories = () => {
                 </div>
             </Banner>
 
-            <ChipContainer>
-                {categoriesData.map((item, index) => (
-                    <Chip
-                        activeIndex={selectCat}
-                        onClick={() => setSelectCat(index)}
-                        index={index}
-                        key={index}
-                    >
-                        {item}
-                    </Chip>
-                ))}
-            </ChipContainer>
+            {data &&
+                <ChipContainer>
+                    {
+                        data[0]?.subCategories?.map((item, index) => (
+                            <Chip
+                                activeIndex={
+                                    initialSubCatFromStore ?
+                                        data[0]?.subCategories
+                                            .findIndex(subCat => subCat._id === initialSubCatFromStore._id)
+                                        :
+                                        selectCat
+                                }
+                                onClick={() => {
+                                    setSelectCat(index);
+                                    setSubCategoryId(item?._id);
+                                    setSubCategory(item);
+                                }}
+                                index={index}
+                                key={index}
+                            >
+                                {item?.name}
+                            </Chip>
+                        ))}
+                </ChipContainer>
+            }
 
             <SortWrapper>
                 <SortBox onClick={() => setOpenFilter(!openFilter)} $isOpen={openFilter}>
                     <SortTxt>Filter by</SortTxt>
-                    <ArrowForwardIosSharpIcon/>
+                    <ArrowForwardIosSharpIcon />
                 </SortBox>
-                <SortBox>
+                {/* <SortBox>
                     <SortTxt>Sort by:</SortTxt>
                     <GDropdown
                         label={label}
                         setLabel={setLabel}
                         options={["All", "Last week"]}
                     />
-                </SortBox>
+                </SortBox> */}
             </SortWrapper>
 
 
@@ -78,17 +179,47 @@ const Categories = () => {
                     {...(openFilter ? { timeout: 500 } : {})}
                 >
                     <FilterBox $isOpen={openFilter}>
-                        <GAccordion title={"Price (₦)"} content={<PriceFilter />} />
-                        <GAccordion title={"Top Stores"} content={<TopStoresFilter />} />
+                        <GAccordion
+                            title={"Price (₦)"}
+                            content={
+                                <PriceFilter
+                                    options={priceOptions}
+                                    selectedPrice={selectedPrice}
+                                    setSelectedPrice={setSelectedPrice}
+                                />
+                            }
+                        />
+                        <GAccordion
+                            title={"Top Stores"}
+                            content={
+                                <TopStoresFilter
+                                    options={categoryBrands}
+                                    selectedBrand={selectedBrand}
+                                    setSelectedBrand={setSelectedBrand}
+                                />
+                            }
+                        />
                     </FilterBox>
                 </Fade>
                 <RightContent>
-                    <ProductsWrapper>
-                        {[...Array(12)].map((_, index) => (
-                            <Product key={index} width={`17.3rem`} />
-                        ))}
-                    </ProductsWrapper>
-                    <GButton label={"See more"} outline width={"172px"} />
+                    {
+                        productsData?.length > 0 ?
+                            <ProductsWrapper>
+                                {
+                                    productsData?.map((item, index) =>
+                                        <Product
+                                            item={item}
+                                            key={index}
+                                            width={`17.3rem`}
+                                        />
+                                    )
+                                }
+                            </ProductsWrapper>
+                            :
+                            <Empty />
+
+                    }
+
                 </RightContent>
             </ContentWrapper>
 
@@ -99,7 +230,7 @@ const Categories = () => {
             <BecomeSellerContainer>
                 <BecomeSellerSection />
             </BecomeSellerContainer>
-
+            <LineLoader loading={isLoadingProducts || isFetchingProducts} />
             <InstaFooter />
         </Container>
     )
@@ -120,10 +251,11 @@ const Banner = styled.section`
     align-items: center;
     justify-content: center;
     margin: 0 5%;
-    height: 60vh;
-    background: linear-gradient(to right, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.1)),
-                url('https://images.unsplash.com/photo-1589710751893-f9a6770ad71b?q=80&w=3387&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') 
-                center/cover no-repeat;
+    height: 30rem;
+    background: ${({ subCategory }) =>
+        subCategory
+            ? `linear-gradient(to right, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.1)), url(${IMAGE_BASE_URL}${subCategory.images[0]}) center/cover no-repeat`
+            : null};
     background-color: aquamarine;
     
     div {
@@ -235,8 +367,11 @@ const RightContent = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100% !important;
   gap: 62px;
+
   padding: 38px 0 108px 18px;
+  transition: all 0.3s ease;
 `;
 
 const ProductsWrapper = styled.div`

@@ -2,8 +2,41 @@ import React, { useState } from "react";
 import { styled } from "styled-components";
 import { GCheckbox } from "../../../Ui_elements";
 
-export const PriceFilter = () => {
+export const PriceFilter = ({ options, selectedPrice, setSelectedPrice }) => {
+  const [priceRangeStart, setPriceRangeStart] = useState('');
+  const [priceRangeEnd, setPriceRangeEnd] = useState('');
+  const [isApplyDisabled, setIsApplyDisabled] = useState(true);
   const [currentFocus, setCurrentFocus] = useState(0);
+
+  const handleApplyClick = () => {
+    // Validate price range inputs
+    if (priceRangeStart !== '' && priceRangeEnd !== '') {
+      // Construct the price range object
+      const priceRange = {
+        gt: parseInt(priceRangeStart),
+        lt: parseInt(priceRangeEnd)
+      };
+
+      // Set the selected price range
+      setSelectedPrice(priceRange);
+    }
+  };
+
+  const handleCheckboxChange = (price) => {
+    setSelectedPrice(prevSelectedPrice => prevSelectedPrice === price ? null : price);
+  };
+
+  const handleInputChange = (event, inputType) => {
+    const value = event.target.value;
+    if (inputType === 'start') {
+      setPriceRangeStart(value);
+    } else {
+      setPriceRangeEnd(value);
+    }
+
+    // Enable the apply button if both inputs are filled
+    setIsApplyDisabled(!(priceRangeStart !== '' && priceRangeEnd !== ''));
+  };
 
   return (
     <Container>
@@ -12,6 +45,8 @@ export const PriceFilter = () => {
           $isFocus={currentFocus === 1}
           placeholder="₦ 0.00"
           type="number"
+          value={priceRangeStart}
+          onChange={(e) => handleInputChange(e, 'start')}
           onFocus={() => setCurrentFocus(1)}
           onBlur={() => setCurrentFocus(0)}
         />
@@ -19,32 +54,28 @@ export const PriceFilter = () => {
         <PriceInput
           placeholder="₦ 0.00"
           type="number"
+          value={priceRangeEnd}
+          onChange={(e) => handleInputChange(e, 'end')}
           $isFocus={currentFocus === 2}
           onFocus={() => setCurrentFocus(2)}
           onBlur={() => setCurrentFocus(0)}
         />
-        <ApplyTxt>Apply</ApplyTxt>
+        {/* <ApplyButton disabled={isApplyDisabled} onClick={handleApplyClick}>Apply</ApplyButton> */}
+        {!isApplyDisabled && <ApplyTxt onClick={handleApplyClick}>Apply</ApplyTxt>}
+
+
       </PriceRange>
-      <CheckWrapper>
-        <GCheckbox size={`20px`} isTransparent={true} />
-        <FilterAmt>Under 4,000</FilterAmt>
-      </CheckWrapper>
-      <CheckWrapper>
-        <GCheckbox size={`20px`} isTransparent={true} />
-        <FilterAmt>4,000 - 24,000</FilterAmt>
-      </CheckWrapper>
-      <CheckWrapper>
-        <GCheckbox size={`20px`} isTransparent={true} />
-        <FilterAmt>24,000 - 200,000</FilterAmt>
-      </CheckWrapper>
-      <CheckWrapper>
-        <GCheckbox size={`20px`} isTransparent={true} />
-        <FilterAmt>200,000 - 10,000,000</FilterAmt>
-      </CheckWrapper>
-      <CheckWrapper>
-        <GCheckbox size={`20px`} isTransparent={true} />
-        <FilterAmt>More than 10,000,000</FilterAmt>
-      </CheckWrapper>
+      {options?.map((priceOption, index) => (
+        <CheckWrapper key={index}>
+          <GCheckbox
+            checked={selectedPrice === priceOption.range}
+            onChange={() => handleCheckboxChange(priceOption.range)}
+            size={`20px`}
+            isTransparent={true}
+          />
+          <FilterAmt>{priceOption.label}</FilterAmt>
+        </CheckWrapper>
+      ))}
     </Container>
   );
 };

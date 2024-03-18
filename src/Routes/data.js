@@ -129,47 +129,52 @@ export const sharedRoutes = [
   },
 
   {
-    path: "/categories/all",
+    path: "/categories",
     element: UnsignedCategories,
     hasLayout: false,
 
   },
   {
-    path: "/categories/hair",
+    path: "/categories/:id",
     element: Categories,
     hasLayout: false,
 
   },
+  // {
+  //   path: "/categories/nails",
+  //   element: Categories,
+  //   hasLayout: false,
+
+  // },
+  // {
+  //   path: "/categories/eyelashes",
+  //   element: Categories,
+  //   hasLayout: false,
+
+  // },
+  // {
+  //   path: "/categories/skin",
+  //   element: Categories,
+  //   hasLayout: false,
+
+  // },
+  // {
+  //   path: "/categories/equipment",
+  //   element: Categories,
+  //   hasLayout: false,
+
+  // },
   {
-    path: "/categories/nails",
+    path: "/categories/:category",
     element: Categories,
     hasLayout: false,
-
-  },
-  {
-    path: "/categories/eyelashes",
-    element: Categories,
-    hasLayout: false,
-
-  },
-  {
-    path: "/categories/skin",
-    element: Categories,
-    hasLayout: false,
-
-  },
-  {
-    path: "/categories/equipment",
-    element: Categories,
-    hasLayout: false,
-
   },
   {
     path: "/categories/:category/:id",
     element: ProductPage,
     hasLayout: false,
-
   },
+
   {
     path: "/report/:id",
     element: ReportOrder,
