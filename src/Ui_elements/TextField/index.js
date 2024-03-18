@@ -53,7 +53,6 @@ export const GTextField = ({
           disabled={isDisabled}
           $isDisabled={isDisabled}
           min={min}
-          value={value}
           onChange={(e) => onChange(e.target.value)}
           {...register(name, { required })}
           onFocus={() => {

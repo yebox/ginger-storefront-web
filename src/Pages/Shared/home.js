@@ -7,8 +7,10 @@ import {
   GModal,
   Carousel,
   ProductSkeleton,
+  Empty,
+  LineLoader,
 } from "../../Ui_elements";
-import React, { memo, useState, useRef } from "react";
+import React, { memo, useState, useEffect, useRef } from "react";
 import Vector from "../../Assets/Images/vector-background.png";
 import AddPicture from "../../Assets/Images/ad-picture.png";
 import { BecomeSellerSection, BlogCard, InstaFooter } from "./Components";
@@ -33,14 +35,34 @@ const Home = () => {
   const navigate = useNavigate();
   const [selectCat, setSelectCat] = useState(0);
   const [openCookie, setOpenCookie] = useState(true);
+  const [categoryId, setCategoryId] = useState('')
   const [openModal, setOpenModal] = useState(true);
   const sliderRef = useRef(null);
+  const user = useSelector(state => state.user)
   const acceptCookie = Cookies.get("ginger-cookie-policy");
   const swiper = new Swiper();
+  const firstCatMount = useRef(true)
 
   const { data: products, isLoading } = useApiGet(
     ["get-featured-products"],
     () => getProducts({ isFeatured: true }),
+    {
+      enabled: true,
+      refetchOnWindowFocus: false,
+    }
+  );
+
+  const {
+    data: topProducts,
+    isLoading: isLoadingTopProducts,
+    isFetching: isFetchingTopProducts,
+    refetch: fetchProducts
+  } = useApiGet(
+    ["get-top-products"],
+    () => getProducts({
+      isTopSeller: true,
+      categoryId: categoryId
+    }),
     {
       enabled: true,
       refetchOnWindowFocus: false,
@@ -56,7 +78,7 @@ const Home = () => {
     }
   );
 
-  const { data: categories, isLoading: isLoadingCategories } = useApiGet(
+  const { data: categories, isLoading: isLoadingCategories, refetch: fetchCat } = useApiGet(
     ["categories"],
     () => getCategories(),
     {
@@ -77,7 +99,20 @@ const Home = () => {
     if (sliderRef.current) {
       sliderRef.current.swiper.slidePrev();
     }
+
   };
+
+  useEffect(() => {
+    if (!firstCatMount.current && categories) {
+      const initialCategoryIndex = categories?.findIndex(cat => cat?._id === categoryId);
+      setSelectCat(initialCategoryIndex >= 0 ? initialCategoryIndex : 0);
+    }
+    firstCatMount.current = false;
+  }, [categories, categoryId]);
+
+  useEffect(() => {
+    fetchProducts()
+  }, [categoryId])
 
   const EndIcon = () => (
     <EndIconContainer>
@@ -94,10 +129,12 @@ const Home = () => {
           <h3>Discover the convenience of</h3>
           <h3>wholesale markeplace</h3>
           <ButtonContainer>
-            <GButton
-              label="Sign up for free"
-              onClick={() => navigate("/login")}
-            />
+            {
+              !user && <GButton
+                label="Sign up for free"
+                onClick={() => navigate("/login")}
+              />
+            }
 
             <GButton
               outline
@@ -142,7 +179,7 @@ const Home = () => {
                 <CatShopBottom>
                   <h6>Nails</h6>
 
-                  <Shopbutton onClick={() => navigate("/categories/nails")}>
+                  <Shopbutton onClick={() => navigate("/categories/all")}>
                     Shop Now
                   </Shopbutton>
                 </CatShopBottom>
@@ -151,7 +188,7 @@ const Home = () => {
                 <CatShopBottom>
                   <h6>Skin & Body</h6>
 
-                  <Shopbutton onClick={() => navigate("/categories/skin")}>
+                  <Shopbutton onClick={() => navigate("/categories/all")}>
                     Shop Now
                   </Shopbutton>
                 </CatShopBottom>
@@ -162,7 +199,7 @@ const Home = () => {
             <CatShopBottom>
               <h6>Braids & Weaves</h6>
 
-              <Shopbutton onClick={() => navigate("/categories/hair")}>
+              <Shopbutton onClick={() => navigate("/categories/all")}>
                 Shop Now
               </Shopbutton>
             </CatShopBottom>
@@ -181,13 +218,14 @@ const Home = () => {
       <FeatureProductsContainer>
         <h4>Featured Products</h4>
         <FeaturedItemContainer>
-          {lastFourFeaturedProducts?.map((product, index) =>
+
+          {lastFourFeaturedProducts ? lastFourFeaturedProducts?.map((product, index) =>
             isLoading ? (
               <ProductSkeleton key={index} />
             ) : (
               <Product item={product} key={index} width={`23.8%`} />
             )
-          )}
+          ) : <Empty />}
         </FeaturedItemContainer>
       </FeatureProductsContainer>
 
@@ -250,7 +288,10 @@ const Home = () => {
           {categories?.map((item, index) => (
             <Chip
               activeIndex={selectCat}
-              onClick={() => setSelectCat(index)}
+              onClick={() => {
+                setCategoryId(item?._id)
+                setSelectCat(index)
+              }}
               index={index}
               key={index}
             >
@@ -260,7 +301,20 @@ const Home = () => {
         </ChipContainer>
 
         <SellerCardsContainer>
-          <Carousel width={400} ref={sliderRef} />
+          <Carousel
+            width={400}
+            data={topProducts}
+            ref={sliderRef}
+            renderCard={(item, index) => {
+              return (
+                <Product
+                  item={item}
+                  key={index}
+
+                />
+              );
+            }}
+          />
         </SellerCardsContainer>
       </TopSellerContainer>
 
@@ -272,7 +326,12 @@ const Home = () => {
             Start exploring thousands of brands and enjoy wholesale purchases
           </p>
           <div>
-            <GButton label="Get started" alternate />
+            {!user && <GButton
+              label="Get started"
+              alternate
+              onClick={()=>navigate('/signup')}
+            />
+            }
             <GButton
               label="Learn more"
               alternateOutline
@@ -370,6 +429,14 @@ const Home = () => {
           </ModalClose>
         </ModalContent>
       </GModal>
+
+      <LineLoader loading={
+        isLoadingTopProducts ||
+        isLoadingCategories ||
+        isLoadingProductBrands ||
+        isLoading ||
+        isFetchingTopProducts
+      } />
     </Container>
   );
 };
@@ -859,7 +926,8 @@ const SellerCardsContainer = styled.div`
   margin-left: 5%;
   gap: 1.2rem;
   overflow-x: auto !important;
-`;
+`; import { useSelector } from 'react-redux';
+
 
 const Wholesale = styled.div`
   padding: 10% 5%;

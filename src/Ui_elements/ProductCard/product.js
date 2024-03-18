@@ -328,7 +328,7 @@ const SellerRate = styled.div`
 const Itemdetail = styled.div`
   margin-top: 0.6rem;
   display: flex;
-  align-items: flex-end !important;
+  align-items: flex-start !important;
   gap: 10px;
   p {
     font-size: 1.2rem;
@@ -366,7 +366,13 @@ const Unliked = styled.div`
 const BrandTag = styled.p`
   background-color: var(--black50);
   font-size: 0.6rem !important;
+  text-align: center;
+  width: 80px;
+  height: 20px !important;
   padding: 2px 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 4px;
 `;
 

@@ -135,9 +135,9 @@ export default function Cart() {
 
 
     useEffect(() => {
-        if (cartItems && cartItems.items.length > 0) {
-            const firstCartItem = cartItems.items[0];
-            setSellerId(firstCartItem.product.sellerId);
+        if (cartItems && cartItems?.items?.length > 0) {
+            const firstCartItem = cartItems?.items[0];
+            setSellerId(firstCartItem?.product?.sellerId);
         }
     }, [cartItems]);
 
@@ -157,6 +157,17 @@ export default function Cart() {
     }
     setTotalPrice(totalPriceCalculation);
   }, [transformData]);
+    useEffect(() => {
+        let totalPriceCalculation = 0;
+        if (transformData) {
+            totalPriceCalculation = transformData.reduce((total, item) => {
+                const discountedPrice = item?.price * (1 - item?.discountPercentage / 100);
+                return total + discountedPrice * item?.quantity;
+            }, 0);
+        }
+        setTotalPrice(totalPriceCalculation);
+    }, [transformData]);
+
 
   const columns = useMemo(
     () => [

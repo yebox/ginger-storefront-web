@@ -39,10 +39,10 @@ export default function Wishlist() {
                             </div>
                         </div>
 
-                        <ClearAll>
+                        {/* <ClearAll>
                             <p>Clear all</p>
                             <X>&times;</X>
-                        </ClearAll>
+                        </ClearAll> */}
 
                     </Header>
 
