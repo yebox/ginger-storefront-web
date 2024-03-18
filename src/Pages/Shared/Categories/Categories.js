@@ -38,6 +38,7 @@ const Categories = () => {
   const firstPriceSelection = useRef(true);
   const firstBrandSelection = useRef(true);
 
+    console.log(initialSubCatFromStore," hi ther")
   const {
     data,
     isLoading,
@@ -84,14 +85,13 @@ const Categories = () => {
     fetchSubCategories();
   }, [category?.name]);
 
-  useEffect(() => {
-    if (data) {
-      const initialSubCategory =
-        initialSubCatFromStore || data[0]?.subCategories[0]?._id;
-      setSubCategoryId(initialSubCategory?._id);
-      setSubCategory(initialSubCategory);
-    }
-  }, [data, initialSubCatFromStore]);
+    useEffect(() => {
+        if (data) {
+            const initialSubCategory = initialSubCatFromStore ? initialSubCatFromStore : data[0]?.subCategories[0]?._id;
+            setSubCategoryId(initialSubCategory?._id);
+            setSubCategory(initialSubCategory);
+        }
+    }, [data, initialSubCatFromStore]);
 
   useEffect(() => {
     if (subCategoryId) {
@@ -113,21 +113,22 @@ const Categories = () => {
     firstPriceSelection.current = false;
   }, [selectedPrice, firstPriceSelection]);
 
-  return (
-    <Container>
-      <Breadcrumb>
-        <GBreadCrumbs />
-      </Breadcrumb>
+    console.log(subCategory, "sub cat")
+    return (
+        <Container>
+            <Breadcrumb>
+                <GBreadCrumbs />
+            </Breadcrumb>
 
-      <Banner subCategory={subCategory}>
-        <div>
-          <h2>{category?.name}</h2>
-          <p>
-            Ginger’s wide network of local and international suppliers gives you
-            access to all of your must-have brands and products in one place.
-          </p>
-        </div>
-      </Banner>
+            <Banner subCategory={subCategory && subCategory}>
+                <div>
+                    <h2>{category?.name}</h2>
+                    <p>Ginger’s wide network of local and international suppliers
+                        gives you access to all of your must-have brands
+                        and products in one place.
+                    </p>
+                </div>
+            </Banner>
 
       {data && (
         <ChipContainer>
@@ -136,7 +137,7 @@ const Categories = () => {
               activeIndex={
                 initialSubCatFromStore
                   ? data[0]?.subCategories.findIndex(
-                      (subCat) => subCat._id === initialSubCatFromStore._id
+                      (subCat) => subCat._id === initialSubCatFromStore?._id
                     )
                   : selectCat
               }
@@ -236,31 +237,30 @@ const Breadcrumb = styled.section`
 `;
 
 const Banner = styled.section`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 5%;
-  height: 30rem;
-  background: ${({ subCategory }) =>
-    subCategory
-      ? `linear-gradient(to right, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.1)), url(${IMAGE_BASE_URL}${subCategory.images[0]}) center/cover no-repeat`
-      : null};
-  background-color: aquamarine;
-
-  div {
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-direction: column;
-    gap: 2rem;
-    position: relative;
-    z-index: 2;
-    text-align: center;
-    h2 {
-      font-size: 3rem;
-      font-weight: 500;
-      color: white;
-    }
+    margin: 0 5%;
+    height: 30rem;
+    background: ${({ subCategory }) =>
+        subCategory
+            ? `linear-gradient(to right, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.1)), url(${IMAGE_BASE_URL}${subCategory?.images[0]}) center/cover no-repeat`
+            : 'aquamarine'};
+    
+    div {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap:2rem;
+        position: relative;
+        z-index: 2;
+        text-align: center;
+        h2 {
+            font-size: 3rem;
+            font-weight: 500;
+            color: white;
+        }
 
     p {
       text-align: center;

@@ -20,8 +20,10 @@ export const GTextField = ({
   name = "",
   error = false,
   errorText = "",
-  onChange = () => {},
-  register = () => {},
+  focus = () => { },
+  blur = () => { },
+  onChange = () => { },
+  register = () => { },
   endIcon,
   ...props
 }) => {
@@ -51,24 +53,31 @@ export const GTextField = ({
           disabled={isDisabled}
           $isDisabled={isDisabled}
           min={min}
-          onChange={onChange}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
           {...register(name, { required })}
-          onFocus={() => setIsFocus(true)}
-          onBlur={() => setIsFocus(false)}
+          onFocus={() => {
+            focus()
+            setIsFocus(true)
+          }}
+          onBlur={() => {
+            blur()
+            setIsFocus(false)
+          }}
         />
 
         {endIcon
           ? endIcon
           : isPassword && (
-              <InputIcon
-                $isDisabled={isDisabled}
-                $isFocus={isFocus}
-                onClick={() => setShowPassword((prev) => !prev)}
-                className="clickable"
-              >
-                <PasswordEndIcon />
-              </InputIcon>
-            )}
+            <InputIcon
+              $isDisabled={isDisabled}
+              $isFocus={isFocus}
+              onClick={() => setShowPassword((prev) => !prev)}
+              className="clickable"
+            >
+              <PasswordEndIcon />
+            </InputIcon>
+          )}
       </InputWrapper>
       <div>{errorText.length > 0 && <Error>{errorText}</Error>}</div>
     </InputContainer>
@@ -159,8 +168,8 @@ const InputWrapper = styled.label`
     $isError
       ? `0 -1px 0 #D21F37 inset`
       : $isFocus
-      ? `0 -1px 0 #151515 inset`
-      : `0 -1px 0 #E8E8E8 inset`};
+        ? `0 -1px 0 #151515 inset`
+        : `0 -1px 0 #E8E8E8 inset`};
   transition: all 0.25s ease;
   cursor: text;
 
@@ -183,7 +192,7 @@ const InputIcon = styled.div`
     width: 100%;
     height: 100%;
     opacity: ${({ $isDisabled, $isFocus }) =>
-      $isDisabled || !$isFocus ? 0.5 : 1};
+    $isDisabled || !$isFocus ? 0.5 : 1};
   }
 `;
 

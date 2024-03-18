@@ -11,7 +11,7 @@ import {
     LineLoader,
 } from '../../../Ui_elements'
 import { InstaFooter } from '../Components'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { CheckoutItemCard, PriceDetails, SelectCard, Total, Modal } from './components'
 import { formatAmount, formatCardNumber } from '../../../Utils'
 import { useForm } from 'react-hook-form';
@@ -25,6 +25,7 @@ import { toast } from 'react-hot-toast'
 const Payment = () => {
     const [showModal, setShowModal] = useState(true)
     const location = useLocation()
+    const [currentUrl, setCurrentUrl] = useState('')
     const [paymentMethod, setPaymentMethod] = useState("");
     const [modalType, setModalType] = useState('processing')
     const [showForm, setShowForm] = useState(false);
@@ -40,7 +41,9 @@ const Payment = () => {
     const phoneNumber = JSON.parse(decodeURIComponent(phoneNumberString))
     const shipping = 2000
 
-    console.log(location.pathname, "hit")
+    useEffect(() => {
+        setCurrentUrl(window.location.href)
+    }, [])
 
     const {
         register,
@@ -80,14 +83,17 @@ const Payment = () => {
                 orderId: data?.id,
                 userId: user._id,
                 userEmail: user.email,
-                callbackUrl: window.location.ref
+                callbackUrl: `https://ginger-storefront-web.vercel.app/cart`
             }
             makePaymentRequest(body)
-            if (data.statusCode === 400) 
+            if (data.statusCode === 400) {
                 toast.error(data.message)
+                setModalType('failed')
+            }
         },
         (e) => {
             toast.error(`${e.message}`)
+            setShowModal(false)
         }
     )
 
@@ -110,6 +116,8 @@ const Payment = () => {
         mutate(body)
     }
 
+
+
     return (
         <Container>
 
@@ -119,7 +127,10 @@ const Payment = () => {
                     open={showModal}
                     handleClose={() => setShowModal(false)}
                 >
-                    <Modal type={modalType} />
+                    <Modal
+                        type={modalType}
+                        setShowModal={setShowModal}
+                    />
                 </GModal>
 
             }
@@ -369,6 +380,7 @@ const InformationSection = styled.form`
 const Remember = styled.h4`
     margin-bottom: 20px !important;
     font-family: Barlow;
+
     font-size: 22px;
     font-style: normal;
     font-weight: 500;

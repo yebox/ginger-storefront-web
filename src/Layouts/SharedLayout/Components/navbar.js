@@ -11,17 +11,19 @@ import {
   Search,
   BlackX,
 } from "../../../Assets/Svgs";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Avatar, Skeleton } from "@mui/material";
 import { useApiGet } from "../../../Hooks";
-import { GTextField, PopMenu } from "../../../Ui_elements";
-import { getCategories } from "../../../Urls";
+import { GTextField, LineLoader, PopMenu, SearchOverlay } from "../../../Ui_elements";
+import { getBrands, getCategories, getProducts } from "../../../Urls";
 import {
   setCategories,
   setInitialSubCateogry,
   setSelectedCategory,
 } from "../../../Redux/Reducers";
+import { debounce } from "lodash";
+import { filterSearchParams, generateQueryKey } from "../../../Utils";
 
 const imageLinks = [
   "https://images.unsplash.com/photo-1546877625-cb8c71916608?q=80&w=3270&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -36,9 +38,23 @@ export const Navbar = () => {
   const [activeItem, setActiveItem] = useState(null);
   const [showFullOptions, setShowFullOptions] = useState(false);
   const [fullOptionsHovered, setFullOptionsHovered] = useState(false);
-  const dispatch = useDispatch();
+  const [showSearch, setShowSearch] = useState(false)
+  const [searchFilter, setSearchFilter] = useState({
+    name: '',
+    brandId: '',
+    categoryId: '',
+    subCategoryId: '',
+    rating: '',
+    msrp: '',
+    isFeatured: null,
+    isTopSeller: null
+  })
+  const dispatch = useDispatch()
   const user = useSelector((state) => state?.user);
+  const initialSubCatFromStore = useSelector(state => state.global?.initialSubCategory)
 
+
+  console.log(searchFilter, "fiter")
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -59,7 +75,91 @@ export const Navbar = () => {
 
   useEffect(() => {
     data && dispatch(setCategories(data));
-  }, [data]);
+  }, [data]); const { data: brands, isLoading: isLoadingBrands } = useApiGet(
+    ['navbar-brandss'],
+    () => getBrands(),
+    {
+      enabled: true,
+      refetchOnWindowFocus: false
+    }
+  )
+
+  const { data: products, isLoading: isLoadingProducts, refetch: fetchProduct } = useApiGet(
+    [generateQueryKey('products', searchFilter)],
+    () => getProducts(
+      filterSearchParams(searchFilter)
+    ),
+    {
+      enabled: !!searchFilter,
+      refetchOnWindowFocus: false
+    }
+  )
+
+  useEffect(() => {
+    fetchProduct()
+  }, [searchFilter])
+
+
+  const debouncedSearchFilterUpdate = debounce((value) => {
+    setSearchFilter((prev) => ({
+      ...prev,
+      name: value
+    }));
+  }, 1500);
+
+  const debouncedMSPRFilterUpdate = debounce((value) => {
+    setSearchFilter((prev) => ({
+      ...prev,
+      msrp: value
+    }));
+  }, 1500);
+
+
+  const handleSearchFilter = (value) => {
+    const searchValue = value
+    debouncedSearchFilterUpdate(searchValue.trim());
+  };
+
+  const handleMSRPFilter = (value) => {
+    const searchValue = value
+    debouncedMSPRFilterUpdate(searchValue.trim());
+  };
+
+
+
+  const extractCategories = (data) => {
+    if (data) {
+      return data?.map(({ _id, name }) => ({ value: _id, label: name }));
+
+    }
+  };
+
+  const extractBrands = (data) => {
+    return data?.map(({ _id, name }) => ({ value: _id, label: name }));
+  };
+
+  const extractSubCategories = (data) => {
+    if (data) {
+      return data?.reduce((acc, category) => {
+        const subCategories = category.subCategories.map(({ _id, name }) => ({
+          value: _id,
+          label: name,
+        }));
+        return [...acc, ...subCategories];
+      }, []);
+    }
+
+  };
+
+  const categories = useMemo(() => extractCategories(data), [data]);
+  const subCategories = useMemo(() => extractSubCategories(data), [data]);
+  const allBrands = useMemo(() => extractBrands(brands), [brands]);
+
+  // useEffect(() => {
+  //   dispatch(setSelectedCategory(null))
+  //   dispatch(setInitialSubCateogry(null))
+  // }, [initialSubCatFromStore])
+
 
   const handleNavLinkHover = (index) => {
     setCurrentImage(imageLinks[index]);
@@ -98,8 +198,10 @@ export const Navbar = () => {
 
         <SearchContainer>
           <GTextField
+            focus={() => setShowSearch(true)}
             placeholder={"What are you searching for?"}
             endIcon={<Search />}
+            onChange={(value) => handleSearchFilter(value)}
           />
         </SearchContainer>
 
@@ -113,7 +215,7 @@ export const Navbar = () => {
                     width: "24px",
                     height: "24px",
                   }}
-                  alt="Remy Sharp"
+                  alt={`${user.firstName} ${user.lastName}`}
                   src="https://images.unsplash.com/photo-1574169208507-84376144848b?q=80&w=3279&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                 />
 
@@ -159,7 +261,7 @@ export const Navbar = () => {
             <MenuLinksContainer>
               <NavLink
                 to={"/categories/all"}
-                // onMouseEnter={() => handleNavLinkHover(0)}
+              // onMouseEnter={() => handleNavLinkHover(0)}
               >
                 All
               </NavLink>
@@ -177,11 +279,13 @@ export const Navbar = () => {
             </MenuLinksContainer>
 
             <Links>
-              <NavLink to={"/about-us"}>About us</NavLink>
+              {/* <NavLink to={"/about-us"}>About us</NavLink> */}
               <NavLink to={"/sell-on-ginger"}>Sell on ginger</NavLink>
             </Links>
-          </LowerNavItemContainer>
-        )}
+
+          </LowerNavItemContainer>)
+        }
+
       </LowerNav>
 
       {showFullOptions && (
@@ -248,6 +352,19 @@ export const Navbar = () => {
           </ImageHolder>
         </FullOptions>
       )}
+      <SearchOverlay
+        showSearch={showSearch}
+        setShowSearch={setShowSearch}
+        data={products}
+        categories={categories}
+        subCategories={subCategories}
+        brands={allBrands}
+        setSearchFilter={setSearchFilter}
+        msrpUpdate={debouncedMSPRFilterUpdate}
+        handleMSRPFilter={handleMSRPFilter}
+
+      />
+      <LineLoader loading={isLoadingProducts} />
     </OuterContainer>
   );
 };
@@ -258,7 +375,8 @@ const OuterContainer = styled.nav`
   top: 0;
   left: 0;
   background-color: white;
-  z-index: 50;
+  z-index: 50 !important;
+  
 `;
 const Container = styled.div`
   width: 100%;
