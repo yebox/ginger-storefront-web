@@ -21,3 +21,12 @@ export const refresh = (data) =>
         method: 'POST',
         data
     })
+
+
+
+export const refreshToken = (data) =>
+    request({
+        url: `${BASE_URL}/refresh`,
+        method: 'POST',
+        data
+    })

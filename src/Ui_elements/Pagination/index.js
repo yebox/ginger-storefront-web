@@ -9,9 +9,9 @@ export const GPagination = () => {
         <Container>
             <Pagination
                 size='large'
-                count={100}
+                count={1}
                 variant="outlined"
-                defaultPage={6}
+                defaultPage={1}
                 siblingCount={0}
                 boundaryCount={2} 
             />

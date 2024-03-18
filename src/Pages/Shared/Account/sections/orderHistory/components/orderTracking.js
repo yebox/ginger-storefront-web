@@ -3,6 +3,7 @@ import { styled } from "styled-components";
 import { OrderTrackIcon, OrderTrackStar } from "../../../../../../Assets/Svgs";
 import TrackStepper from "./trackStepper";
 import CancelOrder from "./cancelOrder";
+import { devices } from "../../../../../../Utils";
 
 const stepData = {
   dateProcessed: `12/08/2022`,
@@ -39,6 +40,11 @@ export default OrderTracking;
 const Container = styled.div`
   width: 50%;
   border-left: 1px solid #ececee;
+
+  @media ${devices.mobileL} {
+    margin-top: 70px;
+    width: 100%;
+  }
 `;
 
 const Header = styled.div`
@@ -55,6 +61,16 @@ const Header = styled.div`
     position: absolute;
     left: 0;
     bottom: 0;
+  }
+
+  @media ${devices.mobileL} {
+    padding: 20px;
+    height: 135px;
+    padding-top: 20px;
+
+    & > svg:first-of-type {
+      height: 100%;
+    }
   }
 `;
 
@@ -86,4 +102,9 @@ const ContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
   padding: 57px 5vw 57px 65px;
+
+  @media ${devices.mobileL} {
+    padding: 20px;
+    margin-top: 15px;
+  }
 `;

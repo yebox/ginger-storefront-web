@@ -1,10 +1,29 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { styled } from "styled-components";
 import { Plus } from "../../../../../../Assets/Svgs";
 import AddressModal from "./modals/address";
+import { devices } from "../../../../../../Utils";
+import { useApiGet } from "../../../../../../Hooks";
+import { getUser } from "../../../../../../Urls";
 
 const Address = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const { data: userData, isLoading: isLoadingUser } = useApiGet(
+    ["get-user-data"],
+    () => getUser(),
+    {
+      enabled: true,
+    }
+  );
+
+  const addresses = useMemo(() => {
+    return [userData?.address]?.map((x) => ({
+      address: `${x?.line1}, ${x?.city}, ${x?.state}, ${x?.country}`,
+      phoneNumber: userData?.phoneNumber,
+      fullName: `${userData?.firstName} ${userData?.lastName}`,
+    }));
+  }, [userData]);
 
   return (
     <Container>
@@ -12,23 +31,24 @@ const Address = () => {
         <Title>Address book</Title>
       </TopWrapper>
       <BottomWrapper>
-        <AddressWrapper>
-          <AddressBox>
-            <AddressTop>
-              <AddressName>Maxwell Phillip</AddressName>
-              <DefaultTag>Default shipping address</DefaultTag>
-            </AddressTop>
-            <AddressTxt>20a wallstreet junction, ibadan, Nigeria.</AddressTxt>
-            <AddressNumber>07096885784</AddressNumber>
-          </AddressBox>
-          <AddressBox>
-            <AddressTop>
-              <AddressName>Maxwell Phillip</AddressName>
-            </AddressTop>
-            <AddressTxt>20a wallstreet junction, ibadan, Nigeria.</AddressTxt>
-            <AddressNumber>07096885784</AddressNumber>
-          </AddressBox>
-        </AddressWrapper>
+        {addresses?.length > 0 ? (
+          <AddressWrapper>
+            {addresses?.map((x, idx) => (
+              <AddressBox key={idx}>
+                <AddressTop>
+                  <AddressName>{x?.fullName}</AddressName>
+                  {idx === 0 && (
+                    <DefaultTag>Default shipping address</DefaultTag>
+                  )}
+                </AddressTop>
+                <AddressTxt>{x?.address}</AddressTxt>
+                <AddressNumber>{x?.phoneNumber}</AddressNumber>
+              </AddressBox>
+            ))}
+          </AddressWrapper>
+        ) : (
+          <EmptyAddress>There are no addresses yet</EmptyAddress>
+        )}
         <AddMoreBtn onClick={() => setIsModalOpen(true)}>
           <PlusIcon />
           Add new address
@@ -57,6 +77,10 @@ const TopWrapper = styled.div`
   justify-content: space-between;
   border-bottom: 1px solid #f3f3f3;
   padding: 32px 5vw 32px 45px;
+
+  @media ${devices.mobileL} {
+    padding: 20px;
+  }
 `;
 
 const Title = styled.p`
@@ -72,11 +96,28 @@ const BottomWrapper = styled.div`
   flex-direction: column;
   gap: 22px;
   padding: 32px 5vw 44px 45px;
+
+  @media ${devices.mobileL} {
+    padding: 20px 20px 36px;
+  }
 `;
 
 const AddressWrapper = styled.div`
   display: flex;
   gap: 15px;
+
+  @media ${devices.mobileL} {
+    flex-direction: column;
+  }
+`;
+
+const EmptyAddress = styled.p`
+  color: var(--Black-500, #151515);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 150%;
+  margin-bottom: 10px;
 `;
 
 const AddressBox = styled.div`
@@ -85,6 +126,10 @@ const AddressBox = styled.div`
   padding: 19px 16px;
   border: 0.774px solid #eaeaea;
   background: #fff;
+
+  @media ${devices.mobileL} {
+    width: 100%;
+  }
 `;
 
 const AddressTop = styled.div`

@@ -21,9 +21,9 @@ export const request = async (options) => {
   token !== "" &&
     (client.defaults.headers.common.Authorization = `Bearer ${token}`);
 
-  const onSuccess = (response) => {
-    return response?.data;
-  };
+    const onSuccess = (response) => {
+        return response?.data;
+    };
 
   const onError = (error) => {
     return Promise.reject(error.response?.data);

@@ -1,8 +1,8 @@
 import styled from "styled-components"
 
-export const BlogCard = () => {
+export const BlogCard = ({ width }) => {
     return (
-        <Container>
+        <Container $width={width}>
             <div>
                 <img src="https://images.unsplash.com/photo-1520333789090-1afc82db536a?q=80&w=3271&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" />
             </div>
@@ -13,7 +13,7 @@ export const BlogCard = () => {
 }
 
 const Container = styled.div`
-    width: 17.8rem;
+    width: ${({ $width }) => ($width ? $width : "auto")};
     div{
         background-color: aliceblue;
     }

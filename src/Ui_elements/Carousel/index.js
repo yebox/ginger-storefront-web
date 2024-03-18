@@ -8,7 +8,8 @@ import { SellerCard } from '../../Pages/Shared/Components';
 export const Carousel = forwardRef(({
   data,
   width,
-  renderCard
+  renderCard,
+  sellerCardDetails
 }, ref) => {
   return (
     <Container>
@@ -38,7 +39,7 @@ export const Carousel = forwardRef(({
               }}
               key={index}
             >
-              <SellerCard/>
+              <SellerCard item={sellerCardDetails} />
             </SwiperSlide>
           ))
         )}

@@ -1,4 +1,7 @@
 import { lazy } from "react";
+import { SellerAuthLayout } from "../Layouts";
+import AccountLayout from "../Layouts/AccountLayout";
+import AuthLayout from "../Layouts/AuthLayout";
 
 const Home = lazy(() => import("../Pages/Shared/home"));
 const MarketPlace = lazy(() => import("../Pages/Shared/marketPlace"));
@@ -39,122 +42,255 @@ const WishList = lazy(() => import("../Pages/Shared/wishList"));
 const Checkout = lazy(() => import("../Pages/Shared/checkout/checkout"));
 const Address = lazy(() => import("../Pages/Shared/checkout/address"));
 const Payment = lazy(() => import("../Pages/Shared/checkout/payment"));
-const SellerStore = lazy(() => import("../Pages/Shared/SellerStore"))
+const SellerStore = lazy(() => import("../Pages/Shared/SellerStore"));
 
-
-//seller Auth routes 
+//seller Auth routes
 
 // const SellerLogin = lazy(() => import('../Pages/Shared/SellerPages/SellerLogin'))
-const SellerSignup = lazy(() => import('../Pages/Shared/SellerPages/SellerSignUp'))
-const SellerForgotPassword = lazy(() => import('../Pages/Shared/SellerPages/SellerForgotPassword'))
-const SellerSignUpPersonalInformation = lazy(() => import('../Pages/Shared/SellerPages/SellerPersonalInformation'))
-const SellerSignUpBusinessInformation = lazy(() => import('../Pages/Shared/SellerPages/SellerBusinessInformation'))
-const SellerSignUpBusinessDocument = lazy(() => import('../Pages/Shared/SellerPages/SellerBusinessDocument'))
+const SellerSignup = lazy(() =>
+  import("../Pages/Shared/SellerPages/SellerSignUp")
+);
+const SellerForgotPassword = lazy(() =>
+  import("../Pages/Shared/SellerPages/SellerForgotPassword")
+);
+const SellerSignUpPersonalInformation = lazy(() =>
+  import("../Pages/Shared/SellerPages/SellerPersonalInformation")
+);
+const SellerSignUpBusinessInformation = lazy(() =>
+  import("../Pages/Shared/SellerPages/SellerBusinessInformation")
+);
+const SellerSignUpBusinessDocument = lazy(() =>
+  import("../Pages/Shared/SellerPages/SellerBusinessDocument")
+);
 
-
-
-
-
-
+const ErrorPage = lazy(() => import("../Ui_elements/ErrorPage"));
 
 export const sharedRoutes = [
-  {
-    path: "/",
-    element: Home,
-  },
-  {
-    path: "/marketplace",
-    element: MarketPlace,
-  },
-  {
-    path: "/how-to-buy-wholesale",
-    element: HowToBuyWholesale,
-  },
-  {
-    path: "/sell-on-ginger",
-    element: SellOnGinger,
-  },
 
-  {
-    path: "/categories/all",
-    element: UnsignedCategories,
-  },
-  {
-    path: "/categories/hair",
-    element: Categories,
-  },
-  {
-    path: "/categories/nails",
-    element: Categories,
-  },
-  {
-    path: "/categories/eyelashes",
-    element: Categories,
-  },
-  {
-    path: "/categories/skin",
-    element: Categories,
-  },
-  {
-    path: "/categories/equipment",
-    element: Categories,
-  },
-  {
-    path: "/product/:id",
-    element: ProductPage,
-  },
-  {
-    path: "/report/:id",
-    element: ReportOrder,
-  },
-  {
-    path: "/cart",
-    element: Cart,
-  },
-  {
-    path: "/wish-list",
-    element: WishList,
-  },
-  {
-    path: "/cart/information",
-    element: Checkout,
-  },
-  {
-    path: "/cart/information/address",
-    element: Address,
-  },
-  {
-    path: "/cart/information/payment",
-    element: Payment,
-  },
-  {
-    path: "/shopname",
-    element: SellerStore,
-  },
-];
 
-export const authRoutes = [
+  //auth routes
   {
     path: "/signup",
-    element: SignUp,
+    element: () => (
+      <AuthLayout>
+        <SignUp />
+      </AuthLayout>
+    ),
     hasLayout: true,
   },
   {
     path: "/login",
-    element: Login,
+    element: () => (
+      <AuthLayout>
+        <Login />
+      </AuthLayout>
+    ),
     hasLayout: true,
   },
   {
     path: "/forgot-password",
-    element: ForgotPassword,
+    element: () => (
+      <AuthLayout>
+        <ForgotPassword />
+      </AuthLayout>
+    ),
     hasLayout: true,
   },
-];
 
-export const sellerAuthRoutes = [
+  //main app routes
+  {
+    path: "/",
+    element: Home,
+    hasLayout: false,
+  },
+  {
+    path: "/*",
+    element: ErrorPage,
+    hasLayout: false,
+  },
+
+  {
+    path: "/marketplace",
+    element: MarketPlace,
+    hasLayout: false,
+
+  },
+  {
+    path: "/how-to-buy-wholesale",
+    element: HowToBuyWholesale,
+    hasLayout: false,
+
+  },
+  {
+    path: "/sell-on-ginger",
+    element: SellOnGinger,
+    hasLayout: false,
+
+  },
+
+  {
+    path: "/categories",
+    element: UnsignedCategories,
+    hasLayout: false,
+
+  },
+  {
+    path: "/categories/:id",
+    element: Categories,
+    hasLayout: false,
+
+  },
+  // {
+  //   path: "/categories/nails",
+  //   element: Categories,
+  //   hasLayout: false,
+
+  // },
+  // {
+  //   path: "/categories/eyelashes",
+  //   element: Categories,
+  //   hasLayout: false,
+
+  // },
+  // {
+  //   path: "/categories/skin",
+  //   element: Categories,
+  //   hasLayout: false,
+
+  // },
+  // {
+  //   path: "/categories/equipment",
+  //   element: Categories,
+  //   hasLayout: false,
+
+  // },
+  {
+    path: "/categories/:category",
+    element: Categories,
+    hasLayout: false,
+  },
+  {
+    path: "/categories/:category/:id",
+    element: ProductPage,
+    hasLayout: false,
+  },
+
+  {
+    path: "/report/:id",
+    element: ReportOrder,
+    hasLayout: false,
+
+  },
+  {
+    path: "/cart",
+    element: Cart,
+    hasLayout: false,
+
+  },
+  {
+    path: "/wish-list",
+    element: WishList,
+    hasLayout: false,
+
+  },
+  {
+    path: "/cart/information",
+    element: Checkout,
+    hasLayout: false,
+
+  },
+  // {
+  //   path: "/cart/information/address",
+  //   element: Address,
+  // },
+  {
+    path: "/cart/information/payment",
+    element: Payment,
+    hasLayout: false,
+
+  },
+  {
+    path: "/shop/:id",
+    element: SellerStore,
+    hasLayout: false,
+
+  },
+
+  //account routes
+  {
+    path: "/account",
+    element: () => (
+      <AccountLayout>
+        <AccountPage />
+      </AccountLayout>
+    ),
+    hasLayout: false,
+  },
+  {
+    path: "/account/personal-information",
+    element: () => (
+      <AccountLayout>
+        <PersonalInformation />
+      </AccountLayout>
+    ),
+    hasLayout: false,
+  },
+  {
+    path: "/account/order-history",
+    element: () => (
+      <AccountLayout>
+        <OrderHistory />
+      </AccountLayout>
+    ),
+    hasLayout: false,
+  },
+  {
+    path: "/account/order/:id",
+    element: () => (
+      <AccountLayout>
+        <OrderDetails />
+      </AccountLayout>
+    ),
+    hasLayout: false,
+  },
+  {
+    path: "/account/support",
+    element: () => (
+      <AccountLayout>
+        <Support />
+      </AccountLayout>
+    ),
+    hasLayout: false,
+  },
+  {
+    path: "/account/security",
+    element: () => (
+      <AccountLayout>
+        <Security />
+      </AccountLayout>
+    ),
+    hasLayout: false,
+  },
+  {
+    path: "/account/notification",
+    element: () => (
+      <AccountLayout>
+        <Notification />
+      </AccountLayout>
+    ),
+    hasLayout: false,
+  },
+
+
+  //sellerAuth routes
+
   {
     path: "seller/signup",
-    element: SellerSignup,
+    element: () => (
+      <SellerAuthLayout>
+        <SellerSignup />
+      </SellerAuthLayout>
+    ),
     hasLayout: true,
   },
   // {
@@ -164,59 +300,128 @@ export const sellerAuthRoutes = [
   // },
   {
     path: "seller/forgot-password",
-    element: SellerForgotPassword,
+    element: () => (
+      <SellerAuthLayout>
+        <SellerForgotPassword />
+      </SellerAuthLayout>
+    ),
     hasLayout: true,
   },
   {
     path: "seller/signup/personal_information",
-    element: SellerSignUpPersonalInformation,
+    element: () => (
+      <SellerAuthLayout>
+        <SellerSignUpPersonalInformation />
+      </SellerAuthLayout>
+    ),
     hasLayout: true,
   },
   {
     path: "seller/signup/business_information",
-    element: SellerSignUpBusinessInformation,
+    element: () => (
+      <SellerAuthLayout>
+        <SellerSignUpBusinessInformation />
+      </SellerAuthLayout>
+    ),
     hasLayout: true,
   },
   {
     path: "seller/signup/business_document",
-    element: SellerSignUpBusinessDocument,
+    element: () => (
+      <SellerAuthLayout>
+        <SellerSignUpBusinessDocument />
+      </SellerAuthLayout>
+    ),
     hasLayout: true,
   },
 ];
 
-export const accountRoutes = [
-  {
-    path: "/account",
-    element: AccountPage,
-  },
-  {
-    path: "/account/personal-information",
-    element: PersonalInformation,
-    hasLayout: true,
-  },
-  {
-    path: "/account/order-history",
-    element: OrderHistory,
-    hasLayout: true,
-  },
-  {
-    path: "/account/order/:id",
-    element: OrderDetails,
-    hasLayout: false,
-  },
-  {
-    path: "/account/support",
-    element: Support,
-    hasLayout: true,
-  },
-  {
-    path: "/account/security",
-    element: Security,
-    hasLayout: true,
-  },
-  {
-    path: "/account/notification",
-    element: Notification,
-    hasLayout: true,
-  },
-];
+
+
+// export const authRoutes = [
+//   {
+//     path: "/signup",
+//     element: SignUp,
+//     hasLayout: true,
+//   },
+//   {
+//     path: "/login",
+//     element: Login,
+//     hasLayout: true,
+//   },
+//   {
+//     path: "/forgot-password",
+//     element: ForgotPassword,
+//     hasLayout: false,
+//   },
+// ];
+
+// export const sellerAuthRoutes = [
+//   {
+//     path: "seller/signup",
+//     element: SellerSignup,
+//     hasLayout: true,
+//   },
+//   // {
+//   //   path: "seller/login",
+//   //   element: SellerLogin,
+//   //   hasLayout: true,
+//   // },
+//   {
+//     path: "seller/forgot-password",
+//     element: SellerForgotPassword,
+//     hasLayout: true,
+//   },
+//   {
+//     path: "seller/signup/personal_information",
+//     element: SellerSignUpPersonalInformation,
+//     hasLayout: true,
+//   },
+//   {
+//     path: "seller/signup/business_information",
+//     element: SellerSignUpBusinessInformation,
+//     hasLayout: true,
+//   },
+//   {
+//     path: "seller/signup/business_document",
+//     element: SellerSignUpBusinessDocument,
+//     hasLayout: true,
+//   },
+// ];
+
+// export const accountRoutes = [
+//   {
+//     path: "/account",
+//     element: AccountPage,
+//   },
+//   {
+//     path: "/account/personal-information",
+//     element: PersonalInformation,
+//     hasLayout: true,
+//   },
+//   {
+//     path: "/account/order-history",
+//     element: OrderHistory,
+//     hasLayout: true,
+//   },
+//   {
+//     path: "/account/order/:id",
+//     element: OrderDetails,
+//     hasLayout: false,
+//   },
+//   {
+//     path: "/account/support",
+//     element: Support,
+//     hasLayout: true,
+//   },
+//   {
+//     path: "/account/security",
+//     element: Security,
+//     hasLayout: true,
+//   },
+//   {
+//     path: "/account/notification",
+//     element: Notification,
+//     hasLayout: true,
+//   },
+// ];

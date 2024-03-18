@@ -1,95 +1,306 @@
 import styled from 'styled-components'
-
+import { useState } from 'react'
 import {
     GBreadCrumbs,
     GButton,
     GCheckbox,
     GSelectField,
-    GTextField
+    GTextField,
+    LineLoader,
 } from '../../../Ui_elements'
 import { InstaFooter } from '../Components'
 import { CheckoutItemCard, PriceDetails, Total } from './components'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { CheckoutAddressSchema } from './schema';
+import { Controller } from 'react-hook-form';
+import { countries, formatAmount } from '../../../Utils';
+import { useLocation } from 'react-router-dom';
+import { useApiGet, useApiSend } from '../../../Hooks';
+import { createOrder, getUser, updateUserAddress } from '../../../Urls';
+import { toast } from 'react-hot-toast';
+import { SelectCard } from './components';
+import { RedRightArrow } from '../../../Assets/Svgs'
+import { useQueryClient } from '@tanstack/react-query';
+import { useEffect, useMemo } from 'react';
+
+
 
 const Checkout = () => {
     const navigate = useNavigate()
+    const location = useLocation()
+    const [selectedCard, setSelectedCard] = useState(null);
+    const [selectAddress, setSelectAddress] = useState(null)
+    const [displayForm, setDisplayForm] = useState(false)
+    const params = new URLSearchParams(location.search)
+    const transformDataString = params.get('data');
+    const totalPriceString = params.get('totalPrice')
+    const totalPrice = JSON.parse(decodeURIComponent(totalPriceString))
+    const transformData = JSON.parse(decodeURIComponent(transformDataString));
+    const shipping = 2000
+
+    const queryClient = useQueryClient()
+
+    const {
+        register,
+        handleSubmit,
+        control,
+        watch,
+        formState: { errors }
+    } = useForm({
+        resolver: yupResolver(CheckoutAddressSchema)
+    })
+
+    const { mutate, isPending } = useApiSend(
+        createOrder,
+        () => {
+            toast.error('Order created successfully')
+        },
+        () => {
+            toast.error(`Something went wrong`)
+        }
+    )
+
+    const { mutate: updateAddress, isPending: isUpdatingAddress } = useApiSend(
+        updateUserAddress,
+        () => {
+            toast.error('Address book updated')
+            queryClient.invalidateQueries(['get-user-data'])
+        },
+        () => {
+            toast.error(`Something went wrong`)
+        }
+    )
+
+    const { data: userAddress, isLoading: isLoadingUser } = useApiGet(
+        ['get-user-data'],
+        () => getUser(),
+        {
+            enabled: true
+        }
+    )
+
+    console.log(userAddress, "user data")
+
+    const addresses = useMemo(() => {
+        const formatAddress = [userAddress?.address]
+        return formatAddress
+    }, [userAddress])
+
+
+    const {
+        address,
+        apartment,
+        city,
+        state,
+        country,
+        zipCode,
+        phoneNumber
+    } = watch()
+
+    const handleCardClick = (item) => {
+        setSelectAddress(item);
+    };
+
+    const onSubmit = (data) => {
+        const body = {
+            line1: data?.address,
+            line2: data?.apartment,
+            city: data?.city,
+            state: data?.state,
+            country: data?.country.value,
+            postalCode: data?.zipCode
+        }
+        updateAddress(body)
+    }
+
+
     return (
         <Container>
-
             <BreadContainer>
                 <GBreadCrumbs />
             </BreadContainer>
             <Body>
                 <CheckoutContainer>
                     <h5>Checkout</h5>
-                    <InformationSection>
+                    <InformationSection onSubmit={handleSubmit(onSubmit)}>
                         <h6>Delivery Information</h6>
-                        <GTextField
-                            placeholder={"Address"}
-                        />
-                        <GTextField
-                            placeholder={"Apartment/Suite (optional)"}
-                        />
-
-                        <FormFlex>
-                            <GTextField
-                                placeholder={"City"}
+                        {addresses?.map((item, index) => (
+                            <SelectCard
+                                key={index}
+                                id={index}
+                                selected={selectAddress === item}
+                                onChange={() => handleCardClick(item)}
+                                onClick={() => handleCardClick(item)}
+                                item={{
+                                    item,
+                                    userName: `${userAddress?.firstName} ${userAddress?.lastName}`,
+                                }}
                             />
-                            <GTextField
-                                placeholder={"State"}
+                        ))}
+                        <Add onClick={() => setDisplayForm(!displayForm)}>
+                            <p>Add a different address</p>
+                            <RedRightArrow />
+                        </Add>
+
+                        {
+                            displayForm &&
+
+                            <>
+                                <GTextField
+                                    id="address"
+                                    placeholder="Address"
+                                    name="address"
+                                    register={register}
+                                    error={errors.address}
+                                    errorText={errors.address && errors.address.message}
+                                    required
+                                />
+                                <GTextField
+                                    id="apartment"
+                                    placeholder="Apartment/Suite (optional)"
+                                    name="apartment"
+                                    register={register}
+                                    error={errors.apartment}
+                                    errorText={errors.apartment && errors.apartment.message}
+                                    required
+                                />
+
+                                <FormFlex>
+                                    <GTextField
+                                        id="city"
+                                        placeholder="City"
+                                        name="city"
+                                        register={register}
+                                        error={errors.city}
+                                        errorText={errors.city && errors.city.message}
+                                        required
+                                    />
+                                    <GTextField
+                                        id="state"
+                                        placeholder="State"
+                                        name="state"
+                                        register={register}
+                                        error={errors.state}
+                                        errorText={errors.state && errors.state.message}
+                                        required
+                                    />
+                                </FormFlex>
+
+                                <Controller
+                                    name="country"
+                                    control={control}
+                                    rules={{ required: true }}
+                                    render={({ field }) => (
+                                        <GSelectField
+                                            {...field}
+                                            placeholder="Select a country"
+                                            options={countries}
+                                            id="country"
+                                            searchable={true}
+                                            isError={!!errors.country}
+                                            errorText={errors.country && errors.country.message}
+                                        />
+                                    )}
+                                />
+
+                                <GTextField
+                                    id="zipCode"
+                                    placeholder="Zip code"
+                                    name="zipCode"
+                                    register={register}
+                                    error={errors.zipCode}
+                                    errorText={errors.zipCode && errors.zipCode.message}
+                                    required
+                                />
+
+                                {/* <GTextField
+                                    id="phoneNumber"
+                                    placeholder="Phone"
+                                    name="phoneNumber"
+                                    register={register}
+                                    error={errors.phoneNumber}
+                                    errorText={errors.phoneNumber && errors.phoneNumber.message}
+                                    required
+                                /> */}
+
+                                <CheckContainer>
+                                    <GCheckbox />
+                                    <p>Save this information for next time</p>
+                                </CheckContainer>
+
+                                <GButton
+                                    label={"Continue"}
+                                    width={"50%"}
+                                    type={'submit'}
+                                    isLoading={isPending}
+                                    isDisabled={
+                                        !address ||
+                                        !apartment ||
+                                        !city ||
+                                        !state ||
+                                        !country ||
+                                        !zipCode ||
+                                        !phoneNumber
+                                    }
+                                />
+                            </>
+                        }
+
+                        {
+                            !displayForm &&
+                            <GButton
+                                label={"Continue"}
+                                width={"50%"}
+                                type={'submit'}
+                                onClick={() => navigate(`/cart/information/payment?data=${encodeURIComponent(JSON.stringify(transformData))}&totalPrice=${totalPrice.toString()}&address=${encodeURIComponent(JSON.stringify(selectAddress))}&mobileNumber=${encodeURIComponent(JSON.stringify(userAddress?.phoneNumber))}`)}
+                                isDisabled={!selectAddress}
                             />
-                        </FormFlex>
+                        }
 
-                        <GSelectField
-                            searchable={true}
-                            placeholder={"Country"}
-                        />
 
-                        <GTextField
-                            placeholder={"Zip code"}
-                        />
-
-                        <GTextField
-                            placeholder={"Phone"}
-                        />
-
-                        <CheckContainer>
-                            <GCheckbox />
-                            <p>Save this information for next time</p>
-                        </CheckContainer>
 
                     </InformationSection>
 
-                    
-                    <GButton
-                        label={"Continue"}
-                        width={"50%"}
-                        onClick={()=>navigate('/cart/information/address')}
-                    />
+
+
                 </CheckoutContainer>
                 <ItemDetailsContainer>
                     <CardsContainer>
-                        <CheckoutItemCard />
-                        <CheckoutItemCard />
+                        {
+                            transformData?.map((item, index) =>
+                                <CheckoutItemCard
+                                    item={item}
+                                    key={index}
+                                />
+                            )
+                        }
                     </CardsContainer>
 
                     <PriceDetailsContainer>
                         <PriceDetails
                             title={"Subtotal"}
-                            price={"₦19 000"}
+                            price={formatAmount(totalPrice)}
                         />
                         <PriceDetails
                             title={"Shipping"}
-                            price={"₦21 000"}
+                            price={formatAmount(shipping)}
                         />
 
                         <TotalContainer>
-                            <Total/>
+                            <Total price={formatAmount(totalPrice + shipping)} />
                         </TotalContainer>
                     </PriceDetailsContainer>
                 </ItemDetailsContainer>
             </Body>
-            <InstaFooter/>
+            <LineLoader
+                loading={
+                    isUpdatingAddress ||
+                    isLoadingUser
+                }
+            />
+            <InstaFooter />
         </Container>
     )
 }
@@ -165,4 +376,21 @@ const PriceDetailsContainer = styled.div`
 
 const TotalContainer = styled.div`
 
+`
+
+const Add = styled.div`
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    cursor: pointer;
+    p{
+        font-size: 1rem;
+        color: var(--primary-color);
+        font-size: 500;
+        transition: all 0.3s ease;
+
+        &:hover{
+            font-weight: 500;
+        }
+    }
 `

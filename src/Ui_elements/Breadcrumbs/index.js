@@ -3,9 +3,11 @@ import { Breadcrumbs as MUIBreadcrumbs } from "@mui/material";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { devices, formatUrlName } from "../../Utils";
+import { useSelector } from "react-redux";
 
 export const GBreadCrumbs = () => {
   const { pathname } = useLocation();
+  const global = useSelector((state) => state.global);
   const navigate = useNavigate();
   const pathnames = pathname.split("/").filter((x) => x);
   return (
@@ -16,7 +18,9 @@ export const GBreadCrumbs = () => {
           const navigateTo = `/${pathnames.slice(0, index + 1).join("/")}`;
           const isLast = index === pathnames.length - 1;
           return isLast ? (
-            <Text key={name}>{formatUrlName(name)}</Text>
+            <Text key={name}>
+              {global?.selectedProductName || formatUrlName(name)}
+            </Text>
           ) : (
             <TextLink key={name} onClick={() => navigate(navigateTo)}>
               {formatUrlName(name)}
@@ -36,7 +40,7 @@ const Container = styled.div`
 
 const TextLink = styled.p`
   color: #000;
-  font-size: 14px;
+  font-size: 15px;
   font-style: normal;
   font-weight: 400;
   line-height: 140%; /* 16.8px */
@@ -53,7 +57,7 @@ const TextLink = styled.p`
 
 const Text = styled.p`
   color: var(--Color---5, #8c8c8c);
-  font-size: 12px;
+  font-size: 14px;
   font-style: normal;
   font-weight: 400;
   line-height: 140%; /* 16.8px */

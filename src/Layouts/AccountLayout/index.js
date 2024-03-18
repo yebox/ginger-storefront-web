@@ -8,62 +8,70 @@ import {
   WalletIcon,
 } from "../../Assets/Svgs";
 import { GSpacer } from "../../Ui_elements";
-import { useDispatch } from "react-redux";
-import { logout } from "../../Redux";
+import { useDispatch, useSelector } from "react-redux";
+import { devices } from "../../Utils";
+import { useDeviceCheck } from "../../Hooks";
+import { logout } from "../../Redux/Reducers";
 
 const AccountLayout = ({ children }) => {
+  const user = useSelector((state) => state?.user);
   const { pathname } = useLocation();
   const dispatch = useDispatch();
+  const { isMobile } = useDeviceCheck();
 
   const handleLogout = () => {
     dispatch(logout());
   };
 
-  console.log({ pathname });
   return (
-    <Container>
-      <Header>
-        <LeftIcon />
-        <HeaderLeftTxtWrapper>
-          <AccountTxt>My Account</AccountTxt>
-          <WelcomeTxt>Hi, Maxwell Philip</WelcomeTxt>
-        </HeaderLeftTxtWrapper>
-        <WalletBox>
-          <WalletTopWrapper>
-            <WalletBalanceWrapper>
-              <WalletIcon />
-              <WalletTxt>Wallet balance</WalletTxt>
-            </WalletBalanceWrapper>
-            <CurrencyDropdown />
-          </WalletTopWrapper>
-          <Balance>₦0.00</Balance>
-        </WalletBox>
-        <RightIcon />
-      </Header>
-      <ContentWrapper>
-        <LeftSectionWrapper>
-          <AccountTitle>Account information</AccountTitle>
-          <SideNavWrapper>
-            {accountNavInfo.map(({ label, link, id }) => (
-              <SideNav $active={link === pathname} key={id} to={link}>
-                {label}
+    <>
+      <Container>
+        <Header>
+          <LeftIcon />
+          <HeaderLeftTxtWrapper>
+            <AccountTxt>My Account</AccountTxt>
+            <WelcomeTxt>{`Hi, ${user?.firstName} ${user?.lastName}`}</WelcomeTxt>
+          </HeaderLeftTxtWrapper>
+          <WalletBox>
+            <WalletTopWrapper>
+              <WalletBalanceWrapper>
+                <WalletIcon />
+                <WalletTxt>Wallet balance</WalletTxt>
+              </WalletBalanceWrapper>
+              <CurrencyDropdown />
+            </WalletTopWrapper>
+            <Balance>₦0.00</Balance>
+          </WalletBox>
+          <RightIcon />
+        </Header>
+        <ContentWrapper>
+          <LeftSectionWrapper>
+            <AccountTitle>Account information</AccountTitle>
+            <SideNavWrapper>
+              {accountNavInfo.map(({ label, link, id }) => (
+                <SideNav $active={link === pathname} key={id} to={link}>
+                  {label}
+                </SideNav>
+              ))}
+            </SideNavWrapper>
+            {!isMobile && <GSpacer size={120} />}
+            {!isMobile && (
+              <SideNav onClick={handleLogout} to={"/"}>
+                Log out
               </SideNav>
-            ))}
-          </SideNavWrapper>
-          <GSpacer size={120} />
-          <SideNav onClick={handleLogout} to={"/"}>
-            Logs out
-          </SideNav>
-        </LeftSectionWrapper>
-        <RightSectionWrapper>{children}</RightSectionWrapper>
-      </ContentWrapper>
-    </Container>
+            )}
+          </LeftSectionWrapper>
+          <RightSectionWrapper>{children}</RightSectionWrapper>
+        </ContentWrapper>
+      </Container>
+    </>
   );
 };
 
 export default AccountLayout;
 
 const Container = styled.div``;
+
 const Header = styled.div`
   position: relative;
   display: flex;
@@ -75,24 +83,43 @@ const Header = styled.div`
   background: #fffbf6;
   overflow: hidden;
   padding: 42px 5%;
+
+  @media ${devices.mobileL} {
+    flex-direction: column;
+    align-items: unset;
+    padding: 40px 20px;
+    height: auto;
+  }
 `;
 
 const LeftIcon = styled(AccountLeftStar)`
   position: absolute;
   left: 0;
   top: 22px;
+
+  @media ${devices.mobileL} {
+    left: -100px;
+  }
 `;
 
 const RightIcon = styled(AccountRightStar)`
   position: absolute;
   right: 0;
   bottom: 12px;
+
+  @media ${devices.mobileL} {
+    display: none;
+  }
 `;
 
 const HeaderLeftTxtWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 25px;
+
+  @media ${devices.mobileL} {
+    gap: 12px;
+  }
 `;
 
 const AccountTxt = styled.p`
@@ -101,6 +128,10 @@ const AccountTxt = styled.p`
   font-style: normal;
   font-weight: 500;
   line-height: 120%; /* 16.8px */
+
+  @media ${devices.mobileL} {
+    font-size: 12px;
+  }
 `;
 
 const WelcomeTxt = styled.p`
@@ -110,6 +141,10 @@ const WelcomeTxt = styled.p`
   font-style: normal;
   font-weight: 500;
   line-height: 110%; /* 44px */
+
+  @media ${devices.mobileL} {
+    font-size: 34px;
+  }
 `;
 
 const WalletBox = styled.div`
@@ -120,6 +155,11 @@ const WalletBox = styled.div`
   background: #fff;
   padding: 15px 20px;
   z-index: 1;
+
+  @media ${devices.mobileL} {
+    margin-top: 30px;
+    width: 100%;
+  }
 `;
 
 const WalletTopWrapper = styled.div`
@@ -158,6 +198,10 @@ const Balance = styled.p`
 
 const ContentWrapper = styled.div`
   display: flex;
+
+  @media ${devices.mobileL} {
+    flex-direction: column;
+  }
 `;
 
 const LeftSectionWrapper = styled.div`
@@ -167,6 +211,12 @@ const LeftSectionWrapper = styled.div`
   padding: 48px 147px 48px 5%;
   border: 0.774px solid #eaeaea;
   background: #fff;
+
+  @media ${devices.mobileL} {
+    padding: 20px;
+    margin-bottom: 20px;
+    border: unset;
+  }
 `;
 
 const AccountTitle = styled.p`
@@ -182,6 +232,14 @@ const SideNavWrapper = styled.div`
   flex-direction: column;
   gap: 40px;
   margin-top: 83px;
+
+  @media ${devices.mobileL} {
+    flex-direction: row;
+    gap: 20px;
+    overflow-x: scroll;
+    margin-top: 30px;
+    padding-bottom: 7px;
+  }
 `;
 
 const SideNav = styled(Link)`
@@ -197,6 +255,12 @@ const SideNav = styled(Link)`
 
   &:hover {
     color: unset;
+  }
+
+  @media ${devices.mobileL} {
+    font-size: ${({ $active }) => ($active ? `16px` : `15px`)};
+    width: unset;
+    flex-shrink: 0;
   }
 `;
 

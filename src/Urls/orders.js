@@ -1,8 +1,15 @@
 import { request } from "../Utils";
 
-const BASE_URL = "orders";
+
 export const getOrders = () =>
   request({
-    url: `${BASE_URL}`,
+    url: `orders`,
     method: "GET",
+  });
+
+export const createOrder = (data) =>
+  request({
+    url: `orders`,
+    method: "POST",
+    data
   });

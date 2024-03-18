@@ -3,9 +3,10 @@ import { styled } from "styled-components";
 import { EditIcon } from "../../../../../../Assets/Svgs";
 import PersonalModal from "./modals/personal";
 import { useSelector } from "react-redux";
+import { devices } from "../../../../../../Utils";
 
 const Personal = () => {
-  const user = useSelector((state) => state.user?.user);
+  const user = useSelector((state) => state?.user);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
@@ -17,19 +18,19 @@ const Personal = () => {
       <BottomWrapepr>
         <Entry>
           <Label>Full name</Label>
-          <Value>Maxwell Philip</Value>
+          <Value>{`${user?.firstName} ${user?.lastName}`}</Value>
         </Entry>
         <Entry>
           <Label>Phone number</Label>
-          <Value>07096885784</Value>
+          <Value>{user?.phoneNumber}</Value>
         </Entry>
         <Entry>
           <Label>Email address</Label>
-          <Value>maxphil009@gmail.com</Value>
+          <Value>{user?.email}</Value>
         </Entry>
         <Entry>
           <Label>Country</Label>
-          <Value>Nigeria</Value>
+          <Value>{user?.country}</Value>
         </Entry>
       </BottomWrapepr>
       <PersonalModal
@@ -55,6 +56,15 @@ const TopWrapper = styled.div`
   justify-content: space-between;
   border-bottom: 1px solid #f3f3f3;
   padding: 32px 5vw 32px 45px;
+
+  @media ${devices.mobileL} {
+    padding: 20px;
+
+    & > svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
 `;
 
 const BottomWrapepr = styled.div`
@@ -62,6 +72,10 @@ const BottomWrapepr = styled.div`
   flex-direction: column;
   gap: 40px;
   padding: 40px 5vw 48px 45px;
+
+  @media ${devices.mobileL} {
+    padding: 20px 20px 30px;
+  }
 `;
 
 const Title = styled.p`
@@ -76,6 +90,10 @@ const Entry = styled.div`
   display: flex;
   align-items: center;
   gap: 90px;
+
+  @media ${devices.mobileL} {
+    gap: 45px;
+  }
 `;
 
 const Label = styled.p`
@@ -85,6 +103,11 @@ const Label = styled.p`
   font-style: normal;
   font-weight: 400;
   line-height: 120%; /* 19.2px */
+
+  @media ${devices.mobileL} {
+    font-size: 12px;
+    width: 80px;
+  }
 `;
 
 const Value = styled.p`
@@ -93,4 +116,8 @@ const Value = styled.p`
   font-style: normal;
   font-weight: 500;
   line-height: 120%; /* 26.4px */
+
+  @media ${devices.mobileL} {
+    font-size: 15px;
+  }
 `;

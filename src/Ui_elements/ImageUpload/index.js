@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { styled } from "styled-components";
 import { Cancel, UploadIcon } from "../../Assets/Svgs";
 import { GButton } from "../Button/button";
+import { devices } from "../../Utils";
 
 export const GImageUpload = ({
   register,
@@ -17,7 +18,6 @@ export const GImageUpload = ({
     required: "Please upload a file",
     validate: () => validateFiles(files),
   });
-  console.log("err", errors);
 
   const handleDrop = useCallback(
     (e) => {
@@ -30,11 +30,12 @@ export const GImageUpload = ({
   );
 
   const handleFileSelect = (e) => {
+    console.log("res");
     const newFiles = [...e.target.files];
     setFiles((prevFiles) => [...prevFiles, ...newFiles]); // Update files state with selected files
     setTouched(true);
   };
-
+  console.log({ files });
   const removeFile = (index) => {
     setFiles((prevFiles) => prevFiles.filter((file, i) => i !== index));
   };
@@ -217,15 +218,26 @@ const ImagesWrapper = styled.div`
   align-items: center;
   gap: 16px;
   flex-wrap: wrap;
+
+  @media ${devices.mobileL} {
+    gap: 10px;
+  }
 `;
 
 const PreviewImage = styled.div`
   position: relative;
+  width: 128px;
+  height: 128px;
+
+  @media ${devices.mobileL} {
+    width: 30%;
+    height: 100px;
+  }
 `;
 
 const Image = styled.img`
-  width: 128px;
-  height: 128px;
+  width: 100%;
+  height: 100%;
   flex-shrink: 0;
   border-radius: 2px;
   border: 1.753px solid var(--Black-300, #626262);
@@ -259,10 +271,18 @@ const CancelWrapper = styled.div`
   justify-content: center;
   width: 20px;
   height: 20px;
+  box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.6);
   cursor: pointer;
 
   & > svg {
     width: 15px;
     height: 15px;
+    top: 5px;
+    right: 5px;
+  }
+
+  @media ${devices.mobileL} {
+    top: 5px;
+    right: 5px;
   }
 `;

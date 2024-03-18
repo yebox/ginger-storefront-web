@@ -1,13 +1,12 @@
 import styled from "styled-components";
 import { GButton } from "../../../Ui_elements";
-export const SellerCard = ({width, marginRight}) => {
+export const SellerCard = ({width, marginRight, item}) => {
   return (
     <Container
       width={width}
       marginRight={marginRight}
     >
       <div>
-        <img src="https://images.unsplash.com/photo-1560879311-370fd4561a0d?q=80&w=3343&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" />
         <img src="https://images.unsplash.com/photo-1560879311-370fd4561a0d?q=80&w=3343&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" />
         <h6>Met Beauty Store</h6>
       </div>

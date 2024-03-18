@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 import { AmericanExpress, LogoPayment, Mastercard, Paypal, Sofort, Visa } from '../../../Assets/Svgs'
 import {
@@ -8,23 +8,121 @@ import {
     GModal,
     GRadioSelect,
     GTextField,
+    LineLoader,
 } from '../../../Ui_elements'
 import { InstaFooter } from '../Components'
 import { useState } from 'react'
 import { CheckoutItemCard, PriceDetails, SelectCard, Total, Modal } from './components'
+import { formatAmount, formatCardNumber } from '../../../Utils'
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { CardDetailsSchema } from './schema'
+import { useApiSend } from '../../../Hooks'
+import { createOrder, makePayment } from '../../../Urls'
+import { useSelector } from 'react-redux'
+import { toast } from 'react-hot-toast'
 
 const Payment = () => {
-    const [ showModal, setShowModal] = useState(true)
+    const [showModal, setShowModal] = useState(true)
+    const location = useLocation()
+    const [paymentMethod, setPaymentMethod] = useState("");
+    const [modalType, setModalType] = useState('processing')
+    const [showForm, setShowForm] = useState(false);
+    const user = useSelector(state => state.user)
+    const params = new URLSearchParams(location.search)
+    const transformDataString = params.get('data');
+    const totalPriceString = params.get('totalPrice')
+    const addressString = params.get('address')
+    const phoneNumberString = params.get('mobileNumber')
+    const totalPrice = JSON.parse(decodeURIComponent(totalPriceString))
+    const transformData = JSON.parse(decodeURIComponent(transformDataString));
+    const address = JSON.parse(decodeURIComponent(addressString))
+    const phoneNumber = JSON.parse(decodeURIComponent(phoneNumberString))
+    const shipping = 2000
+
+    console.log(location.pathname, "hit")
+
+    const {
+        register,
+        handleSubmit,
+        watch,
+        formState: { errors, isDirty, isValid }
+    } = useForm({
+        resolver: yupResolver(CardDetailsSchema)
+    })
+
+    const handlePaymentMethodChange = (event) => {
+        setPaymentMethod(event.target.value);
+        setShowForm(event.target.value === 'creditCard');
+    };
+
+    const { mutate: makePaymentRequest, isPending: isMakingPayment } = useApiSend(
+        makePayment,
+        (data) => {
+            toast.success('Order created!')
+            setModalType('confirmed')
+            window.location.href = data
+        },
+        (data) => {
+            console.log(data, "payment")
+            toast.error('Payment failed. Please refresh and try again')
+            setModalType('failed')
+        }
+    )
+
+
+    const { mutate, isPending } = useApiSend(
+        createOrder,
+        (data) => {
+            setShowModal(true)
+            console.log(data, "order data")
+            const body = {
+                orderId: data?.id,
+                userId: user._id,
+                userEmail: user.email,
+                callbackUrl: window.location.ref
+            }
+            makePaymentRequest(body)
+            if (data.statusCode === 400) 
+                toast.error(data.message)
+        },
+        (e) => {
+            toast.error(`${e.message}`)
+        }
+    )
+
+    const onSubmit = () => {
+        console.log('submitted')
+        const items = transformData.map((item) =>
+        ({
+            productId: item?._id,
+            quantity: item?.quantity
+        })
+        )
+        const body = {
+            items,
+            price: totalPrice,
+            deliveryAddress: { ...address },
+            deliveryDate: "2024-03-16T08:35:16.226Z",
+            dateDelivered: "2024-03-16T08:35:16.226Z"
+        }
+
+        mutate(body)
+    }
 
     return (
         <Container>
 
-            <GModal
-                open={showModal}
-                handleClose={() => setShowModal(false)}
-            >
-                <Modal/>
-            </GModal>
+            {
+                isMakingPayment &&
+                <GModal
+                    open={showModal}
+                    handleClose={() => setShowModal(false)}
+                >
+                    <Modal type={modalType} />
+                </GModal>
+
+            }
 
             <BreadContainer>
                 <GBreadCrumbs />
@@ -33,11 +131,16 @@ const Payment = () => {
                 <CheckoutContainer>
                     <h5>Checkout</h5>
                     <InformationSection>
+
                         <h6>Payment</h6>
 
                         <SelectItems>
                             <div>
-                                <GRadioSelect />
+                                <GRadioSelect
+                                    value="creditCard"
+                                    selected={paymentMethod === "creditCard"}
+                                    onChange={handlePaymentMethodChange}
+                                />
                                 <p>Credit card</p>
                             </div>
 
@@ -46,40 +149,70 @@ const Payment = () => {
                                 <Mastercard />
                                 <AmericanExpress />
                             </div>
-
                         </SelectItems>
 
-                        <SelectCard
 
-                        />
 
-                        <Form>
-                            <GTextField
-                                placeholder={"Card number"}
-                            />
-                            <GTextField
-                                placeholder={"Name on card"}
-                            />
-
-                            <FormFlex>
+                        {
+                            showForm &&
+                            <Form>
                                 <GTextField
-                                    placeholder={"Expiration date (MM/YY)"}
+                                    placeholder={"Card number"}
+                                    id="cardNumber"
+                                    name="cardNumber"
+                                    register={register}
+                                    error={errors.cardNumber}
+                                    errorText={errors.cardNumber && errors.cardNumber.message}
+                                    required
                                 />
                                 <GTextField
-                                    placeholder={"Security code"}
-                                />
-                            </FormFlex>
-                        </Form>
+                                    placeholder={"Name on card"}
+                                    id="name"
+                                    name="name"
+                                    register={register}
+                                    error={errors.name}
+                                    errorText={errors.name && errors.name.message}
+                                    required
 
-                        <Add>
+                                />
+
+                                <FormFlex>
+                                    <GTextField
+                                        placeholder={"Expiration date (MM/YY)"}
+                                        id="expireryDate"
+                                        name="expireryDate"
+                                        register={register}
+                                        error={errors.expireryDate}
+                                        errorText={errors.expireryDate && errors.expireryDate.message}
+                                        required
+                                    />
+                                    <GTextField
+                                        placeholder={"Security code"}
+                                        id="securityCode"
+                                        name="securityCode"
+                                        register={register}
+                                        error={errors.securityCode}
+                                        errorText={errors.securityCode && errors.securityCode.message}
+                                        required
+                                    />
+                                </FormFlex>
+                            </Form>
+                        }
+
+
+                        {/* <Add>
                             <p>+</p>
                             <p>Add a different address</p>
-                        </Add>
+                        </Add> */}
 
                         <SelectItems>
                             <div>
-                                <GRadioSelect />
-                                <p>Your Wallet</p>
+                                <GRadioSelect
+                                    value="yourWallet"
+                                    selected={paymentMethod === "yourWallet"}
+                                    onChange={handlePaymentMethodChange}
+                                />
+                                <p>Your Wallet </p>
                             </div>
 
                             <div>
@@ -90,42 +223,50 @@ const Payment = () => {
 
                         <SelectItems>
                             <div>
-                                <GRadioSelect />
+                                <GRadioSelect
+                                    value="paypal"
+                                    selected={paymentMethod === "paypal"}
+                                    onChange={handlePaymentMethodChange}
+                                />
                                 <Paypal />
                             </div>
                         </SelectItems>
 
                         <SelectItems>
                             <div>
-                                <GRadioSelect />
+                                <GRadioSelect
+                                    value="sofort"
+                                    selected={paymentMethod === "sofort"}
+                                    onChange={handlePaymentMethodChange}
+                                />
                                 <Sofort />
                             </div>
                         </SelectItems>
-
-
 
                     </InformationSection>
 
                     <DetailsContainer>
                         <Flex>
                             <h6>Recipient Details</h6>
-                            <p>Update Details</p>
+                            <Update to={'/account/personal-information'}>Update Details</Update>
                         </Flex>
 
                         <DetailItem>
                             <p>Contact</p>
-                            <p>07086577431</p>
+                            <p>{phoneNumber}</p>
                         </DetailItem>
 
                         <DetailItem>
                             <p>Address</p>
-                            <p>20a wallstreet junction, ibadan, Nigeria</p>
+                            <p>{`${address?.line1}, ${address?.line2}`}</p>
+                            <p>{`${address?.state}, ${address?.postalCode}`}</p>
+                            <p>{`${address?.country}`}</p>
                         </DetailItem>
 
-                        <DetailItem>
+                        {/* <DetailItem>
                             <p>Shipping method</p>
                             <p>DHL Logistics</p>
-                        </DetailItem>
+                        </DetailItem> */}
                     </DetailsContainer>
 
 
@@ -140,12 +281,15 @@ const Payment = () => {
                             you agree to purchase your item(s) from
                             Global-e as merchant of record for this
                             transaction, on Global-e&apos;s <span><Link>Terms and Conditions</Link></span>
-                            and <span><Link>Terms and Conditions</Link></span>. Global-e is an international
+                            and <span><Link>Privacy policy</Link></span>. Global-e is an international
                             fulfilment service provider to John Hardy
                         </p>
                     </Terms>
                     <GButton
-                        label={"Continue"}
+                        onClick={onSubmit}
+                        isDisabled={!paymentMethod || (paymentMethod === 'creditCard' && (!isValid || !isDirty))}
+                        label={"Pay"}
+                        isLoading={isPending}
                         width={"50%"}
                     />
 
@@ -153,26 +297,33 @@ const Payment = () => {
                 </CheckoutContainer>
                 <ItemDetailsContainer>
                     <CardsContainer>
-                        <CheckoutItemCard />
-                        <CheckoutItemCard />
+                        {
+                            transformData?.map((item, index) =>
+                                <CheckoutItemCard
+                                    item={item}
+                                    key={index}
+                                />
+                            )
+                        }
                     </CardsContainer>
 
                     <PriceDetailsContainer>
                         <PriceDetails
                             title={"Subtotal"}
-                            price={"₦19 000"}
+                            price={formatAmount(totalPrice)}
                         />
                         <PriceDetails
                             title={"Shipping"}
-                            price={"₦21 000"}
+                            price={formatAmount(shipping)}
                         />
 
                         <TotalContainer>
-                            <Total />
+                            <Total price={formatAmount(totalPrice + shipping)} />
                         </TotalContainer>
                     </PriceDetailsContainer>
                 </ItemDetailsContainer>
             </Body>
+            {/* <LineLoader loading={isPending} /> */}
             <InstaFooter />
         </Container>
     )
@@ -193,8 +344,8 @@ const Body = styled.section`
     gap: 40px;
     /* height: 100vh; */
     position: relative;
-    height: 100vh;
-    overflow-y: auto; 
+    /* height: 100vh;
+    overflow-y: auto;  */
     margin-bottom: 10vh;
 `
 
@@ -229,6 +380,14 @@ const ItemDetailsContainer = styled.aside`
     top: 0;
 `
 
+const Update = styled(Link)`
+    color: var(--primary-color);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    &:hover{
+        font-weight: 600;
+    }
+`
 
 const CardsContainer = styled.div`
     flex-direction: column;

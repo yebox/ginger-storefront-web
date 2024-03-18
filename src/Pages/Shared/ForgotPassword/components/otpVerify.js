@@ -2,6 +2,7 @@ import React from "react";
 import { styled } from "styled-components";
 import VerificationInput from "react-verification-input";
 import Countdown from "./countDown";
+import { devices } from "../../../../Utils";
 
 const OtpVerify = ({
   setOtpValue,
@@ -26,6 +27,7 @@ const OtpVerify = ({
         placeholder={"0"}
         onChange={(value) => handleComplete(value)}
         autoFocus={true}
+        inputProps={{ disabled: !isTimeUp }}
       />
       {isTimeUp ? (
         <ResendTxt>
@@ -48,6 +50,12 @@ const Container = styled.div`
   flex-direction: column;
   gap: 24px;
 
+  .vi {
+    &:disabled {
+      cursor: not-allowed;
+    }
+  }
+
   .vi__container {
     gap: 30px !important;
     width: unset;
@@ -64,7 +72,7 @@ const Container = styled.div`
     font-family: "Barlow";
     font-size: 20px;
     font-style: normal;
-    font-weight: 400;
+    font-weight: 500;
     line-height: 140%; /* 28px */
     background: transparent;
     border-bottom: 1px solid #e8e8e8;
@@ -72,13 +80,29 @@ const Container = styled.div`
     transition: all 0.25s ease;
   }
 
-  .vi__character--selected {
+  .vi__character--selected,
+  .vi__character--filled {
     border-bottom: 1px solid #151515;
   }
 
   .vi__character--inactive,
   .vi__character--selected:not(.vi__character--filled) {
     opacity: 0.5;
+  }
+
+  @media ${devices.mobileL} {
+    gap: 10px;
+
+    .vi__container {
+      height: 30px;
+    }
+
+    .vi__character,
+    .vi__character--selected,
+    .vi__character--filled,
+    .vi__character--inactive {
+      font-size: 16px;
+    }
   }
 `;
 
@@ -88,7 +112,12 @@ const Title = styled.p`
   font-style: normal;
   font-weight: 500;
   line-height: 120%;
+
+  @media ${devices.mobileL} {
+    font-size: 22px;
+  }
 `;
+
 const Subtitle = styled.p`
   color: var(--Black-300, #626262);
   font-size: 16px;
@@ -96,6 +125,11 @@ const Subtitle = styled.p`
   font-weight: 400;
   line-height: 120%; /* 19.2px */
   margin: 14px 0 65px;
+
+  @media ${devices.mobileL} {
+    font-size: 14px;
+    margin: 10px 0 45px;
+  }
 `;
 
 const ResendTxt = styled.p`
@@ -113,6 +147,14 @@ const ResendTxt = styled.p`
     line-height: 130%;
     cursor: pointer;
   }
+
+  @media ${devices.mobileL} {
+    font-size: 14px;
+
+    & > span {
+      font-size: 14px;
+    }
+  }
 `;
 
 const SendOtpWrapper = styled.div`
@@ -127,4 +169,8 @@ const SentOtpTxt = styled.p`
   font-style: normal;
   font-weight: 400;
   line-height: 120%; /* 19.2px */
+
+  @media ${devices.mobileL} {
+    font-size: 14px;
+  }
 `;

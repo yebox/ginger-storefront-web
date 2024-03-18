@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { AppleIcon, GoogleIcon } from "../../../Assets/Svgs";
 import {
@@ -13,15 +13,20 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { SignUpSchema } from "./validation";
 import { Link, useNavigate } from "react-router-dom";
 import { countryData } from "./data";
+import { countries } from "../../../Utils";
 import { useApiSend } from "../../../Hooks/api";
 import { registerUser } from "../../../Urls";
 import { useDispatch } from "react-redux";
-import { setUser } from "../../../Redux";
+import { setUser } from "../../../Redux/Reducers";
 import { toast } from "react-hot-toast";
+import { devices } from "../../../Utils";
+import { useDeviceCheck } from "../../../Hooks/useDeviceCheck";
 
 const SignUp = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { isMobile } = useDeviceCheck();
+  const [isAccepted, setIsAccepted] = useState(false);
   const {
     register,
     handleSubmit,
@@ -34,10 +39,10 @@ const SignUp = () => {
   const { mutate, isPending } = useApiSend(
     registerUser,
     (data) => {
-      console.log("sign", data);
-      dispatch(setUser(data));
-      toast.success(`Account created successfully.`);
-      navigate("/");
+      
+      dispatch(setUser(data))
+      toast.success(`Account created successfully.`)
+      navigate("/")
     },
     (error) => {
       toast.error(error.message);
@@ -46,22 +51,31 @@ const SignUp = () => {
 
   const handleTermsNav = (e) => {
     e.stopPropagation();
-    navigate("/");
+    navigate("#");
+  };
+
+  const handleChange = () => {
+    setIsAccepted((prev) => !prev);
   };
 
   const onSubmit = (data) => {
+    const formatPhoneNumber = (number = data.phoneNumber) => {
+      let newNumber = number.split("")
+      newNumber[0] = "+234"
+      return newNumber.join("")
+    }
+
     const body = {
       firstName: data.firstName,
       lastName: data.lastName,
       email: data.email,
-      phoneNumber: data.phoneNumber,
+      phoneNumber: formatPhoneNumber(),
       password: data.password,
       country: data.country.value,
       role: "buyer",
     };
     mutate(body);
   };
-  // console.log({ errors });
 
   return (
     <>
@@ -136,7 +150,7 @@ const SignUp = () => {
             <GSelectField
               {...field}
               placeholder="Select a country"
-              options={countryData}
+              options={countries}
               id="country"
               searchable={true}
               isError={!!errors.country}
@@ -145,7 +159,7 @@ const SignUp = () => {
           )}
         />
         <TermsWrapper>
-          <GCheckbox />
+          <GCheckbox onChange={handleChange} />
           <TermsTxt>
             I agree to{" "}
             <TermsTxtLink onClick={handleTermsNav}>
@@ -157,14 +171,19 @@ const SignUp = () => {
           <GButton
             width={"60%"}
             isLoading={isSubmitting || isPending}
+            isDisabled={!isAccepted}
             type={"submit"}
-            label={"Sign up for free"}
+            label={isMobile ? "Sign up" : "Sign up for free"}
           />
           <OrTxt>or</OrTxt>
-          <GoogleSignupBtn>
-            <GoogleIcon />
-          </GoogleSignupBtn>
-          <AppleIcon />
+          <IconWrapper>
+            <IconBox>
+              <GoogleIcon /> {isMobile && <IconTxt>Google</IconTxt>}
+            </IconBox>
+            <IconBox>
+              <AppleIcon /> {isMobile && <IconTxt>Apple</IconTxt>}
+            </IconBox>
+          </IconWrapper>
         </BtnWrapper>
       </Form>
       <AuthLinkTxt>
@@ -183,6 +202,10 @@ const Title = styled.h2`
   letter-spacing: 0em;
   text-align: left;
   color: var(--Primary-500, #ff4623);
+
+  @media ${devices.mobileL} {
+    font-size: 34px;
+  }
 `;
 
 const Subtitle = styled.p`
@@ -194,10 +217,20 @@ const Subtitle = styled.p`
   color: #626262;
   text-align: left;
   width: 85%;
+
+  @media ${devices.mobileL} {
+    font-size: 14px;
+    margin-top: 10px;
+    width: 90%;
+  }
 `;
 
 const Form = styled.form`
   margin: 77px 0 24px;
+
+  @media ${devices.mobileL} {
+    margin: 50px 0 20px;
+  }
 `;
 
 const AuthLinkTxt = styled.p`
@@ -217,6 +250,10 @@ const AuthLinkTxt = styled.p`
     color: #ff4623;
     cursor: pointer;
   }
+
+  @media ${devices.mobileL} {
+    text-align: center;
+  }
 `;
 
 const NameInputWrapper = styled.div`
@@ -231,6 +268,10 @@ const TermsWrapper = styled.label`
   gap: 8px;
   margin: 20px 0 55px;
   cursor: pointer;
+
+  @media ${devices.mobileL} {
+    margin-bottom: 40px;
+  }
 `;
 
 const TermsTxtLink = styled.span`
@@ -239,6 +280,10 @@ const TermsTxtLink = styled.span`
   font-style: normal;
   font-weight: 400;
   line-height: 120%;
+
+  @media ${devices.mobileL} {
+    font-size: 14px;
+  }
 `;
 
 const TermsTxt = styled.p`
@@ -247,6 +292,10 @@ const TermsTxt = styled.p`
   font-style: normal;
   font-weight: 400;
   line-height: 120%;
+
+  @media ${devices.mobileL} {
+    font-size: 14px;
+  }
 `;
 
 const BtnWrapper = styled.div`
@@ -261,6 +310,12 @@ const BtnWrapper = styled.div`
     flex-shrink: 0;
     cursor: pointer;
   }
+
+  @media ${devices.mobileL} {
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 35px;
+  }
 `;
 
 const OrTxt = styled.p`
@@ -271,7 +326,7 @@ const OrTxt = styled.p`
   text-align: left;
 `;
 
-const GoogleSignupBtn = styled.div`
+const IconBox = styled.div`
   display: flex;
   align-items: center;
   width: 65.083px;
@@ -282,11 +337,42 @@ const GoogleSignupBtn = styled.div`
   flex-shrink: 0;
   border: 0.917px solid var(--Black-100, #b6b6b6);
   cursor: pointer;
+  transition: all 0.25s ease;
 
   & > svg {
     width: 28.665px;
     height: 29.333px;
     flex-shrink: 0;
+  }
+
+  &:hover {
+    border-color: #8a8787;
+  }
+
+  @media ${devices.mobileL} {
+    width: 47%;
+    gap: 12px;
+  }
+`;
+
+const IconTxt = styled.p`
+  color: var(--Black-500, #151515);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 120%; /* 19.2px */
+  margin-top: -2px;
+`;
+
+const IconWrapper = styled.div`
+  display: flex;
+  gap: 25px;
+
+  @media ${devices.mobileL} {
+    width: 100%;
+    gap: unset;
+    margin-top: 10px;
+    justify-content: space-between;
   }
 `;
 

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { styled } from "styled-components";
 import { TfaIcon } from "../../../../../../Assets/Svgs";
 import { GSwitch } from "../../../../../../Ui_elements";
+import { devices } from "../../../../../../Utils";
 
 const Tfa = () => {
   const [isChecked, setIsChecked] = useState(false);
@@ -21,9 +22,9 @@ const Tfa = () => {
             account. To log in, in addition you'll need to provide a 6 digit
             code.`}
           </Description>
-          <Badge>{isChecked ? `Enabled` : `Disabled`}</Badge>
         </ContentWrapper>
       </LeftWrapper>
+      <Badge>{isChecked ? `Enabled` : `Disabled`}</Badge>
       <GSwitch handleChange={handleToggle} isChecked={isChecked} name={`tfa`} />
     </Container>
   );
@@ -32,6 +33,7 @@ const Tfa = () => {
 export default Tfa;
 
 const Container = styled.div`
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -40,6 +42,10 @@ const Container = styled.div`
   width: 100%;
   padding: 16px 26px;
   margin-bottom: 45px;
+
+  @media ${devices.mobileL} {
+    padding: 12px;
+  }
 `;
 
 const LeftWrapper = styled.div`
@@ -79,8 +85,8 @@ const Description = styled.p`
 
 const Badge = styled.span`
   position: absolute;
-  top: 1px;
-  left: 150px;
+  top: 16px;
+  left: 250px;
   display: flex;
   padding: 3px 10px;
   justify-content: center;
@@ -88,9 +94,15 @@ const Badge = styled.span`
   border-radius: 16px;
   background: var(--Gray-100, #f2f4f7);
   color: var(--Gray-700, #344054);
+  mix-blend-mode: multiply;
   text-align: center;
   font-size: 12px;
   font-style: normal;
   font-weight: 500;
   line-height: 120%; /* 12px */
+
+  @media ${devices.mobileL} {
+    right: 12px;
+    left: unset;
+  }
 `;

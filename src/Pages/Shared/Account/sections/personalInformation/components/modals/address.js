@@ -13,8 +13,15 @@ import { AddressSchema } from "../../validation";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { toast } from "react-hot-toast";
 import { countryData } from "../../../../../SignUp/data";
+import { devices } from "../../../../../../../Utils";
+import { useApiSend, useDeviceCheck } from "../../../../../../../Hooks";
+import { updateUserAddress } from "../../../../../../../Urls";
+import { useQueryClient } from "@tanstack/react-query";
 
 const AddressModal = ({ isOpen, handleClose }) => {
+  const { isMobile } = useDeviceCheck();
+  const queryClient = useQueryClient();
+
   const {
     register,
     handleSubmit,
@@ -24,10 +31,31 @@ const AddressModal = ({ isOpen, handleClose }) => {
     resolver: yupResolver(AddressSchema),
   });
 
-  const onSubmit = () => {
+  const { mutate: updateAddress, isPending: isUpdatingAddress } = useApiSend(
+    updateUserAddress,
+    () => {
+      toast.error("Address book updated");
+      queryClient.invalidateQueries(["get-user-data"]);
+    },
+    () => {
+      toast.error(`Something went wrong`);
+    }
+  );
+
+  const onSubmit = (data) => {
+    const body = {
+      line1: data?.address,
+      line2: data?.apartment,
+      city: data?.city,
+      state: data?.state,
+      country: data?.country.value,
+      postalCode: data?.zipCode,
+    };
+    updateAddress(body);
     toast.success(`You address has been added successfully.`);
     handleClose();
   };
+
   return (
     <GModal open={isOpen} handleClose={handleClose}>
       <Container>
@@ -99,7 +127,7 @@ const AddressModal = ({ isOpen, handleClose }) => {
             errorText={errors.zipCode && errors.zipCode.message}
             required
           />
-          <GTextField
+          {/* <GTextField
             id="phoneNumber"
             placeholder="Phone"
             name="phoneNumber"
@@ -107,9 +135,13 @@ const AddressModal = ({ isOpen, handleClose }) => {
             error={errors.phoneNumber}
             errorText={errors.phoneNumber && errors.phoneNumber.message}
             required
+          /> */}
+          {!isMobile && <GSpacer size={1} />}
+          <GButton
+            label={`Save changes`}
+            isLoading={isUpdatingAddress}
+            isDisabled={isSubmitting}
           />
-          <GSpacer size={1} />
-          <GButton label={`Save changes`} isDisabled={isSubmitting} />
         </FormWrapper>
       </Container>
     </GModal>
@@ -121,6 +153,12 @@ export default AddressModal;
 const Container = styled.div`
   width: 55vw;
   padding: 64px 60px;
+
+  @media ${devices.mobileL} {
+    width: 92vw;
+    max-height: 96vh;
+    padding: 40px 16px 32px;
+  }
 `;
 
 const Header = styled.div`
@@ -134,6 +172,13 @@ const Header = styled.div`
     flex-shrink: 0;
     cursor: pointer;
   }
+
+  @media ${devices.mobileL} {
+    & > svg {
+      width: 30px;
+      height: 30px;
+    }
+  }
 `;
 
 const Title = styled.p`
@@ -142,6 +187,10 @@ const Title = styled.p`
   font-style: normal;
   font-weight: 500;
   line-height: 120%; /* 40.8px */
+
+  @media ${devices.mobileL} {
+    font-size: 16px;
+  }
 `;
 
 const FormWrapper = styled.form`
@@ -149,6 +198,10 @@ const FormWrapper = styled.form`
   flex-direction: column;
   gap: 35px;
   margin-top: 75px;
+
+  @media ${devices.mobileL} {
+    margin-top: 50px;
+  }
 `;
 
 const Row = styled.div`

@@ -1,14 +1,21 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { styled } from "styled-components";
 import { GFavoriteIcon, GBreadCrumbs, Carousel } from "../../../../Ui_elements";
 import QuantityCounter from "./quantityCounter";
-import { imgsUrl } from "./data";
 import { LeftArrow, RightArrow } from "../../../../Assets/Svgs";
+import { devices, formatImage } from "../../../../Utils";
+import ProductPageLoading from "./loadingState";
 
-const ProductSection = () => {
+const ProductSection = ({ data, isLoading }) => {
   const [activeIdx, setActiveIdx] = useState(1);
-  const [mainImg, setMainImg] = useState(imgsUrl[0]);
+  const [mainImg, setMainImg] = useState("");
   const sliderRef = useRef(null);
+  const showArrows = data?.images?.length > 4;
+
+  useEffect(() => {
+    const mainImage = formatImage(data?.mainImage);
+    setMainImg(mainImage);
+  }, [data]);
 
   const slideNext = () => {
     if (sliderRef.current) {
@@ -22,6 +29,8 @@ const ProductSection = () => {
     }
   };
 
+  if (isLoading) return <ProductPageLoading />;
+
   return (
     <Container>
       <GBreadCrumbs />
@@ -29,12 +38,13 @@ const ProductSection = () => {
         <ImagesWrapper>
           <MainImg src={mainImg} />
           <MoreImagesWrapper>
-            <ArrowCircle $pos={"left"}>
-              <LeftArrow onClick={slidePrev} />
-            </ArrowCircle>
-
+            {showArrows && (
+              <ArrowCircle $pos={"left"}>
+                <LeftArrow onClick={slidePrev} />
+              </ArrowCircle>
+            )}
             <Carousel
-              data={imgsUrl}
+              data={data?.images?.map((x) => formatImage(x))}
               ref={sliderRef}
               width={"100%"}
               renderCard={(item, index) => {
@@ -47,10 +57,11 @@ const ProductSection = () => {
                 );
               }}
             />
-
-            <ArrowCircle $pos={"right"}>
-              <RightArrow onClick={slideNext} />
-            </ArrowCircle>
+            {showArrows && (
+              <ArrowCircle $pos={"right"}>
+                <RightArrow onClick={slideNext} />
+              </ArrowCircle>
+            )}
           </MoreImagesWrapper>
         </ImagesWrapper>
         <DetailsWrapper>
@@ -60,7 +71,7 @@ const ProductSection = () => {
           <Title>White tea deep conditioner</Title>
           <Collection>White tea hair collections</Collection>
           <EntryWrapper>
-            <EntryTitle></EntryTitle>
+            <EntryTitle>Description</EntryTitle>
             <Description>
               Replenish and smooth skin with our conditioning lotion, formulated
               with an antioxidant-rich blend of vitamins C and E.Sunflower, Rose
@@ -103,7 +114,7 @@ const ProductSection = () => {
           </EntryWrapper>
           <EntryWrapper>
             <EntryTitle>Price</EntryTitle>
-            <PriceValue>₦4,500</PriceValue>
+            <PriceValue>{`₦${data?.price || 0}`}</PriceValue>
           </EntryWrapper>
         </DetailsWrapper>
       </ContentWrapper>
@@ -113,27 +124,45 @@ const ProductSection = () => {
 
 export default ProductSection;
 
-const Container = styled.div`
+export const Container = styled.div`
   padding: 35px 5% 0;
+
+  @media ${devices.mobileL} {
+    padding: 30px 20px;
+  }
 `;
 
-const ContentWrapper = styled.div`
+export const ContentWrapper = styled.div`
   display: flex;
   gap: 70px;
   margin-top: 30px;
+
+  @media ${devices.mobileL} {
+    flex-direction: column;
+    gap: 20px;
+  }
 `;
 
-const ImagesWrapper = styled.div`
+export const ImagesWrapper = styled.div`
   width: 45%;
+
+  @media ${devices.mobileL} {
+    width: 100%;
+  }
 `;
 
-const MoreImagesWrapper = styled.div`
+export const MoreImagesWrapper = styled.div`
   position: relative;
   display: flex;
   align-items: center;
   gap: 14px;
   overflow: hidden;
-  margin-top: 15px;
+  margin-top: 25px;
+
+  @media ${devices.mobileL} {
+    gap: 8px;
+    margin-top: 15px;
+  }
 `;
 
 const ArrowCircle = styled.div`
@@ -159,15 +188,33 @@ const ArrowCircle = styled.div`
     height: 24px;
     flex-shrink: 0;
   }
+
+  @media ${devices.mobileL} {
+    width: 30px;
+    height: 30px;
+    padding: 18px;
+    top: 24px;
+    left: ${({ $pos }) => ($pos === "left" ? `5px` : `unset`)};
+    right: ${({ $pos }) => ($pos === "right" ? `5px` : `unset`)};
+
+    & > svg {
+      width: 18px;
+      height: 18px;
+    }
+  }
 `;
 
-const ImageBox = styled.img`
+export const ImageBox = styled.img`
   width: 100%;
   height: 140px;
   flex-shrink: 0;
   border-radius: 2px;
   object-fit: cover;
   cursor: pointer;
+
+  @media ${devices.mobileL} {
+    height: 85px;
+  }
 `;
 
 const MainImg = styled.img`
@@ -177,11 +224,19 @@ const MainImg = styled.img`
   border-radius: 2px;
   flex-shrink: 0;
   transition: all 0.25s ease;
+
+  @media ${devices.mobileL} {
+    height: 300px;
+  }
 `;
 
-const DetailsWrapper = styled.div`
-  padding-top: 30px;
+export const DetailsWrapper = styled.div`
+  padding-top: 5px;
   width: 48%;
+
+  @media ${devices.mobileL} {
+    width: 100%;
+  }
 `;
 
 const Seller = styled.p`
@@ -190,10 +245,14 @@ const Seller = styled.p`
   font-style: normal;
   font-weight: 400;
   line-height: 120%; /* 19.2px */
-  margin-bottom: 50px;
+  margin-bottom: 30px;
 
   & > span {
     text-decoration: underline;
+  }
+
+  @media ${devices.mobileL} {
+    margin-bottom: 20px;
   }
 `;
 
@@ -203,7 +262,13 @@ const Title = styled.p`
   font-style: normal;
   font-weight: 500;
   line-height: 120%; /* 40.8px */
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+  width: 55%;
+
+  @media ${devices.mobileL} {
+    font-size: 28px;
+    width: 85%;
+  }
 `;
 
 const Collection = styled.p`
@@ -212,43 +277,56 @@ const Collection = styled.p`
   font-style: normal;
   font-weight: 400;
   line-height: 120%; /* 19.2px */
+  margin-bottom: 20px;
 `;
 
-const EntryWrapper = styled.div`
+export const EntryWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
-  margin-bottom: 40px;
+  margin-bottom: 30px;
+
+  @media ${devices.mobileL} {
+    gap: 15px;
+  }
 `;
 
 const EntryTitle = styled.p`
+  color: var(--Black-500, #151515);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 130%;
+
+  & > span {
+    color: var(--Primary-500, #ff4623);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 130%;
+  }
+`;
+
+const Description = styled.p`
   color: var(--Black-300, #626262);
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
   line-height: 120%; /* 19.2px */
 
-  & > span {
-    color: var(--Primary-500, #ff4623);
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 120%;
+  @media ${devices.mobileL} {
+    font-size: 14px;
   }
-`;
-
-const Description = styled.p`
-  color: #000;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 120%; /* 19.2px */
 `;
 
 const SizeTabsWrapper = styled.div`
   display: flex;
   align-items: center;
-  gap: 30px;
+  gap: 25px;
+
+  @media ${devices.mobileL} {
+    gap: 15px;
+  }
 `;
 
 const SizeTab = styled.div`
@@ -297,6 +375,10 @@ const FavoriteBox = styled.div`
   flex-shrink: 0;
   border-radius: 7px;
   border: 0.917px solid var(--Black-300, #626262);
+
+  @media ${devices.mobileL} {
+    width: 60px;
+  }
 `;
 
 const PriceValue = styled.p`
@@ -305,4 +387,8 @@ const PriceValue = styled.p`
   font-style: normal;
   font-weight: 500;
   line-height: 24px;
+
+  @media ${devices.mobileL} {
+    font-size: 28px;
+  }
 `;

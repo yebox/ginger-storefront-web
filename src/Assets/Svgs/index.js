@@ -12,7 +12,7 @@ import { ReactComponent as LinkedIn } from "./linkedin.svg";
 import { ReactComponent as WhiteLogo } from "./logo_white.svg";
 import { ReactComponent as GoogleIcon } from "./Google.svg";
 import { ReactComponent as EyeSlash } from "./eye_slash.svg";
-import { ReactComponent as AppleIcon } from "./apple_auth.svg";
+import { ReactComponent as AppleIcon } from "./apple.svg";
 import { ReactComponent as Star } from "./star.svg";
 import { ReactComponent as DollarShield } from "./dollarShield.svg";
 import { ReactComponent as VectorBackground } from "./vectorBackground.svg";
@@ -73,6 +73,8 @@ import { ReactComponent as TwitterFill } from "./twitterFill.svg";
 import { ReactComponent as LinkedInFill } from "./linkedInFill.svg";
 import { ReactComponent as FacebookFill } from "./facebookFill.svg";
 import { ReactComponent as DocumentIcon } from "./document.svg";
+import { ReactComponent as RedHeart } from "./redHeart.svg";
+
 
 export {
   Logo,
@@ -150,4 +152,5 @@ export {
   LinkedInFill,
   FacebookFill,
   DocumentIcon,
+  RedHeart
 };

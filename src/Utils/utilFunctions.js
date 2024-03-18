@@ -1,5 +1,7 @@
 import _ from "lodash";
 
+const BASE_URL = process.env.REACT_APP_BASE_URL;
+
 export const formatUrlName = (url) => {
   const removePercentage = url.replace(/%20/g, " ");
   let removeUnderscoreHyphen = removePercentage.replace(/_/g, " ");
@@ -34,3 +36,62 @@ export function bytesForHuman(sizeBytes) {
     maximumFractionDigits: 1,
   }).format(size);
 }
+
+export const formatImage = (url) => {
+  const base = BASE_URL.split("/")
+    .filter((x) => x)
+    .slice(0, 2)
+    .join("//");
+  return `${base}/${url}`;
+};
+
+export const formatAmount = (amount) => {
+  if (amount) {
+    let amountStr = amount.toString();
+    let parts = amountStr.split(".");
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+    return parts.join(".");
+  }
+};
+
+export const orderStatusMapping = {
+  pending: "Ongoing",
+  paid: "Ongoing",
+  processing: "Ongoing",
+  shipped: "In transit",
+  completed: "Delivered",
+  cancelled: "Cancelled",
+};
+
+export const formatOrderStatus = (status) => {
+  const lowercaseStatus = status.toLowerCase();
+  return orderStatusMapping[lowercaseStatus] || "Ongoing";
+};
+
+export const formatCardNumber = (cardNumber) => {
+  if (cardNumber) {
+    const numericOnly = cardNumber?.replace(/\D/g, "");
+    const cardNumberFormat = /(\d{4})(\d{4})(\d{4})(\d{4})/;
+    const formattedCardNumber = numericOnly.replace(
+      cardNumberFormat,
+      "$1 $2 $3 $4"
+    );
+
+    return formattedCardNumber;
+  }
+};
+
+
+
+export const generateUrlParams = (obj) => {
+  let generatedUrl = ``;
+  const arrayOfObjectKeys = Object.keys(obj);
+  arrayOfObjectKeys.forEach((key) => {
+    if (obj[key] || obj[key] === false) {
+      generatedUrl += `${key}=${obj[key]}&`;
+    }
+  });
+  return generatedUrl;
+};
+4

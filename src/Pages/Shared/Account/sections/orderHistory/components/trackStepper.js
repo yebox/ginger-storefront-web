@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Check } from "../../../../../../Assets/Svgs";
 import { TrackStepTypes } from "./data";
+import { devices } from "../../../../../../Utils";
 
 const Step = ({
   completed,
@@ -163,6 +164,10 @@ const DetailsWrapper = styled.div`
     color: ${({ $active, $completed }) =>
       $completed ? `#ff4623` : $active ? `#000510` : `#828282`};
     font-weight: ${({ $active }) => ($active ? `600` : `400`)};
+  }
+
+  @media ${devices.mobileL} {
+    width: 200px;
   }
 `;
 

@@ -1,26 +1,28 @@
 import React, { useEffect } from "react";
 import { styled } from "styled-components";
-import { CaretLeft, Visa } from "../../../../../../Assets/Svgs";
+import { CaretLeft } from "../../../../../../Assets/Svgs";
 import { GButton } from "../../../../../../Ui_elements";
 import { useNavigate } from "react-router-dom";
 import StatusBagde from "./statusBagde";
 import { itemInfo, orderStatus } from "./data";
 import ItemInfoCard from "./itemInfoCard";
-import { accountStore } from "../../../store";
-import { useSnapshot } from "valtio";
+import { devices } from "../../../../../../Utils";
+import { useDispatch, useSelector } from "react-redux";
+import { setSelectedOrderItem } from "../../../../../../Redux/Reducers";
 
 const Details = () => {
   const navigate = useNavigate();
-  const { selectedOrderItem } = useSnapshot(accountStore);
+  const dispatch = useDispatch();
+  const globalStore = useSelector((state) => state?.global);
 
   useEffect(() => {
-    accountStore.selectedOrderItem = itemInfo[0];
-  }, []);
+    dispatch(setSelectedOrderItem(itemInfo[0]));
+  }, [dispatch]);
 
   const handleGoBack = () => navigate(`/account`);
 
   const handleClick = (item) => {
-    accountStore.selectedOrderItem = item;
+    dispatch(setSelectedOrderItem(item));
   };
 
   return (
@@ -28,7 +30,7 @@ const Details = () => {
       <PriceBox>
         <TitleWrapper onClick={handleGoBack}>
           <CaretLeft />
-          <Title>Order details</Title>
+          <Title>Order History</Title>
         </TitleWrapper>
         <PContentWrapper>
           <Entry>
@@ -56,11 +58,11 @@ const Details = () => {
             key={item?.id}
             item={item}
             handleClick={() => handleClick(item)}
-            isSelected={selectedOrderItem?.id === item?.id}
+            isSelected={globalStore?.selectedOrderItem?.id === item?.id}
           />
         ))}
       </ItemInfoBox>
-      <PaymentInfoBox>
+      {/* <PaymentInfoBox>
         <BoxTitle>Payment Information</BoxTitle>
         <PaymentInfoContentWrapper>
           <DebitTxt> Debit card</DebitTxt>
@@ -69,7 +71,7 @@ const Details = () => {
             <CardDigits>*** *** *** 3456</CardDigits>
           </CardWrapper>
         </PaymentInfoContentWrapper>
-      </PaymentInfoBox>
+      </PaymentInfoBox> */}
       <DeliveryInfoBox>
         <BoxTitle>Delivery Information</BoxTitle>
         <DeliveryInfoContentWrapper>
@@ -96,6 +98,11 @@ export default Details;
 const Container = styled.div`
   width: 50%;
   padding-left: 5vw;
+
+  @media ${devices.mobileL} {
+    width: 100%;
+    padding-left: unset;
+  }
 `;
 
 const PriceBox = styled.div`
@@ -103,6 +110,10 @@ const PriceBox = styled.div`
   flex-direction: column;
   padding: 70px 80px 42px 0;
   border-bottom: 1px solid #ececee;
+
+  @media ${devices.mobileL} {
+    padding: 20px;
+  }
 `;
 
 const TitleWrapper = styled.div`
@@ -125,6 +136,10 @@ const Title = styled.p`
   font-style: normal;
   font-weight: 500;
   line-height: 120%;
+
+  @media ${devices.mobileL} {
+    font-size: 20px;
+  }
 `;
 
 const OrderNumber = styled.p`
@@ -133,6 +148,10 @@ const OrderNumber = styled.p`
   font-style: normal;
   font-weight: 500;
   line-height: 120%; /* 24px */
+
+  @media ${devices.mobileL} {
+    font-size: 16px;
+  }
 `;
 
 const EntryTxt = styled.p`
@@ -150,6 +169,11 @@ const PContentWrapper = styled.div`
   flex-direction: column;
   gap: 30px;
   margin-top: 60px;
+
+  @media ${devices.mobileL} {
+    margin-top: 40px;
+    gap: 22px;
+  }
 `;
 
 const PriceTxt = styled.p`
@@ -158,6 +182,10 @@ const PriceTxt = styled.p`
   font-style: normal;
   font-weight: 500;
   line-height: 120%; /* 26.4px */
+
+  @media ${devices.mobileL} {
+    font-size: 18px;
+  }
 `;
 
 const ItemInfoBox = styled.div`
@@ -166,6 +194,10 @@ const ItemInfoBox = styled.div`
   gap: 24px;
   padding: 32px 80px 32px 0;
   border-bottom: 1px solid #ececee;
+
+  @media ${devices.mobileL} {
+    padding: 20px;
+  }
 `;
 
 const BoxTitle = styled.p`
@@ -176,53 +208,57 @@ const BoxTitle = styled.p`
   line-height: 120%; /* 16.8px */
 `;
 
-const PaymentInfoBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 35px;
-  padding: 32px 80px 32px 0;
-  border-bottom: 1px solid #ececee;
-`;
+// const PaymentInfoBox = styled.div`
+//   display: flex;
+//   flex-direction: column;
+//   gap: 35px;
+//   padding: 32px 80px 32px 0;
+//   border-bottom: 1px solid #ececee;
+// `;
 
-const PaymentInfoContentWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-`;
+// const PaymentInfoContentWrapper = styled.div`
+//   display: flex;
+//   flex-direction: column;
+//   gap: 12px;
+// `;
 
-const DebitTxt = styled.p`
-  color: var(--Black-100, #b6b6b6);
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 140%; /* 19.6px */
-`;
+// const DebitTxt = styled.p`
+//   color: var(--Black-100, #b6b6b6);
+//   font-size: 14px;
+//   font-style: normal;
+//   font-weight: 400;
+//   line-height: 140%; /* 19.6px */
+// `;
 
-const CardWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 8px;
+// const CardWrapper = styled.div`
+//   display: flex;
+//   align-items: center;
+//   gap: 8px;
 
-  & > svg {
-    width: 40px;
-    height: 27px;
-    flex-shrink: 0;
-  }
-`;
+//   & > svg {
+//     width: 40px;
+//     height: 27px;
+//     flex-shrink: 0;
+//   }
+// `;
 
-const CardDigits = styled.p`
-  color: var(--Black-300, #626262);
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 140%; /* 19.6px */
-`;
+// const CardDigits = styled.p`
+//   color: var(--Black-300, #626262);
+//   font-size: 14px;
+//   font-style: normal;
+//   font-weight: 400;
+//   line-height: 140%; /* 19.6px */
+// `;
 
 const DeliveryInfoBox = styled.div`
   display: flex;
   flex-direction: column;
   gap: 35px;
   padding: 32px 80px 32px 0;
+
+  @media ${devices.mobileL} {
+    padding: 20px;
+  }
 `;
 
 const DeliveryInfoContentWrapper = styled.div`
@@ -230,6 +266,10 @@ const DeliveryInfoContentWrapper = styled.div`
   flex-direction: column;
   gap: 12px;
   margin-bottom: 100px;
+
+  @media ${devices.mobileL} {
+    margin-bottom: 20px;
+  }
 `;
 
 const DeliveryLabel = styled.p`
