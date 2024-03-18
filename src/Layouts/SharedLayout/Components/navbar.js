@@ -3,11 +3,12 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
 import { Account, Cart, Dollar, DownArrow, Like, Logo, Search, BlackX } from '../../../Assets/Svgs'
 import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Avatar, Skeleton } from '@mui/material';
 import { useApiGet } from '../../../Hooks';
 import { GTextField, PopMenu } from "../../../Ui_elements";
 import { getCategories, getProductBrands } from '../../../Urls';
+import { setInitialSubCateogry, setSelectedCategory } from "../../../Redux/Reducers";
 
 
 const imageLinks = [
@@ -23,7 +24,9 @@ export const Navbar = () => {
   const [activeItem, setActiveItem] = useState(null)
   const [showFullOptions, setShowFullOptions] = useState(false);
   const [fullOptionsHovered, setFullOptionsHovered] = useState(false);
+  const dispatch = useDispatch()
   const user = useSelector((state) => state?.user);
+
   const navigate = useNavigate();
 
 
@@ -153,6 +156,7 @@ export const Navbar = () => {
                 {
                   data?.map((category, index) => (
                     <NavLink
+                      onClick={() => dispatch(setSelectedCategory(category))}
                       key={index}
                       to={`/categories/${category.name}`}
                       onMouseEnter={() => handleNavLinkHover(index)}
@@ -182,16 +186,21 @@ export const Navbar = () => {
             <div>
               {
                 activeItem.subCategories?.map((item, index) => {
+                  console.log(item, "navbar item")
+                  console.log(activeItem, "actove navbar item")
+
                   return <NavLink
+                    onClick={() => {
+                      dispatch(setSelectedCategory(activeItem))
+                      dispatch(setInitialSubCateogry(item))
+                    }}
                     key={index}
-                    to="/item"
+                    to={`/categories/${activeItem?.name}?sub_cat=${item?.name}`}
                     onMouseEnter={() => setCurrentImage(`http://172.104.147.51/${item?.images[0]}`)}
                   >
-                    {item.name}
+                    {item?.name}
                   </NavLink>
-                }
-
-                )
+                })
               }
             </div>
 
@@ -236,8 +245,12 @@ export const Navbar = () => {
 
 const OuterContainer = styled.nav`
   width: 100%;
-  position: relative;
-  position: relative;
+  position: sticky;
+  top: 0;
+  left: 0;
+  background-color: white;
+  z-index: 50;
+  
 `;
 const Container = styled.div`
   width: 100%;
