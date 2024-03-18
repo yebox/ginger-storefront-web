@@ -181,15 +181,11 @@ const Home = () => {
       <FeatureProductsContainer>
         <h4>Featured Products</h4>
         <FeaturedItemContainer>
-          {[...Array(4)].map((_, index) =>
+          {lastFourFeaturedProducts?.map((product, index) =>
             isLoading ? (
               <ProductSkeleton key={index} />
             ) : (
-              <Product
-                item={lastFourFeaturedProducts[index]}
-                key={index}
-                width={`23.8%`}
-              />
+              <Product item={product} key={index} width={`23.8%`} />
             )
           )}
         </FeaturedItemContainer>
@@ -721,7 +717,7 @@ const FeaturedItemContainer = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 20px;
 `;
 
 const LargeAd = styled.section`

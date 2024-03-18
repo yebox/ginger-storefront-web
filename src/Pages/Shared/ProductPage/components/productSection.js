@@ -1,16 +1,44 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useMemo } from "react";
 import { styled } from "styled-components";
-import { GFavoriteIcon, GBreadCrumbs, Carousel } from "../../../../Ui_elements";
+import {
+  GFavoriteIcon,
+  GBreadCrumbs,
+  Carousel,
+  LineLoader,
+  GButton,
+} from "../../../../Ui_elements";
 import QuantityCounter from "./quantityCounter";
-import { LeftArrow, RightArrow } from "../../../../Assets/Svgs";
-import { devices, formatImage } from "../../../../Utils";
+import {
+  InfoIconWhiteBg,
+  LeftArrow,
+  RightArrow,
+} from "../../../../Assets/Svgs";
+import { devices, formatAmount, formatImage } from "../../../../Utils";
 import ProductPageLoading from "./loadingState";
+import MoqModal from "./moqModal";
+import { useApiGet, useApiSend } from "../../../../Hooks";
+import {
+  addToCart,
+  addToWishlist,
+  deletItemFromWishlist,
+  getCartItems,
+  getWishlist,
+  removeCartItem,
+} from "../../../../Urls";
+import { useSelector } from "react-redux";
+import { toast } from "react-hot-toast";
+import { useQueryClient } from "@tanstack/react-query";
 
 const ProductSection = ({ data, isLoading }) => {
+  const user = useSelector((state) => state.user);
   const [activeIdx, setActiveIdx] = useState(1);
   const [mainImg, setMainImg] = useState("");
+  const [quantity, setQuantity] = useState(2);
+  const [items, setItems] = useState([]);
+  const [isMoqModalOpen, setIsMoqModalOpen] = useState(false);
   const sliderRef = useRef(null);
   const showArrows = data?.images?.length > 4;
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     const mainImage = formatImage(data?.mainImage);
@@ -27,6 +55,131 @@ const ProductSection = ({ data, isLoading }) => {
     if (sliderRef.current) {
       sliderRef.current.swiper.slidePrev();
     }
+  };
+
+  const { data: wishlistData, isLoading: isLoadingWishlist } = useApiGet(
+    ["wishlist-data"],
+    () => getWishlist(user?._id),
+    {
+      enabled: true,
+      refecthOnWindowFocus: true,
+    }
+  );
+
+  const { data: cartData, isLoading: isLoadingCartData } = useApiGet(
+    ["cart-data"],
+    () => getCartItems(user?._id),
+    {
+      enabled: true,
+      refecthOnWindowFocus: true,
+    }
+  );
+
+  const isWishlist = useMemo(() => {
+    if (wishlistData) {
+      const result = wishlistData?.items?.some(
+        (item) => item?.product?._id === data?._id
+      );
+      return result;
+    }
+    return false;
+  }, [wishlistData, data]);
+
+  const isCart = useMemo(() => {
+    if (cartData) {
+      const cartItem = cartData.items?.find(
+        (item) => item.product?._id === data?._id
+      );
+      if (cartItem) {
+        return true;
+      }
+    }
+    return false;
+  }, [cartData, data]);
+
+  const { mutate, isPending } = useApiSend(
+    (_) => addToCart(_, user?._id),
+    () => {
+      toast.success("Added to cart");
+      queryClient.invalidateQueries(["cart-data"]);
+    },
+    (e) => {
+      toast.error("Could not add to cart");
+    }
+  );
+
+  const { mutate: removeFromCart, isPending: isRemovingFromCart } = useApiSend(
+    () => removeCartItem(data?._id),
+    () => {
+      toast.success("Removed from cart");
+      queryClient.invalidateQueries(["cart-data"]);
+    },
+    (e) => {
+      toast.error("Could not remove from cart");
+    }
+  );
+
+  const { mutate: addWishlist, isPending: isAddingToWishlist } = useApiSend(
+    (_) => addToWishlist(_, user?._id),
+    () => {
+      toast.success("Added to wishliat");
+      queryClient.invalidateQueries(["wishlist-data"]);
+    },
+    (e) => {
+      toast.error("Could not add to wishlist");
+    }
+  );
+
+  const { mutate: deleteFromWishlist, isPending: isDeletingItemWishlist } =
+    useApiSend(
+      () => deletItemFromWishlist(user?._id, data?._id),
+      () => {
+        toast.success("Removed from wishliat");
+        queryClient.invalidateQueries(["wishlist-data"]);
+      },
+      (e) => {
+        toast.error("Could not remove from wishlist");
+      }
+    );
+
+  const onLike = () => {
+    const singleItem = {
+      productId: data?._id,
+      quantity: 1,
+    };
+    const updatedItems = [singleItem];
+    const body = {
+      items: updatedItems,
+      price: data?.price,
+    };
+    addWishlist(body);
+  };
+
+  const onDeleteFromWishlist = () => {
+    deleteFromWishlist();
+  };
+
+  const onAddToCart = () => {
+    const singleItem = {
+      productId: data?._id,
+      quantity: 1,
+    };
+    const updatedItems = [...items, singleItem];
+    setItems(updatedItems);
+
+    const body = {
+      items: updatedItems,
+      price: data?.price,
+    };
+    mutate(body);
+  };
+
+  const onRemoveFromCart = () => {
+    removeFromCart();
+  };
+
+  const handleChange = () => {
+    isWishlist ? onDeleteFromWishlist() : onLike();
   };
 
   if (isLoading) return <ProductPageLoading />;
@@ -66,24 +219,17 @@ const ProductSection = ({ data, isLoading }) => {
         </ImagesWrapper>
         <DetailsWrapper>
           <Seller>
-            Seller: <span>KeraCare</span>
+            Seller:{" "}
+            <span>{`${data?.seller?.firstName} ${data?.seller?.lastName}`}</span>
           </Seller>
-          <Title>White tea deep conditioner</Title>
-          <Collection>White tea hair collections</Collection>
-          <EntryWrapper>
-            <EntryTitle>Description</EntryTitle>
-            <Description>
-              Replenish and smooth skin with our conditioning lotion, formulated
-              with an antioxidant-rich blend of vitamins C and E.Sunflower, Rose
-              Hip, Jojoba, Babasu and Sesame Oils deeply moisturize as
-              nourishing Aloe and Oat Extract naturally soothe the skin. <br />
-              <br />
-              Replenish and smooth skin with our conditioning lotion, formulated
-              with an antioxidant-rich blend of vitamins C and E.Sunflower, Rose
-              Hip, Jojoba, Babasu and Sesame Oils deeply moisturize as
-              nourishing Aloe and Oat Extract naturally soothe the skin.
-            </Description>
-          </EntryWrapper>
+          <Title>{data?.name}</Title>
+          <Collection>{data?.category?.name}</Collection>
+          {data?.description && (
+            <EntryWrapper>
+              <EntryTitle>Description</EntryTitle>
+              <Description>{data?.description}</Description>
+            </EntryWrapper>
+          )}
           <EntryWrapper>
             <EntryTitle>Size</EntryTitle>
             <SizeTabsWrapper>
@@ -102,22 +248,49 @@ const ProductSection = ({ data, isLoading }) => {
             </SizeTabsWrapper>
           </EntryWrapper>
           <EntryWrapper>
-            <EntryTitle>
-              Quantity <span>(MOQ)</span>
-            </EntryTitle>
+            <EntryTitle>Quantity</EntryTitle>
+            <MoqBox>
+              <Flex>
+                <InfoIconWhiteBg />
+                <MoqTitle>MOQ</MoqTitle>
+              </Flex>
+              <MoqText>
+                The minimum order quantity for the product is 2.
+              </MoqText>
+              <LearnMore onClick={() => setIsMoqModalOpen(true)}>
+                Learn more
+              </LearnMore>
+            </MoqBox>
             <QuantityItemWrapper>
-              <QuantityCounter />
+              <QuantityCounter
+                moq={2}
+                setValue={setQuantity}
+                value={quantity}
+              />
               <FavoriteBox>
-                <GFavoriteIcon />
+                <GFavoriteIcon
+                  checked={isWishlist}
+                  handleChange={handleChange}
+                />
               </FavoriteBox>
             </QuantityItemWrapper>
           </EntryWrapper>
           <EntryWrapper>
             <EntryTitle>Price</EntryTitle>
-            <PriceValue>{`₦${data?.price || 0}`}</PriceValue>
+            <PriceValue>{`₦${formatAmount(data?.price) || 0}`}</PriceValue>
           </EntryWrapper>
+          <GButton
+            onClick={isCart ? onRemoveFromCart : onAddToCart}
+            label={isCart ? "Remove from cart" : "Add to cart"}
+            isLoading={isPending || isRemovingFromCart}
+          />
         </DetailsWrapper>
       </ContentWrapper>
+      <MoqModal
+        handleClose={() => setIsMoqModalOpen(false)}
+        isOpen={isMoqModalOpen}
+      />
+      <LineLoader loading={isAddingToWishlist || isDeletingItemWishlist} />
     </Container>
   );
 };
@@ -297,14 +470,6 @@ const EntryTitle = styled.p`
   font-style: normal;
   font-weight: 500;
   line-height: 130%;
-
-  & > span {
-    color: var(--Primary-500, #ff4623);
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 130%;
-  }
 `;
 
 const Description = styled.p`
@@ -359,6 +524,54 @@ const SizeTab = styled.div`
   cursor: pointer;
 `;
 
+const MoqBox = styled.div`
+  display: flex;
+  width: clamp(460px, 470px, 75%);
+  height: 33px;
+  padding: 10px;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  border-radius: 4px;
+  border: 1px solid #ffe4bf;
+  background: #fff7ec;
+`;
+
+const Flex = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 5px;
+`;
+
+const MoqTitle = styled.p`
+  color: var(--Black-300, #626262);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 140%; /* 19.6px */
+`;
+
+const MoqText = styled.p`
+  color: var(--Black-500, #151515);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 140%; /* 19.6px */
+`;
+
+const LearnMore = styled.p`
+  color: var(--Primary-500, #ff4623);
+  font-size: 14px;
+  font-style: italic;
+  font-weight: 400;
+  line-height: 140%; /* 19.6px */
+  cursor: pointer;
+
+  &:hover {
+    text-decoration-line: underline;
+  }
+`;
+
 const QuantityItemWrapper = styled.div`
   display: flex;
   align-items: center;
@@ -383,7 +596,7 @@ const FavoriteBox = styled.div`
 
 const PriceValue = styled.p`
   color: var(--Black-500, #151515);
-  font-size: 34px;
+  font-size: 30px;
   font-style: normal;
   font-weight: 500;
   line-height: 24px;

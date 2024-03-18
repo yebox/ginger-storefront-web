@@ -65,7 +65,7 @@ export const orderStatusMapping = {
 };
 
 export const formatOrderStatus = (status) => {
-  const lowercaseStatus = status.toLowerCase();
+  const lowercaseStatus = status?.toLowerCase();
   return orderStatusMapping[lowercaseStatus] || "Ongoing";
 };
 
@@ -82,7 +82,9 @@ export const formatCardNumber = (cardNumber) => {
   }
 };
 
-
+export const formatAddress = (data) => {
+  return `${data?.line1}, ${data?.city}, ${data?.state}, ${data?.country}`;
+};
 
 export const generateUrlParams = (obj) => {
   let generatedUrl = ``;
@@ -94,4 +96,4 @@ export const generateUrlParams = (obj) => {
   });
   return generatedUrl;
 };
-4
+4;

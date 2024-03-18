@@ -5,29 +5,44 @@ import { CaretLeft } from "../../Assets/Svgs";
 import {
   GBreadCrumbs,
   GAccordion,
-  GButton,
+  // GButton,
   GDropdown,
   GSpacer,
   Product,
+  LineLoader,
 } from "../../Ui_elements";
 import {
   PriceFilter,
-  TopStoresFilter,
+  // TopStoresFilter,
   InstaFooter,
   BecomeSellerSection,
   RelatedItems,
 } from "./Components";
 import Fade from "@mui/material/Fade";
+import { useApiGet } from "../../Hooks";
+import { getProducts } from "../../Urls";
+import { useNavigate } from "react-router-dom";
 
 const MarketPlace = () => {
   const [label, setLabel] = useState("All");
   const [isOpen, setIsOpen] = useState(false);
+  const [filterValue, setFilterValue] = useState();
+  const navigate = useNavigate();
+
+  const { data: products, isLoading } = useApiGet(
+    ["get-products", filterValue],
+    () => getProducts({ price: filterValue }),
+    {
+      enable: true,
+      refetchOnWindowFocus: false,
+    }
+  );
 
   return (
     <Container>
       <HeaderWrapper>
         <LeftSect>
-          <CaretLeft />
+          <CaretLeft onClick={() => navigate("/")} />
           <Title>Marketplace</Title>
         </LeftSect>
         <GBreadCrumbs />
@@ -53,23 +68,37 @@ const MarketPlace = () => {
           {...(isOpen ? { timeout: 500 } : {})}
         >
           <FilterBox $isOpen={isOpen}>
-            <GAccordion title={"Price (₦)"} content={<PriceFilter />} />
-            <GAccordion title={"Top Stores"} content={<TopStoresFilter />} />
+            <GAccordion
+              title={"Price (₦)"}
+              idx={0}
+              content={
+                <PriceFilter
+                  setFilterValue={setFilterValue}
+                  filterValue={filterValue}
+                />
+              }
+            />
+            {/* <GAccordion title={"Top Stores"} content={<TopStoresFilter />} /> */}
           </FilterBox>
         </Fade>
         <RightContent>
           <ProductsWrapper>
-            {[...Array(12)].map((_, index) => (
-              <Product key={index} width={`17.3rem`} />
-            ))}
+            {products?.length > 0 ? (
+              products?.map((product, index) => (
+                <Product key={index} item={product} width={`17.3rem`} />
+              ))
+            ) : (
+              <EmptyProductTxt>No product found</EmptyProductTxt>
+            )}
           </ProductsWrapper>
-          <GButton label={"See more"} outline width={"172px"} />
+          {/* <GButton label={"See more"} outline width={"172px"} /> */}
         </RightContent>
       </ContentWrapper>
       <BecomeSellerSection />
       <RelatedItems />
       <GSpacer size={100} />
       <InstaFooter />
+      <LineLoader loading={isLoading} />
     </Container>
   );
 };
@@ -146,7 +175,7 @@ const ContentWrapper = styled.div`
 
 const FilterBox = styled.div`
   display: inline-flex;
-  padding: ${({ $isOpen }) => ($isOpen ? `43px 30px 40px 0` : "0px")};
+  padding: ${({ $isOpen }) => ($isOpen ? `38px 30px 40px 0` : "0px")};
   width: ${({ $isOpen }) => ($isOpen ? `320px` : "0px")};
   flex-direction: column;
   align-items: flex-start;
@@ -165,13 +194,26 @@ const RightContent = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  flex-grow: 1;
   gap: 62px;
   padding: 38px 0 108px 18px;
 `;
 
 const ProductsWrapper = styled.div`
   width: 100%;
+  min-height: 475px;
   display: flex;
   flex-wrap: wrap;
   gap: 40px 20px;
+`;
+
+const EmptyProductTxt = styled.p`
+  color: var(--Black-500, #151515);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 150%;
+  margin-top: 10px;
+  width: 100%;
+  text-align: center;
 `;

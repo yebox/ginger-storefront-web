@@ -16,6 +16,7 @@ export const GTextField = ({
   required,
   inputType = "text",
   min,
+  value,
   name = "",
   error = false,
   errorText = "",
@@ -45,6 +46,7 @@ export const GTextField = ({
           type={isPassword ? togglePassword() : inputType}
           id={props.name}
           className={errorClass}
+          value={value}
           placeholder={placeholder}
           disabled={isDisabled}
           $isDisabled={isDisabled}

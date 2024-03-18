@@ -12,7 +12,6 @@ import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { SignUpSchema } from "./validation";
 import { Link, useNavigate } from "react-router-dom";
-import { countryData } from "./data";
 import { countries } from "../../../Utils";
 import { useApiSend } from "../../../Hooks/api";
 import { registerUser } from "../../../Urls";
@@ -39,10 +38,9 @@ const SignUp = () => {
   const { mutate, isPending } = useApiSend(
     registerUser,
     (data) => {
-      
-      dispatch(setUser(data))
-      toast.success(`Account created successfully.`)
-      navigate("/")
+      dispatch(setUser(data));
+      toast.success(`Account created successfully.`);
+      navigate("/");
     },
     (error) => {
       toast.error(error.message);
@@ -60,10 +58,10 @@ const SignUp = () => {
 
   const onSubmit = (data) => {
     const formatPhoneNumber = (number = data.phoneNumber) => {
-      let newNumber = number.split("")
-      newNumber[0] = "+234"
-      return newNumber.join("")
-    }
+      let newNumber = number.split("");
+      newNumber[0] = "+234";
+      return newNumber.join("");
+    };
 
     const body = {
       firstName: data.firstName,

@@ -81,6 +81,7 @@ export default BusinessModal;
 
 const Container = styled.div`
   width: 55vw;
+  max-width: 750px;
   padding: 64px 60px;
 `;
 

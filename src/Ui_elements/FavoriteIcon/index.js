@@ -4,7 +4,7 @@ import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
 import Favorite from "@mui/icons-material/Favorite";
 import { styled } from "styled-components";
 
-export const GFavoriteIcon = () => {
+export const GFavoriteIcon = ({ checked, handleChange }) => {
   const label = { inputProps: { "aria-label": "favorite icon" } };
   return (
     <Container>
@@ -12,6 +12,8 @@ export const GFavoriteIcon = () => {
         {...label}
         icon={<FavoriteBorder />}
         checkedIcon={<Favorite />}
+        checked={checked}
+        onChange={handleChange}
       />
     </Container>
   );

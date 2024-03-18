@@ -3,21 +3,20 @@ import { styled } from "styled-components";
 import { Minus, Plus } from "../../../../Assets/Svgs";
 import { devices } from "../../../../Utils";
 
-const QuantityCounter = () => {
-  const [value, setValue] = useState(0);
+const QuantityCounter = ({ moq, value, setValue }) => {
   const maxQuantity = 10;
 
   const handleAdd = () => {
-    setValue((prev) => prev + 1);
+    setValue((prev) => prev + (moq || 1));
   };
 
   const handleSubtract = () => {
-    setValue((prev) => prev - 1);
+    setValue((prev) => prev - (moq || 1));
   };
 
   return (
     <Container>
-      <Control onClick={handleSubtract} disabled={value === 0}>
+      <Control onClick={handleSubtract} disabled={value === (moq || 0)}>
         <Minus />
       </Control>
       <ValueBox>{value}</ValueBox>
@@ -64,10 +63,10 @@ const ValueBox = styled.p`
   justify-content: center;
   border-top: 1px solid var(--Black-100, #b6b6b6);
   border-bottom: 1px solid var(--Black-100, #b6b6b6);
-  padding: 5px 0;
+  padding: 7.4px 0;
   width: 142px;
   color: var(--Black-500, #151515);
-  font-size: 34px;
+  font-size: 30px;
   font-style: normal;
   font-weight: 500;
   line-height: 120%; /* 40.8px */

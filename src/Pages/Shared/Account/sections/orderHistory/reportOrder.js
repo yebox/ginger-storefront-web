@@ -3,7 +3,7 @@ import ReportStepper from "./components/reportStepper";
 import { reportSteps } from "./components/data";
 import { styled } from "styled-components";
 import { CaretLeft } from "../../../../../Assets/Svgs";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import ProductUpload from "./components/productUpload";
 import IssueType from "./components/issueType";
 import ResolveOption from "./components/resolveOption";
@@ -11,13 +11,17 @@ import { useDeviceCheck } from "../../../../../Hooks";
 import { devices } from "../../../../../Utils";
 import { GStepper } from "../../../../../Ui_elements";
 import ReportSuccess from "./components/reportSuccess";
+import { useSelector } from "react-redux";
 
 const ReportOrder = () => {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(1);
   const { isMobile } = useDeviceCheck();
+  const { pathname } = useLocation();
+  const id = pathname.split("/").pop();
+  const { selectedOrderItem } = useSelector((state) => state?.global);
 
-  const handleGoBack = () => navigate("/account/order/1");
+  const handleGoBack = () => navigate(`/account/order-history/${id}`);
 
   const handleNext = () => {
     setCurrentStep((prev) => prev + 1);

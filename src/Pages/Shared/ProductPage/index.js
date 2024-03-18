@@ -16,7 +16,7 @@ const ProductPage = () => {
   const dispatch = useDispatch();
 
   const { data, isLoading, error } = useApiGet(
-    "get-product-details",
+    ["get-product-details", id],
     () => getProductDetails(id),
     {
       select: (data) => data,

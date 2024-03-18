@@ -1,30 +1,26 @@
 import React from "react";
 import { styled } from "styled-components";
-import { Star } from "@mui/icons-material";
-import { devices } from "../../../../../../Utils";
+import { devices, formatAmount, formatImage } from "../../../../../../Utils";
 import { useDeviceCheck } from "../../../../../../Hooks";
 
 const ItemInfoCard = ({ item, isSelected, handleClick }) => {
-  const { name, seller, price } = item;
+  const product = item?.product;
   const { isMobile } = useDeviceCheck();
+  const seller = `KeraCare stores`;
 
   return (
     <Container $isSelected={isSelected} onClick={() => handleClick(item)}>
       <LeftWrapper>
-        <ItemImage
-          src={
-            "https://images.unsplash.com/photo-1625753783470-ec2ab4efeeec?q=80&w=2564&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-          }
-        />
+        <ItemImage src={formatImage(product?.mainImage)} />
         <DetailsWrapper>
           {!isMobile && (
             <SellerName>
               Seller: <span>{seller}</span>
             </SellerName>
           )}
-          <ItemName>{name}</ItemName>
+          <ItemName>{product?.name}</ItemName>
           <RRPContainer>
-            <RRPPriceTxt>{price}</RRPPriceTxt>
+            <RRPPriceTxt>{`₦${formatAmount(product?.price)}`}</RRPPriceTxt>
           </RRPContainer>
           {isMobile && (
             <SellerName>
@@ -33,10 +29,9 @@ const ItemInfoCard = ({ item, isSelected, handleClick }) => {
           )}
         </DetailsWrapper>
       </LeftWrapper>
-      <RatingWrapper>
-        <Rating>4.5</Rating>
-        <Star color="#151515" />
-      </RatingWrapper>
+      <QuantityWrapper>
+        <Quantity>x {item?.quantity}</Quantity>
+      </QuantityWrapper>
     </Container>
   );
 };
@@ -57,6 +52,7 @@ const Container = styled.div`
 const LeftWrapper = styled.div`
   display: flex;
   gap: 13px;
+  width: 83%;
 
   @media ${devices.mobileL} {
     flex-direction: column;
@@ -68,6 +64,7 @@ const DetailsWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 3px;
+  width: 74%;
 
   @media ${devices.mobileL} {
     gap: 7px;
@@ -90,15 +87,14 @@ const ItemName = styled.p`
   color: var(--Black-500, #151515);
   font-size: 22px;
   font-style: normal;
-  font-weight: 400;
+  font-weight: 500;
   line-height: 120%; /* 26.4px */
   width: 80%;
+  opacity: 0.9;
 
   @media ${devices.mobileL} {
     width: 100%;
     font-size: 16px;
-    font-weight: 500;
-    opacity: 0.9;
   }
 `;
 
@@ -116,11 +112,11 @@ const RRPContainer = styled.div`
 
 const RRPPriceTxt = styled.p`
   color: var(--Black-500, #151515);
-  font-size: 18px;
+  font-size: 22px;
   font-style: normal;
-  font-weight: 400;
-  line-height: 140%; /* 25.2px */
-  margin-left: 5px;
+  font-weight: 500;
+  line-height: 120%; /* 25.2px */
+  /* margin-left: 5px; */
 
   @media ${devices.mobileL} {
     font-weight: 500;
@@ -138,7 +134,7 @@ const ItemImage = styled.img`
   }
 `;
 
-const RatingWrapper = styled.div`
+const QuantityWrapper = styled.div`
   position: absolute;
   top: 8px;
   right: 8px;
@@ -158,7 +154,7 @@ const RatingWrapper = styled.div`
   }
 `;
 
-const Rating = styled.p`
+const Quantity = styled.p`
   color: var(--Black-300, #626262);
   font-size: 14px;
   font-style: normal;
