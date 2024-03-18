@@ -11,9 +11,8 @@ import { Cancel } from "../../../../../../../Assets/Svgs";
 import { Controller, useForm } from "react-hook-form";
 import { PersonalInformationSchema } from "../../validation";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { countryData } from "../../../../../SignUp/data";
 import { toast } from "react-hot-toast";
-import { devices } from "../../../../../../../Utils";
+import { countries, devices } from "../../../../../../../Utils";
 
 const PersonalModal = ({ isOpen, handleClose }) => {
   const {
@@ -57,7 +56,7 @@ const PersonalModal = ({ isOpen, handleClose }) => {
             errorText={errors.phoneNumber && errors.phoneNumber.message}
             required
           />
-          <GTextField
+          {/* <GTextField
             id="email"
             placeholder="Enter email address"
             inputType="email"
@@ -66,7 +65,7 @@ const PersonalModal = ({ isOpen, handleClose }) => {
             error={errors.email}
             errorText={errors.email && errors.email.message}
             required
-          />
+          /> */}
           <Controller
             name="country"
             control={control}
@@ -75,7 +74,7 @@ const PersonalModal = ({ isOpen, handleClose }) => {
               <GSelectField
                 {...field}
                 placeholder="Select a country"
-                options={countryData}
+                options={countries}
                 id="country"
                 searchable={true}
                 isError={!!errors.country}
@@ -95,6 +94,7 @@ export default PersonalModal;
 
 const Container = styled.div`
   width: 55vw;
+  max-width: 750px;
   padding: 64px 60px;
 
   @media ${devices.mobileL} {

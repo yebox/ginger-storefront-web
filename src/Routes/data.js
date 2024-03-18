@@ -18,6 +18,7 @@ const AccountPage = lazy(() => import("../Pages/Shared/Account"));
 const UnsignedCategories = lazy(() =>
   import("../Pages/Shared/Categories/unsignedCategories")
 );
+const RootCategory = lazy(() => import("../Pages/Shared/Categories"));
 const PersonalInformation = lazy(() =>
   import("../Pages/Shared/Account/sections/personalInformation")
 );
@@ -66,8 +67,6 @@ const SellerSignUpBusinessDocument = lazy(() =>
 const ErrorPage = lazy(() => import("../Ui_elements/ErrorPage"));
 
 export const sharedRoutes = [
-
-
   //auth routes
   {
     path: "/signup",
@@ -113,32 +112,32 @@ export const sharedRoutes = [
     path: "/marketplace",
     element: MarketPlace,
     hasLayout: false,
-
   },
   {
     path: "/how-to-buy-wholesale",
     element: HowToBuyWholesale,
     hasLayout: false,
-
   },
   {
     path: "/sell-on-ginger",
     element: SellOnGinger,
     hasLayout: false,
-
   },
 
   {
     path: "/categories",
+    element: RootCategory,
+    hasLayout: false,
+  },
+  {
+    path: "/categories/all",
     element: UnsignedCategories,
     hasLayout: false,
-
   },
   {
     path: "/categories/:id",
     element: Categories,
     hasLayout: false,
-
   },
   // {
   //   path: "/categories/nails",
@@ -179,25 +178,21 @@ export const sharedRoutes = [
     path: "/report/:id",
     element: ReportOrder,
     hasLayout: false,
-
   },
   {
     path: "/cart",
     element: Cart,
     hasLayout: false,
-
   },
   {
     path: "/wish-list",
     element: WishList,
     hasLayout: false,
-
   },
   {
     path: "/cart/information",
     element: Checkout,
     hasLayout: false,
-
   },
   // {
   //   path: "/cart/information/address",
@@ -207,13 +202,11 @@ export const sharedRoutes = [
     path: "/cart/information/payment",
     element: Payment,
     hasLayout: false,
-
   },
   {
     path: "/shop/:id",
     element: SellerStore,
     hasLayout: false,
-
   },
 
   //account routes
@@ -245,12 +238,8 @@ export const sharedRoutes = [
     hasLayout: false,
   },
   {
-    path: "/account/order/:id",
-    element: () => (
-      <AccountLayout>
-        <OrderDetails />
-      </AccountLayout>
-    ),
+    path: "/account/order-history/:id",
+    element: OrderDetails,
     hasLayout: false,
   },
   {
@@ -280,7 +269,6 @@ export const sharedRoutes = [
     ),
     hasLayout: false,
   },
-
 
   //sellerAuth routes
 
@@ -335,8 +323,6 @@ export const sharedRoutes = [
     hasLayout: true,
   },
 ];
-
-
 
 // export const authRoutes = [
 //   {

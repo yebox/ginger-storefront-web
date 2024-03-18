@@ -35,15 +35,15 @@ const BpCheckedIcon = styled(BpIcon)(({ size }) => ({
   },
 }));
 
-function BpCheckbox({ onChange, isTransparent, size, ...props }) {
+function BpCheckbox({ onChange, isTransparent, checked, size, ...props }) {
   return (
     <Checkbox
       sx={{
         padding: "0px",
       }}
       onChange={onChange}
-      disableRipple
       color="default"
+      checked={checked}
       checkedIcon={<BpCheckedIcon size={size} />}
       icon={<BpIcon size={size} isTransparent={isTransparent} />}
       inputProps={{ "aria-label": "Checkbox demo" }}

@@ -56,7 +56,7 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 }));
 
 export const GAccordion = ({ title, content, idx }) => {
-  const [expandedPanel, setExpandedPanel] = React.useState("panel1");
+  const [expandedPanel, setExpandedPanel] = React.useState("panel0");
 
   const handleChange = (panel) => (event, newExpanded) => {
     setExpandedPanel(newExpanded ? panel : false);

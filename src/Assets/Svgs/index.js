@@ -74,7 +74,7 @@ import { ReactComponent as LinkedInFill } from "./linkedInFill.svg";
 import { ReactComponent as FacebookFill } from "./facebookFill.svg";
 import { ReactComponent as DocumentIcon } from "./document.svg";
 import { ReactComponent as RedHeart } from "./redHeart.svg";
-
+import { ReactComponent as InfoIconWhiteBg } from "./infoWhite.svg";
 
 export {
   Logo,
@@ -152,5 +152,6 @@ export {
   LinkedInFill,
   FacebookFill,
   DocumentIcon,
-  RedHeart
+  RedHeart,
+  InfoIconWhiteBg,
 };

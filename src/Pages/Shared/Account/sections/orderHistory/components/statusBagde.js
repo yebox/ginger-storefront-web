@@ -1,6 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
-import { orderStatus } from "./data";
+import { orderStatusMapping } from "../../../../../../Utils";
 
 const StatusBagde = ({ status }) => {
   return <Container $status={status}>{status}</Container>;
@@ -17,17 +17,17 @@ const Container = styled.div`
   padding: 0 12px;
   border-radius: 16px;
   background: ${({ $status }) =>
-    $status === orderStatus.delivered
+    $status === orderStatusMapping.cancelled
+      ? `#f7dfe2`
+      : $status === orderStatusMapping.completed
       ? `#ECFDF3`
-      : $status === orderStatus.inTransit
-      ? `#FFF6ED`
-      : `#EFF8FF`};
+      : `#fffaeb`};
   color: ${({ $status }) =>
-    $status === orderStatus.delivered
+    $status === orderStatusMapping.cancelled
+      ? `#E71D36`
+      : $status === orderStatusMapping.completed
       ? `#027A48`
-      : $status === orderStatus.inTransit
-      ? `#C4320A`
-      : `#175CD3`};
+      : `#B54708`};
   text-align: center;
   font-size: 14px;
   font-style: normal;

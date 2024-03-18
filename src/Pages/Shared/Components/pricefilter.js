@@ -3,18 +3,18 @@ import { styled } from "styled-components";
 import { GCheckbox } from "../../../Ui_elements";
 
 export const PriceFilter = ({ options, selectedPrice, setSelectedPrice }) => {
-  const [priceRangeStart, setPriceRangeStart] = useState('');
-  const [priceRangeEnd, setPriceRangeEnd] = useState('');
+  const [priceRangeStart, setPriceRangeStart] = useState("");
+  const [priceRangeEnd, setPriceRangeEnd] = useState("");
   const [isApplyDisabled, setIsApplyDisabled] = useState(true);
   const [currentFocus, setCurrentFocus] = useState(0);
 
   const handleApplyClick = () => {
     // Validate price range inputs
-    if (priceRangeStart !== '' && priceRangeEnd !== '') {
+    if (priceRangeStart !== "" && priceRangeEnd !== "") {
       // Construct the price range object
       const priceRange = {
         gt: parseInt(priceRangeStart),
-        lt: parseInt(priceRangeEnd)
+        lt: parseInt(priceRangeEnd),
       };
 
       // Set the selected price range
@@ -23,19 +23,21 @@ export const PriceFilter = ({ options, selectedPrice, setSelectedPrice }) => {
   };
 
   const handleCheckboxChange = (price) => {
-    setSelectedPrice(prevSelectedPrice => prevSelectedPrice === price ? null : price);
+    setSelectedPrice((prevSelectedPrice) =>
+      prevSelectedPrice === price ? null : price
+    );
   };
 
   const handleInputChange = (event, inputType) => {
     const value = event.target.value;
-    if (inputType === 'start') {
+    if (inputType === "start") {
       setPriceRangeStart(value);
     } else {
       setPriceRangeEnd(value);
     }
 
     // Enable the apply button if both inputs are filled
-    setIsApplyDisabled(!(priceRangeStart !== '' && priceRangeEnd !== ''));
+    setIsApplyDisabled(!(priceRangeStart !== "" && priceRangeEnd !== ""));
   };
 
   return (
@@ -46,7 +48,7 @@ export const PriceFilter = ({ options, selectedPrice, setSelectedPrice }) => {
           placeholder="₦ 0.00"
           type="number"
           value={priceRangeStart}
-          onChange={(e) => handleInputChange(e, 'start')}
+          onChange={(e) => handleInputChange(e, "start")}
           onFocus={() => setCurrentFocus(1)}
           onBlur={() => setCurrentFocus(0)}
         />
@@ -55,15 +57,15 @@ export const PriceFilter = ({ options, selectedPrice, setSelectedPrice }) => {
           placeholder="₦ 0.00"
           type="number"
           value={priceRangeEnd}
-          onChange={(e) => handleInputChange(e, 'end')}
+          onChange={(e) => handleInputChange(e, "end")}
           $isFocus={currentFocus === 2}
           onFocus={() => setCurrentFocus(2)}
           onBlur={() => setCurrentFocus(0)}
         />
         {/* <ApplyButton disabled={isApplyDisabled} onClick={handleApplyClick}>Apply</ApplyButton> */}
-        {!isApplyDisabled && <ApplyTxt onClick={handleApplyClick}>Apply</ApplyTxt>}
-
-
+        {!isApplyDisabled && (
+          <ApplyTxt onClick={handleApplyClick}>Apply</ApplyTxt>
+        )}
       </PriceRange>
       {options?.map((priceOption, index) => (
         <CheckWrapper key={index}>
@@ -79,9 +81,6 @@ export const PriceFilter = ({ options, selectedPrice, setSelectedPrice }) => {
     </Container>
   );
 };
-
-
-
 
 const Container = styled.div`
   display: flex;

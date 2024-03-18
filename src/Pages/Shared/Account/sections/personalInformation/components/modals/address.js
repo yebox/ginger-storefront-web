@@ -12,8 +12,7 @@ import { Controller, useForm } from "react-hook-form";
 import { AddressSchema } from "../../validation";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { toast } from "react-hot-toast";
-import { countryData } from "../../../../../SignUp/data";
-import { devices } from "../../../../../../../Utils";
+import { countries, devices } from "../../../../../../../Utils";
 import { useApiSend, useDeviceCheck } from "../../../../../../../Hooks";
 import { updateUserAddress } from "../../../../../../../Urls";
 import { useQueryClient } from "@tanstack/react-query";
@@ -34,7 +33,7 @@ const AddressModal = ({ isOpen, handleClose }) => {
   const { mutate: updateAddress, isPending: isUpdatingAddress } = useApiSend(
     updateUserAddress,
     () => {
-      toast.error("Address book updated");
+      toast.success("Address book updated");
       queryClient.invalidateQueries(["get-user-data"]);
     },
     () => {
@@ -52,7 +51,6 @@ const AddressModal = ({ isOpen, handleClose }) => {
       postalCode: data?.zipCode,
     };
     updateAddress(body);
-    toast.success(`You address has been added successfully.`);
     handleClose();
   };
 
@@ -69,8 +67,8 @@ const AddressModal = ({ isOpen, handleClose }) => {
             placeholder="Address"
             name="address"
             register={register}
-            error={errors.address}
-            errorText={errors.address && errors.address.message}
+            error={errors?.address}
+            errorText={errors?.address && errors?.address?.message}
             required
           />
           <GTextField
@@ -78,8 +76,8 @@ const AddressModal = ({ isOpen, handleClose }) => {
             placeholder="Apartment/Suite (optional)"
             name="apartment"
             register={register}
-            error={errors.apartment}
-            errorText={errors.apartment && errors.apartment.message}
+            error={errors?.apartment}
+            errorText={errors?.apartment && errors?.apartment?.message}
             required
           />
           <Row>
@@ -88,8 +86,8 @@ const AddressModal = ({ isOpen, handleClose }) => {
               placeholder="City"
               name="city"
               register={register}
-              error={errors.city}
-              errorText={errors.city && errors.city.message}
+              error={errors?.city}
+              errorText={errors?.city && errors?.city?.message}
               required
             />
             <GTextField
@@ -97,8 +95,8 @@ const AddressModal = ({ isOpen, handleClose }) => {
               placeholder="State"
               name="state"
               register={register}
-              error={errors.state}
-              errorText={errors.state && errors.state.message}
+              error={errors?.state}
+              errorText={errors?.state && errors?.state?.message}
               required
             />
           </Row>
@@ -110,11 +108,11 @@ const AddressModal = ({ isOpen, handleClose }) => {
               <GSelectField
                 {...field}
                 placeholder="Select a country"
-                options={countryData}
+                options={countries}
                 id="country"
                 searchable={true}
-                isError={!!errors.country}
-                errorText={errors.country && errors.country.message}
+                isError={!!errors?.country}
+                errorText={errors?.country && errors?.country?.message}
               />
             )}
           />
@@ -123,8 +121,8 @@ const AddressModal = ({ isOpen, handleClose }) => {
             placeholder="Zip code"
             name="zipCode"
             register={register}
-            error={errors.zipCode}
-            errorText={errors.zipCode && errors.zipCode.message}
+            error={errors?.zipCode}
+            errorText={errors?.zipCode && errors?.zipCode?.message}
             required
           />
           {/* <GTextField
@@ -133,7 +131,7 @@ const AddressModal = ({ isOpen, handleClose }) => {
             name="phoneNumber"
             register={register}
             error={errors.phoneNumber}
-            errorText={errors.phoneNumber && errors.phoneNumber.message}
+            errorText={errors.phoneNumber && errors.phoneNumber?.message}
             required
           /> */}
           {!isMobile && <GSpacer size={1} />}
@@ -152,6 +150,7 @@ export default AddressModal;
 
 const Container = styled.div`
   width: 55vw;
+  max-width: 750px;
   padding: 64px 60px;
 
   @media ${devices.mobileL} {

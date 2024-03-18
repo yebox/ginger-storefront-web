@@ -4,25 +4,54 @@ import { CaretLeft } from "../../../../../../Assets/Svgs";
 import { GButton } from "../../../../../../Ui_elements";
 import { useNavigate } from "react-router-dom";
 import StatusBagde from "./statusBagde";
-import { itemInfo, orderStatus } from "./data";
 import ItemInfoCard from "./itemInfoCard";
-import { devices } from "../../../../../../Utils";
+import {
+  devices,
+  formatAddress,
+  formatAmount,
+  formatOrderStatus,
+  orderStatusMapping,
+} from "../../../../../../Utils";
 import { useDispatch, useSelector } from "react-redux";
-import { setSelectedOrderItem } from "../../../../../../Redux/Reducers";
+import {
+  setSelectedOrderItem,
+  setSelectedProductName,
+} from "../../../../../../Redux/Reducers";
+import dayjs from "dayjs";
+var localizedFormat = require("dayjs/plugin/localizedFormat");
+dayjs.extend(localizedFormat);
 
-const Details = () => {
+const Details = ({ data }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const globalStore = useSelector((state) => state?.global);
+  const { selectedOrderItem, categories } = useSelector(
+    (state) => state?.global
+  );
 
   useEffect(() => {
-    dispatch(setSelectedOrderItem(itemInfo[0]));
-  }, [dispatch]);
+    data?.items?.length > 0 && dispatch(setSelectedOrderItem(data?.items[0]));
+  }, [data, dispatch]);
 
-  const handleGoBack = () => navigate(`/account`);
+  const handleGoBack = () => navigate(`/account/order-history`);
 
   const handleClick = (item) => {
     dispatch(setSelectedOrderItem(item));
+  };
+
+  const orderStatus = formatOrderStatus(data?.status);
+  const quantity = data?.items?.reduce(
+    (total, item) => total + (item?.quantity || 0),
+    0
+  );
+
+  const handleBuyAgain = () => {
+    const productCategory = categories.find(
+      (x) => x.id === selectedOrderItem?.product?.categoryId
+    );
+    dispatch(setSelectedProductName(selectedOrderItem?.product?.name));
+    navigate(
+      `/categories/${productCategory?.name}/${selectedOrderItem?.productId}`
+    );
   };
 
   return (
@@ -34,33 +63,35 @@ const Details = () => {
         </TitleWrapper>
         <PContentWrapper>
           <Entry>
-            <OrderNumber>Order ORD-TT2354</OrderNumber>
-            <StatusBagde status={orderStatus.inTransit} />
+            <OrderNumber>Order {data?.reference}</OrderNumber>
+            <StatusBagde status={orderStatus} />
           </Entry>
           <Entry>
             <EntryTxt>Quantity</EntryTxt>
-            <EntryTxt>x2</EntryTxt>
+            <EntryTxt>x{quantity}</EntryTxt>
           </Entry>
           <Entry>
-            <EntryTxt>Place on:</EntryTxt>
-            <EntryTxt>Jan 12, 2024 - 3:45pm</EntryTxt>
+            <EntryTxt>Placed on:</EntryTxt>
+            <EntryTxt>{dayjs(data?.createdAt).format("LLLL")}</EntryTxt>
           </Entry>
           <Entry>
             <EntryTxt>Total Amount:</EntryTxt>
-            <PriceTxt>₦75,000.00</PriceTxt>
+            <PriceTxt>{`₦${formatAmount(data?.price)}`}</PriceTxt>
           </Entry>
         </PContentWrapper>
       </PriceBox>
       <ItemInfoBox>
         <BoxTitle>Item Information</BoxTitle>
-        {itemInfo.map((item) => (
-          <ItemInfoCard
-            key={item?.id}
-            item={item}
-            handleClick={() => handleClick(item)}
-            isSelected={globalStore?.selectedOrderItem?.id === item?.id}
-          />
-        ))}
+        <CardWrapper>
+          {data?.items?.map((item) => (
+            <ItemInfoCard
+              key={item?.productId}
+              item={item}
+              handleClick={() => handleClick(item)}
+              isSelected={selectedOrderItem?.productId === item?.productId}
+            />
+          ))}
+        </CardWrapper>
       </ItemInfoBox>
       {/* <PaymentInfoBox>
         <BoxTitle>Payment Information</BoxTitle>
@@ -72,23 +103,29 @@ const Details = () => {
           </CardWrapper>
         </PaymentInfoContentWrapper>
       </PaymentInfoBox> */}
-      <DeliveryInfoBox>
-        <BoxTitle>Delivery Information</BoxTitle>
-        <DeliveryInfoContentWrapper>
-          <Entry>
-            <DeliveryLabel>Date:</DeliveryLabel>
-            <DeliveryValue>Jan 15,2024 - 10:45am</DeliveryValue>
-          </Entry>
-          <Entry>
-            <DeliveryLabel>Address:</DeliveryLabel>
-            <DeliveryValue>
-              Centenary city, kilometer 7, Enugu/port Harcourt, Expressway,
-              Enugu
-            </DeliveryValue>
-          </Entry>
-        </DeliveryInfoContentWrapper>
-        <GButton label={"Buy again"} width={"80%"} />
-      </DeliveryInfoBox>
+      {data?.dateDelivered && (
+        <DeliveryInfoBox>
+          <BoxTitle>Delivery Information</BoxTitle>
+          <DeliveryInfoContentWrapper>
+            <Entry>
+              <DeliveryLabel>Date:</DeliveryLabel>
+              <DeliveryValue>Jan 15,2024 - 10:45am</DeliveryValue>
+            </Entry>
+            <Entry>
+              <DeliveryLabel>Address:</DeliveryLabel>
+              <DeliveryValue>
+                {formatAddress(data?.deliveryAddress)}
+              </DeliveryValue>
+            </Entry>
+          </DeliveryInfoContentWrapper>
+          <GButton label={"Buy again"} width={"80%"} />
+        </DeliveryInfoBox>
+      )}
+      {/* {orderStatus === orderStatusMapping.completed && ( */}
+      <BtnWrapper>
+        <GButton label={`Buy again`} width={`70%`} onClick={handleBuyAgain} />
+      </BtnWrapper>
+      {/* )} */}
     </Container>
   );
 };
@@ -191,13 +228,22 @@ const PriceTxt = styled.p`
 const ItemInfoBox = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 20px;
   padding: 32px 80px 32px 0;
   border-bottom: 1px solid #ececee;
 
   @media ${devices.mobileL} {
     padding: 20px;
   }
+`;
+
+const CardWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding-right: 7px;
+  max-height: 320px;
+  overflow-y: scroll;
 `;
 
 const BoxTitle = styled.p`
@@ -288,4 +334,12 @@ const DeliveryValue = styled.p`
   font-weight: 400;
   line-height: 140%; /* 19.6px */
   width: 50%;
+`;
+
+const BtnWrapper = styled.div`
+  padding: 60px 80px 32px 0;
+
+  @media ${devices.mobileL} {
+    padding: 20px;
+  }
 `;

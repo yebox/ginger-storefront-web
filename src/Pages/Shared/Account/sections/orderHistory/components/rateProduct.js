@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { styled } from "styled-components";
 import {
   InfoIcon,
@@ -14,11 +14,65 @@ import {
 import { useNavigate } from "react-router-dom";
 import { devices } from "../../../../../../Utils";
 import { useSelector } from "react-redux";
+import { useApiGet, useApiSend } from "../../../../../../Hooks";
+import {
+  createProductReview,
+  getUserProductReview,
+} from "../../../../../../Urls/productReviews";
+import { toast } from "react-hot-toast";
+import UserReview from "./userReview";
 
-const RateProduct = () => {
+const RateProduct = ({ orderId }) => {
   const [checkedCount, setCheckedCount] = useState(0);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const globalStore = useSelector((state) => state?.global);
+  const { selectedOrderItem } = useSelector((state) => state?.global);
+  const user = useSelector((state) => state?.user);
+  const [review, setReview] = useState("");
+
+  const {
+    data: userReview,
+    isLoading,
+    error,
+  } = useApiGet(
+    ["get-user-product-review", selectedOrderItem?.productId],
+    () => getUserProductReview(selectedOrderItem?.productId, user?._id),
+    {
+      select: (data) => data,
+      onError: (error) => console.log(error),
+      enabled: !!selectedOrderItem?.productId,
+    }
+  );
+
+  const { mutate, isPending } = useApiSend(
+    createProductReview,
+    () => {
+      setIsSubmitted(true);
+    },
+    () => {
+      toast.error("Something went wrong");
+    }
+  );
+
+  useEffect(() => {
+    setIsSubmitted(false);
+    setCheckedCount(0);
+    setReview("");
+  }, [selectedOrderItem]);
+
+  const handleChange = (e) => {
+    setReview(e.target.value);
+  };
+
+  const onSubmit = () => {
+    const body = {
+      review,
+      rating: checkedCount,
+      productId: selectedOrderItem?.productId,
+    };
+    mutate(body);
+  };
+
+  console.log(userReview, userReview?.length < 0);
 
   const navigate = useNavigate();
   return (
@@ -42,11 +96,15 @@ const RateProduct = () => {
               Happy <span>Ginger</span> shopping
             </SubmitSubTxt>
           </SubmittedWrapper>
+        ) : userReview?.length > 0 ? (
+          <UserReview
+            rating={1}
+            review={`From pixel-perfect icons and scalable vector graphics, to full user flows and interactive prototypes, Sketch is the perfect place to design, create and test.`}
+          />
         ) : (
           <>
             <RateTxt>
-              How would you rate{" "}
-              <span>{globalStore?.selectedOrderItem?.name}</span>
+              How would you rate <span>{selectedOrderItem?.product?.name}</span>
             </RateTxt>
             <RatingWrapper>
               {[...Array(5)].map((_, index) => (
@@ -65,12 +123,15 @@ const RateProduct = () => {
                 id="review"
                 placeholder="Leave us a review"
                 inputType="text"
+                value={review}
                 name="review"
+                onChange={handleChange}
               />
               <GButton
                 label={`Submit`}
+                isLoading={isPending}
                 width={`155px`}
-                onClick={() => setIsSubmitted(true)}
+                onClick={onSubmit}
               />
             </ReviewWrapper>
           </>
@@ -89,7 +150,7 @@ const RateProduct = () => {
               width={`98px`}
               fontsize={`12px`}
               paddingProp={`8px 16px`}
-              onClick={() => navigate("/report/1")}
+              onClick={() => navigate(`/report/${orderId}`)}
             />
           </ReportContent>
         </ReportWrapper>

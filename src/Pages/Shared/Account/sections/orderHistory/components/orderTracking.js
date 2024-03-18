@@ -8,7 +8,7 @@ import { devices } from "../../../../../../Utils";
 const stepData = {
   dateProcessed: `12/08/2022`,
   timeProcessed: `3:05pm`,
-  dateDispatched: ``,
+  dateDispatched: `12/08/2022`,
   timeDispatched: ``,
   dateDelivered: ``,
   timeDelivered: ``,
