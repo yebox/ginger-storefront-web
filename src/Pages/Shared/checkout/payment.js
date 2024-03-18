@@ -54,6 +54,8 @@ const Payment = () => {
         resolver: yupResolver(CardDetailsSchema)
     })
 
+    console.log(isDirty, isValid, "hey")
+
     const handlePaymentMethodChange = (event) => {
         setPaymentMethod(event.target.value);
         setShowForm(event.target.value === 'creditCard');
@@ -298,7 +300,7 @@ const Payment = () => {
                     </Terms>
                     <GButton
                         onClick={onSubmit}
-                        isDisabled={!paymentMethod || (paymentMethod === 'creditCard' && (!isValid || !isDirty))}
+                        isDisabled={!paymentMethod || (paymentMethod === 'creditCard' && !isDirty)}
                         label={"Pay"}
                         isLoading={isPending}
                         width={"50%"}
