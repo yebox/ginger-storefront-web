@@ -54,7 +54,6 @@ const Payment = () => {
         resolver: yupResolver(CardDetailsSchema)
     })
 
-    console.log(isDirty, isValid, "hey")
 
     const handlePaymentMethodChange = (event) => {
         setPaymentMethod(event.target.value);

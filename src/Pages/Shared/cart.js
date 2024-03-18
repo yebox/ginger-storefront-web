@@ -19,6 +19,7 @@ import {
     removeAllCartItem,
     addToCart,
     getShoppingConfig,
+    verifyPayments,
 } from "../../Urls";
 import { useSelector } from "react-redux";
 import { IMAGE_BASE_URL, formatAmount } from "../../Utils";
@@ -41,13 +42,32 @@ export default function Cart() {
     const [item, setItem] = useState(null);
     const queryClient = new QueryClient();
 
+    const { data: verifyData, isLoading: isVerifying, refetch: verify } = useApiGet(
+        ['verify-payments'],
+        () => verifyPayments({
+            reference
+        }),
+        {
+            enabled: !!reference
+        }
+    )
 
     useEffect(() => {
         if (reference) {
-            setModalType('confirmed')
+            setModalType('processing')
             setShowModal(true)
+            verify()
         }
     }, [reference])
+
+    useEffect(() => {
+        if (verifyData) {
+            setModalType('confirm');
+            setShowModal(false)
+            toast.success("Purchase successful")
+        }
+    }, [verifyData]);
+
     const {
         data: cartItems,
         isLoading,
@@ -388,26 +408,27 @@ export default function Cart() {
 
           <b>You have no item in cart</b>
 
-          <EmptyButtonHolder>
-            <GButton
-              onClick={() => navigate("/categories/all")}
-              label={"Continue shopping"}
+                    <EmptyButtonHolder>
+                        <GButton
+                            onClick={() => navigate("/categories/all")}
+                            label={"Continue shopping"}
+                        />
+                    </EmptyButtonHolder>
+                    <InstaFooter />
+                </NoItemContainer>
+            )}
+            <LineLoader
+                loading={
+                    isLoading ||
+                    isRemovingFromCart ||
+                    isRemovingAllItems ||
+                    isPending ||
+                    isFetching ||
+                    isVerifying
+                }
             />
-          </EmptyButtonHolder>
-          <InstaFooter />
-        </NoItemContainer>
-      )}
-      <LineLoader
-        loading={
-          isLoading ||
-          isRemovingFromCart ||
-          isRemovingAllItems ||
-          isPending ||
-          isFetching
-        }
-      />
-    </>
-  );
+        </>
+    );
 }
 
 const Container = styled.main`

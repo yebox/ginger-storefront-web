@@ -194,7 +194,7 @@ export const Product = ({ width, item, mbWidth }) => {
           <div>
             <p>Seller:</p>
             <Link
-              to={`/${item?.seller?.firstName} ${item?.seller?.lastName}`}
+              to={`/shop/${item?.seller?.firstName}_${item?.seller?.lastName}`}
             >{`${item?.seller?.firstName} ${item?.seller?.lastName}`}</Link>
           </div>
 
