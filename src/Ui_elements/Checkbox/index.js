@@ -52,13 +52,13 @@ function BpCheckbox({ onChange, isTransparent, checked, size, ...props }) {
   );
 }
 
-export const GCheckbox = ({ size, isTransparent, checked, onChange }) => {
+export const GCheckbox = ({ size, isTransparent, onChange, checked }) => {
   return (
     <BpCheckbox
       onChange={onChange}
-      checked={checked}
       isTransparent={isTransparent}
       size={size}
+      checked={checked}
     />
   );
 };

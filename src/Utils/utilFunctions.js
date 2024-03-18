@@ -85,3 +85,15 @@ export const formatCardNumber = (cardNumber) => {
 export const formatAddress = (data) => {
   return `${data?.line1}, ${data?.city}, ${data?.state}, ${data?.country}`;
 };
+
+export const generateUrlParams = (obj) => {
+  let generatedUrl = ``;
+  const arrayOfObjectKeys = Object.keys(obj);
+  arrayOfObjectKeys.forEach((key) => {
+    if (obj[key] || obj[key] === false) {
+      generatedUrl += `${key}=${obj[key]}&`;
+    }
+  });
+  return generatedUrl;
+};
+4;

@@ -1,7 +1,10 @@
 import { request } from "../Utils";
 
-export const getCategories = (param) =>
+export const getCategories = (filter) =>
     request({
         url: `product-categories`,
-        method: 'GET'
-})
+        method: 'GET',
+        params: {
+            ...filter
+        }
+    })

@@ -42,7 +42,7 @@ const Home = () => {
     ["get-featured-products"],
     () => getProducts({ isFeatured: true }),
     {
-      enable: true,
+      enabled: true,
       refetchOnWindowFocus: false,
     }
   );

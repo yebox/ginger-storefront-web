@@ -135,27 +135,36 @@ export const sharedRoutes = [
     hasLayout: false,
   },
   {
-    path: "/categories/hair",
+    path: "/categories/:id",
     element: Categories,
     hasLayout: false,
   },
+  // {
+  //   path: "/categories/nails",
+  //   element: Categories,
+  //   hasLayout: false,
+
+  // },
+  // {
+  //   path: "/categories/eyelashes",
+  //   element: Categories,
+  //   hasLayout: false,
+
+  // },
+  // {
+  //   path: "/categories/skin",
+  //   element: Categories,
+  //   hasLayout: false,
+
+  // },
+  // {
+  //   path: "/categories/equipment",
+  //   element: Categories,
+  //   hasLayout: false,
+
+  // },
   {
-    path: "/categories/nails",
-    element: Categories,
-    hasLayout: false,
-  },
-  {
-    path: "/categories/eyelashes",
-    element: Categories,
-    hasLayout: false,
-  },
-  {
-    path: "/categories/skin",
-    element: Categories,
-    hasLayout: false,
-  },
-  {
-    path: "/categories/equipment",
+    path: "/categories/:category",
     element: Categories,
     hasLayout: false,
   },
@@ -164,6 +173,7 @@ export const sharedRoutes = [
     element: ProductPage,
     hasLayout: false,
   },
+
   {
     path: "/report/:id",
     element: ReportOrder,

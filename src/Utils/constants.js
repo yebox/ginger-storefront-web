@@ -2013,3 +2013,12 @@ export const countries = rawCountries.map(country => ({
 
 
 export const IMAGE_BASE_URL = 'http://172.104.147.51/'
+
+
+export const priceOptions = [
+  { label: "Under ₦ 4,000", range: { lt: 4001 } },
+  { label: "₦ 4,000 - ₦ 24,000", range: { gt: 3999, lt: 24001 } },
+  { label: "₦ 24,000 - ₦ 200,000", range: { gt: 23999, lt: 200001 } },
+  { label: "₦ 200,000 - ₦ 10,000,000", range: { gt: 199999, lt: 10000001 } },
+  { label: "More than ₦ 10,000,000", range: { gt: 10000000 } },
+];

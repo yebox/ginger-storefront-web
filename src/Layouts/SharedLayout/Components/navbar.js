@@ -16,8 +16,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { Avatar, Skeleton } from "@mui/material";
 import { useApiGet } from "../../../Hooks";
 import { GTextField, PopMenu } from "../../../Ui_elements";
-import { getCategories, getProductBrands } from "../../../Urls";
-import { setCategories } from "../../../Redux/Reducers";
+import { getCategories } from "../../../Urls";
+import {
+  setCategories,
+  setInitialSubCateogry,
+  setSelectedCategory,
+} from "../../../Redux/Reducers";
 
 const imageLinks = [
   "https://images.unsplash.com/photo-1546877625-cb8c71916608?q=80&w=3270&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -32,9 +36,10 @@ export const Navbar = () => {
   const [activeItem, setActiveItem] = useState(null);
   const [showFullOptions, setShowFullOptions] = useState(false);
   const [fullOptionsHovered, setFullOptionsHovered] = useState(false);
-  const user = useSelector((state) => state?.user);
-  const navigate = useNavigate();
   const dispatch = useDispatch();
+  const user = useSelector((state) => state?.user);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     imageLinks.forEach((link) => {
@@ -161,6 +166,7 @@ export const Navbar = () => {
 
               {data?.map((category, index) => (
                 <NavLink
+                  onClick={() => dispatch(setSelectedCategory(category))}
                   key={index}
                   to={`/categories/${category.name}`}
                   onMouseEnter={() => handleNavLinkHover(index)}
@@ -186,17 +192,24 @@ export const Navbar = () => {
           <div>
             <div>
               {activeItem.subCategories?.map((item, index) => {
+                console.log(item, "navbar item");
+                console.log(activeItem, "actove navbar item");
+
                 return (
                   <NavLink
+                    onClick={() => {
+                      dispatch(setSelectedCategory(activeItem));
+                      dispatch(setInitialSubCateogry(item));
+                    }}
                     key={index}
-                    to="/item"
+                    to={`/categories/${activeItem?.name}?sub_cat=${item?.name}`}
                     onMouseEnter={() =>
                       setCurrentImage(
                         `http://172.104.147.51/${item?.images[0]}`
                       )
                     }
                   >
-                    {item.name}
+                    {item?.name}
                   </NavLink>
                 );
               })}
@@ -241,8 +254,11 @@ export const Navbar = () => {
 
 const OuterContainer = styled.nav`
   width: 100%;
-  position: relative;
-  position: relative;
+  position: sticky;
+  top: 0;
+  left: 0;
+  background-color: white;
+  z-index: 50;
 `;
 const Container = styled.div`
   width: 100%;

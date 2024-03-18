@@ -16,16 +16,30 @@ const GlobalSlice = createSlice({
       state.categories = action.payload;
       return state;
     },
+    setSelectedCategory: (state, action) => {
+      state.selectedCategory = action.payload;
+    },
+    setInitialSubCateogry: (state, action) => {
+      state.initialSubCategory = action.payload;
+    },
   },
 });
 
 const { actions, reducer: GlobalReducer } = GlobalSlice;
 
-const { setSelectedProductName, setSelectedOrderItem, setCategories } = actions;
+const {
+  setSelectedProductName,
+  setSelectedOrderItem,
+  setSelectedCategory,
+  setCategories,
+  setInitialSubCateogry,
+} = actions;
 
 export {
   GlobalReducer,
   setSelectedProductName,
   setSelectedOrderItem,
   setCategories,
+  setSelectedCategory,
+  setInitialSubCateogry,
 };
