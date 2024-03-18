@@ -36,9 +36,9 @@ const OrderCard = ({ id, items, reference, dateDelivered, status }) => {
         </LeftWrapper>
         <RightWrapper to={`/account/order-history/${id}`}>
           <TrackTxt>
-            {orderStatus === orderStatusMapping.pending
-              ? `Track order`
-              : `See details`}
+            {orderStatus === orderStatusMapping.completed
+              ? `See details`
+              : `Track order`}
           </TrackTxt>
           <CaretLeft />
         </RightWrapper>

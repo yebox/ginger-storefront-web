@@ -48,7 +48,7 @@ export const Product = ({ width, item, mbWidth }) => {
   );
 
   const { mutate: removeFromCart, isPending: isRemovingFromCart } = useApiSend(
-    () => removeCartItem(item?._id),
+    () => removeCartItem(item?._id, quantity),
     () => {
       toast.success("Removed from cart");
       queryClient.invalidateQueries(["cart-data"]);

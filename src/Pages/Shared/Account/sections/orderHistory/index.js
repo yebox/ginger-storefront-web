@@ -19,11 +19,13 @@ const OrderHistory = () => {
         <Title>Order History</Title>
         <EditIcon />
       </TopWrapper>
-      <BottomWrapepr>
-        {data?.map((order, idx) => (
-          <OrderCard key={idx} {...order} />
-        ))}
-      </BottomWrapepr>
+      <BottomWrapper>
+        {data?.length > 0 ? (
+          data?.map((order, idx) => <OrderCard key={idx} {...order} />)
+        ) : (
+          <EmptyOrderTxt>No order found</EmptyOrderTxt>
+        )}
+      </BottomWrapper>
     </Container>
   );
 };
@@ -55,7 +57,7 @@ const TopWrapper = styled.div`
   }
 `;
 
-const BottomWrapepr = styled.div`
+const BottomWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 11px;
@@ -73,4 +75,15 @@ const Title = styled.p`
   font-style: normal;
   font-weight: 500;
   line-height: 120%; /* 16.8px */
+`;
+
+const EmptyOrderTxt = styled.p`
+  color: var(--Black-500, #151515);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 150%;
+  margin-top: 10px;
+  width: 100%;
+  text-align: center;
 `;
