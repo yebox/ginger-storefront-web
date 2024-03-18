@@ -35,15 +35,15 @@ const BpCheckedIcon = styled(BpIcon)(({ size }) => ({
   },
 }));
 
-function BpCheckbox({ onChange, isTransparent, size, ...props }) {
+function BpCheckbox({ onChange, isTransparent, checked, size, ...props }) {
   return (
     <Checkbox
       sx={{
         padding: "0px",
       }}
       onChange={onChange}
-      disableRipple
       color="default"
+      checked={checked}
       checkedIcon={<BpCheckedIcon size={size} />}
       icon={<BpIcon size={size} isTransparent={isTransparent} />}
       inputProps={{ "aria-label": "Checkbox demo" }}
@@ -52,8 +52,13 @@ function BpCheckbox({ onChange, isTransparent, size, ...props }) {
   );
 }
 
-export const GCheckbox = ({ size, isTransparent, onChange }) => {
+export const GCheckbox = ({ size, isTransparent, checked, onChange }) => {
   return (
-    <BpCheckbox onChange={onChange} isTransparent={isTransparent} size={size} />
+    <BpCheckbox
+      onChange={onChange}
+      checked={checked}
+      isTransparent={isTransparent}
+      size={size}
+    />
   );
 };

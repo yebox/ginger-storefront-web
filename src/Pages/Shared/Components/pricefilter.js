@@ -1,9 +1,15 @@
 import React, { useState } from "react";
 import { styled } from "styled-components";
 import { GCheckbox } from "../../../Ui_elements";
+import isEqual from "lodash/isEqual";
 
-export const PriceFilter = () => {
+export const PriceFilter = ({ setFilterValue, filterValue }) => {
   const [currentFocus, setCurrentFocus] = useState(0);
+  const [priceData, setPriceData] = useState();
+
+  const handleChange = (name, value) => {
+    setPriceData({ ...priceData, [name]: value });
+  };
 
   return (
     <Container>
@@ -12,6 +18,8 @@ export const PriceFilter = () => {
           $isFocus={currentFocus === 1}
           placeholder="₦ 0.00"
           type="number"
+          name="gt"
+          onChange={(e) => handleChange(e.target.name, e.target.value)}
           onFocus={() => setCurrentFocus(1)}
           onBlur={() => setCurrentFocus(0)}
         />
@@ -19,38 +27,59 @@ export const PriceFilter = () => {
         <PriceInput
           placeholder="₦ 0.00"
           type="number"
+          name="lt"
+          onChange={(e) => handleChange(e.target.name, e.target.value)}
           $isFocus={currentFocus === 2}
           onFocus={() => setCurrentFocus(2)}
           onBlur={() => setCurrentFocus(0)}
         />
-        <ApplyTxt>Apply</ApplyTxt>
+        <ApplyTxt onClick={() => setFilterValue(priceData)}>Apply</ApplyTxt>
       </PriceRange>
-      <CheckWrapper>
-        <GCheckbox size={`20px`} isTransparent={true} />
+      <CheckWrapper onClick={() => setFilterValue({ lt: 4000 })}>
+        <GCheckbox
+          size={`20px`}
+          isTransparent={true}
+          checked={isEqual(filterValue, { lt: 4000 })}
+        />
         <FilterAmt>Under 4,000</FilterAmt>
       </CheckWrapper>
-      <CheckWrapper>
-        <GCheckbox size={`20px`} isTransparent={true} />
+      <CheckWrapper onClick={() => setFilterValue({ gt: 4000, lt: 24000 })}>
+        <GCheckbox
+          size={`20px`}
+          isTransparent={true}
+          checked={isEqual(filterValue, { gt: 4000, lt: 24000 })}
+        />
         <FilterAmt>4,000 - 24,000</FilterAmt>
       </CheckWrapper>
-      <CheckWrapper>
-        <GCheckbox size={`20px`} isTransparent={true} />
+      <CheckWrapper onClick={() => setFilterValue({ gt: 24000, lt: 200000 })}>
+        <GCheckbox
+          size={`20px`}
+          isTransparent={true}
+          checked={isEqual(filterValue, { gt: 24000, lt: 200000 })}
+        />
         <FilterAmt>24,000 - 200,000</FilterAmt>
       </CheckWrapper>
-      <CheckWrapper>
-        <GCheckbox size={`20px`} isTransparent={true} />
+      <CheckWrapper
+        onClick={() => setFilterValue({ gt: 200000, lt: 10000000 })}
+      >
+        <GCheckbox
+          size={`20px`}
+          isTransparent={true}
+          checked={isEqual(filterValue, { gt: 200000, lt: 10000000 })}
+        />
         <FilterAmt>200,000 - 10,000,000</FilterAmt>
       </CheckWrapper>
-      <CheckWrapper>
-        <GCheckbox size={`20px`} isTransparent={true} />
+      <CheckWrapper onClick={() => setFilterValue({ gt: 10000000 })}>
+        <GCheckbox
+          size={`20px`}
+          isTransparent={true}
+          checked={isEqual(filterValue, { gt: 10000000 })}
+        />
         <FilterAmt>More than 10,000,000</FilterAmt>
       </CheckWrapper>
     </Container>
   );
 };
-
-
-
 
 const Container = styled.div`
   display: flex;

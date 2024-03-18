@@ -2,7 +2,7 @@ import React, { useMemo, useState } from "react";
 import { styled } from "styled-components";
 import { Plus } from "../../../../../../Assets/Svgs";
 import AddressModal from "./modals/address";
-import { devices } from "../../../../../../Utils";
+import { devices, formatAddress } from "../../../../../../Utils";
 import { useApiGet } from "../../../../../../Hooks";
 import { getUser } from "../../../../../../Urls";
 
@@ -19,7 +19,7 @@ const Address = () => {
 
   const addresses = useMemo(() => {
     return [userData?.address]?.map((x) => ({
-      address: `${x?.line1}, ${x?.city}, ${x?.state}, ${x?.country}`,
+      address: formatAddress(x),
       phoneNumber: userData?.phoneNumber,
       fullName: `${userData?.firstName} ${userData?.lastName}`,
     }));

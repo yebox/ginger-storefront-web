@@ -33,9 +33,9 @@ export const Product = ({ width, item, mbWidth }) => {
   const [items, setItems] = useState([]);
   const [quantity, setQuantity] = useState(0);
   const user = useSelector((state) => state.user);
+  const { categories } = useSelector((state) => state.global);
   const queryClient = useQueryClient();
 
-  console.log(item, "item");
   const { mutate, isPending } = useApiSend(
     (_) => addToCart(_, user?._id),
     () => {
@@ -47,7 +47,7 @@ export const Product = ({ width, item, mbWidth }) => {
     }
   );
 
-  const { mutate: removeFromCart, isPending: isRemovingFromCart, } = useApiSend(
+  const { mutate: removeFromCart, isPending: isRemovingFromCart } = useApiSend(
     () => removeCartItem(item?._id),
     () => {
       toast.success("Removed from cart");
@@ -97,13 +97,13 @@ export const Product = ({ width, item, mbWidth }) => {
       enabled: true,
       refecthOnWindowFocus: true,
     }
-  )
-
-
+  );
 
   const isWishlist = useMemo(() => {
     if (wishlistData) {
-      const result = wishlistData?.items?.some(data => data?.product?._id === item?._id);
+      const result = wishlistData?.items?.some(
+        (data) => data?.product?._id === item?._id
+      );
       return result;
     }
     return false;
@@ -111,7 +111,9 @@ export const Product = ({ width, item, mbWidth }) => {
 
   const isCart = useMemo(() => {
     if (cartData) {
-      const cartItem = cartData.items?.find(data => data.product?._id === item?._id);
+      const cartItem = cartData.items?.find(
+        (data) => data.product?._id === item?._id
+      );
       if (cartItem) {
         setQuantity(cartItem?.quantity);
         return true;
@@ -161,8 +163,9 @@ export const Product = ({ width, item, mbWidth }) => {
   };
 
   const handleClick = () => {
+    const productCategory = categories.find((x) => x.id === item?.categoryId);
     dispatch(setSelectedProductName(item?.name));
-    navigate(`/categories/${item?.category?.name}/${item?._id}`);
+    navigate(`/categories/${productCategory?.name}/${item?._id}`);
   };
 
   if (isLoadingWishlist || isLoadingCartData) {
@@ -190,7 +193,9 @@ export const Product = ({ width, item, mbWidth }) => {
         <SellerRate>
           <div>
             <p>Seller:</p>
-            <Link to={`/${item?.brand?.name}`}>{item?.brand?.name}</Link>
+            <Link
+              to={`/${item?.seller?.firstName} ${item?.seller?.lastName}`}
+            >{`${item?.seller?.firstName} ${item?.seller?.lastName}`}</Link>
           </div>
 
           <div>
@@ -324,6 +329,7 @@ const Itemdetail = styled.div`
   p {
     font-size: 1.2rem;
     color: var(--Black-500, #151515);
+    height: 46.67px;
   }
 
   @media ${devices.mobileL} {

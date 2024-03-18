@@ -1,14 +1,23 @@
 import React from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
-import { Account, Cart, Dollar, DownArrow, Like, Logo, Search, BlackX } from '../../../Assets/Svgs'
-import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { Avatar, Skeleton } from '@mui/material';
-import { useApiGet } from '../../../Hooks';
+import {
+  Account,
+  Cart,
+  Dollar,
+  DownArrow,
+  Like,
+  Logo,
+  Search,
+  BlackX,
+} from "../../../Assets/Svgs";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Avatar, Skeleton } from "@mui/material";
+import { useApiGet } from "../../../Hooks";
 import { GTextField, PopMenu } from "../../../Ui_elements";
-import { getCategories, getProductBrands } from '../../../Urls';
-
+import { getCategories, getProductBrands } from "../../../Urls";
+import { setCategories } from "../../../Redux/Reducers";
 
 const imageLinks = [
   "https://images.unsplash.com/photo-1546877625-cb8c71916608?q=80&w=3270&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -20,30 +29,32 @@ const imageLinks = [
 
 export const Navbar = () => {
   const [currentImage, setCurrentImage] = useState([0]);
-  const [activeItem, setActiveItem] = useState(null)
+  const [activeItem, setActiveItem] = useState(null);
   const [showFullOptions, setShowFullOptions] = useState(false);
   const [fullOptionsHovered, setFullOptionsHovered] = useState(false);
   const user = useSelector((state) => state?.user);
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
 
   useEffect(() => {
     imageLinks.forEach((link) => {
-      const image = new Image()
-      image.src = link
-    })
-  }, [])
+      const image = new Image();
+      image.src = link;
+    });
+  }, []);
 
   const { data, isLoading } = useApiGet(
-    ['navbar-categories'],
+    ["navbar-categories"],
     () => getCategories(),
     {
       enabled: true,
-      refetchOnWindowFocus: false
+      refetchOnWindowFocus: false,
     }
-  )
+  );
 
-
+  useEffect(() => {
+    data && dispatch(setCategories(data));
+  }, [data]);
 
   const handleNavLinkHover = (index) => {
     setCurrentImage(imageLinks[index]);
@@ -67,9 +78,8 @@ export const Navbar = () => {
     }
   };
 
-
   const menuItems = [
-    { item: 'Logout', action: () => console.log('Edit clicked') },
+    { item: "Logout", action: () => console.log("Edit clicked") },
   ];
 
   return (
@@ -130,47 +140,42 @@ export const Navbar = () => {
         </Utility>
       </Container>
       <LowerNav onMouseLeave={handleLowerNavLeave}>
-        {
-          isLoading ?
-            <SkeletonContainer>
-              <Skeleton width={100} height={30} />
-              <Skeleton width={100} height={30} />
-              <Skeleton width={100} height={30} />
-              <Skeleton width={100} height={30} />
-              <Skeleton width={100} height={30} />
-              <Skeleton width={100} height={30} />
-            </SkeletonContainer>
-            :
-            <LowerNavItemContainer>
-              <MenuLinksContainer>
-                <NavLink
-                  to={"/categories/all"}
+        {isLoading ? (
+          <SkeletonContainer>
+            <Skeleton width={100} height={30} />
+            <Skeleton width={100} height={30} />
+            <Skeleton width={100} height={30} />
+            <Skeleton width={100} height={30} />
+            <Skeleton width={100} height={30} />
+            <Skeleton width={100} height={30} />
+          </SkeletonContainer>
+        ) : (
+          <LowerNavItemContainer>
+            <MenuLinksContainer>
+              <NavLink
+                to={"/categories/all"}
                 // onMouseEnter={() => handleNavLinkHover(0)}
+              >
+                All
+              </NavLink>
+
+              {data?.map((category, index) => (
+                <NavLink
+                  key={index}
+                  to={`/categories/${category.name}`}
+                  onMouseEnter={() => handleNavLinkHover(index)}
                 >
-                  All
+                  {category.name}
                 </NavLink>
+              ))}
+            </MenuLinksContainer>
 
-                {
-                  data?.map((category, index) => (
-                    <NavLink
-                      key={index}
-                      to={`/categories/${category.name}`}
-                      onMouseEnter={() => handleNavLinkHover(index)}
-                    >
-                      {category.name}
-                    </NavLink>
-                  ))
-                }
-              </MenuLinksContainer>
-
-              <Links>
-                <NavLink to={"/about-us"}>About us</NavLink>
-                <NavLink to={"/sell-on-ginger"}>Sell on ginger</NavLink>
-              </Links>
-
-            </LowerNavItemContainer>
-        }
-
+            <Links>
+              <NavLink to={"/about-us"}>About us</NavLink>
+              <NavLink to={"/sell-on-ginger"}>Sell on ginger</NavLink>
+            </Links>
+          </LowerNavItemContainer>
+        )}
       </LowerNav>
 
       {showFullOptions && (
@@ -180,23 +185,24 @@ export const Navbar = () => {
         >
           <div>
             <div>
-              {
-                activeItem.subCategories?.map((item, index) => {
-                  return <NavLink
+              {activeItem.subCategories?.map((item, index) => {
+                return (
+                  <NavLink
                     key={index}
                     to="/item"
-                    onMouseEnter={() => setCurrentImage(`http://172.104.147.51/${item?.images[0]}`)}
+                    onMouseEnter={() =>
+                      setCurrentImage(
+                        `http://172.104.147.51/${item?.images[0]}`
+                      )
+                    }
                   >
                     {item.name}
                   </NavLink>
-                }
-
-                )
-              }
+                );
+              })}
             </div>
 
             <div>
-
               {/* <NavLink
                 to="/perm"
                 onMouseEnter={() => setCurrentImage(imageLinks[0])}
@@ -229,7 +235,6 @@ export const Navbar = () => {
           </ImageHolder>
         </FullOptions>
       )}
-
     </OuterContainer>
   );
 };
@@ -251,7 +256,7 @@ const Container = styled.div`
 
 const ImageHolder = styled.div`
   background-color: var(--primary-coor);
-`
+`;
 
 const Links = styled.div`
   display: flex;
@@ -290,10 +295,10 @@ const Flex = styled.div`
 `;
 
 const SkeletonContainer = styled.div`
-    display: flex;
-    align-items: center;
-    gap: 2rem;
-`
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+`;
 
 const Icons = styled.div`
   display: flex;
@@ -326,7 +331,6 @@ const LowerNav = styled.div`
     border-bottom: 1px solid var(--primary-color) !important;
     padding-bottom: 3px !important;
   }
-
 `;
 
 const LowerNavItemContainer = styled.div`
@@ -334,10 +338,8 @@ const LowerNavItemContainer = styled.div`
   display: flex;
   padding: 0 3%;
   justify-content: space-between;
-`
-const LogoContainer = styled.div`
-  
 `;
+const LogoContainer = styled.div``;
 
 const FullOptions = styled.div`
   background-color: white;
@@ -369,37 +371,36 @@ const FullOptions = styled.div`
     div {
       display: flex;
       flex-direction: column;
-      gap: 1rem;  
+      gap: 1rem;
     }
   }
 `;
 
 const SearchContainer = styled.div`
-    display: flex;
-    align-items: center;
-    gap:2rem;
-    width: 50%;
-    background-color: var(--gray-200);
-    border-color: var(--gray-200);
-    padding: 10px 20px 0 20px;
-    border-radius: 100px;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  width: 50%;
+  background-color: var(--gray-200);
+  border-color: var(--gray-200);
+  padding: 10px 20px 0 20px;
+  border-radius: 100px;
 
-    p{
-        font-size: 2rem;
-        font-weight: 500;
-    }
-`
+  p {
+    font-size: 2rem;
+    font-weight: 500;
+  }
+`;
 const Cancel = styled(BlackX)`
-    cursor: pointer;
-    transition: all 0.3s ease;
-    &:hover{
-        transform: scale(1.1);
-    }
-
-`
+  cursor: pointer;
+  transition: all 0.3s ease;
+  &:hover {
+    transform: scale(1.1);
+  }
+`;
 
 const MenuLinksContainer = styled.div`
   display: flex;
-    align-items: center;
-    gap: 2rem;
-`
+  align-items: center;
+  gap: 2rem;
+`;

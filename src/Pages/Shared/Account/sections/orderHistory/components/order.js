@@ -9,7 +9,7 @@ import {
   orderStatusMapping,
 } from "../../../../../../Utils";
 
-const OrderCard = ({ items, reference, dateDelivered, status }) => {
+const OrderCard = ({ id, items, reference, dateDelivered, status }) => {
   const itemCount = items?.length;
   const displayProduct = itemCount > 0 && items[0]?.product;
   const orderStatus = formatOrderStatus(status);
@@ -34,7 +34,7 @@ const OrderCard = ({ items, reference, dateDelivered, status }) => {
             )}
           </DetailsWrapper>
         </LeftWrapper>
-        <RightWrapper to={"/account/order/1"}>
+        <RightWrapper to={`/account/order-history/${id}`}>
           <TrackTxt>
             {orderStatus === orderStatusMapping.pending
               ? `Track order`

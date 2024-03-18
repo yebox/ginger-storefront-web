@@ -57,6 +57,10 @@ const TopWrapper = styled.div`
   border-bottom: 1px solid #f3f3f3;
   padding: 32px 5vw 32px 45px;
 
+  & > svg {
+    cursor: pointer;
+  }
+
   @media ${devices.mobileL} {
     padding: 20px;
 
