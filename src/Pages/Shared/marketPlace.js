@@ -22,19 +22,23 @@ import Fade from "@mui/material/Fade";
 import { useApiGet } from "../../Hooks";
 import { getProducts } from "../../Urls";
 import { useNavigate } from "react-router-dom";
+import { priceOptions } from "../../Utils";
+import { toast } from "react-hot-toast";
 
 const MarketPlace = () => {
   const [label, setLabel] = useState("All");
   const [isOpen, setIsOpen] = useState(false);
-  const [filterValue, setFilterValue] = useState();
+  const [selectedPrice, setSelectedPrice] = useState(null);
+
   const navigate = useNavigate();
 
   const { data: products, isLoading } = useApiGet(
-    ["get-products", filterValue],
-    () => getProducts({ price: filterValue }),
+    ["get-products", selectedPrice],
+    () => getProducts({ price: selectedPrice }),
     {
       enable: true,
       refetchOnWindowFocus: false,
+      // placeholderData: (previousData) => previousData,
     }
   );
 
@@ -73,8 +77,9 @@ const MarketPlace = () => {
               idx={0}
               content={
                 <PriceFilter
-                  setFilterValue={setFilterValue}
-                  filterValue={filterValue}
+                  options={priceOptions}
+                  selectedPrice={selectedPrice}
+                  setSelectedPrice={setSelectedPrice}
                 />
               }
             />

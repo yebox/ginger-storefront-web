@@ -72,7 +72,7 @@ const RateProduct = ({ orderId }) => {
     mutate(body);
   };
 
-  console.log(userReview, userReview?.length < 0);
+  const latestreview = userReview?.pop();
 
   const navigate = useNavigate();
   return (
@@ -98,8 +98,8 @@ const RateProduct = ({ orderId }) => {
           </SubmittedWrapper>
         ) : userReview?.length > 0 ? (
           <UserReview
-            rating={1}
-            review={`From pixel-perfect icons and scalable vector graphics, to full user flows and interactive prototypes, Sketch is the perfect place to design, create and test.`}
+            rating={latestreview?.rating}
+            review={latestreview?.review}
           />
         ) : (
           <>

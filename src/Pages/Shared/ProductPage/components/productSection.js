@@ -109,7 +109,7 @@ const ProductSection = ({ data, isLoading }) => {
   );
 
   const { mutate: removeFromCart, isPending: isRemovingFromCart } = useApiSend(
-    () => removeCartItem(data?._id),
+    () => removeCartItem(data?._id, quantity),
     () => {
       toast.success("Removed from cart");
       queryClient.invalidateQueries(["cart-data"]);
@@ -145,7 +145,7 @@ const ProductSection = ({ data, isLoading }) => {
   const onLike = () => {
     const singleItem = {
       productId: data?._id,
-      quantity: 1,
+      quantity: quantity,
     };
     const updatedItems = [singleItem];
     const body = {
@@ -162,7 +162,7 @@ const ProductSection = ({ data, isLoading }) => {
   const onAddToCart = () => {
     const singleItem = {
       productId: data?._id,
-      quantity: 1,
+      quantity: quantity,
     };
     const updatedItems = [...items, singleItem];
     setItems(updatedItems);

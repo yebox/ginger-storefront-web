@@ -6,7 +6,7 @@ import { useDeviceCheck } from "../../../../../../Hooks";
 const ItemInfoCard = ({ item, isSelected, handleClick }) => {
   const product = item?.product;
   const { isMobile } = useDeviceCheck();
-  const seller = `KeraCare stores`;
+  const seller = `${product?.seller?.firstName} ${product?.seller?.lastName}`;
 
   return (
     <Container $isSelected={isSelected} onClick={() => handleClick(item)}>

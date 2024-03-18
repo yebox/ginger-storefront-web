@@ -20,7 +20,7 @@ const AccountLayout = ({ children }) => {
   const { isMobile } = useDeviceCheck();
 
   const handleLogout = () => {
-    dispatch(logout());
+    dispatch(logout(null));
   };
 
   return (
