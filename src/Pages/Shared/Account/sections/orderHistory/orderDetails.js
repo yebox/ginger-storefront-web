@@ -15,9 +15,6 @@ import { useLocation } from "react-router-dom";
 const OrderDetails = () => {
   const { pathname } = useLocation();
   const id = pathname.split("/").pop();
-  // const isCompleted =
-  //   formatOrderStatus(data?.status) === orderStatusMapping.completed;
-  const isCompleted = true;
 
   const { data, isLoading, isError } = useApiGet(
     "get-single-order",
@@ -28,10 +25,19 @@ const OrderDetails = () => {
       enabled: !!id,
     }
   );
+
+  const status = formatOrderStatus(data?.status);
+  const isCompleted = status === orderStatusMapping.completed;
+
+  console.log(isCompleted, formatOrderStatus(data?.status), data?.status);
   return (
     <Container>
       <Details data={data} />
-      {isCompleted ? <RateProduct orderId={id} /> : <OrderTracking />}
+      {isCompleted ? (
+        <RateProduct orderId={id} />
+      ) : (
+        <OrderTracking status={status} />
+      )}
     </Container>
   );
 };

@@ -3,18 +3,65 @@ import { styled } from "styled-components";
 import { OrderTrackIcon, OrderTrackStar } from "../../../../../../Assets/Svgs";
 import TrackStepper from "./trackStepper";
 import CancelOrder from "./cancelOrder";
-import { devices } from "../../../../../../Utils";
+import { devices, orderStatusMapping } from "../../../../../../Utils";
+// import { useApiGet } from "../../../../../../Hooks";
+// import { getLogistics } from "../../../../../../Urls/logistics";
+import dayjs from "dayjs";
+var localizedFormat = require("dayjs/plugin/localizedFormat");
+dayjs.extend(localizedFormat);
 
-const stepData = {
-  dateProcessed: `12/08/2022`,
-  timeProcessed: `3:05pm`,
-  dateDispatched: `12/08/2022`,
-  timeDispatched: ``,
-  dateDelivered: ``,
-  timeDelivered: ``,
-};
+// const stepData = {
+//   dateProcessed: `12/08/2022`,
+//   timeProcessed: `3:05pm`,
+//   dateDispatched: `12/08/2022`,
+//   timeDispatched: `2:10pm`,
+//   dateDelivered: ``,
+//   timeDelivered: ``,
+// };
 
-const OrderTracking = () => {
+const OrderTracking = ({ status }) => {
+  // const { data, isLoading, isError } = useApiGet(
+  //   ["get-logistics"],
+  //   () => getLogistics(),
+  //   {
+  //     select: (data) => data,
+  //     onError: (error) => console.log(error),
+  //   }
+  // );
+
+  // const dateTime = data && dayjs(data[0]?.timestamp).format("L LT");
+  let stepData = {};
+  if (status === orderStatusMapping.pending) {
+    stepData = {
+      dateProcessed: `12/08/2022`,
+      timeProcessed: `3:05pm`,
+      dateDispatched: ``,
+      timeDispatched: ``,
+      dateDelivered: ``,
+      timeDelivered: ``,
+    };
+  }
+  if (status === orderStatusMapping.shipped) {
+    stepData = {
+      dateProcessed: `12/08/2022`,
+      timeProcessed: `3:05pm`,
+      dateDispatched: `12/08/2022`,
+      timeDispatched: `2:10pm`,
+      dateDelivered: ``,
+      timeDelivered: ``,
+    };
+  }
+  if (status === orderStatusMapping.completed) {
+    stepData = {
+      dateProcessed: `12/08/2022`,
+      timeProcessed: `3:05pm`,
+      dateDispatched: `12/08/2022`,
+      timeDispatched: `2:10pm`,
+      dateDelivered: `18/03/2024`,
+      timeDelivered: `6:30px`,
+    };
+  }
+
   return (
     <Container>
       <Header>

@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 import {
-  AuthRoutes,
-  PrivateRoutes,
+  // AuthRoutes,
+  // PrivateRoutes,
   SharedRoutes,
-  AccountRoutes,
-  SellerAuthRoutes,
+  // AccountRoutes,
+  // SellerAuthRoutes,
 } from ".";
 import { useApiSend } from "../Hooks";
 import { refreshToken } from "../Urls";
@@ -14,17 +14,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout, setTokenOnRefresh } from "../Redux/Reducers";
 
 export const AppRoute = () => {
-
-  const user = useSelector(state => state.user);
-  const { refreshToken: token } = user;
+  const user = useSelector((state) => state.user);
+  const token = user?.refreshToken;
   const dispatch = useDispatch();
   const { mutate } = useApiSend(
     refreshToken,
     (data) => {
-      dispatch(setTokenOnRefresh(data?.accessToken))
+      dispatch(setTokenOnRefresh(data?.accessToken));
     },
     () => {
-      dispatch(logout);
+      dispatch(logout(null));
     }
   );
 

@@ -35,8 +35,8 @@ function App() {
           },
           error: {
             style: {
-              backgroundColor: `#FF4623`,
-              color: `#131A23`,
+              backgroundColor: `#ffdfd9`,
+              color: `#07111d`,
             },
           },
         }}
