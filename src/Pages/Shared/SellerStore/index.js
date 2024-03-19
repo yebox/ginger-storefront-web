@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import gsap from "gsap";
 import {
     GBreadCrumbs,
     Chip,
@@ -8,8 +9,9 @@ import {
     GModal,
 
 } from "../../../Ui_elements";
+import { useEffect, useRef } from "react";
 import { categoriesData } from './data';
-import { DiscountBannerVector, Mail, ShareIcon } from "../../../Assets/Svgs";
+import { DiscountBannerVector, DownArrow, GiftItem, Mail, ShareIcon } from "../../../Assets/Svgs";
 import { useState, memo } from "react";
 import { BecomeSellerSection, InstaFooter, DiscountBanner } from "../Components";
 import { MinimumSpendBanner } from "./components/minimumSpendBanner";
@@ -19,18 +21,151 @@ import { useApiGet } from "../../../Hooks";
 import { getProducts } from "../../../Urls";
 
 
+
+const timeline = gsap.timeline()
+
+
+// const shakeAnimation = () => {
+//     console.log("shake")
+//     gsap.to('.DiscountItemContainer', {
+//         duration: 0.1,
+//         x: -10,
+//         repeat: 5,
+//         yoyo: true,
+//         ease: 'power1.inOut',
+//         onComplete: shakeAnimation, // Restart the animation on complete
+//     });
+// };
+
+// const hoverAnimation = () => {
+//     console.log("hover")
+//     gsap.to('.DiscountItemContainer', {
+//         width: '200px', // Adjust width according to your design
+//         duration: 0.5,
+//         ease: 'power2.inOut',
+//     });
+//     gsap.to('.DiscountDetails, .DownArrow', {
+//         opacity: 1,
+//         duration: 0.5,
+//         delay: 0.5, // Delay to start after width animation
+//     });
+// };
+
+
+
 const SellerStore = () => {
     const [selectCat, setSelectCat] = useState(0)
     const [openModal, seOpenModal] = useState(true)
-
-
+    const discountItemRef = useRef()
+    const discountDetails = useRef()
+    const arrowRef = useRef() 
+    const bigCardRef = useRef()
     // const {data: topProducts, isLoading} = useApiGet(
     //     ["get-top-products-seller"],
     //     () => getProducts({
     //         isTopSeller: true,
-            
+
     //     })
     // )
+
+    useEffect(() => {
+        const ctx = gsap.context(() => {
+            timeline.to(discountItemRef.current, {
+                duration: 0.4,
+                x: -10,
+                repeat: 20,
+                yoyo: true,
+                ease: 'power1.inOut',
+            })
+        })
+
+        return () => ctx.revert()
+    }, [])
+
+    const hoverAnimation = () => {
+        gsap.fromTo(
+            discountItemRef.current,
+            {
+                width: '100px'
+            },
+            {
+                width: '310px',
+                left: '78%',
+                duration: 0.5,
+                ease: 'power2.inOut'
+            }
+        );
+
+        gsap.fromTo(
+            discountDetails.current,
+            {
+                display: 'none',
+                opacity: 0
+            },
+            {
+                display: 'block',
+                opacity: 1,
+                duration: 0.3,
+                delay: 0.4,
+                ease: 'power2.inOut'
+            }
+        );
+        gsap.fromTo(
+            arrowRef.current,
+            {
+                display: 'none',
+                opacity: 0
+            },
+            {
+                display: 'block',
+                opacity: 1,
+                duration: 0.3,
+                delay: 0.4,
+                ease: 'power2.inOut'
+            }
+        );
+    };
+
+
+    const resetAnimation = () => {
+        gsap.fromTo(discountItemRef.current, {
+            width: '310px',
+            left: '78%'
+        },
+            {
+                width: 'fit-content',
+                duration: 0.2,
+                delay: 0.2,
+                left: "90%",
+                ease: 'power2.inOut',
+            });
+
+        gsap.to(
+            discountDetails.current,
+            {
+                display: 'none',
+                opacity: 0,
+                duration: 0,
+                ease: 'power2.inOut'
+            }
+        );
+
+        gsap.to(
+            arrowRef.current,
+            {
+                display: 'none',
+                opacity: 0,
+                duration: 0,
+                ease: 'power2.inOut'
+            }
+        );
+    };
+
+    const displayBigCard = () => {
+        gsap.fromTo(bigCardRef.current, {
+            
+        })
+    }
 
     return (
         <Container>
@@ -86,6 +221,34 @@ const SellerStore = () => {
                 <GBreadCrumbs />
             </Breadcrumb>
 
+            <BiggerDiscount
+                ref={bigCardRef}
+            >
+                <Save>Save up to 20%</Save>
+                <SaveDetail>Off every purchase above <span>₦100,000</span> made on KeraCare</SaveDetail>
+            </BiggerDiscount>
+
+            <DiscountItemContainer
+                ref={discountItemRef}
+                onMouseEnter={hoverAnimation}
+                onMouseLeave={resetAnimation}
+            >
+                <DiscountItem
+                    onMouseEnter={hoverAnimation}
+                >
+                    <GiftItem />
+                </DiscountItem>
+                <DiscountDetails
+                    ref={discountDetails}
+                >
+                    <Exciting>Exciting offer!!!</Exciting>
+                    <p>See what’s new</p>
+                </DiscountDetails>
+                <ArrowContainer ref={arrowRef}>
+                    <DownArrow />
+                </ArrowContainer>
+
+            </DiscountItemContainer>
             <Banner>
                 <div>
                     <BannerDetail>
@@ -191,7 +354,7 @@ const SellerStore = () => {
 export default memo(SellerStore)
 
 const Container = styled.main`
-
+    position: relative;
 `
 
 const Breadcrumb = styled.section`
@@ -399,6 +562,76 @@ const ModalItem = styled.div`
     }
 `
 
+const DiscountItemContainer = styled.section`
+    position: sticky;
+    top: 40vh;
+    /* float: right; */
+    left:90%;
+    padding: 10px;
+    border: 1px solid var(--primary-color);
+    background-color: #FFECE9;
+    width: fit-content;
+    z-index: 50;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+
+`
+const DiscountItem = styled.div`
+    background-color: var(--black);
+    width:54px;
+    height: 54px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`
+const DiscountDetails = styled.div`
+    margin-left: 12px;
+    margin-right: 22px;
+    opacity: 0;
+    transition: all 1s ease;
+    display: none;
+
+`;
+
+const Exciting = styled.p`
+    font-size: 22px;
+    font-style: normal;
+    font-weight: 500;
+`
+
+const BiggerDiscount = styled.div`
+    width: 320px;
+    padding: 18px 34px;
+    border: 0.9px solid #FFC6BB;
+    border-radius: 12px;
+    position: sticky;
+    top: 27vh;
+    left:78.5%;
+    background-color: black;
+`
+
+const Save = styled.p`
+    font-size: 28px;
+    font-style: normal;
+    font-weight: 500;
+    color: var(--primary-color);
+`
+
+const SaveDetail = styled.p`
+    font-size: 16px;
+    font-weight: 500;
+    color: white;
+    span{
+        color:#FFC6BB;
+    }
+`
+
+const ArrowContainer = styled.div`
+    display: none;
+`
 // const ContactMessage = styled.p`
 //     margin-top: "20px";
 // `

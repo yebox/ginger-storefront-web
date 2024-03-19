@@ -41,6 +41,11 @@ const Payment = () => {
     const phoneNumber = JSON.parse(decodeURIComponent(phoneNumberString))
     const shipping = 2000
 
+    const currentDate = new Date();
+    const deliveryDate = new Date(currentDate);
+    deliveryDate.setDate(currentDate.getDate() + 1);
+    const formattedDeliveryDate = deliveryDate.toISOString();
+
     useEffect(() => {
         setCurrentUrl(window.location.href)
     }, [])
@@ -110,8 +115,8 @@ const Payment = () => {
             items,
             price: totalPrice,
             deliveryAddress: { ...address },
-            deliveryDate: "2024-03-16T08:35:16.226Z",
-            dateDelivered: "2024-03-16T08:35:16.226Z"
+            deliveryDate: formattedDeliveryDate,
+            // dateDelivered: "2024-03-16T08:35:16.226Z"
         }
 
         mutate(body)
