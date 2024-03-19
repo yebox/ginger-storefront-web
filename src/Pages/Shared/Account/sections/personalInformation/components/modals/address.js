@@ -25,6 +25,7 @@ const AddressModal = ({ isOpen, handleClose }) => {
     register,
     handleSubmit,
     control,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm({
     resolver: yupResolver(AddressSchema),
@@ -41,6 +42,11 @@ const AddressModal = ({ isOpen, handleClose }) => {
     }
   );
 
+  const onClose = () => {
+    handleClose();
+    reset();
+  };
+
   const onSubmit = (data) => {
     const body = {
       line1: data?.address,
@@ -55,11 +61,11 @@ const AddressModal = ({ isOpen, handleClose }) => {
   };
 
   return (
-    <GModal open={isOpen} handleClose={handleClose}>
+    <GModal open={isOpen} handleClose={onClose}>
       <Container>
         <Header>
           <Title>Add new address</Title>
-          <Cancel onClick={handleClose} />
+          <Cancel onClick={onClose} />
         </Header>
         <FormWrapper onSubmit={handleSubmit(onSubmit)}>
           <GTextField

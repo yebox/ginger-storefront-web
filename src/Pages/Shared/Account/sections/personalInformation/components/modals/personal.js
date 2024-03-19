@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   GButton,
   GModal,
@@ -13,37 +13,83 @@ import { PersonalInformationSchema } from "../../validation";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { toast } from "react-hot-toast";
 import { countries, devices } from "../../../../../../../Utils";
+import { useApiSend } from "../../../../../../../Hooks";
+import { updateUser } from "../../../../../../../Urls";
+import { useQueryClient } from "@tanstack/react-query";
 
-const PersonalModal = ({ isOpen, handleClose }) => {
+const PersonalModal = ({ isOpen, handleClose, user }) => {
+  const defaultCountry = countries.find((x) => x.value === user?.country);
+  const queryClient = useQueryClient();
+
   const {
     register,
     handleSubmit,
     control,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm({
     resolver: yupResolver(PersonalInformationSchema),
   });
 
-  const onSubmit = () => {
-    toast.success(`Your information has been updated successfully.`);
+  useEffect(() => {
+    if (isOpen && user) {
+      setValue("firstName", user.firstName);
+      setValue("lastName", user.lastName);
+      setValue("phoneNumber", user.phoneNumber);
+      setValue("country", defaultCountry);
+    }
+  }, [isOpen, user, defaultCountry, setValue]);
+
+  const { mutate, isPending } = useApiSend(
+    updateUser,
+    () => {
+      toast.success("Your information has been updated successfully.");
+      queryClient.invalidateQueries(["get-user-data"]);
+      onClose();
+    },
+    () => {
+      toast.error(`Something went wrong`);
+    }
+  );
+
+  const onClose = () => {
     handleClose();
   };
+
+  const onSubmit = (values) => {
+    const body = {
+      ...values,
+      country: values?.country?.value,
+    };
+    mutate(body);
+  };
+
   return (
-    <GModal open={isOpen} handleClose={handleClose}>
+    <GModal open={isOpen} handleClose={onClose} key={user}>
       <Container>
         <Header>
           <Title>Edit personal information</Title>
-          <Cancel onClick={handleClose} />
+          <Cancel onClick={onClose} />
         </Header>
         <FormWrapper onSubmit={handleSubmit(onSubmit)}>
           <GTextField
-            id="fullName"
-            placeholder="Enter full name"
+            id="firstName"
+            placeholder="Enter first name"
             inputType="text"
-            name="fullName"
+            name="firstName"
             register={register}
-            error={errors.fullName}
-            errorText={errors.fullName && errors.fullName.message}
+            error={errors.firstName}
+            errorText={errors.firstName && errors.firstName.message}
+            required
+          />
+          <GTextField
+            id="lastName"
+            placeholder="Enter last name"
+            inputType="text"
+            name="lastName"
+            register={register}
+            error={errors.lastName}
+            errorText={errors.lastName && errors.lastName.message}
             required
           />
           <GTextField
@@ -56,16 +102,6 @@ const PersonalModal = ({ isOpen, handleClose }) => {
             errorText={errors.phoneNumber && errors.phoneNumber.message}
             required
           />
-          {/* <GTextField
-            id="email"
-            placeholder="Enter email address"
-            inputType="email"
-            name="email"
-            register={register}
-            error={errors.email}
-            errorText={errors.email && errors.email.message}
-            required
-          /> */}
           <Controller
             name="country"
             control={control}
@@ -83,7 +119,11 @@ const PersonalModal = ({ isOpen, handleClose }) => {
             )}
           />
           <GSpacer size={1} />
-          <GButton label={`Save changes`} isDisabled={isSubmitting} />
+          <GButton
+            label={`Save changes`}
+            isLoading={isPending}
+            isDisabled={isSubmitting}
+          />
         </FormWrapper>
       </Container>
     </GModal>

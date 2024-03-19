@@ -2,12 +2,23 @@ import React, { useState } from "react";
 import { styled } from "styled-components";
 import { EditIcon } from "../../../../../../Assets/Svgs";
 import PersonalModal from "./modals/personal";
-import { useSelector } from "react-redux";
-import { devices } from "../../../../../../Utils";
+import { countries, devices } from "../../../../../../Utils";
+import { useApiGet } from "../../../../../../Hooks";
+import { getUser } from "../../../../../../Urls";
+import { LineLoader } from "../../../../../../Ui_elements";
 
 const Personal = () => {
-  const user = useSelector((state) => state?.user);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const { data: userData, isLoading: isLoadingUser } = useApiGet(
+    ["get-user-data"],
+    () => getUser(),
+    {
+      enabled: true,
+    }
+  );
+
+  const country = countries.find((x) => x.value === userData?.country)?.label;
 
   return (
     <Container>
@@ -15,28 +26,32 @@ const Personal = () => {
         <Title>Personal information</Title>
         <EditIcon onClick={() => setIsModalOpen(true)} />
       </TopWrapper>
-      <BottomWrapepr>
+      <BottomWrapper>
         <Entry>
           <Label>Full name</Label>
-          <Value>{`${user?.firstName} ${user?.lastName}`}</Value>
+          <Value>
+            {userData?.firstName} {userData?.lastName}
+          </Value>
         </Entry>
         <Entry>
           <Label>Phone number</Label>
-          <Value>{user?.phoneNumber}</Value>
+          <Value>{userData?.phoneNumber}</Value>
         </Entry>
         <Entry>
           <Label>Email address</Label>
-          <Value>{user?.email}</Value>
+          <Value>{userData?.email}</Value>
         </Entry>
         <Entry>
           <Label>Country</Label>
-          <Value>{user?.country}</Value>
+          <Value>{country}</Value>
         </Entry>
-      </BottomWrapepr>
+      </BottomWrapper>
       <PersonalModal
         handleClose={() => setIsModalOpen(false)}
         isOpen={isModalOpen}
+        user={userData}
       />
+      <LineLoader loading={isLoadingUser} />
     </Container>
   );
 };
@@ -71,7 +86,7 @@ const TopWrapper = styled.div`
   }
 `;
 
-const BottomWrapepr = styled.div`
+const BottomWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 40px;

@@ -8,11 +8,15 @@ import {
   formatOrderStatus,
   orderStatusMapping,
 } from "../../../../../../Utils";
+import dayjs from "dayjs";
+import localizedFormat from "dayjs/plugin/localizedFormat";
+dayjs.extend(localizedFormat);
 
 const OrderCard = ({ id, items, reference, dateDelivered, status }) => {
   const itemCount = items?.length;
   const displayProduct = itemCount > 0 && items[0]?.product;
   const orderStatus = formatOrderStatus(status);
+  const dateTimeDelivered = dayjs(dateDelivered).format("L LT");
 
   return (
     <Container>
@@ -27,7 +31,7 @@ const OrderCard = ({ id, items, reference, dateDelivered, status }) => {
             <OrderName>{`order ${reference}`}</OrderName>
             {dateDelivered ? (
               <DeliveryStatus>
-                Delivered on: <span>{dateDelivered}</span>
+                Delivered on: <span>{dateTimeDelivered}</span>
               </DeliveryStatus>
             ) : (
               <DeliveryStatus>Not delivered</DeliveryStatus>
@@ -36,9 +40,9 @@ const OrderCard = ({ id, items, reference, dateDelivered, status }) => {
         </LeftWrapper>
         <RightWrapper to={`/account/order-history/${id}`}>
           <TrackTxt>
-            {orderStatus === orderStatusMapping.completed
-              ? `See details`
-              : `Track order`}
+            {orderStatus === orderStatusMapping.pending
+              ? `Track order`
+              : `See details`}
           </TrackTxt>
           <CaretLeft />
         </RightWrapper>
@@ -100,8 +104,6 @@ const LeftWrapper = styled.div`
 const DetailsWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  padding: 3px 0;
 `;
 
 const NameCountWrapper = styled.div`
@@ -112,11 +114,11 @@ const NameCountWrapper = styled.div`
 
 const ProductName = styled.p`
   color: #000;
-  font-size: 12px;
+  font-size: 15px;
   font-style: normal;
   font-weight: 500;
   line-height: 120%; /* 14.4px */
-  width: 80%;
+  max-width: 190px;
 `;
 
 const ItemCount = styled.span`
@@ -143,7 +145,7 @@ const ItemCount = styled.span`
 
 const OrderName = styled.p`
   color: var(--Primary-300, #ff836c);
-  font-size: 10px;
+  font-size: 12px;
   font-style: normal;
   font-weight: 500;
   line-height: 120%; /* 12px */
@@ -152,7 +154,7 @@ const OrderName = styled.p`
 
 const DeliveryStatus = styled.p`
   color: var(--Black-100, #b6b6b6);
-  font-size: 10px;
+  font-size: 12px;
   font-style: normal;
   font-weight: 400;
   line-height: 140%; /* 14px */

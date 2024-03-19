@@ -75,6 +75,7 @@ import { ReactComponent as FacebookFill } from "./facebookFill.svg";
 import { ReactComponent as DocumentIcon } from "./document.svg";
 import { ReactComponent as RedHeart } from "./redHeart.svg";
 import { ReactComponent as InfoIconWhiteBg } from "./infoWhite.svg";
+import { ReactComponent as ShoppingBag } from "./shoppingBag.svg";
 
 export {
   Logo,
@@ -154,4 +155,5 @@ export {
   DocumentIcon,
   RedHeart,
   InfoIconWhiteBg,
+  ShoppingBag,
 };

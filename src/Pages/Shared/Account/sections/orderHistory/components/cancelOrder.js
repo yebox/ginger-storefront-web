@@ -1,13 +1,33 @@
 import React from "react";
 import { styled } from "styled-components";
 import { devices } from "../../../../../../Utils";
+import { useApiSend } from "../../../../../../Hooks";
+import { cancelOrder } from "../../../../../../Urls";
+import toast from "react-hot-toast";
+import { Spinner } from "../../../../../../Ui_elements";
 
-const CancelOrder = () => {
+const CancelOrder = ({ orderId }) => {
+  const { mutate, isPending } = useApiSend(
+    () => cancelOrder(orderId),
+    () => {
+      toast.success("Order cancelled successfully");
+    },
+    () => {
+      toast.error(`Something went wrong`);
+    }
+  );
+
   return (
     <Container>
       <Title>Cancel order</Title>
       <Desc>You can only cancel an order before your order is accepted</Desc>
-      <CancelBtn>Cancel Order</CancelBtn>
+      <CancelBtn onClick={mutate}>
+        {isPending ? (
+          <Spinner width={20} height={20} color={"white"} />
+        ) : (
+          "Cancel Order"
+        )}
+      </CancelBtn>
     </Container>
   );
 };

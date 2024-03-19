@@ -1,14 +1,15 @@
 import React from "react";
 import { EditIcon } from "../../../../../Assets/Svgs";
-import { orders } from "./components/data";
 import OrderCard from "./components/order";
 import { styled } from "styled-components";
 import { useApiGet } from "../../../../../Hooks/api";
 import { getOrders } from "../../../../../Urls/orders";
 import { devices } from "../../../../../Utils";
+import { LineLoader } from "../../../../../Ui_elements";
+import EmptyOrderState from "./components/emptyState";
 
 const OrderHistory = () => {
-  const { data, isLoading, isError } = useApiGet("get-orders", getOrders, {
+  const { data, isLoading } = useApiGet("get-orders", getOrders, {
     select: (data) => data,
     onError: (error) => console.log(error),
   });
@@ -20,12 +21,11 @@ const OrderHistory = () => {
         <EditIcon />
       </TopWrapper>
       <BottomWrapper>
-        {data?.length > 0 ? (
-          data?.map((order, idx) => <OrderCard key={idx} {...order} />)
-        ) : (
-          <EmptyOrderTxt>No order found</EmptyOrderTxt>
-        )}
+        {data?.length > 0
+          ? data?.map((order, idx) => <OrderCard key={idx} {...order} />)
+          : !isLoading && <EmptyOrderState title={"No orders found"} />}
       </BottomWrapper>
+      <LineLoader loading={isLoading} />
     </Container>
   );
 };

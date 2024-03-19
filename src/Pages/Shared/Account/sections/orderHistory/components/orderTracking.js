@@ -7,7 +7,7 @@ import { devices, orderStatusMapping } from "../../../../../../Utils";
 // import { useApiGet } from "../../../../../../Hooks";
 // import { getLogistics } from "../../../../../../Urls/logistics";
 import dayjs from "dayjs";
-var localizedFormat = require("dayjs/plugin/localizedFormat");
+import localizedFormat from "dayjs/plugin/localizedFormat";
 dayjs.extend(localizedFormat);
 
 // const stepData = {
@@ -19,7 +19,7 @@ dayjs.extend(localizedFormat);
 //   timeDelivered: ``,
 // };
 
-const OrderTracking = ({ status }) => {
+const OrderTracking = ({ status, orderId }) => {
   // const { data, isLoading, isError } = useApiGet(
   //   ["get-logistics"],
   //   () => getLogistics(),
@@ -77,7 +77,7 @@ const OrderTracking = ({ status }) => {
       <ContentWrapper>
         <TrackStepper {...stepData} />
       </ContentWrapper>
-      <CancelOrder />
+      <CancelOrder orderId={orderId} />
     </Container>
   );
 };
