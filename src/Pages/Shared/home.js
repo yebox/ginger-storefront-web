@@ -29,6 +29,8 @@ import { useNavigate } from "react-router-dom";
 import { useApiGet } from "../../Hooks";
 import { getCategories, getProducts, getProductBrands } from "../../Urls";
 import Cookies from "js-cookie";
+import { useSelector } from 'react-redux';
+import { Skeleton } from "@mui/material";
 // import InstaFooter from "./Components/instaFooter";
 
 const Home = () => {
@@ -87,7 +89,7 @@ const Home = () => {
     }
   );
 
-  const lastFourFeaturedProducts = products?.slice(-4);
+  const lastFourFeaturedProducts = products?.slice(-5);
 
   const slideNext = () => {
     if (sliderRef.current) {
@@ -137,6 +139,7 @@ const Home = () => {
             }
 
             <GButton
+              width={"178px"}
               outline
               onClick={() => navigate("/sell-on-ginger")}
               label="Sell on ginger"
@@ -156,9 +159,8 @@ const Home = () => {
           <h4>Beauty procurement, simplified for you</h4>
           <div>
             <p>
-              Ginger’s wide network of local and international suppliers gives
-              you access to all of your must-have brands and products in one
-              place.
+              Ginger’s wide network of local and international suppliers gives you access
+              to all of your must-have brands and products in one place.
             </p>
           </div>
         </CategoryHeader>
@@ -218,13 +220,11 @@ const Home = () => {
       <FeatureProductsContainer>
         <h4>Featured Products</h4>
         <FeaturedItemContainer>
-
           {lastFourFeaturedProducts ? lastFourFeaturedProducts?.map((product, index) =>
-            isLoading ? (
-              <ProductSkeleton key={index} />
-            ) : (
-              <Product item={product} key={index} width={`23.8%`} />
-            )
+            <Product item={product} key={index}
+              skeletonNumber={5}
+              padding={"10%"}
+            />
           ) : <Empty />}
         </FeaturedItemContainer>
       </FeatureProductsContainer>
@@ -329,7 +329,7 @@ const Home = () => {
             {!user && <GButton
               label="Get started"
               alternate
-              onClick={()=>navigate('/signup')}
+              onClick={() => navigate('/signup')}
             />
             }
             <GButton
@@ -539,7 +539,7 @@ const CategoryHeader = styled.div`
   display: flex;
   align-items: center;
   /* width: 100%; */
-  padding: 10% 5%;
+  padding: 5%;
   h4 {
     font-weight: 500;
     font-size: 2.5rem;
@@ -770,7 +770,7 @@ const ViewAllCat = styled.div`
   margin: 0 auto;
 `;
 const FeatureProductsContainer = styled.section`
-  width: 100%;
+  width: 100vw;
   padding: 5%;
 
   h4 {
@@ -781,7 +781,7 @@ const FeatureProductsContainer = styled.section`
 `;
 
 const FeaturedItemContainer = styled.div`
-  width: 100%;
+  width: 100vw;
   display: flex;
   align-items: center;
   gap: 20px;
@@ -926,7 +926,7 @@ const SellerCardsContainer = styled.div`
   margin-left: 5%;
   gap: 1.2rem;
   overflow-x: auto !important;
-`; import { useSelector } from 'react-redux';
+`;
 
 
 const Wholesale = styled.div`

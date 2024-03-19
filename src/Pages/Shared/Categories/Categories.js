@@ -20,36 +20,47 @@ import {
 import ArrowForwardIosSharpIcon from "@mui/icons-material/ArrowForwardIosSharp";
 import { useApiGet } from "../../../Hooks";
 import { getBrands, getCategories, getProducts } from "../../../Urls";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { IMAGE_BASE_URL, priceOptions } from "../../../Utils";
+import { useLocation, useNavigate } from "react-router-dom";
+import { setActiveInitialSubCateogry } from "../../../Redux/Reducers";
 
 const Categories = () => {
-  const category = useSelector((state) => state.global?.selectedCategory);
-  const initialSubCatFromStore = useSelector(
-    (state) => state.global?.initialSubCategory
-  );
-  const [selectCat, setSelectCat] = useState(0);
-  const [subCategory, setSubCategory] = useState(null);
-  const [subCategoryId, setSubCategoryId] = useState("");
+
+  const location = useLocation()
+  const queryParams = new URLSearchParams(location.search);
+  const queryCat = queryParams.get("cat");
+  const querySub = queryParams.get("sub_cat");
+  const queryActive = queryParams.get("activeInit");
+  const decodeQueryCat = JSON.parse(decodeURIComponent(queryCat))
+  const decodeQuerySubCat = JSON.parse(decodeURIComponent(querySub))
+  const decodeActiveInit = decodeURIComponent(queryActive)
+
+
+  const [selectCat, setSelectCat] = useState(decodeActiveInit);
+  const [subCategory, setSubCategory] = useState(decodeQuerySubCat);
+  const [subCategoryId, setSubCategoryId] = useState(decodeQuerySubCat?._id);
   const [selectedBrand, setSelectedBrand] = useState("");
   const [selectedPrice, setSelectedPrice] = useState(null);
-  // const [label, setLabel] = useState("All");
   const [openFilter, setOpenFilter] = useState(false);
+  const dispatch = useDispatch()
   const firstPriceSelection = useRef(true);
   const firstBrandSelection = useRef(true);
 
-    console.log(initialSubCatFromStore," hi ther")
+
   const {
     data,
-    isLoading,
+    isLoading: isLoadingCategory,
     refetch: fetchSubCategories,
   } = useApiGet(
     ["get-catefories"],
-    () => getCategories({ name: category?.name }),
+    () => getCategories({ name: decodeQueryCat?.name }),
     {
       enabled: true,
     }
   );
+
+
 
   const {
     data: productsData,
@@ -60,6 +71,7 @@ const Categories = () => {
     ["get-products"],
     () =>
       getProducts({
+        categoryId: decodeQueryCat?._id,
         subCategoryId: subCategoryId,
         brandId: selectedBrand?._id,
         price: selectedPrice,
@@ -70,34 +82,35 @@ const Categories = () => {
     }
   );
 
-  // const { data: categoryBrands, isLoading: isLoadingCategoryBrands } = useApiGet(
-  //     ['get-brands'],
-  //     () => getBrandsByCategory({
-  //         categoryId: category?._id,
-  //         subCategoryId: subCategoryId
-  //     }),
-  // )
 
-  const { data: categoryBrands, isLoading: isLoadingCategoryBrands } =
+  const {
+    data: categoryBrands,
+    isLoading: isLoadingCategoryBrands } =
     useApiGet(["get-brands"], () => getBrands());
 
   useEffect(() => {
     fetchSubCategories();
-  }, [category?.name]);
+  }, [decodeQueryCat?.name]);
 
-    useEffect(() => {
-        if (data) {
-            const initialSubCategory = initialSubCatFromStore ? initialSubCatFromStore : data[0]?.subCategories[0]?._id;
-            setSubCategoryId(initialSubCategory?._id);
-            setSubCategory(initialSubCategory);
-        }
-    }, [data, initialSubCatFromStore]);
 
   useEffect(() => {
-    if (subCategoryId) {
+    if (data) {
+      if (selectCat === null) {
+        setSelectCat(data[0]?.subCategories?.findIndex(item => item._id === decodeActiveInit));
+      }
+      setSubCategoryId(decodeQuerySubCat?._id);
+      setSubCategory(decodeQuerySubCat);
+    }
+  }, [data, decodeQuerySubCat, decodeActiveInit, selectCat]);
+
+
+
+  useEffect(() => {
+    if (subCategoryId && !firstBrandSelection.current && selectedBrand && selectedPrice) {
       fetchProducts();
     }
-  }, [subCategoryId, selectCat]);
+  }, [subCategoryId, selectedBrand, selectedPrice, firstBrandSelection]);
+
 
   useEffect(() => {
     if (!firstBrandSelection.current && selectedBrand) {
@@ -106,6 +119,7 @@ const Categories = () => {
     firstBrandSelection.current = false;
   }, [selectedBrand, firstBrandSelection]);
 
+
   useEffect(() => {
     if (!firstPriceSelection.current && selectedPrice) {
       fetchProducts();
@@ -113,45 +127,42 @@ const Categories = () => {
     firstPriceSelection.current = false;
   }, [selectedPrice, firstPriceSelection]);
 
-    console.log(subCategory, "sub cat")
-    return (
-        <Container>
-            <Breadcrumb>
-                <GBreadCrumbs />
-            </Breadcrumb>
 
-            <Banner subCategory={subCategory && subCategory}>
-                <div>
-                    <h2>{category?.name}</h2>
-                    <p>Ginger’s wide network of local and international suppliers
-                        gives you access to all of your must-have brands
-                        and products in one place.
-                    </p>
-                </div>
-            </Banner>
+  return (
+    <Container>
+      <Breadcrumb>
+        <GBreadCrumbs />
+      </Breadcrumb>
+
+      <Banner subCategory={subCategory && subCategory}>
+        <div>
+          <h2>{decodeQueryCat?.name}</h2>
+          <p>Ginger’s wide network of local and international suppliers
+            gives you access to all of your must-have brands
+            and products in one place.
+          </p>
+        </div>
+      </Banner>
 
       {data && (
         <ChipContainer>
-          {data[0]?.subCategories?.map((item, index) => (
-            <Chip
-              activeIndex={
-                initialSubCatFromStore
-                  ? data[0]?.subCategories.findIndex(
-                      (subCat) => subCat._id === initialSubCatFromStore?._id
-                    )
-                  : selectCat
-              }
-              onClick={() => {
-                setSelectCat(index);
-                setSubCategoryId(item?._id);
-                setSubCategory(item);
-              }}
-              index={index}
-              key={index}
-            >
-              {item?.name}
-            </Chip>
-          ))}
+          {data[0]?.subCategories?.map((item, index) => {
+            return (
+              <Chip
+                activeIndex={selectCat}
+                to={`/categories/${encodeURIComponent(decodeQueryCat?.name)}?cat=${encodeURIComponent(JSON.stringify(decodeQueryCat))}&sub_cat=${encodeURIComponent(JSON.stringify(item))}&activeInit=${decodeURIComponent(item?._id)}&init=${item?.name}`}
+                onClick={() => {
+                  setSelectCat(item?._id);
+                  setSubCategoryId(item?._id);
+                  setSubCategory(item);
+                }}
+                index={decodeActiveInit}
+                key={index}
+              >
+                {item?.name}
+              </Chip>
+            )
+          })}
         </ChipContainer>
       )}
 
@@ -222,7 +233,11 @@ const Categories = () => {
       <BecomeSellerContainer>
         <BecomeSellerSection />
       </BecomeSellerContainer>
-      <LineLoader loading={isLoadingProducts || isFetchingProducts} />
+      <LineLoader loading={
+        isLoadingProducts ||
+        isFetchingProducts ||
+        isLoadingCategory}
+      />
       <InstaFooter />
     </Container>
   );
@@ -243,9 +258,9 @@ const Banner = styled.section`
     margin: 0 5%;
     height: 30rem;
     background: ${({ subCategory }) =>
-        subCategory
-            ? `linear-gradient(to right, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.1)), url(${IMAGE_BASE_URL}${subCategory?.images[0]}) center/cover no-repeat`
-            : 'aquamarine'};
+    subCategory
+      ? `linear-gradient(to right, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.1)), url(${IMAGE_BASE_URL}${subCategory?.images[0]}) center/cover no-repeat`
+      : 'aquamarine'};
     
     div {
         display: flex;
@@ -289,7 +304,7 @@ const SortBox = styled.div`
   & > svg {
     transform: rotate(90deg);
     transform: ${({ $isOpen }) =>
-      $isOpen ? `rotate(270deg)` : "rotate(90deg)"};
+    $isOpen ? `rotate(270deg)` : "rotate(90deg)"};
     width: 14px;
     transition: all 0.25s ease;
   }

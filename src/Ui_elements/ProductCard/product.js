@@ -27,7 +27,7 @@ import { deletItemFromWishlist } from "../../Urls/wishlist";
 import { useQueryClient } from "@tanstack/react-query";
 import { setSelectedProductName } from "../../Redux/Reducers";
 
-export const Product = ({ width, item, mbWidth }) => {
+export const Product = ({ width, item, mbWidth, skeletonNumber, padding }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [items, setItems] = useState([]);
@@ -169,7 +169,7 @@ export const Product = ({ width, item, mbWidth }) => {
   };
 
   if (isLoadingWishlist || isLoadingCartData) {
-    return <ProductSkeleton />;
+    return <ProductSkeleton padding={padding} number={skeletonNumber} />;
   }
 
   return (
@@ -199,21 +199,21 @@ export const Product = ({ width, item, mbWidth }) => {
           </div>
 
           <div>
-            <p>{item?.rating}</p>
+            <p>{item?.rating}.0</p>
             <Star />
           </div>
         </SellerRate>
         <Itemdetail>
           <p>{item?.name}</p>
-          <BrandTag>{item?.brand?.name}</BrandTag>
+          {/* <BrandTag>{item?.brand?.name}</BrandTag> */}
         </Itemdetail>
-        <RRPContainer>
+        {/* <RRPContainer>
           <div>
             <DollarShield />
             <p>MSRP</p>
           </div>
-          <p>₦{item?.msrp}</p>
-        </RRPContainer>
+          <Price>₦{item?.msrp}</Price>
+        </RRPContainer> */}
 
         {user ? (
           <>
@@ -283,6 +283,7 @@ const SellerRate = styled.div`
     align-items: center;
     gap: 8px;
     p {
+      font-size: 14px;
       font-weight: 300;
     }
   }
@@ -331,9 +332,9 @@ const Itemdetail = styled.div`
   align-items: flex-start !important;
   gap: 10px;
   p {
-    font-size: 1.2rem;
+    font-size: 18px;
     color: var(--Black-500, #151515);
-    height: 46.67px;
+    /* height: 46.67px; */
   }
 
   @media ${devices.mobileL} {
@@ -342,6 +343,7 @@ const Itemdetail = styled.div`
     }
   }
 `;
+
 
 const Unliked = styled.div`
   width: 2.5rem;
@@ -429,7 +431,7 @@ const RRPContainer = styled.div`
 `;
 
 const Price = styled.h6`
-  font-size: 1.8rem;
+  font-size: 24px;
   font-weight: 400;
   margin-bottom: 0.6rem;
 

@@ -18,6 +18,7 @@ import { useApiGet } from "../../../Hooks";
 import { GTextField, LineLoader, PopMenu, SearchOverlay } from "../../../Ui_elements";
 import { getBrands, getCategories, getProducts } from "../../../Urls";
 import {
+  setActiveInitialSubCateogry,
   setCategories,
   setInitialSubCateogry,
   setSelectedCategory,
@@ -54,7 +55,6 @@ export const Navbar = () => {
   const initialSubCatFromStore = useSelector(state => state.global?.initialSubCategory)
 
 
-  console.log(searchFilter, "fiter")
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -184,7 +184,10 @@ export const Navbar = () => {
   };
 
   const menuItems = [
-    { item: "Logout", action: () => console.log("Edit clicked") },
+    {
+      item: user ? "Logout" : "Login",
+      action: user ? () => console.log("Edit clicked") : () => navigate('/login')
+    },
   ];
 
   return (
@@ -197,12 +200,12 @@ export const Navbar = () => {
         </LogoContainer>
 
         <SearchContainer>
-          <GTextField
-            focus={() => setShowSearch(true)}
+          <input
+            onFocus={() => setShowSearch(true)}
             placeholder={"What are you searching for?"}
-            endIcon={<Search />}
             onChange={(value) => handleSearchFilter(value)}
           />
+          <Search />
         </SearchContainer>
 
         <Utility>
@@ -238,7 +241,6 @@ export const Navbar = () => {
             <Link to="/wish-list">
               <Like />
             </Link>
-            {/* <Search /> */}
             <Dollar />
             <PopMenu menuItems={menuItems}>
               <DownArrow />
@@ -261,16 +263,20 @@ export const Navbar = () => {
             <MenuLinksContainer>
               <NavLink
                 to={"/categories/all"}
-              // onMouseEnter={() => handleNavLinkHover(0)}
               >
                 All
               </NavLink>
 
               {data?.map((category, index) => (
                 <NavLink
-                  onClick={() => dispatch(setSelectedCategory(category))}
+                  onClick={() => {
+                    dispatch(setSelectedCategory(category))
+                    dispatch(setInitialSubCateogry(category?.subCategories[0]));
+                    dispatch(setActiveInitialSubCateogry(category?.subCategories[0]?._id))
+                  }}
                   key={index}
-                  to={`/categories/${category.name}`}
+                  to={`/categories/${encodeURIComponent(category?.name)}?cat=${encodeURIComponent(JSON.stringify(category))}&sub_cat=${encodeURIComponent(JSON.stringify(category?.subCategories[0]))}&activeInit=${decodeURIComponent(category?.subCategories[0]?._id)}&init=${category?.subCategories[0]?.name}`}
+
                   onMouseEnter={() => handleNavLinkHover(index)}
                 >
                   {category.name}
@@ -279,7 +285,6 @@ export const Navbar = () => {
             </MenuLinksContainer>
 
             <Links>
-              {/* <NavLink to={"/about-us"}>About us</NavLink> */}
               <NavLink to={"/sell-on-ginger"}>Sell on ginger</NavLink>
             </Links>
 
@@ -295,18 +300,16 @@ export const Navbar = () => {
         >
           <div>
             <div>
-              {activeItem.subCategories?.map((item, index) => {
-                console.log(item, "navbar item");
-                console.log(activeItem, "actove navbar item");
-
+              {activeItem?.subCategories?.map((item, index) => {
                 return (
                   <NavLink
                     onClick={() => {
                       dispatch(setSelectedCategory(activeItem));
                       dispatch(setInitialSubCateogry(item));
+                      dispatch(setActiveInitialSubCateogry(item?._id))
                     }}
                     key={index}
-                    to={`/categories/${activeItem?.name}?sub_cat=${item?.name}`}
+                    to={`/categories/${encodeURIComponent(activeItem?.name)}?cat=${encodeURIComponent(JSON.stringify(activeItem))}&sub_cat=${encodeURIComponent(JSON.stringify(item))}&activeInit=${decodeURIComponent(item?._id)}&init=${item?.name}`}
                     onMouseEnter={() =>
                       setCurrentImage(
                         `http://172.104.147.51/${item?.images[0]}`
@@ -319,8 +322,9 @@ export const Navbar = () => {
               })}
             </div>
 
-            <div>
-              {/* <NavLink
+            {/* <div>
+              second list for sub category
+              <NavLink
                 to="/perm"
                 onMouseEnter={() => setCurrentImage(imageLinks[0])}
               >
@@ -343,8 +347,8 @@ export const Navbar = () => {
                 onMouseEnter={() => setCurrentImage(imageLinks[1])}
               >
                 Wig tools
-              </NavLink> */}
-            </div>
+              </NavLink> 
+            </div> */}
           </div>
 
           <ImageHolder>
@@ -481,7 +485,7 @@ const FullOptions = styled.div`
   justify-content: center;
   width: 100%;
   height: 40vh;
-  gap: 20%;
+  gap: 5%;
   padding: 5%;
   position: absolute;
   top: 18vh;
@@ -492,15 +496,16 @@ const FullOptions = styled.div`
   img {
     width: 24rem;
     height: 15.2rem;
+    border: 1px solid var(--gray-200);
     object-fit: cover;
-    background-color: var(--primary-color);
+    background-color: var(--hover-color);
   }
 
   > div:nth-child(1) {
     display: flex;
     width: fit-content;
     justify-content: center;
-    min-width: 400px;
+    min-width: fit-content;
     gap: 20%;
     div {
       display: flex;
@@ -515,10 +520,29 @@ const SearchContainer = styled.div`
   align-items: center;
   gap: 2rem;
   width: 50%;
-  background-color: var(--gray-200);
-  border-color: var(--gray-200);
-  padding: 10px 20px 0 20px;
+  background-color: var(--gray-100);
+  border-color: var(--gray-300);
+  padding: 10px 20px;
   border-radius: 100px;
+
+  input {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    align-self: stretch;
+    color: #151515;
+    background: transparent;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    border: none;
+    outline: none;
+
+    :-webkit-autofill {
+      -webkit-text-fill-color: #151515;
+      opacity: 0.5;
+    }
+  }
 
   p {
     font-size: 2rem;

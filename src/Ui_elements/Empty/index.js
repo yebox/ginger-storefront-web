@@ -6,7 +6,7 @@ export const Empty = () => {
         <Container>
             <div>
                 <img src={EmtpyIcon} alt="Empty Icon" />
-                <P>NO ITEM FOUND</P>
+                <P>No item found</P>
             </div>
         </Container>
     );
@@ -27,13 +27,13 @@ const Container = styled.div`
 
     img {
         width: 50%; 
-        max-width: 200px;
+        max-width: 100px;
         height: auto;
     }
 `;
 
 const P = styled.p`
-    font-size: 1.5em;
+    font-size: 1em;
     margin-top: 10px;
     color: #333;
 `;
