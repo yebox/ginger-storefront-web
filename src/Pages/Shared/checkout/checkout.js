@@ -52,16 +52,6 @@ const Checkout = () => {
         resolver: yupResolver(CheckoutAddressSchema)
     })
 
-    const { mutate, isPending } = useApiSend(
-        createOrder,
-        () => {
-            toast.error('Order created successfully')
-        },
-        () => {
-            toast.error(`Something went wrong`)
-        }
-    )
-
     const { mutate: updateAddress, isPending: isUpdatingAddress } = useApiSend(
         updateUserAddress,
         () => {
@@ -234,7 +224,7 @@ const Checkout = () => {
                                     label={"Continue"}
                                     width={"50%"}
                                     type={'submit'}
-                                    isLoading={isPending}
+                                    // isLoading={isPending}
                                     isDisabled={
                                         !address ||
                                         !apartment ||

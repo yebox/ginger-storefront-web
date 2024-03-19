@@ -1,10 +1,13 @@
 import styled from "styled-components"
+import { Link } from 'react-router-dom';
 
-export const Chip = ({children, index, activeIndex, ...otherProps}) => {
+export const Chip = ({ children, to, index, activeIndex, ...otherProps }) => {
+    console.log(activeIndex, index, "inside chip")
+    console.log(index, "index")
     return (
         <Container
-            index={index}
-            activeIndex={activeIndex}
+            to={to}
+            active={activeIndex === index}
             {...otherProps}
         >
             <p>{children}</p>
@@ -13,22 +16,22 @@ export const Chip = ({children, index, activeIndex, ...otherProps}) => {
 }
 
 
-const Container = styled.div`
+const Container = styled(Link)`
     border: 1px solid var(--gray-100);
-    background-color: ${({activeIndex, index}) => activeIndex === index ? "var(--black)" : "transparent"};
+    background-color: ${({ active }) => active ? "var(--black)" : "transparent"};
     transition: all 0.3s ease;
     width: fit-content;
     padding: 10px 20px;
     border-radius: 100px;
     cursor: pointer;
-    p{
+    p {
         transition: all 0.3s ease;
-        color: ${({activeIndex, index}) => activeIndex === index ? "white" : "var(--black)"};
+        color: ${({ active }) => active ? "white" : "var(--black)"};
     }
-    &:hover{
+    &:hover {
         background-color: var(--black);
-        p{
+        p {
             color: white;
         }
     }
-`
+`;

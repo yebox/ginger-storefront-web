@@ -22,6 +22,9 @@ const GlobalSlice = createSlice({
     setInitialSubCateogry: (state, action) => {
       state.initialSubCategory = action.payload;
     },
+    setActiveInitialSubCateogry: (state, action) => {
+      state.activeIntialSubCategory = action.payload;
+    },
   },
 });
 
@@ -33,6 +36,7 @@ const {
   setSelectedCategory,
   setCategories,
   setInitialSubCateogry,
+  setActiveInitialSubCateogry
 } = actions;
 
 export {
@@ -42,4 +46,5 @@ export {
   setCategories,
   setSelectedCategory,
   setInitialSubCateogry,
+  setActiveInitialSubCateogry
 };

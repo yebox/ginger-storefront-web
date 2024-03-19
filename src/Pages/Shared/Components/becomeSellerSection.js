@@ -4,9 +4,11 @@ import { styled } from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { GButton } from "../../../Ui_elements";
 import { devices } from "../../../Utils";
+import { useSelector } from 'react-redux';
 
 export const BecomeSellerSection = () => {
   const navigate = useNavigate();
+  const user = useSelector(state => state.user)
   return (
     <CallToAction>
       <div>
@@ -16,7 +18,9 @@ export const BecomeSellerSection = () => {
           </h4>
           <p>Browse more top selling products from top brands</p>
           <div>
-            <GButton label="Sign up now" onClick={() => navigate("/login")} />
+            {
+              !user && <GButton label="Sign up now" onClick={() => navigate("/login")} />
+            }
             <GButton
               outline
               onClick={() => navigate("/sell-on-ginger")}

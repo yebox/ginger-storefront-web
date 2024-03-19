@@ -10,7 +10,7 @@ import {
 import { Spinner, GButton } from "../../../../Ui_elements"
 
 
-export const Modal = ({ type }) => {
+export const Modal = ({ type, setShowModal }) => {
     switch (type) {
         case 'processing':
             return (
@@ -85,6 +85,7 @@ export const Modal = ({ type }) => {
 
                     <Footer>
                         <GButton
+                            onClick={()=>setShowModal(false)}
                             width={"372px"}
                             label={"Continue"}
                         />

@@ -14,8 +14,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout, setTokenOnRefresh } from "../Redux/Reducers";
 
 export const AppRoute = () => {
-  const user = useSelector((state) => state.user);
-  const token = user?.refreshToken;
+  const user = useSelector(state => state.user);
+  const token  = user?.refreshToken
   const dispatch = useDispatch();
   const { mutate } = useApiSend(
     refreshToken,
