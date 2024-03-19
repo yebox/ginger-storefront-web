@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from 'swiper/modules';
 import { forwardRef } from 'react';
+import { Empty } from '../Empty';
 
 import { SellerCard } from '../../Pages/Shared/Components';
 
@@ -23,7 +24,7 @@ export const Carousel = forwardRef(({
         }}
         modules={[Pagination]}
       >
-        {data ? (
+        {(data && data?.length > 0) ? (
           data.map((item, index) => (
             <SwiperSlide
               key={index}
@@ -32,16 +33,17 @@ export const Carousel = forwardRef(({
             </SwiperSlide>
           ))
         ) : (
-          [...Array(12)].map((_, index) => (
-            <SwiperSlide
-              style={{
-                backgroundColor: "green",
-              }}
-              key={index}
-            >
-              <SellerCard item={sellerCardDetails} />
-            </SwiperSlide>
-          ))
+          <Empty />
+          // [...Array(12)].map((_, index) => (
+          //   <SwiperSlide
+          //     style={{
+          //       backgroundColor: "green",
+          //     }}
+          //     key={index}
+          //   >
+          //     <SellerCard item={sellerCardDetails} />
+          //   </SwiperSlide>
+          // ))
         )}
       </Swiper>
     </Container>

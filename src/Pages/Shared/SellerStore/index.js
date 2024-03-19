@@ -15,11 +15,22 @@ import { BecomeSellerSection, InstaFooter, DiscountBanner } from "../Components"
 import { MinimumSpendBanner } from "./components/minimumSpendBanner";
 import { LeftArrow, RightArrow } from "../../../Assets/Svgs";
 import { Link } from "react-router-dom";
+import { useApiGet } from "../../../Hooks";
+import { getProducts } from "../../../Urls";
 
 
 const SellerStore = () => {
     const [selectCat, setSelectCat] = useState(0)
     const [openModal, seOpenModal] = useState(true)
+
+
+    // const {data: topProducts, isLoading} = useApiGet(
+    //     ["get-top-products-seller"],
+    //     () => getProducts({
+    //         isTopSeller: true,
+            
+    //     })
+    // )
 
     return (
         <Container>

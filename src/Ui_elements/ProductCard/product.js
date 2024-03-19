@@ -27,7 +27,7 @@ import { deletItemFromWishlist } from "../../Urls/wishlist";
 import { useQueryClient } from "@tanstack/react-query";
 import { setSelectedProductName } from "../../Redux/Reducers";
 
-export const Product = ({ width, item, mbWidth }) => {
+export const Product = ({ width, item, mbWidth, skeletonNumber, padding }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [items, setItems] = useState([]);
@@ -169,7 +169,7 @@ export const Product = ({ width, item, mbWidth }) => {
   };
 
   if (isLoadingWishlist || isLoadingCartData) {
-    return <ProductSkeleton />;
+    return <ProductSkeleton padding={padding} number={skeletonNumber} />;
   }
 
   return (
@@ -194,26 +194,26 @@ export const Product = ({ width, item, mbWidth }) => {
           <div>
             <p>Seller:</p>
             <Link
-              to={`/${item?.seller?.firstName} ${item?.seller?.lastName}`}
+              to={`/shop/${item?.seller?.firstName}_${item?.seller?.lastName}`}
             >{`${item?.seller?.firstName} ${item?.seller?.lastName}`}</Link>
           </div>
 
           <div>
-            <p>{item?.rating}</p>
+            <p>{item?.rating}.0</p>
             <Star />
           </div>
         </SellerRate>
         <Itemdetail>
           <p>{item?.name}</p>
-          <BrandTag>{item?.brand?.name}</BrandTag>
+          {/* <BrandTag>{item?.brand?.name}</BrandTag> */}
         </Itemdetail>
-        <RRPContainer>
+        {/* <RRPContainer>
           <div>
             <DollarShield />
             <p>MSRP</p>
           </div>
-          <p>₦{item?.msrp}</p>
-        </RRPContainer>
+          <Price>₦{item?.msrp}</Price>
+        </RRPContainer> */}
 
         {user ? (
           <>
@@ -283,6 +283,7 @@ const SellerRate = styled.div`
     align-items: center;
     gap: 8px;
     p {
+      font-size: 14px;
       font-weight: 300;
     }
   }
@@ -328,12 +329,12 @@ const SellerRate = styled.div`
 const Itemdetail = styled.div`
   margin-top: 0.6rem;
   display: flex;
-  align-items: flex-end !important;
+  align-items: flex-start !important;
   gap: 10px;
   p {
-    font-size: 1.2rem;
+    font-size: 18px;
     color: var(--Black-500, #151515);
-    height: 46.67px;
+    /* height: 46.67px; */
   }
 
   @media ${devices.mobileL} {
@@ -342,6 +343,7 @@ const Itemdetail = styled.div`
     }
   }
 `;
+
 
 const Unliked = styled.div`
   width: 2.5rem;
@@ -366,7 +368,13 @@ const Unliked = styled.div`
 const BrandTag = styled.p`
   background-color: var(--black50);
   font-size: 0.6rem !important;
+  text-align: center;
+  width: 80px;
+  height: 20px !important;
   padding: 2px 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 4px;
 `;
 
@@ -423,7 +431,7 @@ const RRPContainer = styled.div`
 `;
 
 const Price = styled.h6`
-  font-size: 1.8rem;
+  font-size: 24px;
   font-weight: 400;
   margin-bottom: 0.6rem;
 

@@ -96,4 +96,28 @@ export const generateUrlParams = (obj) => {
   });
   return generatedUrl;
 };
-4;
+
+
+export const generateQueryKey = (baseKey, searchFilter) => {
+  const searchFilterString = JSON.stringify(searchFilter);
+  const queryKey = `${baseKey}-${searchFilterString}`;
+
+  return queryKey;
+};
+
+
+
+export const filterSearchParams = (searchFilter) => {
+  const filteredParams = {};
+
+  if (searchFilter) {
+    Object.entries(searchFilter).forEach(([key, value]) => {
+      if (value !== '' && value !== null) {
+        filteredParams[key] = value;
+      }
+    });
+    return filteredParams;
+  }
+
+};
+
