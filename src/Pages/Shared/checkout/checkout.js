@@ -224,7 +224,7 @@ const Checkout = () => {
                                     label={"Continue"}
                                     width={"50%"}
                                     type={'submit'}
-                                    isLoading={isPending}
+                                    // isLoading={isPending}
                                     isDisabled={
                                         !address ||
                                         !apartment ||
