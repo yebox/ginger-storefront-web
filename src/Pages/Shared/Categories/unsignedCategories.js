@@ -112,7 +112,7 @@ const UnsignedCategories = () => {
             <h4>Become a seller on Ginger</h4>
             <p>Browse more top selling products from top brands</p>
             <div>
-              <GButton label="Sign up now" onClick={() => navigate("/login")} />
+              {/* <GButton label="Sign up now" onClick={() => navigate("/login")} /> */}
               <GButton
                 outline
                 onClick={() => navigate("/sell-on-ginger")}
