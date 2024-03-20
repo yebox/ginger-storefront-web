@@ -174,7 +174,13 @@ export const Product = ({ width, item, mbWidth, skeletonNumber, padding }) => {
   };
 
   if (isLoadingWishlist || isLoadingCartData) {
-    return <ProductSkeleton padding={padding} number={skeletonNumber} />;
+    return (
+      <ProductSkeleton
+        width={width}
+        padding={padding}
+        number={skeletonNumber}
+      />
+    );
   }
 
   return (
@@ -199,7 +205,9 @@ export const Product = ({ width, item, mbWidth, skeletonNumber, padding }) => {
           <div>
             <p>Seller:</p>
             <Link
-              to={`/shop/${item?.seller?.firstName}_${item?.seller?.lastName}`}
+              to={`/store?sellerId=${encodeURIComponent(
+                JSON.stringify(item?.seller)
+              )}`}
             >{`${item?.seller?.firstName} ${item?.seller?.lastName}`}</Link>
           </div>
 

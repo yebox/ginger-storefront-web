@@ -13,7 +13,7 @@ import {
 import React, { memo, useState, useEffect, useRef } from "react";
 import Vector from "../../Assets/Images/vector-background.png";
 import AddPicture from "../../Assets/Images/ad-picture.png";
-import { BecomeSellerSection, BlogCard, InstaFooter } from "./Components";
+import { BecomeSellerSection, BlogCard, GuideCard, InstaFooter, SellerCard } from "./Components";
 import Partners from "../../Assets/Images/partners.png";
 import HeroImage from "../../Assets/Images/hero-image.png";
 import {
@@ -27,7 +27,7 @@ import {
 import Swiper from "swiper";
 import { useNavigate } from "react-router-dom";
 import { useApiGet } from "../../Hooks";
-import { getCategories, getProducts, getProductBrands } from "../../Urls";
+import { getCategories, getProducts, getProductBrands, getAllStores } from "../../Urls";
 import Cookies from "js-cookie";
 import { useSelector } from 'react-redux';
 import { Skeleton } from "@mui/material";
@@ -53,6 +53,15 @@ const Home = () => {
       refetchOnWindowFocus: false,
     }
   );
+
+  const { data, isLoading: isLoadingStores } = useApiGet(
+    ['get-all-stores'],
+    () => getAllStores(),
+    {
+      enable: true
+    }
+  )
+
 
   const {
     data: topProducts,
@@ -104,13 +113,18 @@ const Home = () => {
 
   };
 
-  useEffect(() => {
-    if (!firstCatMount.current && categories) {
-      const initialCategoryIndex = categories?.findIndex(cat => cat?._id === categoryId);
-      setSelectCat(initialCategoryIndex >= 0 ? initialCategoryIndex : 0);
+  const filterStoresWithImages = (data) => {
+    // Filter the stores that have both background and mainImage properties
+    if (data) {
+      const filteredStores = data.filter(store => {
+        return Object.prototype.hasOwnProperty.call(store, 'backgroundImage') && Object.prototype.hasOwnProperty.call(store, 'mainImage');
+      });
+
+      return filteredStores;
     }
-    firstCatMount.current = false;
-  }, [categories, categoryId]);
+  }
+  const filteredStores = filterStoresWithImages(data)
+
 
   useEffect(() => {
     fetchProducts()
@@ -153,6 +167,13 @@ const Home = () => {
           </div>
         </HeroImageContainer>
       </Hero>
+
+      <HowItWorks>
+        <GuideCard />
+        <GuideCard />
+        <GuideCard />
+        <GuideCard />
+      </HowItWorks>
 
       <Category>
         <CategoryHeader>
@@ -200,7 +221,6 @@ const Home = () => {
           <CatSecondBox>
             <CatShopBottom>
               <h6>Braids & Weaves</h6>
-
               <Shopbutton onClick={() => navigate("/categories/all")}>
                 Shop Now
               </Shopbutton>
@@ -284,7 +304,7 @@ const Home = () => {
           </div>
         </TopSellerHeader>
 
-        <ChipContainer>
+        {/* <ChipContainer>
           {categories?.map((item, index) => (
             <Chip
               activeIndex={selectCat}
@@ -298,21 +318,17 @@ const Home = () => {
               {item?.name}
             </Chip>
           ))}
-        </ChipContainer>
+        </ChipContainer> */}
 
         <SellerCardsContainer>
           <Carousel
             width={400}
-            data={topProducts}
+            data={filteredStores}
             ref={sliderRef}
-            renderCard={(item, index) => {
+            renderCard={(item) => {
               return (
-                <Product
-                  item={item}
-                  key={index}
-
-                />
-              );
+                <SellerCard item={item}/>
+              )
             }}
           />
         </SellerCardsContainer>
@@ -333,9 +349,10 @@ const Home = () => {
             />
             }
             <GButton
-              label="Learn more"
-              alternateOutline
-              onClick={() => navigate("/how-to-buy-wholesale")}
+              label="Shop now"
+              width={user ? "178px" : "100%"}
+              alternate
+              onClick={() => navigate("/marketplace")}
             />
           </div>
         </div>
@@ -929,6 +946,7 @@ const SellerCardsContainer = styled.div`
 `;
 
 
+
 const Wholesale = styled.div`
   padding: 10% 5%;
   margin-top: 5%;
@@ -952,6 +970,7 @@ const Wholesale = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     gap: 1.8rem;
     position: relative;
     z-index: 2;
@@ -967,7 +986,8 @@ const Wholesale = styled.div`
     > div {
       display: flex;
       gap: 20px;
-      width: 60%;
+      width: fit-content;
+      max-width: 60%;
       margin: 0 auto;
     }
   }
@@ -1165,3 +1185,12 @@ const ModalClose = styled.div`
   right: 40px;
   cursor: pointer;
 `;
+
+const HowItWorks = styled.div`
+  padding: 5%;
+  display: flex;
+  background-color: var(--lower-nav);
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+`

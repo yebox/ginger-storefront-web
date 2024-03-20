@@ -1,18 +1,25 @@
 import styled from "styled-components";
 import { GButton } from "../../../Ui_elements";
-export const SellerCard = ({width, marginRight, item}) => {
+import { IMAGE_BASE_URL } from "../../../Utils";
+import { useNavigate } from 'react-router-dom';
+export const SellerCard = ({ width, marginRight, item }) => {
+  console.log(item, "item")
+  const navigate = useNavigate()
   return (
     <Container
       width={width}
       marginRight={marginRight}
     >
       <div>
-        <img src="https://images.unsplash.com/photo-1560879311-370fd4561a0d?q=80&w=3343&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" />
-        <h6>Met Beauty Store</h6>
+        <img src={item?.backgroundImage ? `${IMAGE_BASE_URL}${item.backgroundImage}` : "https://images.unsplash.com/photo-1560879311-370fd4561a0d?q=80&w=3343&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"} />
+        <h6>{item?.name}</h6>
       </div>
 
       <div>
-        <GButton label={"Visit store"} />
+        <GButton
+          onClick={() => navigate(`/store?sellerId=${encodeURIComponent(JSON.stringify(item?.sellerId))}`, {state: item})}
+          label={"Visit store"}
+        />
       </div>
     </Container>
   );
@@ -21,14 +28,15 @@ export const SellerCard = ({width, marginRight, item}) => {
 const Container = styled.div`
   position: relative;
   max-width: 25rem;
-  width: ${({width}) => (width ? width : "100%")} !important;
+  width: ${({ width }) => (width ? width : "100%")} !important;
   height: 20rem;
+
   display: flex;
   align-items: flex-end;
   justify-content: center;
   background-color: var(--gray-100);
   padding-bottom: 2rem;
-  margin-right: ${({marginRight}) => (marginRight ? marginRight : "0")};
+  margin-right: ${({ marginRight }) => (marginRight ? marginRight : "0")};
   > div:nth-child(1) {
     position: absolute;
     top: 0;

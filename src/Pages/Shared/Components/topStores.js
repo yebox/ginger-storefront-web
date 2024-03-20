@@ -7,6 +7,8 @@ export const TopStoresFilter = ({ options, selectedBrand, setSelectedBrand }) =>
     setSelectedBrand(prevSelectedBrand => prevSelectedBrand === item ? '' : item);
   };
 
+  console.log(selectedBrand, "inside")
+
   return (
     <Container>
       {options?.map((item, index) => (

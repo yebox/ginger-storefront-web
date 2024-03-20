@@ -228,7 +228,7 @@ const Checkout = () => {
                                 /> */}
 
                                 <CheckContainer>
-                                    <GCheckbox />
+                                    <GCheckbox isTransparent />
                                     <p>Save this information for next time</p>
                                 </CheckContainer>
 

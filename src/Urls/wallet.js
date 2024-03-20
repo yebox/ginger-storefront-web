@@ -6,3 +6,9 @@ export const getUserWallet = () =>
     url: BASE_URL,
     method: "GET",
   });
+
+export const getWallet = () =>
+  request({
+    url: `wallet`,
+    method: "GET",
+  });

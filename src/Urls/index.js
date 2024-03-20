@@ -11,3 +11,4 @@ export * from "./brand";
 export * from "./shoppingConfig";
 export * from "./wallet";
 export * from "./orderIssues";
+export * from "./store";

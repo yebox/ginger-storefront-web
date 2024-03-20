@@ -183,7 +183,7 @@ export const sharedRoutes = [
     hasLayout: false,
   },
   {
-    path: "/shop/:id",
+    path: "/store",
     element: SellerStore,
     hasLayout: false,
   },
