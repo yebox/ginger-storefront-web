@@ -76,6 +76,7 @@ import { ReactComponent as DocumentIcon } from "./document.svg";
 import { ReactComponent as RedHeart } from "./redHeart.svg";
 import { ReactComponent as InfoIconWhiteBg } from "./infoWhite.svg";
 import { ReactComponent as ShoppingBag } from "./shoppingBag.svg";
+import { ReactComponent as GiftItem } from "./gift.svg";
 
 export {
   Logo,
@@ -156,4 +157,5 @@ export {
   RedHeart,
   InfoIconWhiteBg,
   ShoppingBag,
+  GiftItem,
 };
