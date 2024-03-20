@@ -90,7 +90,13 @@ const MarketPlace = () => {
           <ProductsWrapper>
             {products?.length > 0 ? (
               products?.map((product, index) => (
-                <Product key={index} item={product} width={`17.3rem`} />
+                <Product
+                  key={index}
+                  item={product}
+                  width={`17.3rem`}
+                  skeletonNumber={6}
+                  padding={"5%"}
+                />
               ))
             ) : (
               <EmptyProductTxt>No product found</EmptyProductTxt>
@@ -159,7 +165,7 @@ const SortBox = styled.div`
   & > svg {
     transform: rotate(90deg);
     transform: ${({ $isOpen }) =>
-      $isOpen ? `rotate(270deg)` : "rotate(90deg)"};
+    $isOpen ? `rotate(270deg)` : "rotate(90deg)"};
     width: 14px;
     transition: all 0.25s ease;
   }

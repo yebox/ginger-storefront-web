@@ -34,7 +34,7 @@ export const CategoryCard = ({ width, item }) => {
       <GButton
         label={'Shop Category'}
         outline
-        onClick={()=>navigate(`categories/${item?.name}`,{replace:true})}
+        onClick={()=>navigate(`/categories/${encodeURIComponent(item?.name)}?cat=${encodeURIComponent(JSON.stringify(item))}&sub_cat=${encodeURIComponent(JSON.stringify(item?.subCategories[0]))}&activeInit=${decodeURIComponent(item?.subCategories[0]?._id)}$init=${item?.subCategories[0]?.name}`,{replace:true})}
       />
     </Container>
   );
@@ -68,8 +68,7 @@ const GradientOverlay = styled.div`
   `;
 
 const Title = styled.div`
-    margin-top: 1.8rem;
-    margin-bottom: 2rem;
+    margin: 0.8rem 0;
   `;
 
 const Badge = styled.div`

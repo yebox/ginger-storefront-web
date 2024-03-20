@@ -10,7 +10,7 @@ import { GButton } from "../Button/button";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { devices, formatAmount, IMAGE_BASE_URL } from "../../Utils";
+import { devices, formatAmount, IMAGE_BASE_URL, truncateText } from "../../Utils";
 import { useApiGet, useApiSend } from "../../Hooks";
 import {
   addToCart,
@@ -169,7 +169,7 @@ export const Product = ({ width, item, mbWidth, skeletonNumber, padding }) => {
   };
 
   if (isLoadingWishlist || isLoadingCartData) {
-    return <ProductSkeleton padding={padding} number={skeletonNumber} />;
+    return <ProductSkeleton width={width} padding={padding} number={skeletonNumber} />;
   }
 
   return (
@@ -194,7 +194,7 @@ export const Product = ({ width, item, mbWidth, skeletonNumber, padding }) => {
           <div>
             <p>Seller:</p>
             <Link
-              to={`/shop/${item?.seller?.firstName}_${item?.seller?.lastName}`}
+              to={`/store?sellerId=${encodeURIComponent(JSON.stringify(item?.seller))}`}
             >{`${item?.seller?.firstName} ${item?.seller?.lastName}`}</Link>
           </div>
 
@@ -204,7 +204,7 @@ export const Product = ({ width, item, mbWidth, skeletonNumber, padding }) => {
           </div>
         </SellerRate>
         <Itemdetail>
-          <p>{item?.name}</p>
+          <p>{truncateText(item?.name, 20)}</p>
           {/* <BrandTag>{item?.brand?.name}</BrandTag> */}
         </Itemdetail>
         {/* <RRPContainer>

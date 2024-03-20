@@ -7,66 +7,135 @@ import {
     GButton,
     GPagination,
     GModal,
+    LineLoader,
+    Carousel,
+    Empty,
 
 } from "../../../Ui_elements";
 import { useEffect, useRef } from "react";
-import { categoriesData } from './data';
 import { DiscountBannerVector, DownArrow, GiftItem, Mail, ShareIcon } from "../../../Assets/Svgs";
 import { useState, memo } from "react";
 import { BecomeSellerSection, InstaFooter, DiscountBanner } from "../Components";
 import { MinimumSpendBanner } from "./components/minimumSpendBanner";
 import { LeftArrow, RightArrow } from "../../../Assets/Svgs";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useApiGet } from "../../../Hooks";
-import { getProducts } from "../../../Urls";
-
-
+import { getCategories, getProducts, getSellerStores, getShoppingConfig } from "../../../Urls";
+import { amountToWords, formatAmount, IMAGE_BASE_URL } from "../../../Utils";
+import { toast } from 'react-hot-toast';
+import { debounce } from "lodash";
 
 const timeline = gsap.timeline()
 
-
-// const shakeAnimation = () => {
-//     console.log("shake")
-//     gsap.to('.DiscountItemContainer', {
-//         duration: 0.1,
-//         x: -10,
-//         repeat: 5,
-//         yoyo: true,
-//         ease: 'power1.inOut',
-//         onComplete: shakeAnimation, // Restart the animation on complete
-//     });
-// };
-
-// const hoverAnimation = () => {
-//     console.log("hover")
-//     gsap.to('.DiscountItemContainer', {
-//         width: '200px', // Adjust width according to your design
-//         duration: 0.5,
-//         ease: 'power2.inOut',
-//     });
-//     gsap.to('.DiscountDetails, .DownArrow', {
-//         opacity: 1,
-//         duration: 0.5,
-//         delay: 0.5, // Delay to start after width animation
-//     });
-// };
-
-
-
 const SellerStore = () => {
+    const location = useLocation()
+    console.log(location?.state, "state")
+    const navigate = useNavigate()
+    const queryParams = new URLSearchParams(location.search);
+    const sellerString = queryParams.get('sellerId')
+    const seller = JSON.parse(decodeURIComponent(sellerString))
     const [selectCat, setSelectCat] = useState(0)
     const [openModal, seOpenModal] = useState(true)
+    const [categoryId, setCategoryId] = useState('')
     const discountItemRef = useRef()
     const discountDetails = useRef()
-    const arrowRef = useRef() 
+    const arrowRef = useRef()
     const bigCardRef = useRef()
-    // const {data: topProducts, isLoading} = useApiGet(
-    //     ["get-top-products-seller"],
-    //     () => getProducts({
-    //         isTopSeller: true,
+    const [showingBig, setShowingBig] = useState(false)
+    const [isHovered, setIsHovered] = useState(false)
+    const currentUrl = window.location.href
+    const slideRef = useRef()
+    const firstCatMount = useRef(true)
 
-    //     })
-    // )
+    const slideNext = () => {
+        if (slideRef.current) {
+            slideRef.current.swiper.slideNext();
+        }
+    };
+
+    const slidePrev = () => {
+        if (slideRef.current) {
+            slideRef.current.swiper.slidePrev();
+        }
+
+    };
+    const { data: topProducts, isLoading: isLoadingTopProducts, refetch: fetchProducts } = useApiGet(
+        ["get-top-products-seller"],
+        () => getProducts({
+            isTopSeller: true,
+            sellerId: seller?._id,
+            ...(categoryId ? { categoryId } : {})
+        }),
+        {
+            enabled: !!categoryId
+        }
+    )
+
+    const { data: allProducts, isLoading: isLoadingAllProducts, isFetching: isFetchingProduct, refetch: fetchAllProducts } = useApiGet(
+        ["get-all-products-seller"],
+        () => getProducts({
+            sellerId: seller?._id,
+            ...(categoryId ? { categoryId } : {})
+        }),
+        {
+            enabled: !!categoryId
+        }
+    )
+
+
+    const { data, isLoading } = useApiGet(
+        ['seller-stores'],
+        () => getSellerStores(seller?._id),
+        {
+            enabled: true,
+        }
+    )
+
+    const { data: shoppingConfig, isLoading: isLoadingConfig } = useApiGet(
+        ['shoping-config'],
+        () => getShoppingConfig(seller?._id),
+        {
+            enabled: true
+        }
+    )
+
+
+    console.log(shoppingConfig, "shopping confg")
+
+    const { data: categories, isLoading: isLoadingCategories } = useApiGet(
+        ['get-categories`'],
+        () => getCategories(),
+        {
+            enabled: true,
+        }
+    )
+
+    // if (seller === undefined || !sellerString) {
+    //     navigate('/')
+    // }
+
+    useEffect(() => {
+        if (categories?.length > 0) {
+            const initialCategoryId = categories[0]?._id;
+            setCategoryId(initialCategoryId);
+        }
+    }, [categories]);
+
+    useEffect(() => {
+        fetchProducts()
+        fetchAllProducts()
+    }, [categoryId])
+
+
+    const handleSendMessage = () => {
+        const sellerEmail = data ? data[0]?.email : '';
+        const subject = 'Regarding your product';
+        const body = 'Hello, I am interested in your product. Can you provide more details?';
+
+        const mailtoLink = `mailto:${sellerEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        window.location.href = mailtoLink;
+    };
+
 
     useEffect(() => {
         const ctx = gsap.context(() => {
@@ -83,10 +152,11 @@ const SellerStore = () => {
     }, [])
 
     const hoverAnimation = () => {
+        setIsHovered(true)
         gsap.fromTo(
             discountItemRef.current,
             {
-                width: '100px'
+                width: '200px'
             },
             {
                 width: '310px',
@@ -106,7 +176,7 @@ const SellerStore = () => {
                 display: 'block',
                 opacity: 1,
                 duration: 0.3,
-                delay: 0.4,
+                delay: 0.5,
                 ease: 'power2.inOut'
             }
         );
@@ -128,6 +198,7 @@ const SellerStore = () => {
 
 
     const resetAnimation = () => {
+        setIsHovered(false)
         gsap.fromTo(discountItemRef.current, {
             width: '310px',
             left: '78%'
@@ -162,10 +233,48 @@ const SellerStore = () => {
     };
 
     const displayBigCard = () => {
+        setShowingBig(true)
+        gsap.to(arrowRef.current, {
+            rotate: 180,
+            duration: 0.3,
+            ease: "power2.inOut"
+        })
         gsap.fromTo(bigCardRef.current, {
-            
+            display: 'none',
+            opacity: 0,
+            y: 60
+        }, {
+            display: "block",
+            opacity: 1,
+            duration: 0.5,
+            y: 1,
+            ease: "power2.inOut"
         })
     }
+
+    const hideBigCard = () => {
+        setShowingBig(false)
+        gsap.to(arrowRef.current, {
+            rotate: 0,
+            duration: 0.3,
+            ease: "power2.inOut"
+        })
+        gsap.fromTo(bigCardRef.current, {
+            display: 'block',
+            opacity: 0,
+            y: 1
+        }, {
+            display: "none",
+            opacity: 0,
+            duration: 0.5,
+            y: 1,
+            ease: "power2.inOut"
+        })
+    }
+
+    const debouncedHover = debounce(hoverAnimation, 100)
+    const debouncedReset = debounce(resetAnimation, 1000)
+
 
     return (
         <Container>
@@ -199,7 +308,7 @@ const SellerStore = () => {
 
                     <ModalItem>
                         <h6>What is the Minimum Spend for this product?</h6>
-                        <p>The Minimum Spend for this seller is <span>Fifteen Thousand Naira (₦15,0000)</span>. Please ensure that your total purchase amount meets or exceeds this threshold to proceed with the transaction.</p>
+                        <p>The Minimum Spend for this seller is <span> {amountToWords(shoppingConfig?.minSpend)}{" "}({formatAmount(shoppingConfig?.minSpend)})</span>. Please ensure that your total purchase amount meets or exceeds this threshold to proceed with the transaction.</p>
                     </ModalItem>
 
                     <ModalItem>
@@ -225,37 +334,56 @@ const SellerStore = () => {
                 ref={bigCardRef}
             >
                 <Save>Save up to 20%</Save>
-                <SaveDetail>Off every purchase above <span>₦100,000</span> made on KeraCare</SaveDetail>
+                <SaveDetail>Off every purchase above <span>₦100,000</span> made on {data ? data[0]?.name : 'this store'}</SaveDetail>
             </BiggerDiscount>
 
-            <DiscountItemContainer
-                ref={discountItemRef}
-                onMouseEnter={hoverAnimation}
-                onMouseLeave={resetAnimation}
-            >
-                <DiscountItem
-                    onMouseEnter={hoverAnimation}
+            {
+                shoppingConfig?.discounts?.length > 0 &&
+                <DiscountItemContainer
+                    ref={discountItemRef}
+                    onMouseEnter={() => {
+                        debouncedHover()
+                    }}
+                    onMouseLeave={resetAnimation}
+                // onMouseOut={resetAnimation}
                 >
-                    <GiftItem />
-                </DiscountItem>
-                <DiscountDetails
-                    ref={discountDetails}
-                >
-                    <Exciting>Exciting offer!!!</Exciting>
-                    <p>See what’s new</p>
-                </DiscountDetails>
-                <ArrowContainer ref={arrowRef}>
-                    <DownArrow />
-                </ArrowContainer>
+                    <DiscountItem>
+                        <GiftItem />
+                    </DiscountItem>
+                    <DiscountDetails
+                        ref={discountDetails}
+                        onClick={() => {
+                            showingBig ? hideBigCard() : displayBigCard()
+                        }}
+                        onMouseOver={(e) => e.stopPropagation()}
+                        onMouseLeave={() => {
+                            hideBigCard()
+                            resetAnimation()
+                        }}
+                    >
+                        <Exciting>Exciting offer!!!</Exciting>
+                        <p>See what’s new</p>
+                    </DiscountDetails>
+                    {/* <ArrowContainer
+                        onClick={() => {
+                            showingBig ? hideBigCard() : displayBigCard()
+                        }}
+                        ref={arrowRef}
+                        onMouseEnter={() => hoverAnimation()}
+                    >
+                        <DownArrow />
+                    </ArrowContainer> */}
 
-            </DiscountItemContainer>
-            <Banner>
+                </DiscountItemContainer>
+            }
+
+            <Banner url={data ? `${IMAGE_BASE_URL}${data[0]?.backgroundImage}` : 'https://i0.wp.com/sunrisedaycamp.org/wp-content/uploads/2020/10/placeholder.png?ssl=1'}>
                 <div>
                     <BannerDetail>
-                        <img src="https://img.freepik.com/free-vector/gradient-hair-salon-logo-template_23-2148881845.jpg" />
+                        <img src={data ? `${IMAGE_BASE_URL}${data[0]?.mainImage}` : 'https://i0.wp.com/sunrisedaycamp.org/wp-content/uploads/2020/10/placeholder.png?ssl=1'} />
 
                         <div>
-                            <h6>KeraCare</h6>
+                            <h6>{data ? data[0]?.name : "Store name"}</h6>
                             <p>Ginger’s wide network of local and international
                                 suppliers gives you access to all of your must-have
                                 brands and products in one place.
@@ -264,12 +392,15 @@ const SellerStore = () => {
                     </BannerDetail>
 
                     <ShareContainer>
-                        <BannerMessage>
+                        <BannerMessage onClick={handleSendMessage}>
                             <Mail />
                             <p>Message Seller</p>
                         </BannerMessage>
 
-                        <ShareHolder>
+                        <ShareHolder onClick={() => {
+                            navigator.clipboard.writeText(currentUrl)
+                            toast.success('Copied to clipboard!')
+                        }}>
                             <ShareIcon />
                         </ShareHolder>
                     </ShareContainer>
@@ -278,47 +409,82 @@ const SellerStore = () => {
             </Banner>
 
             <ChipContainer>
-                {categoriesData.map((item, index) => (
+                {categories?.map((item, index) => (
                     <Chip
                         activeIndex={selectCat}
-                        onClick={() => setSelectCat(index)}
+                        onClick={() => {
+                            setCategoryId(item?._id)
+                            setSelectCat(index)
+                        }}
+                        to={`/store?sellerId=${encodeURIComponent(JSON.stringify(seller))}`}
                         index={index}
                         key={index}
                     >
-                        {item}
+                        {item?.name}
                     </Chip>
                 ))}
             </ChipContainer>
 
-            <ChipContainer>
-                <MinimumSpendBanner />
-            </ChipContainer>
+            {
+                shoppingConfig?.minSpend &&
+                <ChipContainer>
+                    <MinimumSpendBanner amount={shoppingConfig?.minSpend} setOpenModal={seOpenModal} name={data ? data[0]?.name : 'Store'} />
+                </ChipContainer>
+            }
 
-            <DiscountContainer>
+
+            {/* <DiscountContainer>
                 <DiscountBanner />
-            </DiscountContainer>
+            </DiscountContainer> */}
 
             <TopSellerHeader>
                 <div>
                     <h4>Top sellers</h4>
                 </div>
-                <div>
-                    <div>
+                {/* <div>
+                    <div onClick={slidePrev}>
                         <LeftArrow />
                     </div>
-                    <div>
+                    <div onClick={slideNext}>
                         <RightArrow />
                     </div>
-                </div>
+                </div> */}
             </TopSellerHeader>
             <ContentWrapper>
                 <RightContent>
                     <ProductsWrapper>
-                        {[...Array(5)].map((_, index) => (
-                            <Product key={index} width={`17.3rem`} />
-                        ))}
+                        {
+                            topProducts?.length > 0 ?
+                                // <Carousel
+                                //     width={200}
+                                //     data={topProducts}
+                                //     ref={slideRef}
+                                //     renderCard={(item, index) => {
+                                //         return (
+                                //             <Product
+                                //                 item={item}
+                                //                 skeletonNumber={5}
+                                //                 key={index}
+                                //             // width={'17'}
+                                //             />
+                                //         )
+                                //     }}
+                                // />
+                                topProducts?.map((item, index) => (
+                                    <Product
+                                        item={item}
+                                        skeletonNumber={5}
+                                        key={index}
+                                        padding={"5%"}
+                                        width={`17.3rem`}
+                                    />
+                                ))
+                                :
+                                <Empty />
+                        }
+
                     </ProductsWrapper>
-                    <GButton label={"See more"} outline width={"172px"} />
+                    {topProducts?.length > 0 && <GButton label={"See more"} outline width={"172px"} />}
                 </RightContent>
             </ContentWrapper>
 
@@ -331,9 +497,15 @@ const SellerStore = () => {
             <ContentWrapper>
                 <RightContent>
                     <ProductsWrapper>
-                        {[...Array(12)].map((_, index) => (
-                            <Product key={index} width={`17.3rem`} />
-                        ))}
+                        {allProducts?.length > 0 ? allProducts?.map((item, index) => (
+                            <Product
+                                item={item}
+                                key={index}
+                                skeletonNumber={5}
+                                padding={"5%"}
+                                width={`17.3rem`}
+                            />
+                        )) : <Empty />}
                     </ProductsWrapper>
                 </RightContent>
             </ContentWrapper>
@@ -345,7 +517,14 @@ const SellerStore = () => {
             <BecomeSellerContainer>
                 <BecomeSellerSection />
             </BecomeSellerContainer>
-
+            <LineLoader loading={
+                isLoading ||
+                isLoadingTopProducts ||
+                isLoadingAllProducts ||
+                isLoadingCategories ||
+                isFetchingProduct ||
+                isLoadingConfig
+            } />
             <InstaFooter />
         </Container>
     )
@@ -364,12 +543,10 @@ const Breadcrumb = styled.section`
 const Banner = styled.section`
     display: flex;
     align-items: flex-end;
-    padding: 0 2rem 44px 2rem;
+    padding: 0 48px 44px 2rem;
     margin: 0 5%;
     height: 60vh;
-    background: linear-gradient(to right, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.1)),
-                url('https://img.pikbest.com/wp/202345/pose-3-girls-with-blue-colored-hair-posing-together_9578509.jpg!sw800') 
-                center/cover no-repeat;
+    background: ${({ url }) => url ? `linear-gradient(to right, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.1)), url(${url}) center / cover no-repeat` : `url('https://i0.wp.com/sunrisedaycamp.org/wp-content/uploads/2020/10/placeholder.png?ssl=1')`};
     background-color: aquamarine;
     
     >div {
@@ -382,10 +559,12 @@ const Banner = styled.section`
             color: white;
         }
     }
+
 `;
 
 const DiscountContainer = styled.div`
-    margin: 5% 0;
+    margin: 0;
+    background-color: red;
 `
 const ShareContainer = styled.div`
     display: flex;
@@ -401,6 +580,11 @@ const ShareHolder = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    &:hover{
+        filter: brightness(0.9);
+    }
 `
 
 const BannerMessage = styled.div`
@@ -409,10 +593,19 @@ const BannerMessage = styled.div`
     padding: 10px;
     border-radius: 100px;
     gap: 8px;
+    cursor: pointer;
     background: rgba(254, 254, 254, 0.70);
+    transition: all 0.3s ease;
     p{
         color: var(--black) !important;
     }
+
+
+    &:hover{
+        filter: brightness(0.9);
+    }
+
+
 
 `
 const BannerDetail = styled.div`
@@ -462,6 +655,7 @@ const PaginationContainer = styled.div`
 
 const ContentWrapper = styled.div`
   display: flex;
+  width: 100%;
   padding: 0 5%;
 `;
 
@@ -469,8 +663,9 @@ const RightContent = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
   gap: 62px;
-  padding: 38px 0 108px 18px;
+  padding: 0 0 108px 18px;
 `;
 
 const ProductsWrapper = styled.div`
@@ -482,14 +677,14 @@ const ProductsWrapper = styled.div`
 
 
 const TopSellerHeader = styled.div`
-  margin: 0 5%;
+  margin: 20px 5%;
   display: flex;
   justify-content: space-between;
 
   > div:nth-child(1) {
     h4 {
         font-family: Barlow;
-      font-size: 2.5rem;
+      font-size: 34px;
       font-weight: 500;
       margin-bottom: 1.75rem;
     }
@@ -590,6 +785,7 @@ const DiscountItem = styled.div`
 const DiscountDetails = styled.div`
     margin-left: 12px;
     margin-right: 22px;
+    width: fit-content;
     opacity: 0;
     transition: all 1s ease;
     display: none;
@@ -609,7 +805,9 @@ const BiggerDiscount = styled.div`
     border-radius: 12px;
     position: sticky;
     top: 27vh;
-    left:78.5%;
+    left:77.8%;
+    display: none;
+    z-index: 50;
     background-color: black;
 `
 

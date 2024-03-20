@@ -74,7 +74,7 @@ const UnsignedCategories = () => {
                 <CategoryCard
                   key={index}
                   item={item}
-                  width={'24%'}
+                  width={'17.8rem'}
                 />
               ))
             }
@@ -228,7 +228,7 @@ const StoresDisplay = styled.div`
   max-width: 100vw;
   margin-top: 5%;
   display: flex;
-  gap: 1.2rem;
+  gap: 1.1rem;
   flex-wrap: wrap;
 `;
 const NewArrivalsDisplay = styled.div`

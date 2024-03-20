@@ -2,8 +2,7 @@ import styled from "styled-components"
 import { Link } from 'react-router-dom';
 
 export const Chip = ({ children, to, index, activeIndex, ...otherProps }) => {
-    console.log(activeIndex, index, "inside chip")
-    console.log(index, "index")
+    
     return (
         <Container
             to={to}

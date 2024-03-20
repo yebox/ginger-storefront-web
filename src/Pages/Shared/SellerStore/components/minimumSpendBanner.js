@@ -1,16 +1,18 @@
 import styled from 'styled-components'
 import { MinimumSpendIcon } from '../../../../Assets/Svgs'
 import { GButton } from '../../../../Ui_elements'
+import { amountToWords, formatAmount } from '../../../../Utils'
 
-export const MinimumSpendBanner = () => {
+export const MinimumSpendBanner = ({name, setOpenModal, amount}) => {
+    console.log(amount, "amount")
     return (
         <Container>
             <div>
                 <div>
                     <MinimumSpendIcon />
                     <div>
-                        <h6>KeraCare Minimum Spend: <span>₦15,0000</span></h6>
-                        <p>KeraCare has set a minimum spend of Fifteen Thousand Naira on their store.
+                        <h6>{name} Minimum Spend: <span>₦{formatAmount(amount)}</span></h6>
+                        <p>{name} has set a minimum spend of {amountToWords(amount)} Naira on their store.
                             Please ensure all purchase are Fifteen Thousand Naira or above to checkout
                             any item on this store.
                         </p>
@@ -20,6 +22,7 @@ export const MinimumSpendBanner = () => {
                     alternateOutline
                     label={"Learn more ↑"}
                     width={180}
+                    onClick={()=>setOpenModal(true)}
                 />
             </div>
         </Container>

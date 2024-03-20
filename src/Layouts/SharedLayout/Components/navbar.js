@@ -16,7 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Avatar, Skeleton } from "@mui/material";
 import { useApiGet } from "../../../Hooks";
 import { GTextField, LineLoader, PopMenu, SearchOverlay } from "../../../Ui_elements";
-import { getBrands, getCategories, getProducts } from "../../../Urls";
+import { getBrands, getCartItems, getCategories, getProducts } from "../../../Urls";
 import {
   setActiveInitialSubCateogry,
   setCategories,
@@ -25,6 +25,8 @@ import {
 } from "../../../Redux/Reducers";
 import { debounce } from "lodash";
 import { filterSearchParams, generateQueryKey } from "../../../Utils";
+import Badge from '@mui/material/Badge';
+
 
 const imageLinks = [
   "https://images.unsplash.com/photo-1546877625-cb8c71916608?q=80&w=3270&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -63,6 +65,17 @@ export const Navbar = () => {
       image.src = link;
     });
   }, []);
+
+  const { data: cartData, isLoading: isLoadingCart } = useApiGet(
+    ["nav-cart-data"],
+    () => getCartItems(user?._id),
+    {
+      enabled: true,
+      refetchOnWindowFocus: true,
+      cacheTime: 0
+    }
+  )
+
 
   const { data, isLoading } = useApiGet(
     ["navbar-categories"],
@@ -222,7 +235,7 @@ export const Navbar = () => {
                   src="https://images.unsplash.com/photo-1574169208507-84376144848b?q=80&w=3279&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                 />
 
-                <p>{user.firstName}</p>
+                <p>{user?.firstName}</p>
               </Flex>
             ) : (
               <Flex>
@@ -232,7 +245,18 @@ export const Navbar = () => {
             )}
 
             <Flex>
-              <Cart />
+              <Badge
+                badgeContent={cartData?.items?.length}
+                sx={{
+                  "& .MuiBadge-badge": {
+                    color: "white",
+                    backgroundColor: "var(--primary-color)"
+                  }
+                }}
+              >
+                <Cart />
+              </Badge>
+
               <Link to={"/cart"}>Cart</Link>
             </Flex>
           </>
@@ -285,6 +309,7 @@ export const Navbar = () => {
             </MenuLinksContainer>
 
             <Links>
+              <NavLink to={"/about-us"}>About us</NavLink>
               <NavLink to={"/sell-on-ginger"}>Sell on ginger</NavLink>
             </Links>
 
@@ -293,7 +318,7 @@ export const Navbar = () => {
 
       </LowerNav>
 
-      {showFullOptions && (
+      {/* {showFullOptions && (
         <FullOptions
           onMouseEnter={handleFullOptionsHover}
           onMouseLeave={handleFullOptionsLeave}
@@ -307,6 +332,7 @@ export const Navbar = () => {
                       dispatch(setSelectedCategory(activeItem));
                       dispatch(setInitialSubCateogry(item));
                       dispatch(setActiveInitialSubCateogry(item?._id))
+                      console.log(item, activeItem, "Iwas cloa")
                     }}
                     key={index}
                     to={`/categories/${encodeURIComponent(activeItem?.name)}?cat=${encodeURIComponent(JSON.stringify(activeItem))}&sub_cat=${encodeURIComponent(JSON.stringify(item))}&activeInit=${decodeURIComponent(item?._id)}&init=${item?.name}`}
@@ -322,7 +348,7 @@ export const Navbar = () => {
               })}
             </div>
 
-            {/* <div>
+             <div>
               second list for sub category
               <NavLink
                 to="/perm"
@@ -348,14 +374,14 @@ export const Navbar = () => {
               >
                 Wig tools
               </NavLink> 
-            </div> */}
+            </div>
           </div>
 
           <ImageHolder>
             <img src={currentImage} />
           </ImageHolder>
         </FullOptions>
-      )}
+      )} */}
       <SearchOverlay
         showSearch={showSearch}
         setShowSearch={setShowSearch}
@@ -562,3 +588,7 @@ const MenuLinksContainer = styled.div`
   align-items: center;
   gap: 2rem;
 `;
+
+const CartContainer = styled.div`
+
+`
