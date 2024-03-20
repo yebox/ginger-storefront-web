@@ -8,7 +8,7 @@ import {
 } from "../../../../../../Ui_elements";
 import { devices } from "../../../../../../Utils";
 
-const ResolveOption = ({ handleNext }) => {
+const ResolveOption = ({ setCurrentStep, setFormData, formData }) => {
   const [radioValue, setRadioValue] = useState(resolveOption[0].value);
 
   const handleCheck = (e) => {
@@ -16,7 +16,8 @@ const ResolveOption = ({ handleNext }) => {
   };
 
   const handleSubmit = () => {
-    handleNext();
+    setFormData({ ...formData, resolveOption: radioValue });
+    setCurrentStep(3);
   };
 
   return (

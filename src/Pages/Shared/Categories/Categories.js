@@ -26,16 +26,15 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { setActiveInitialSubCateogry } from "../../../Redux/Reducers";
 
 const Categories = () => {
-
-  const location = useLocation()
+  const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const queryCat = queryParams.get("cat");
   const querySub = queryParams.get("sub_cat");
   const queryActive = queryParams.get("activeInit");
-  const decodeQueryCat = JSON.parse(decodeURIComponent(queryCat))
-  const decodeQuerySubCat = JSON.parse(decodeURIComponent(querySub))
-  const decodeActiveInit = decodeURIComponent(queryActive)
-  const inittialSubcat = decodeQuerySubCat
+  const decodeQueryCat = JSON.parse(decodeURIComponent(queryCat));
+  const decodeQuerySubCat = JSON.parse(decodeURIComponent(querySub));
+  const decodeActiveInit = decodeURIComponent(queryActive);
+  const inittialSubcat = decodeQuerySubCat;
 
   const {
     data,
@@ -49,17 +48,20 @@ const Categories = () => {
     }
   );
 
+  const activeIndex = data
+    ? data[0]?.subCategories.findIndex((item) => item?._id === decodeActiveInit)
+    : 0;
 
-  const activeIndex = data ? data[0]?.subCategories.findIndex(item => item?._id === decodeActiveInit) : 0;
-
-  const [selectCat, setSelectCat] = useState(activeIndex !== -1 ? activeIndex : 0);
+  const [selectCat, setSelectCat] = useState(
+    activeIndex !== -1 ? activeIndex : 0
+  );
   const [subCategory, setSubCategory] = useState(decodeQuerySubCat || null);
   const [subCategoryId, setSubCategoryId] = useState(decodeQuerySubCat?._id);
   const [selectedBrand, setSelectedBrand] = useState("");
   const [selectedPrice, setSelectedPrice] = useState(null);
   const [openFilter, setOpenFilter] = useState(false);
 
-  console.log(decodeQuerySubCat, "subCategory")
+  console.log(decodeQuerySubCat, "subCategory");
 
   const {
     data: productsData,
@@ -81,46 +83,45 @@ const Categories = () => {
     }
   );
 
-
   useEffect(() => {
-    setSubCategory(decodeQueryCat)
-  },[])
-  const {
-    data: categoryBrands,
-    isLoading: isLoadingCategoryBrands } =
+    setSubCategory(decodeQueryCat);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  const { data: categoryBrands, isLoading: isLoadingCategoryBrands } =
     useApiGet(["get-brands"], () => getBrands());
 
   useEffect(() => {
     fetchSubCategories();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [decodeQueryCat?.name]);
 
+  useEffect(() => {
+    if (data) {
+      fetchProducts();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data]);
 
   useEffect(() => {
     if (data) {
-      fetchProducts()
+      fetchProducts();
     }
-  }, [data])
-  
-  useEffect(() => {
-    if (data) {
-      fetchProducts()
-    }
-  }, [selectCat, subCategory])
-  
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectCat, subCategory]);
+
   useEffect(() => {
     if (data && selectedPrice) {
-      fetchProducts()
+      fetchProducts();
     }
-  }, [selectedPrice])
-  
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedPrice]);
+
   useEffect(() => {
     if (data) {
-      fetchProducts()
+      fetchProducts();
     }
-  },[selectedBrand])
-
-
-
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedBrand]);
 
   return (
     <Container>
@@ -131,9 +132,9 @@ const Categories = () => {
       <Banner subCategory={subCategory && subCategory}>
         <div>
           <h2>{decodeQueryCat?.name}</h2>
-          <p>Ginger’s wide network of local and international suppliers
-            gives you access to all of your must-have brands
-            and products in one place.
+          <p>
+            Ginger’s wide network of local and international suppliers gives you
+            access to all of your must-have brands and products in one place.
           </p>
         </div>
       </Banner>
@@ -144,7 +145,15 @@ const Categories = () => {
             return (
               <Chip
                 activeIndex={selectCat}
-                to={`/categories/${encodeURIComponent(decodeQueryCat?.name)}?cat=${encodeURIComponent(JSON.stringify(decodeQueryCat))}&sub_cat=${encodeURIComponent(JSON.stringify(item))}&activeInit=${decodeURIComponent(item?._id)}&init=${item?.name}`}
+                to={`/categories/${encodeURIComponent(
+                  decodeQueryCat?.name
+                )}?cat=${encodeURIComponent(
+                  JSON.stringify(decodeQueryCat)
+                )}&sub_cat=${encodeURIComponent(
+                  JSON.stringify(item)
+                )}&activeInit=${decodeURIComponent(item?._id)}&init=${
+                  item?.name
+                }`}
                 onClick={() => {
                   setSelectCat(index);
                   setSubCategoryId(item?._id);
@@ -155,7 +164,7 @@ const Categories = () => {
               >
                 {item?.name}
               </Chip>
-            )
+            );
           })}
         </ChipContainer>
       )}
@@ -227,10 +236,8 @@ const Categories = () => {
       <BecomeSellerContainer>
         <BecomeSellerSection />
       </BecomeSellerContainer>
-      <LineLoader loading={
-        isLoadingProducts ||
-        isFetchingProducts ||
-        isLoadingCategory}
+      <LineLoader
+        loading={isLoadingProducts || isFetchingProducts || isLoadingCategory}
       />
       <InstaFooter />
     </Container>
@@ -246,30 +253,30 @@ const Breadcrumb = styled.section`
 `;
 
 const Banner = styled.section`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 5%;
+  height: 30rem;
+  background: ${({ subCategory }) =>
+    subCategory
+      ? `linear-gradient(to right, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.1)), url(${IMAGE_BASE_URL}${subCategory?.images[0]}) center/cover no-repeat`
+      : "aquamarine"};
+
+  div {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 5%;
-    height: 30rem;
-    background: ${({ subCategory }) =>
-    subCategory
-      ? `linear-gradient(to right, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.1)), url(${IMAGE_BASE_URL}${subCategory?.images[0]}) center/cover no-repeat`
-      : 'aquamarine'};
-    
-    div {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-        gap:2rem;
-        position: relative;
-        z-index: 2;
-        text-align: center;
-        h2 {
-            font-size: 3rem;
-            font-weight: 500;
-            color: white;
-        }
+    flex-direction: column;
+    gap: 2rem;
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    h2 {
+      font-size: 3rem;
+      font-weight: 500;
+      color: white;
+    }
 
     p {
       text-align: center;
@@ -298,7 +305,7 @@ const SortBox = styled.div`
   & > svg {
     transform: rotate(90deg);
     transform: ${({ $isOpen }) =>
-    $isOpen ? `rotate(270deg)` : "rotate(90deg)"};
+      $isOpen ? `rotate(270deg)` : "rotate(90deg)"};
     width: 14px;
     transition: all 0.25s ease;
   }

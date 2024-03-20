@@ -6,6 +6,7 @@ import {
   Carousel,
   LineLoader,
   GButton,
+  GRadioButtonsGroup,
 } from "../../../../Ui_elements";
 import QuantityCounter from "./quantityCounter";
 import {
@@ -28,17 +29,30 @@ import {
 import { useSelector } from "react-redux";
 import { toast } from "react-hot-toast";
 import { useQueryClient } from "@tanstack/react-query";
+import { VariationDropdown } from "./variationDropdown";
+import { colorOptions, purchaseOption, sizeOptions } from "./data";
 
 const ProductSection = ({ data, isLoading }) => {
   const user = useSelector((state) => state.user);
-  const [activeIdx, setActiveIdx] = useState(1);
   const [mainImg, setMainImg] = useState("");
   const [quantity, setQuantity] = useState(2);
   const [items, setItems] = useState([]);
+  const [label, setLabel] = useState(<Label>Select color</Label>);
+  const [sizeOption, setSizeOption] = useState(<Label>Select size</Label>);
   const [isMoqModalOpen, setIsMoqModalOpen] = useState(false);
+  const [purchaseType, setPurchaseType] = useState(purchaseOption[0].value);
+  const maxChars = 140;
+  const handleCheck = (e) => {
+    setPurchaseType(e.target.value);
+  };
   const sliderRef = useRef(null);
   const showArrows = data?.images?.length > 4;
+  const isWholeSale = purchaseType === "wholesale";
   const queryClient = useQueryClient();
+
+  useEffect(() => {
+    isWholeSale ? setQuantity(2) : setQuantity(1);
+  }, [isWholeSale]);
 
   useEffect(() => {
     const mainImage = formatImage(data?.mainImage);
@@ -122,7 +136,7 @@ const ProductSection = ({ data, isLoading }) => {
   const { mutate: addWishlist, isPending: isAddingToWishlist } = useApiSend(
     (_) => addToWishlist(_, user?._id),
     () => {
-      toast.success("Added to wishliat");
+      toast.success("Item has been added to wishlist successfully.");
       queryClient.invalidateQueries(["wishlist-data"]);
     },
     (e) => {
@@ -134,7 +148,7 @@ const ProductSection = ({ data, isLoading }) => {
     useApiSend(
       () => deletItemFromWishlist(user?._id, data?._id),
       () => {
-        toast.success("Removed from wishliat");
+        toast.success("Item has been removed from wishlist successfully.");
         queryClient.invalidateQueries(["wishlist-data"]);
       },
       (e) => {
@@ -180,6 +194,19 @@ const ProductSection = ({ data, isLoading }) => {
 
   const handleChange = () => {
     isWishlist ? onDeleteFromWishlist() : onLike();
+  };
+
+  const generateColorOptions = (data) => {
+    return data?.map((x, idx) => (
+      <OptionEntry key={idx}>
+        <ColorCircle $color={x?.color} />
+        <Label>{x?.name}</Label>
+      </OptionEntry>
+    ));
+  };
+
+  const generateSizeOptions = (data) => {
+    return data?.map((x, idx) => <Label key={idx}>{x}</Label>);
   };
 
   if (isLoading) return <ProductPageLoading />;
@@ -231,39 +258,52 @@ const ProductSection = ({ data, isLoading }) => {
             </EntryWrapper>
           )}
           <EntryWrapper>
-            <EntryTitle>Size</EntryTitle>
-            <SizeTabsWrapper>
-              <SizeTab
-                onClick={() => setActiveIdx(1)}
-                $active={activeIdx === 1}
-              >
-                12Floz (276ml)
-              </SizeTab>
-              <SizeTab
-                onClick={() => setActiveIdx(2)}
-                $active={activeIdx === 2}
-              >
-                16Floz (512ml)
-              </SizeTab>
-            </SizeTabsWrapper>
+            <EntryTitle>Variation</EntryTitle>
+            <TabsWrapper>
+              <VariationDropdown
+                label={label}
+                setLabel={setLabel}
+                options={generateColorOptions(colorOptions)}
+              />
+              <VariationDropdown
+                label={sizeOption}
+                setLabel={setSizeOption}
+                options={generateSizeOptions(sizeOptions)}
+              />
+            </TabsWrapper>
           </EntryWrapper>
           <EntryWrapper>
+            <EntryTitle>Purchase options</EntryTitle>
+            <TabsWrapper>
+              <GRadioButtonsGroup
+                name={"issueType"}
+                options={purchaseOption}
+                handleChange={handleCheck}
+                value={purchaseType}
+                row={true}
+              />
+            </TabsWrapper>
+          </EntryWrapper>
+
+          <EntryWrapper>
             <EntryTitle>Quantity</EntryTitle>
-            <MoqBox>
-              <Flex>
-                <InfoIconWhiteBg />
-                <MoqTitle>MOQ</MoqTitle>
-              </Flex>
-              <MoqText>
-                The minimum order quantity for the product is 2.
-              </MoqText>
-              <LearnMore onClick={() => setIsMoqModalOpen(true)}>
-                Learn more
-              </LearnMore>
-            </MoqBox>
+            {isWholeSale && (
+              <MoqBox>
+                <Flex>
+                  <InfoIconWhiteBg />
+                  <MoqTitle>MOQ</MoqTitle>
+                </Flex>
+                <MoqText>
+                  The minimum order quantity for the product is 2.
+                </MoqText>
+                <LearnMore onClick={() => setIsMoqModalOpen(true)}>
+                  Learn more
+                </LearnMore>
+              </MoqBox>
+            )}
             <QuantityItemWrapper>
               <QuantityCounter
-                moq={2}
+                moq={isWholeSale ? 2 : 1}
                 setValue={setQuantity}
                 value={quantity}
               />
@@ -336,6 +376,29 @@ export const MoreImagesWrapper = styled.div`
     gap: 8px;
     margin-top: 15px;
   }
+`;
+
+const OptionEntry = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-grow: 1;
+`;
+
+const ColorCircle = styled.span`
+  width: 18px;
+  height: 18px;
+  border-radius: 10px;
+  background: ${({ $color }) => $color && $color};
+`;
+
+const Label = styled.p`
+  color: var(--Black-500, #626262);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 120%; /* 16.8px */
+  flex-grow: 1;
 `;
 
 const ArrowCircle = styled.div`
@@ -456,7 +519,7 @@ const Collection = styled.p`
 export const EntryWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 10px;
   margin-bottom: 30px;
 
   @media ${devices.mobileL} {
@@ -484,10 +547,10 @@ const Description = styled.p`
   }
 `;
 
-const SizeTabsWrapper = styled.div`
+const TabsWrapper = styled.div`
   display: flex;
   align-items: center;
-  gap: 25px;
+  gap: 24px;
 
   @media ${devices.mobileL} {
     gap: 15px;
@@ -535,6 +598,7 @@ const MoqBox = styled.div`
   border-radius: 4px;
   border: 1px solid #ffe4bf;
   background: #fff7ec;
+  margin-bottom: 10px;
 `;
 
 const Flex = styled.div`

@@ -3,9 +3,24 @@ import { styled } from "styled-components";
 import { useForm } from "react-hook-form";
 import { GButton, GImageUpload } from "../../../../../../Ui_elements";
 import { devices } from "../../../../../../Utils";
+import { useApiSend } from "../../../../../../Hooks";
+import { createOrderReport } from "../../../../../../Urls";
+import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
 
-const ProductUpload = ({ handleNext }) => {
+const ProductUpload = ({ setCurrentStep, formData, orderId }) => {
   const [files, setFiles] = useState([]);
+  const { selectedOrderItem } = useSelector((state) => state?.global);
+
+  const { mutate: createReport, isPending } = useApiSend(
+    createOrderReport,
+    () => {
+      setCurrentStep(4);
+    },
+    () => {
+      toast.error(`Something went wrong`);
+    }
+  );
 
   const {
     register,
@@ -15,9 +30,14 @@ const ProductUpload = ({ handleNext }) => {
   } = useForm();
 
   const onSubmit = () => {
-    // Handle form submission, data contains form values along with uploaded files
-    console.log(files);
-    handleNext();
+    const formDataObj = new FormData();
+    files?.forEach((x) => formDataObj.append("images", x));
+    formDataObj.append("issueType", formData?.issueType);
+    formDataObj.append("issue", formData?.issue);
+    formDataObj.append("resolveOption", formData?.resolveOption);
+    formDataObj.append("orderId", orderId);
+    formDataObj.append("productId", selectedOrderItem?.productId);
+    createReport(formDataObj);
   };
 
   return (
@@ -38,6 +58,7 @@ const ProductUpload = ({ handleNext }) => {
             <GButton
               label={"Submit"}
               width={"158px"}
+              isLoading={isPending}
               isDisabled={files.length === 0}
             />
           </SubmitWrapper>

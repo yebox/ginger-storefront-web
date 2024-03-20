@@ -63,7 +63,7 @@ const ValueBox = styled.p`
   justify-content: center;
   border-top: 1px solid var(--Black-100, #b6b6b6);
   border-bottom: 1px solid var(--Black-100, #b6b6b6);
-  padding: 7.4px 0;
+  padding: 7px 0;
   width: 142px;
   color: var(--Black-500, #151515);
   font-size: 30px;

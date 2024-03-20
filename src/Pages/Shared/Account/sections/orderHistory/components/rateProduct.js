@@ -59,9 +59,11 @@ const RateProduct = ({ orderId }) => {
     setReview("");
   }, [selectedOrderItem]);
 
-  const handleChange = (e) => {
-    setReview(e.target.value);
+  const handleChange = (value) => {
+    setReview(value);
   };
+
+  console.log(review);
 
   const onSubmit = () => {
     const body = {
@@ -69,10 +71,13 @@ const RateProduct = ({ orderId }) => {
       rating: checkedCount,
       productId: selectedOrderItem?.productId,
     };
+    console.log({ body });
     mutate(body);
   };
+  console.log(userReview);
 
-  const latestreview = userReview?.pop();
+  const reviewLength = userReview?.length;
+  const latestreview = reviewLength > 0 && userReview[reviewLength - 1];
 
   const navigate = useNavigate();
   return (
@@ -96,7 +101,7 @@ const RateProduct = ({ orderId }) => {
               Happy <span>Ginger</span> shopping
             </SubmitSubTxt>
           </SubmittedWrapper>
-        ) : userReview?.length > 0 ? (
+        ) : reviewLength > 0 ? (
           <UserReview
             rating={latestreview?.rating}
             review={latestreview?.review}
