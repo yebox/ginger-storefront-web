@@ -101,7 +101,7 @@ const UnsignedCategories = () => {
           </BestSellingDisplay>
 
           <SeeMoreContainer>
-            <GButton outline label={"See More"} />
+            <GButton outline onClick={()=>(navigate('/marketplace'))} label={"See More"} />
           </SeeMoreContainer>
         </ProductDisplay>
       </ProductFilterContainer>

@@ -26,10 +26,10 @@ const rootReducer = combineReducers({
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-var logger = null;
+let middleware = [];
 
 if (process.env.NODE_ENV === "development") {
-  logger = createLogger({
+  const logger = createLogger({
     collapsed: true,
     duration: true,
     level: "warn",
@@ -40,6 +40,7 @@ if (process.env.NODE_ENV === "development") {
       nextState: () => "#A47104",
     },
   });
+  middleware = [...middleware, logger];
 }
 
 export const store = configureStore({
@@ -49,7 +50,7 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }).concat(logger),
+    }).concat(middleware),
 });
 
 export const persistor = persistStore(store);

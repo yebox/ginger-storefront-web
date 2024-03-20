@@ -156,7 +156,7 @@ const Home = () => {
         <HeroDetails>
           <p>Explore, Buy Wholesale, Sell on Ginger</p>
           <h3>Discover the convenience of</h3>
-          <h3>wholesale markeplace</h3>
+          <h3>wholesale marketplace</h3>
           <ButtonContainer>
             {!user && (
               <GButton
@@ -166,7 +166,6 @@ const Home = () => {
             )}
 
             <GButton
-              width={"178px"}
               outline
               onClick={() => navigate("/sell-on-ginger")}
               label="Sell on ginger"
@@ -369,7 +368,6 @@ const Home = () => {
             )}
             <GButton
               label="Shop now"
-              width={user ? "178px" : "100%"}
               alternate
               onClick={() => navigate("/marketplace")}
             />
@@ -819,7 +817,7 @@ const FeatureProductsContainer = styled.section`
 `;
 
 const FeaturedItemContainer = styled.div`
-  width: 100vw;
+  width: 100%;
   display: flex;
   align-items: center;
   gap: 20px;
@@ -1006,7 +1004,7 @@ const Wholesale = styled.div`
       display: flex;
       gap: 20px;
       width: fit-content;
-      max-width: 60%;
+      width: 60%;
       margin: 0 auto;
     }
   }
