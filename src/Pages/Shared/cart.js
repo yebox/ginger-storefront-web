@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import styled from "styled-components";
 import { useState, useMemo, useEffect } from "react";
 import { EmptyCartIcon, InfoIcon } from "../../Assets/Svgs";
@@ -30,12 +31,12 @@ import { Modal } from "./checkout/components";
 
 export default function Cart() {
   const navigate = useNavigate();
-  const location = useLocation()
-  const params = new URLSearchParams(location.search)
-  const reference = params.get('reference')
-  const [sellerId, setSellerId] = useState('')
-  const [modalType, setModalType] = useState(null)
-  const [showModal, setShowModal] = useState(false)
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const reference = params.get("reference");
+  const [sellerId, setSellerId] = useState("");
+  const [modalType, setModalType] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
   const user = useSelector((state) => state.user);
   const [totalPrice, setTotalPrice] = useState(0);
@@ -43,29 +44,34 @@ export default function Cart() {
   const [item, setItem] = useState(null);
   const queryClient = new QueryClient();
 
-  const { data: verifyData, isLoading: isVerifying, refetch: verify } = useApiGet(
-    ['verify-payments'],
-    () => verifyPayments({
-      reference
-    }),
+  const {
+    data: verifyData,
+    isLoading: isVerifying,
+    refetch: verify,
+  } = useApiGet(
+    ["verify-payments"],
+    () =>
+      verifyPayments({
+        reference,
+      }),
     {
-      enabled: !!reference
+      enabled: !!reference,
     }
-  )
+  );
 
   useEffect(() => {
     if (reference) {
-      setModalType('processing')
-      setShowModal(true)
-      verify()
+      setModalType("processing");
+      setShowModal(true);
+      verify();
     }
-  }, [reference])
+  }, [reference]);
 
   useEffect(() => {
     if (verifyData) {
-      setModalType('confirm');
-      setShowModal(false)
-      toast.success("Purchase successful")
+      setModalType("confirm");
+      setShowModal(false);
+      toast.success("Purchase successful");
     }
   }, [verifyData]);
 
@@ -89,8 +95,8 @@ export default function Cart() {
     refetchOnWindowFocus: false,
   });
 
-  console.log(sellerId, "seller id")
-  console.log(shoppingConfig, "please work")
+  console.log(sellerId, "seller id");
+  console.log(shoppingConfig, "please work");
 
   const { mutate: removeFromCart, isPending: isRemovingFromCart } = useApiSend(
     () =>
@@ -131,12 +137,13 @@ export default function Cart() {
     }
   );
 
-  const {data:discounts, isLoading:isLoadingDiscounts} = useApiGet(
-    ['get-desicounts'],
-    () => getShoppingConfigDiscount({
-      sellerId:sellerId
-    })
-  )
+  const { data: discounts, isLoading: isLoadingDiscounts } = useApiGet(
+    ["get-desicounts"],
+    () =>
+      getShoppingConfigDiscount({
+        sellerId: sellerId,
+      })
+  );
 
   const handleRemoveSingleItem = (row) => {
     setItem(row);
@@ -161,14 +168,12 @@ export default function Cart() {
     }));
   }, [cartItems, cartItems?.items]);
 
-  
   useEffect(() => {
     if (cartItems && cartItems?.items?.length > 0) {
       const firstCartItem = cartItems?.items[2];
       setSellerId(firstCartItem?.product?.sellerId);
     }
   }, [cartItems]);
-
 
   const encodeURL = transformData
     ? encodeURIComponent(JSON.stringify(transformData))
@@ -189,13 +194,13 @@ export default function Cart() {
     let totalPriceCalculation = 0;
     if (transformData) {
       totalPriceCalculation = transformData.reduce((total, item) => {
-        const discountedPrice = item?.price * (1 - item?.discountPercentage / 100);
+        const discountedPrice =
+          item?.price * (1 - item?.discountPercentage / 100);
         return total + discountedPrice * item?.quantity;
       }, 0);
     }
     setTotalPrice(totalPriceCalculation);
   }, [transformData]);
-
 
   const columns = useMemo(
     () => [
@@ -295,13 +300,19 @@ export default function Cart() {
         ),
         accessor: "total",
         Cell: ({ row }) => {
-          console.log(row,"row")
+          console.log(row, "row");
           return (
             <SpendContainer>
               <GButton
                 label={"Shop brand"}
                 outline
-                onClick={() => navigate(`/store?sellerId=${encodeURIComponent(JSON.stringify(row?.sellerId))}`)}
+                onClick={() =>
+                  navigate(
+                    `/store?sellerId=${encodeURIComponent(
+                      JSON.stringify(row?.sellerId)
+                    )}`
+                  )
+                }
               />
               {/* <Minimumspend>Minimum spend : ₦50,000</Minimumspend>
                             <SpendLeft>₦45,500 left</SpendLeft> */}
@@ -356,15 +367,8 @@ export default function Cart() {
       <BreadCrumbHolder>
         <GBreadCrumbs />
       </BreadCrumbHolder>
-      <GModal
-        open={showModal}
-        handleClose={() => setShowModal(false)}
-      >
-        <Modal
-          type={modalType}
-          setShowModal={setShowModal}
-        />
-
+      <GModal open={showModal} handleClose={() => setShowModal(false)}>
+        <Modal type={modalType} setShowModal={setShowModal} />
       </GModal>
 
       {transformData?.length > 0 ? (

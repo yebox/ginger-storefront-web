@@ -15,8 +15,18 @@ import { useState, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Avatar, Skeleton } from "@mui/material";
 import { useApiGet } from "../../../Hooks";
-import { GTextField, LineLoader, PopMenu, SearchOverlay } from "../../../Ui_elements";
-import { getBrands, getCartItems, getCategories, getProducts } from "../../../Urls";
+import {
+  GTextField,
+  LineLoader,
+  PopMenu,
+  SearchOverlay,
+} from "../../../Ui_elements";
+import {
+  getBrands,
+  getCartItems,
+  getCategories,
+  getProducts,
+} from "../../../Urls";
 import {
   setActiveInitialSubCateogry,
   setCategories,
@@ -25,8 +35,7 @@ import {
 } from "../../../Redux/Reducers";
 import { debounce } from "lodash";
 import { filterSearchParams, generateQueryKey } from "../../../Utils";
-import Badge from '@mui/material/Badge';
-
+import Badge from "@mui/material/Badge";
 
 const imageLinks = [
   "https://images.unsplash.com/photo-1546877625-cb8c71916608?q=80&w=3270&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -41,21 +50,22 @@ export const Navbar = () => {
   const [activeItem, setActiveItem] = useState(null);
   const [showFullOptions, setShowFullOptions] = useState(false);
   const [fullOptionsHovered, setFullOptionsHovered] = useState(false);
-  const [showSearch, setShowSearch] = useState(false)
+  const [showSearch, setShowSearch] = useState(false);
   const [searchFilter, setSearchFilter] = useState({
-    name: '',
-    brandId: '',
-    categoryId: '',
-    subCategoryId: '',
-    rating: '',
-    msrp: '',
+    name: "",
+    brandId: "",
+    categoryId: "",
+    subCategoryId: "",
+    rating: "",
+    msrp: "",
     isFeatured: null,
-    isTopSeller: null
-  })
-  const dispatch = useDispatch()
+    isTopSeller: null,
+  });
+  const dispatch = useDispatch();
   const user = useSelector((state) => state?.user);
-  const initialSubCatFromStore = useSelector(state => state.global?.initialSubCategory)
-
+  const initialSubCatFromStore = useSelector(
+    (state) => state.global?.initialSubCategory
+  );
 
   const navigate = useNavigate();
 
@@ -72,10 +82,9 @@ export const Navbar = () => {
     {
       enabled: true,
       refetchOnWindowFocus: true,
-      cacheTime: 0
+      cacheTime: 0,
     }
-  )
-
+  );
 
   const { data, isLoading } = useApiGet(
     ["navbar-categories"],
@@ -88,62 +97,62 @@ export const Navbar = () => {
 
   useEffect(() => {
     data && dispatch(setCategories(data));
-  }, [data]); const { data: brands, isLoading: isLoadingBrands } = useApiGet(
-    ['navbar-brandss'],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data]);
+  const { data: brands, isLoading: isLoadingBrands } = useApiGet(
+    ["navbar-brandss"],
     () => getBrands(),
     {
       enabled: true,
-      refetchOnWindowFocus: false
+      refetchOnWindowFocus: false,
     }
-  )
+  );
 
-  const { data: products, isLoading: isLoadingProducts, refetch: fetchProduct } = useApiGet(
-    [generateQueryKey('products', searchFilter)],
-    () => getProducts(
-      filterSearchParams(searchFilter)
-    ),
+  const {
+    data: products,
+    isLoading: isLoadingProducts,
+    refetch: fetchProduct,
+  } = useApiGet(
+    [generateQueryKey("products", searchFilter)],
+    () => getProducts(filterSearchParams(searchFilter)),
     {
       enabled: !!searchFilter,
-      refetchOnWindowFocus: false
+      refetchOnWindowFocus: false,
     }
-  )
+  );
 
   useEffect(() => {
-    fetchProduct()
-  }, [searchFilter])
-
+    fetchProduct();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchFilter]);
 
   const debouncedSearchFilterUpdate = debounce((value) => {
     setSearchFilter((prev) => ({
       ...prev,
-      name: value
+      name: value,
     }));
   }, 1500);
 
   const debouncedMSPRFilterUpdate = debounce((value) => {
     setSearchFilter((prev) => ({
       ...prev,
-      msrp: value
+      msrp: value,
     }));
   }, 1500);
 
-
   const handleSearchFilter = (value) => {
-    const searchValue = value
+    const searchValue = value;
     debouncedSearchFilterUpdate(searchValue.trim());
   };
 
   const handleMSRPFilter = (value) => {
-    const searchValue = value
+    const searchValue = value;
     debouncedMSPRFilterUpdate(searchValue.trim());
   };
-
-
 
   const extractCategories = (data) => {
     if (data) {
       return data?.map(({ _id, name }) => ({ value: _id, label: name }));
-
     }
   };
 
@@ -161,7 +170,6 @@ export const Navbar = () => {
         return [...acc, ...subCategories];
       }, []);
     }
-
   };
 
   const categories = useMemo(() => extractCategories(data), [data]);
@@ -172,7 +180,6 @@ export const Navbar = () => {
   //   dispatch(setSelectedCategory(null))
   //   dispatch(setInitialSubCateogry(null))
   // }, [initialSubCatFromStore])
-
 
   const handleNavLinkHover = (index) => {
     setCurrentImage(imageLinks[index]);
@@ -199,7 +206,9 @@ export const Navbar = () => {
   const menuItems = [
     {
       item: user ? "Logout" : "Login",
-      action: user ? () => console.log("Edit clicked") : () => navigate('/login')
+      action: user
+        ? () => console.log("Edit clicked")
+        : () => navigate("/login"),
     },
   ];
 
@@ -250,8 +259,8 @@ export const Navbar = () => {
                 sx={{
                   "& .MuiBadge-badge": {
                     color: "white",
-                    backgroundColor: "var(--primary-color)"
-                  }
+                    backgroundColor: "var(--primary-color)",
+                  },
                 }}
               >
                 <Cart />
@@ -285,22 +294,29 @@ export const Navbar = () => {
         ) : (
           <LowerNavItemContainer>
             <MenuLinksContainer>
-              <NavLink
-                to={"/categories/all"}
-              >
-                All
-              </NavLink>
+              <NavLink to={"/categories/all"}>All</NavLink>
 
               {data?.map((category, index) => (
                 <NavLink
                   onClick={() => {
-                    dispatch(setSelectedCategory(category))
+                    dispatch(setSelectedCategory(category));
                     dispatch(setInitialSubCateogry(category?.subCategories[0]));
-                    dispatch(setActiveInitialSubCateogry(category?.subCategories[0]?._id))
+                    dispatch(
+                      setActiveInitialSubCateogry(
+                        category?.subCategories[0]?._id
+                      )
+                    );
                   }}
                   key={index}
-                  to={`/categories/${encodeURIComponent(category?.name)}?cat=${encodeURIComponent(JSON.stringify(category))}&sub_cat=${encodeURIComponent(JSON.stringify(category?.subCategories[0]))}&activeInit=${decodeURIComponent(category?.subCategories[0]?._id)}&init=${category?.subCategories[0]?.name}`}
-
+                  to={`/categories/${encodeURIComponent(
+                    category?.name
+                  )}?cat=${encodeURIComponent(
+                    JSON.stringify(category)
+                  )}&sub_cat=${encodeURIComponent(
+                    JSON.stringify(category?.subCategories[0])
+                  )}&activeInit=${decodeURIComponent(
+                    category?.subCategories[0]?._id
+                  )}&init=${category?.subCategories[0]?.name}`}
                   onMouseEnter={() => handleNavLinkHover(index)}
                 >
                   {category.name}
@@ -312,10 +328,8 @@ export const Navbar = () => {
               <NavLink to={"/about-us"}>About us</NavLink>
               <NavLink to={"/sell-on-ginger"}>Sell on ginger</NavLink>
             </Links>
-
-          </LowerNavItemContainer>)
-        }
-
+          </LowerNavItemContainer>
+        )}
       </LowerNav>
 
       {/* {showFullOptions && (
@@ -392,7 +406,6 @@ export const Navbar = () => {
         setSearchFilter={setSearchFilter}
         msrpUpdate={debouncedMSPRFilterUpdate}
         handleMSRPFilter={handleMSRPFilter}
-
       />
       <LineLoader loading={isLoadingProducts} />
     </OuterContainer>
@@ -406,7 +419,6 @@ const OuterContainer = styled.nav`
   left: 0;
   background-color: white;
   z-index: 50 !important;
-  
 `;
 const Container = styled.div`
   width: 100%;
@@ -589,6 +601,4 @@ const MenuLinksContainer = styled.div`
   gap: 2rem;
 `;
 
-const CartContainer = styled.div`
-
-`
+const CartContainer = styled.div``;

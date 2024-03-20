@@ -13,7 +13,13 @@ import {
 import React, { memo, useState, useEffect, useRef } from "react";
 import Vector from "../../Assets/Images/vector-background.png";
 import AddPicture from "../../Assets/Images/ad-picture.png";
-import { BecomeSellerSection, BlogCard, GuideCard, InstaFooter, SellerCard } from "./Components";
+import {
+  BecomeSellerSection,
+  BlogCard,
+  GuideCard,
+  InstaFooter,
+  SellerCard,
+} from "./Components";
 import Partners from "../../Assets/Images/partners.png";
 import HeroImage from "../../Assets/Images/hero-image.png";
 import {
@@ -27,9 +33,14 @@ import {
 import Swiper from "swiper";
 import { useNavigate } from "react-router-dom";
 import { useApiGet } from "../../Hooks";
-import { getCategories, getProducts, getProductBrands, getAllStores } from "../../Urls";
+import {
+  getCategories,
+  getProducts,
+  getProductBrands,
+  getAllStores,
+} from "../../Urls";
 import Cookies from "js-cookie";
-import { useSelector } from 'react-redux';
+import { useSelector } from "react-redux";
 import { Skeleton } from "@mui/material";
 // import InstaFooter from "./Components/instaFooter";
 
@@ -37,13 +48,13 @@ const Home = () => {
   const navigate = useNavigate();
   const [selectCat, setSelectCat] = useState(0);
   const [openCookie, setOpenCookie] = useState(true);
-  const [categoryId, setCategoryId] = useState('')
+  const [categoryId, setCategoryId] = useState("");
   const [openModal, setOpenModal] = useState(true);
   const sliderRef = useRef(null);
-  const user = useSelector(state => state.user)
+  const user = useSelector((state) => state.user);
   const acceptCookie = Cookies.get("ginger-cookie-policy");
   const swiper = new Swiper();
-  const firstCatMount = useRef(true)
+  const firstCatMount = useRef(true);
 
   const { data: products, isLoading } = useApiGet(
     ["get-featured-products"],
@@ -55,25 +66,25 @@ const Home = () => {
   );
 
   const { data, isLoading: isLoadingStores } = useApiGet(
-    ['get-all-stores'],
+    ["get-all-stores"],
     () => getAllStores(),
     {
-      enable: true
+      enable: true,
     }
-  )
-
+  );
 
   const {
     data: topProducts,
     isLoading: isLoadingTopProducts,
     isFetching: isFetchingTopProducts,
-    refetch: fetchProducts
+    refetch: fetchProducts,
   } = useApiGet(
     ["get-top-products"],
-    () => getProducts({
-      isTopSeller: true,
-      categoryId: categoryId
-    }),
+    () =>
+      getProducts({
+        isTopSeller: true,
+        categoryId: categoryId,
+      }),
     {
       enabled: true,
       refetchOnWindowFocus: false,
@@ -89,14 +100,14 @@ const Home = () => {
     }
   );
 
-  const { data: categories, isLoading: isLoadingCategories, refetch: fetchCat } = useApiGet(
-    ["categories"],
-    () => getCategories(),
-    {
-      enabled: true,
-      refetchOnWindowFocus: false,
-    }
-  );
+  const {
+    data: categories,
+    isLoading: isLoadingCategories,
+    refetch: fetchCat,
+  } = useApiGet(["categories"], () => getCategories(), {
+    enabled: true,
+    refetchOnWindowFocus: false,
+  });
 
   const lastFourFeaturedProducts = products?.slice(-5);
 
@@ -110,25 +121,27 @@ const Home = () => {
     if (sliderRef.current) {
       sliderRef.current.swiper.slidePrev();
     }
-
   };
 
   const filterStoresWithImages = (data) => {
     // Filter the stores that have both background and mainImage properties
     if (data) {
-      const filteredStores = data.filter(store => {
-        return Object.prototype.hasOwnProperty.call(store, 'backgroundImage') && Object.prototype.hasOwnProperty.call(store, 'mainImage');
+      const filteredStores = data.filter((store) => {
+        return (
+          Object.prototype.hasOwnProperty.call(store, "backgroundImage") &&
+          Object.prototype.hasOwnProperty.call(store, "mainImage")
+        );
       });
 
       return filteredStores;
     }
-  }
-  const filteredStores = filterStoresWithImages(data)
-
+  };
+  const filteredStores = filterStoresWithImages(data);
 
   useEffect(() => {
-    fetchProducts()
-  }, [categoryId])
+    fetchProducts();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [categoryId]);
 
   const EndIcon = () => (
     <EndIconContainer>
@@ -145,12 +158,12 @@ const Home = () => {
           <h3>Discover the convenience of</h3>
           <h3>wholesale markeplace</h3>
           <ButtonContainer>
-            {
-              !user && <GButton
+            {!user && (
+              <GButton
                 label="Sign up for free"
                 onClick={() => navigate("/login")}
               />
-            }
+            )}
 
             <GButton
               width={"178px"}
@@ -180,8 +193,9 @@ const Home = () => {
           <h4>Beauty procurement, simplified for you</h4>
           <div>
             <p>
-              Ginger’s wide network of local and international suppliers gives you access
-              to all of your must-have brands and products in one place.
+              Ginger’s wide network of local and international suppliers gives
+              you access to all of your must-have brands and products in one
+              place.
             </p>
           </div>
         </CategoryHeader>
@@ -240,12 +254,18 @@ const Home = () => {
       <FeatureProductsContainer>
         <h4>Featured Products</h4>
         <FeaturedItemContainer>
-          {lastFourFeaturedProducts ? lastFourFeaturedProducts?.map((product, index) =>
-            <Product item={product} key={index}
-              skeletonNumber={5}
-              padding={"10%"}
-            />
-          ) : <Empty />}
+          {lastFourFeaturedProducts ? (
+            lastFourFeaturedProducts?.map((product, index) => (
+              <Product
+                item={product}
+                key={index}
+                skeletonNumber={5}
+                padding={"10%"}
+              />
+            ))
+          ) : (
+            <Empty />
+          )}
         </FeaturedItemContainer>
       </FeatureProductsContainer>
 
@@ -326,9 +346,7 @@ const Home = () => {
             data={filteredStores}
             ref={sliderRef}
             renderCard={(item) => {
-              return (
-                <SellerCard item={item}/>
-              )
+              return <SellerCard item={item} />;
             }}
           />
         </SellerCardsContainer>
@@ -342,12 +360,13 @@ const Home = () => {
             Start exploring thousands of brands and enjoy wholesale purchases
           </p>
           <div>
-            {!user && <GButton
-              label="Get started"
-              alternate
-              onClick={() => navigate('/signup')}
-            />
-            }
+            {!user && (
+              <GButton
+                label="Get started"
+                alternate
+                onClick={() => navigate("/signup")}
+              />
+            )}
             <GButton
               label="Shop now"
               width={user ? "178px" : "100%"}
@@ -447,13 +466,15 @@ const Home = () => {
         </ModalContent>
       </GModal>
 
-      <LineLoader loading={
-        isLoadingTopProducts ||
-        isLoadingCategories ||
-        isLoadingProductBrands ||
-        isLoading ||
-        isFetchingTopProducts
-      } />
+      <LineLoader
+        loading={
+          isLoadingTopProducts ||
+          isLoadingCategories ||
+          isLoadingProductBrands ||
+          isLoading ||
+          isFetchingTopProducts
+        }
+      />
     </Container>
   );
 };
@@ -945,8 +966,6 @@ const SellerCardsContainer = styled.div`
   overflow-x: auto !important;
 `;
 
-
-
 const Wholesale = styled.div`
   padding: 10% 5%;
   margin-top: 5%;
@@ -1193,4 +1212,4 @@ const HowItWorks = styled.div`
   width: 100%;
   align-items: center;
   justify-content: space-between;
-`
+`;
