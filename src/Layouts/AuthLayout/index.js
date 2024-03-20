@@ -4,14 +4,16 @@ import mainAuthBg from "../../Assets/Images/sign_up.png";
 import authGradient from "../../Assets/Images/sign_up_gradient.png";
 import { WhiteLogo } from "../../Assets/Svgs";
 import { devices } from "../../Utils/mediaQueryBreakPoints";
+import { useNavigate } from "react-router-dom";
 
 const AuthLayout = ({ children }) => {
+  const navigate = useNavigate();
   return (
     <Container>
       <LeftSection>
         <BgImage src={mainAuthBg} />
         <AuthBgGradient src={authGradient} />
-        <AuthWhiteLogo />
+        <AuthWhiteLogo onClick={() => navigate("/")} />
         <LeftTextWrapper>
           <LeftTitle>Infinite beauty awaits</LeftTitle>
           <LeftSubtitle>
@@ -19,7 +21,7 @@ const AuthLayout = ({ children }) => {
           </LeftSubtitle>
         </LeftTextWrapper>
       </LeftSection>
-      
+
       <RightSection>
         <ContentWrapper>{children}</ContentWrapper>
       </RightSection>
@@ -59,6 +61,7 @@ const LeftSection = styled.div`
 const AuthWhiteLogo = styled(WhiteLogo)`
   width: 162px;
   height: 32px;
+  cursor: pointer;
 
   @media ${devices.mobileL} {
     width: 121px;
