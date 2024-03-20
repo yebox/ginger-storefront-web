@@ -132,10 +132,10 @@ export const SearchOverlay = ({
 
                             />
 
-                            <GTextField
+                            {/* <GTextField
                                 placeholder={'MSRP'}
                                 onChange={(value) => handleMSRPFilter(value)}
-                            />
+                            /> */}
 
                             <Controller
                                 name='isFeatured'
