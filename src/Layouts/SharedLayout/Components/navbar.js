@@ -28,6 +28,7 @@ import {
   getProducts,
 } from "../../../Urls";
 import {
+  logout,
   setActiveInitialSubCateogry,
   setCategories,
   setInitialSubCateogry,
@@ -203,12 +204,14 @@ export const Navbar = () => {
     }
   };
 
+  const handleLogout = () => {
+    dispatch(logout(null));
+  };
+
   const menuItems = [
     {
       item: user ? "Logout" : "Login",
-      action: user
-        ? () => console.log("Edit clicked")
-        : () => navigate("/login"),
+      action: user ? () => handleLogout() : () => navigate("/login"),
     },
   ];
 
