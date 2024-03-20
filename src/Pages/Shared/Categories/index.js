@@ -5,7 +5,7 @@ const RootCategory = () => {
   const navigate = useNavigate();
   useEffect(() => {
     navigate("/categories/all");
-  }, []);
+  }, [navigate]);
 
   return <></>;
 };
