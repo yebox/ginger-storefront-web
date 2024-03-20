@@ -40,9 +40,10 @@ const OrderCard = ({ id, items, reference, dateDelivered, status }) => {
         </LeftWrapper>
         <RightWrapper to={`/account/order-history/${id}`}>
           <TrackTxt>
-            {orderStatus === orderStatusMapping.pending
-              ? `Track order`
-              : `See details`}
+            {orderStatus === orderStatusMapping.completed ||
+            orderStatus === orderStatusMapping.cancelled
+              ? `See details`
+              : `Track order`}
           </TrackTxt>
           <CaretLeft />
         </RightWrapper>
@@ -184,6 +185,8 @@ const Status = styled.div`
       ? `#f7dfe2`
       : $status === orderStatusMapping.completed
       ? `#ECFDF3`
+      : $status === orderStatusMapping.processed
+      ? `#EFF8FF`
       : `#fffaeb`};
 
   & > span {
@@ -192,7 +195,9 @@ const Status = styled.div`
         ? `#E71D36`
         : $status === orderStatusMapping.completed
         ? `#027A48`
-        : `#F79009`};
+        : $status === orderStatusMapping.processed
+        ? `#175CD3`
+        : `#B54708`};
   }
 
   & > p {
@@ -201,6 +206,8 @@ const Status = styled.div`
         ? `#E71D36`
         : $status === orderStatusMapping.completed
         ? `#027A48`
+        : $status === orderStatusMapping.processed
+        ? `#175CD3`
         : `#B54708`};
   }
 

@@ -6,7 +6,7 @@ import {
   GBreadCrumbs,
   GAccordion,
   // GButton,
-  GDropdown,
+  // GDropdown,
   GSpacer,
   Product,
   LineLoader,
@@ -23,10 +23,9 @@ import { useApiGet } from "../../Hooks";
 import { getProducts } from "../../Urls";
 import { useNavigate } from "react-router-dom";
 import { priceOptions } from "../../Utils";
-import { toast } from "react-hot-toast";
 
 const MarketPlace = () => {
-  const [label, setLabel] = useState("All");
+  // const [label, setLabel] = useState("All");
   const [isOpen, setIsOpen] = useState(false);
   const [selectedPrice, setSelectedPrice] = useState(null);
 
@@ -56,14 +55,14 @@ const MarketPlace = () => {
           <SortTxt>Filter by</SortTxt>
           <ArrowForwardIosSharpIcon />
         </SortBox>
-        <SortBox>
+        {/* <SortBox>
           <SortTxt>Sort by:</SortTxt>
           <GDropdown
             label={label}
             setLabel={setLabel}
             options={["All", "Last week"]}
           />
-        </SortBox>
+        </SortBox> */}
       </SortWrapper>
       <ContentWrapper>
         <Fade

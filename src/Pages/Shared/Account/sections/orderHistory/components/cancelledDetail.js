@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { devices } from "../../../../../../Utils";
-import { OrderTrackIcon, OrderTrackStar } from "../../../../../../Assets/Svgs";
+import { OrderRateIcon, OrderTrackStar } from "../../../../../../Assets/Svgs";
 import EmptyOrderState from "./emptyState";
 
 const CancelledDetail = () => {
@@ -15,7 +15,7 @@ const CancelledDetail = () => {
             Reorder item to leave a review and rate this item{" "}
           </HeaderDescription>
         </HeaderContent>
-        <OrderTrackIcon />
+        <OrderRateIcon />
       </Header>
       <ContentWrapper>
         <EmptyOrderState

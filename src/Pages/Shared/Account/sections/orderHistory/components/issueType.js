@@ -9,7 +9,7 @@ import {
 } from "../../../../../../Ui_elements";
 import { devices } from "../../../../../../Utils";
 
-const IssueType = ({ handleNext }) => {
+const IssueType = ({ setCurrentStep, setFormData, formData }) => {
   const [radioValue, setRadioValue] = useState(issueTypeOption[0].value);
   const [inputValue, setInputValue] = useState("");
   const maxChars = 140;
@@ -19,7 +19,7 @@ const IssueType = ({ handleNext }) => {
     if (value !== "others") {
       setInputValue("");
     }
-    setRadioValue(e.target.value);
+    setRadioValue(value);
   };
 
   const handleChange = (e) => {
@@ -30,8 +30,12 @@ const IssueType = ({ handleNext }) => {
   };
 
   const handleSubmit = () => {
-    const reason = radioValue !== "others" ? radioValue : inputValue;
-    handleNext();
+    if (radioValue !== "other") {
+      setFormData({ ...formData, issueType: radioValue });
+    } else {
+      setFormData({ ...formData, issueType: radioValue, issue: inputValue });
+    }
+    setCurrentStep(2);
   };
 
   return (
@@ -40,18 +44,18 @@ const IssueType = ({ handleNext }) => {
       <SubTxt>Please help us with as much information as possible.</SubTxt>
       <ContentWrapper>
         <GRadioButtonsGroup
-          name={"reason"}
+          name={"issueType"}
           options={issueTypeOption}
           handleChange={handleCheck}
           value={radioValue}
         />
         <GSpacer size={70} mbSize={50} />
         <GTextAreaField
-          id="reason"
+          id="issueType"
           placeholder="Other reason, specify"
-          name="reason"
+          name="issueType"
           value={inputValue}
-          isDisabled={!(radioValue === "others")}
+          isDisabled={!(radioValue === "other")}
           maxChars={maxChars}
           onChange={handleChange}
           required
@@ -60,7 +64,7 @@ const IssueType = ({ handleNext }) => {
         <GButton
           label={`Submit`}
           onClick={handleSubmit}
-          isDisabled={radioValue === "others" && !inputValue}
+          isDisabled={radioValue === "other" && !inputValue}
         />
       </ContentWrapper>
     </Container>

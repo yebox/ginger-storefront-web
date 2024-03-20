@@ -11,21 +11,18 @@ import { useDeviceCheck } from "../../../../../Hooks";
 import { devices } from "../../../../../Utils";
 import { GStepper } from "../../../../../Ui_elements";
 import ReportSuccess from "./components/reportSuccess";
-import { useSelector } from "react-redux";
 
 const ReportOrder = () => {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(1);
   const { isMobile } = useDeviceCheck();
   const { pathname } = useLocation();
+  const [formData, setFormData] = useState();
   const id = pathname.split("/").pop();
-  const { selectedOrderItem } = useSelector((state) => state?.global);
+
+  console.log({ formData });
 
   const handleGoBack = () => navigate(`/account/order-history/${id}`);
-
-  const handleNext = () => {
-    setCurrentStep((prev) => prev + 1);
-  };
 
   return (
     <Container>
@@ -43,9 +40,27 @@ const ReportOrder = () => {
         )}
       </LeftWrapper>
       <RightWrapper>
-        {currentStep === 1 && <IssueType handleNext={handleNext} />}
-        {currentStep === 2 && <ResolveOption handleNext={handleNext} />}
-        {currentStep === 3 && <ProductUpload handleNext={handleNext} />}
+        {currentStep === 1 && (
+          <IssueType
+            setCurrentStep={setCurrentStep}
+            setFormData={setFormData}
+            formData={formData}
+          />
+        )}
+        {currentStep === 2 && (
+          <ResolveOption
+            setCurrentStep={setCurrentStep}
+            setFormData={setFormData}
+            formData={formData}
+          />
+        )}
+        {currentStep === 3 && (
+          <ProductUpload
+            setCurrentStep={setCurrentStep}
+            formData={formData}
+            orderId={id}
+          />
+        )}
         {currentStep === 4 && <ReportSuccess />}
       </RightWrapper>
     </Container>

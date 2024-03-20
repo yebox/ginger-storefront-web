@@ -4,63 +4,22 @@ import { OrderTrackIcon, OrderTrackStar } from "../../../../../../Assets/Svgs";
 import TrackStepper from "./trackStepper";
 import CancelOrder from "./cancelOrder";
 import { devices, orderStatusMapping } from "../../../../../../Utils";
-// import { useApiGet } from "../../../../../../Hooks";
-// import { getLogistics } from "../../../../../../Urls/logistics";
 import dayjs from "dayjs";
 import localizedFormat from "dayjs/plugin/localizedFormat";
 dayjs.extend(localizedFormat);
 
-// const stepData = {
-//   dateProcessed: `12/08/2022`,
-//   timeProcessed: `3:05pm`,
-//   dateDispatched: `12/08/2022`,
-//   timeDispatched: `2:10pm`,
-//   dateDelivered: ``,
-//   timeDelivered: ``,
-// };
-
-const OrderTracking = ({ status, orderId }) => {
-  // const { data, isLoading, isError } = useApiGet(
-  //   ["get-logistics"],
-  //   () => getLogistics(),
-  //   {
-  //     select: (data) => data,
-  //     onError: (error) => console.log(error),
-  //   }
-  // );
-
-  // const dateTime = data && dayjs(data[0]?.timestamp).format("L LT");
+const OrderTracking = ({ order, status }) => {
   let stepData = {};
-  if (status === orderStatusMapping.pending) {
-    stepData = {
-      dateProcessed: `12/08/2022`,
-      timeProcessed: `3:05pm`,
-      dateDispatched: ``,
-      timeDispatched: ``,
-      dateDelivered: ``,
-      timeDelivered: ``,
-    };
-  }
-  if (status === orderStatusMapping.shipped) {
-    stepData = {
-      dateProcessed: `12/08/2022`,
-      timeProcessed: `3:05pm`,
-      dateDispatched: `12/08/2022`,
-      timeDispatched: `2:10pm`,
-      dateDelivered: ``,
-      timeDelivered: ``,
-    };
-  }
-  if (status === orderStatusMapping.completed) {
-    stepData = {
-      dateProcessed: `12/08/2022`,
-      timeProcessed: `3:05pm`,
-      dateDispatched: `12/08/2022`,
-      timeDispatched: `2:10pm`,
-      dateDelivered: `18/03/2024`,
-      timeDelivered: `6:30px`,
-    };
-  }
+  const getDateTime = (timeStamp, key) => {
+    const processedDateTime = dayjs(timeStamp).format("L LT");
+    const processedTimeArr = processedDateTime.split(" ");
+    stepData[`date${key}`] = processedTimeArr[0];
+    stepData[`time${key}`] = processedTimeArr.slice(1).join("");
+  };
+
+  order?.dateProcessed && getDateTime(order?.dateProcessed, `Processed`);
+  order?.dateDispatched && getDateTime(order?.dateDispatched, `Dispatched`);
+  order?.dateDelivered && getDateTime(order?.dateDelivered, `Delivered`);
 
   return (
     <Container>
@@ -77,7 +36,9 @@ const OrderTracking = ({ status, orderId }) => {
       <ContentWrapper>
         <TrackStepper {...stepData} />
       </ContentWrapper>
-      <CancelOrder orderId={orderId} />
+      {status === orderStatusMapping.pending && (
+        <CancelOrder orderId={order?.id} />
+      )}
     </Container>
   );
 };

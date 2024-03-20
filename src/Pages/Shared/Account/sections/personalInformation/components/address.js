@@ -26,7 +26,6 @@ const Address = () => {
         }))
       : {};
   }, [userData]);
-  console.log([userData?.address].length);
 
   return (
     <Container>

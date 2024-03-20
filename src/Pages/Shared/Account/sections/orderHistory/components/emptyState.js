@@ -1,11 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-import { ShoppingBag } from "../../../../../../Assets/Svgs";
+import { OrderBag } from "../../../../../../Assets/Svgs";
 
 const EmptyOrderState = ({ title, subtitle }) => {
   return (
     <Container>
-      <ShoppingBag />
+      <OrderBag />
       <ContentWrapper>
         <Title>{title}</Title>
         {subtitle && <Subtitle>{subtitle}</Subtitle>}
@@ -27,7 +27,8 @@ const Container = styled.div`
 const ContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  align-items: center;
+  gap: 16px;
 `;
 
 const Title = styled.p`

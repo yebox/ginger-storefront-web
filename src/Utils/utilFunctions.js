@@ -58,7 +58,7 @@ export const formatAmount = (amount) => {
 export const orderStatusMapping = {
   pending: "Ongoing",
   paid: "Ongoing",
-  processing: "Ongoing",
+  processed: "Processed",
   shipped: "In transit",
   completed: "Delivered",
   cancelled: "Cancelled",
@@ -97,7 +97,6 @@ export const generateUrlParams = (obj) => {
   return generatedUrl;
 };
 
-
 export const generateQueryKey = (baseKey, searchFilter) => {
   const searchFilterString = JSON.stringify(searchFilter);
   const queryKey = `${baseKey}-${searchFilterString}`;
@@ -105,19 +104,18 @@ export const generateQueryKey = (baseKey, searchFilter) => {
   return queryKey;
 };
 
-
-
 export const filterSearchParams = (searchFilter) => {
   const filteredParams = {};
 
   if (searchFilter) {
     Object.entries(searchFilter).forEach(([key, value]) => {
-      if (value !== '' && value !== null) {
+      if (value !== "" && value !== null) {
         filteredParams[key] = value;
       }
     });
     return filteredParams;
   }
-
 };
 
+export const truncateText = (text, maxLength) =>
+  text && text?.length <= maxLength ? text : text?.slice(0, maxLength) + "...";

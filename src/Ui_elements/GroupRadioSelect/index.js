@@ -6,9 +6,15 @@ import FormControl from "@mui/material/FormControl";
 import { styled } from "styled-components";
 import { devices } from "../../Utils";
 
-export const GRadioButtonsGroup = ({ name, value, handleChange, options }) => {
+export const GRadioButtonsGroup = ({
+  name,
+  value,
+  handleChange,
+  options,
+  row,
+}) => {
   return (
-    <Container>
+    <Container $row={row}>
       <RadioGroup
         aria-labelledby={`${name}controlled-radio-buttons-group`}
         name={name}
@@ -41,6 +47,7 @@ export const GRadioButtonsGroup = ({ name, value, handleChange, options }) => {
 const Container = styled(FormControl)`
   .MuiFormGroup-root {
     gap: 10px;
+    flex-direction: ${({ $row }) => ($row ? `row` : `column`)};
   }
 
   .MuiTypography-root {
@@ -54,7 +61,7 @@ const Container = styled(FormControl)`
   }
 
   .MuiFormControlLabel-root {
-    gap: 10px;
+    gap: ${({ $row }) => ($row ? `0` : `10px`)};
   }
 
   @media ${devices.mobileL} {

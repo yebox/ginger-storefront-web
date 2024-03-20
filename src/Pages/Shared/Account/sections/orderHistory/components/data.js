@@ -85,15 +85,19 @@ export const orderStatus = {
 export const issueTypeOption = [
   {
     label: "Damaged product",
-    value: "damaged",
+    value: "damaged_product",
   },
   {
     label: "Not what I ordered arrived",
-    value: "wrongOrder",
+    value: "wrong_order",
+  },
+  {
+    label: "Not my size",
+    value: "wrong_size",
   },
   {
     label: "Others",
-    value: "others",
+    value: "other",
   },
 ];
 
@@ -103,8 +107,8 @@ export const resolveOption = [
     value: "refund",
   },
   {
-    label: "I want to make a return",
-    value: "return",
+    label: "I want to a replacement",
+    value: "replace",
   },
 ];
 

@@ -109,7 +109,9 @@ const Details = ({ data }) => {
           <DeliveryInfoContentWrapper>
             <Entry>
               <DeliveryLabel>Date:</DeliveryLabel>
-              <DeliveryValue>Jan 15,2024 - 10:45am</DeliveryValue>
+              <DeliveryValue>
+                {dayjs(data?.dateDelivered).format("L LT")}
+              </DeliveryValue>
             </Entry>
             <Entry>
               <DeliveryLabel>Address:</DeliveryLabel>
@@ -118,14 +120,13 @@ const Details = ({ data }) => {
               </DeliveryValue>
             </Entry>
           </DeliveryInfoContentWrapper>
-          <GButton label={"Buy again"} width={"80%"} />
         </DeliveryInfoBox>
       )}
-      {/* {orderStatus === orderStatusMapping.completed && ( */}
-      <BtnWrapper>
-        <GButton label={`Buy again`} width={`70%`} onClick={handleBuyAgain} />
-      </BtnWrapper>
-      {/* )} */}
+      {orderStatus === orderStatusMapping.completed && (
+        <BtnWrapper>
+          <GButton label={`Buy again`} width={`80%`} onClick={handleBuyAgain} />
+        </BtnWrapper>
+      )}
     </Container>
   );
 };
@@ -311,7 +312,7 @@ const DeliveryInfoContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;
-  margin-bottom: 100px;
+  margin-bottom: 50px;
 
   @media ${devices.mobileL} {
     margin-bottom: 20px;

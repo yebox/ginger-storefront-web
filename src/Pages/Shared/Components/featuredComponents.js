@@ -4,8 +4,10 @@ import { GButton, GSpacer, Product } from "../../../Ui_elements";
 import { devices } from "../../../Utils";
 import { useApiGet } from "../../../Hooks";
 import { getProducts } from "../../../Urls";
+import { useNavigate } from "react-router-dom";
 
 export const FeaturedItems = () => {
+  const navigate = useNavigate();
   const { data, isLoading } = useApiGet(
     ["get-featured-products"],
     () => getProducts({ isFeatured: true }),
@@ -17,7 +19,6 @@ export const FeaturedItems = () => {
 
   const lastFourFeaturedProducts = data?.slice(-4);
 
-  console.log({ data });
   return (
     <Container>
       <Header>Featured Products</Header>
@@ -27,7 +28,13 @@ export const FeaturedItems = () => {
         ))}
       </CardsContainer>
       <GSpacer size={80} mbSize={50} />
-      <GButton label={"See more"} outline width={"172px"} mbWidth={`50%`} />
+      <GButton
+        label={"See more"}
+        onClick={() => navigate(`/marketplace`)}
+        outline
+        width={"172px"}
+        mbWidth={`50%`}
+      />
     </Container>
   );
 };

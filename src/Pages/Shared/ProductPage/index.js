@@ -5,10 +5,10 @@ import ReviewSection from "./components/reviewSection";
 import { BecomeSellerSection, FeaturedItems, InstaFooter } from "../Components";
 import { GSpacer } from "../../../Ui_elements";
 import { useApiGet } from "../../../Hooks/api";
-import { getProductDetails } from "../../../Urls/productPage";
 import { useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setSelectedProductName } from "../../../Redux/Reducers";
+import { getProductDetails } from "../../../Urls";
 
 const ProductPage = () => {
   const { pathname } = useLocation();

@@ -20,7 +20,7 @@ const OrderDetails = () => {
   const [isRendering, setIsRendering] = useState(true);
 
   const { data, isLoading } = useApiGet(
-    "get-single-order",
+    ["get-single-order"],
     () => getSingleOrder(id),
     {
       select: (data) => data,
@@ -39,7 +39,6 @@ const OrderDetails = () => {
   const isCompleted = status === orderStatusMapping.completed;
   const isCancelled = status === orderStatusMapping.cancelled;
 
-  console.log(isCompleted, formatOrderStatus(data?.status), data?.status);
   return (
     <Container>
       <Details data={data} />
@@ -48,7 +47,7 @@ const OrderDetails = () => {
       ) : isCancelled ? (
         <CancelledDetail />
       ) : (
-        <OrderTracking status={status} orderId={id} />
+        <OrderTracking order={data} status={status} />
       )}
       <LineLoader loading={isRendering || isLoading} />
     </Container>

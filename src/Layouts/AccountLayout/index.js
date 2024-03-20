@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { styled } from "styled-components";
 import { accountNavInfo } from "../../Pages/Shared/Account/data";
 import { Link, useLocation } from "react-router-dom";
@@ -9,15 +9,30 @@ import {
 } from "../../Assets/Svgs";
 import { GSpacer } from "../../Ui_elements";
 import { useDispatch, useSelector } from "react-redux";
-import { devices } from "../../Utils";
-import { useDeviceCheck } from "../../Hooks";
+import { devices, formatAmount } from "../../Utils";
+import { useApiGet, useDeviceCheck } from "../../Hooks";
 import { logout } from "../../Redux/Reducers";
+import { getUserWallet } from "../../Urls";
+import toast from "react-hot-toast";
 
 const AccountLayout = ({ children }) => {
   const user = useSelector((state) => state?.user);
   const { pathname } = useLocation();
   const dispatch = useDispatch();
   const { isMobile } = useDeviceCheck();
+
+  const { data, error } = useApiGet(
+    ["get-product-details"],
+    () => getUserWallet(),
+    {
+      select: (data) => data,
+      onError: (error) => console.log(error),
+    }
+  );
+
+  useEffect(() => {
+    error && toast.error("Couldn't fetch balance, try again");
+  }, [error]);
 
   const handleLogout = () => {
     dispatch(logout(null));
@@ -40,7 +55,7 @@ const AccountLayout = ({ children }) => {
               </WalletBalanceWrapper>
               <CurrencyDropdown />
             </WalletTopWrapper>
-            <Balance>₦0.00</Balance>
+            <Balance>₦{formatAmount(data?.balance) || 0.0}</Balance>
           </WalletBox>
           <RightIcon />
         </Header>
