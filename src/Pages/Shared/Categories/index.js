@@ -5,6 +5,7 @@ const RootCategory = () => {
   const navigate = useNavigate();
   useEffect(() => {
     navigate("/categories/all");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return <></>;
