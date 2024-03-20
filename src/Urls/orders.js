@@ -18,3 +18,9 @@ export const createOrder = (data) =>
     method: "POST",
     data,
   });
+
+export const cancelOrder = (id) =>
+  request({
+    url: `orders/cancel/${id}`,
+    method: "PUT",
+  });

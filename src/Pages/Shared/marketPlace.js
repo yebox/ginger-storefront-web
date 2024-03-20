@@ -6,7 +6,7 @@ import {
   GBreadCrumbs,
   GAccordion,
   // GButton,
-  GDropdown,
+  // GDropdown,
   GSpacer,
   Product,
   LineLoader,
@@ -22,19 +22,22 @@ import Fade from "@mui/material/Fade";
 import { useApiGet } from "../../Hooks";
 import { getProducts } from "../../Urls";
 import { useNavigate } from "react-router-dom";
+import { priceOptions } from "../../Utils";
 
 const MarketPlace = () => {
-  const [label, setLabel] = useState("All");
+  // const [label, setLabel] = useState("All");
   const [isOpen, setIsOpen] = useState(false);
-  const [filterValue, setFilterValue] = useState();
+  const [selectedPrice, setSelectedPrice] = useState(null);
+
   const navigate = useNavigate();
 
   const { data: products, isLoading } = useApiGet(
-    ["get-products", filterValue],
-    () => getProducts({ price: filterValue }),
+    ["get-products", selectedPrice],
+    () => getProducts({ price: selectedPrice }),
     {
       enable: true,
       refetchOnWindowFocus: false,
+      // placeholderData: (previousData) => previousData,
     }
   );
 
@@ -52,14 +55,14 @@ const MarketPlace = () => {
           <SortTxt>Filter by</SortTxt>
           <ArrowForwardIosSharpIcon />
         </SortBox>
-        <SortBox>
+        {/* <SortBox>
           <SortTxt>Sort by:</SortTxt>
           <GDropdown
             label={label}
             setLabel={setLabel}
             options={["All", "Last week"]}
           />
-        </SortBox>
+        </SortBox> */}
       </SortWrapper>
       <ContentWrapper>
         <Fade
@@ -73,8 +76,9 @@ const MarketPlace = () => {
               idx={0}
               content={
                 <PriceFilter
-                  setFilterValue={setFilterValue}
-                  filterValue={filterValue}
+                  options={priceOptions}
+                  selectedPrice={selectedPrice}
+                  setSelectedPrice={setSelectedPrice}
                 />
               }
             />
@@ -85,7 +89,13 @@ const MarketPlace = () => {
           <ProductsWrapper>
             {products?.length > 0 ? (
               products?.map((product, index) => (
-                <Product key={index} item={product} width={`17.3rem`} />
+                <Product
+                  key={index}
+                  item={product}
+                  width={`17.3rem`}
+                  skeletonNumber={6}
+                  padding={"5%"}
+                />
               ))
             ) : (
               <EmptyProductTxt>No product found</EmptyProductTxt>
@@ -154,7 +164,7 @@ const SortBox = styled.div`
   & > svg {
     transform: rotate(90deg);
     transform: ${({ $isOpen }) =>
-      $isOpen ? `rotate(270deg)` : "rotate(90deg)"};
+    $isOpen ? `rotate(270deg)` : "rotate(90deg)"};
     width: 14px;
     transition: all 0.25s ease;
   }

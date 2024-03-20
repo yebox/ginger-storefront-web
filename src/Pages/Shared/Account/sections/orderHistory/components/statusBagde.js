@@ -21,12 +21,16 @@ const Container = styled.div`
       ? `#f7dfe2`
       : $status === orderStatusMapping.completed
       ? `#ECFDF3`
+      : $status === orderStatusMapping.processed
+      ? `#EFF8FF`
       : `#fffaeb`};
   color: ${({ $status }) =>
     $status === orderStatusMapping.cancelled
       ? `#E71D36`
       : $status === orderStatusMapping.completed
       ? `#027A48`
+      : $status === orderStatusMapping.processed
+      ? `#175CD3`
       : `#B54708`};
   text-align: center;
   font-size: 14px;

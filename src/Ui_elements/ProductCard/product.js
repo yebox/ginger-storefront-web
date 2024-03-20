@@ -10,7 +10,12 @@ import { GButton } from "../Button/button";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { devices, formatAmount, IMAGE_BASE_URL } from "../../Utils";
+import {
+  devices,
+  formatAmount,
+  IMAGE_BASE_URL,
+  truncateText,
+} from "../../Utils";
 import { useApiGet, useApiSend } from "../../Hooks";
 import {
   addToCart,
@@ -27,7 +32,7 @@ import { deletItemFromWishlist } from "../../Urls/wishlist";
 import { useQueryClient } from "@tanstack/react-query";
 import { setSelectedProductName } from "../../Redux/Reducers";
 
-export const Product = ({ width, item, mbWidth }) => {
+export const Product = ({ width, item, mbWidth, skeletonNumber, padding }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [items, setItems] = useState([]);
@@ -48,7 +53,7 @@ export const Product = ({ width, item, mbWidth }) => {
   );
 
   const { mutate: removeFromCart, isPending: isRemovingFromCart } = useApiSend(
-    () => removeCartItem(item?._id),
+    () => removeCartItem(item?._id, quantity),
     () => {
       toast.success("Removed from cart");
       queryClient.invalidateQueries(["cart-data"]);
@@ -61,7 +66,7 @@ export const Product = ({ width, item, mbWidth }) => {
   const { mutate: addWishlist, isPending: isAddingToWishlist } = useApiSend(
     (_) => addToWishlist(_, user?._id),
     () => {
-      toast.success("Added to wishliat");
+      toast.success("Item has been added to wishlist successfully.");
       queryClient.invalidateQueries(["wishlist-data"]);
     },
     (e) => {
@@ -73,7 +78,7 @@ export const Product = ({ width, item, mbWidth }) => {
     useApiSend(
       () => deletItemFromWishlist(user?._id, item?._id),
       () => {
-        toast.success("Removed from wishliat");
+        toast.success("Item has been removed from wishlist successfully.");
         queryClient.invalidateQueries(["wishlist-data"]);
       },
       (e) => {
@@ -169,7 +174,13 @@ export const Product = ({ width, item, mbWidth }) => {
   };
 
   if (isLoadingWishlist || isLoadingCartData) {
-    return <ProductSkeleton />;
+    return (
+      <ProductSkeleton
+        width={width}
+        padding={padding}
+        number={skeletonNumber}
+      />
+    );
   }
 
   return (
@@ -194,26 +205,28 @@ export const Product = ({ width, item, mbWidth }) => {
           <div>
             <p>Seller:</p>
             <Link
-              to={`/${item?.seller?.firstName} ${item?.seller?.lastName}`}
+              to={`/store?sellerId=${encodeURIComponent(
+                JSON.stringify(item?.seller)
+              )}`}
             >{`${item?.seller?.firstName} ${item?.seller?.lastName}`}</Link>
           </div>
 
           <div>
-            <p>{item?.rating}</p>
+            <p>{item?.rating}.0</p>
             <Star />
           </div>
         </SellerRate>
         <Itemdetail>
-          <p>{item?.name}</p>
-          <BrandTag>{item?.brand?.name}</BrandTag>
+          <p>{truncateText(item?.name, 28) || ""}</p>
+          {/* <BrandTag>{item?.brand?.name}</BrandTag> */}
         </Itemdetail>
-        <RRPContainer>
+        {/* <RRPContainer>
           <div>
             <DollarShield />
             <p>MSRP</p>
           </div>
-          <p>₦{item?.msrp}</p>
-        </RRPContainer>
+          <Price>₦{item?.msrp}</Price>
+        </RRPContainer> */}
 
         {user ? (
           <>
@@ -258,6 +271,21 @@ const Container = styled.div`
     background-color: var(--hover-color);
   }
 
+  & > button {
+    background: #1f1f1f;
+    transition: all 0.25s ease;
+  }
+
+  &:hover {
+    & > button {
+      background: #0f0f0f;
+    }
+
+    & img {
+      transform: scale(1.07);
+    }
+  }
+
   @media ${devices.mobileL} {
     width: ${({ $width, $mbWidth }) => ($mbWidth ? $mbWidth : $width)};
   }
@@ -283,6 +311,7 @@ const SellerRate = styled.div`
     align-items: center;
     gap: 8px;
     p {
+      font-size: 14px;
       font-weight: 300;
     }
   }
@@ -328,12 +357,12 @@ const SellerRate = styled.div`
 const Itemdetail = styled.div`
   margin-top: 0.6rem;
   display: flex;
-  align-items: flex-end !important;
+  align-items: flex-start !important;
   gap: 10px;
   p {
-    font-size: 1.2rem;
+    font-size: 17px;
     color: var(--Black-500, #151515);
-    height: 46.67px;
+    margin-bottom: 5px;
   }
 
   @media ${devices.mobileL} {
@@ -366,7 +395,13 @@ const Unliked = styled.div`
 const BrandTag = styled.p`
   background-color: var(--black50);
   font-size: 0.6rem !important;
+  text-align: center;
+  width: 80px;
+  height: 20px !important;
   padding: 2px 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 4px;
 `;
 
@@ -423,7 +458,7 @@ const RRPContainer = styled.div`
 `;
 
 const Price = styled.h6`
-  font-size: 1.8rem;
+  font-size: 22px;
   font-weight: 400;
   margin-bottom: 0.6rem;
 
@@ -436,10 +471,12 @@ const Price = styled.h6`
 const ImgContainer = styled.div`
   background-color: aliceblue;
   position: relative;
+  overflow: hidden;
   img {
     width: 100%;
     height: 16rem;
     object-fit: cover;
+    transition: transform 0.3s ease;
   }
 
   @media ${devices.mobileL} {

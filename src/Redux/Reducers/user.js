@@ -11,27 +11,19 @@ const userSlice = createSlice({
     setTokenOnRefresh: (state, action) => {
       state = {
         ...state,
-        accessToken: action.payload
-      }
-      return state
+        accessToken: action.payload,
+      };
+      return state;
     },
-    logout: (state) => {
-      state.user = undefined;
+    logout: (state, action) => {
+      state = action.payload;
+      return state;
     },
   },
 });
 
 const { actions, reducer: userReducer } = userSlice;
 
-const {
-  setUser,
-  setTokenOnRefresh,
-  logout
-} = actions;
+const { setUser, setTokenOnRefresh, logout } = actions;
 
-export {
-  userReducer,
-  setUser,
-  setTokenOnRefresh,
-  logout
-};
+export { userReducer, setUser, setTokenOnRefresh, logout };

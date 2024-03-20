@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { GBreadCrumbs, Chip, GButton, Product } from "../../../Ui_elements";
+import { GBreadCrumbs, Chip, GButton, Product, LineLoader } from "../../../Ui_elements";
 import { memo } from "react";
 import { categoriesData } from "./data";
 import { useState } from "react";
@@ -12,11 +12,32 @@ import Middle from "../../../Assets/Images/middle.png"
 import LastGirl from "../../../Assets/Images/last_girl.png"
 import { CategoryCard } from "./Components";
 import { RedRightArrow } from "../../../Assets/Svgs";
+import { useApiGet } from "../../../Hooks";
+import { getCategories } from '../../../Urls/categories';
+import { getProducts } from "../../../Urls";
+import { TroubleshootTwoTone } from "@mui/icons-material";
 
 
 const UnsignedCategories = () => {
   const [selectCat, setSelectCat] = useState(0);
   const navigate = useNavigate();
+
+  const { data, isLoading } = useApiGet(
+    ['all-categories'],
+    () => getCategories(),
+    {
+      enabled: true,
+    }
+  )
+
+  const { data: products, isLoading: isLoadingProducts } = useApiGet(
+    ['top-products'],
+    () => getProducts({ isTopSeller: true }),
+    {
+      enabled: true,
+    }
+  )
+
   return (
     <Container>
       <Breadcrumb>
@@ -47,27 +68,36 @@ const UnsignedCategories = () => {
         <ProductDisplay>
           <SectionTags>Top Ginger Categories</SectionTags>
           <StoresDisplay>
-            {[...Array(12)].map((_, index) => (
-              <CategoryCard
-                key={index}
-                width={'24%'}
-              />
 
-            ))}
+            {
+              data?.map((item, index) => (
+                <CategoryCard
+                  key={index}
+                  item={item}
+                  width={'17.8rem'}
+                />
+              ))
+            }
+
+
+
           </StoresDisplay>
 
           <FlexContainer>
             <SectionTags>Top Sellers</SectionTags>
-            <MoreContainer>
+            <MoreContainer onClick={() => navigate('/marketplace')}>
               <p>See more</p>
-              <RedRightArrow/>
+              <RedRightArrow />
             </MoreContainer>
           </FlexContainer>
 
           <BestSellingDisplay>
-            {[...Array(4)].map((_, index) => (
-              <Product key={index} />
-            ))}
+            {
+              products?.map((item, index) => (
+                <Product item={item} key={index} />
+              ))
+            }
+
           </BestSellingDisplay>
 
           <SeeMoreContainer>
@@ -96,6 +126,7 @@ const UnsignedCategories = () => {
       <Footer>
         <img src={FooterImage} />
       </Footer>
+      <LineLoader loading={isLoading || isLoadingProducts} />
     </Container>
   );
 };
@@ -126,6 +157,7 @@ const BannerImageHolder = styled.div`
 const MoreContainer = styled.div`
   display: flex;
   align-items: center;
+  cursor: pointer;
   p{
     color: var(--primary-color);
   }
@@ -196,7 +228,7 @@ const StoresDisplay = styled.div`
   max-width: 100vw;
   margin-top: 5%;
   display: flex;
-  gap: 1.2rem;
+  gap: 1.1rem;
   flex-wrap: wrap;
 `;
 const NewArrivalsDisplay = styled.div`

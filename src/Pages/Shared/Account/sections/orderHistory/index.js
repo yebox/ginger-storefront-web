@@ -1,14 +1,15 @@
 import React from "react";
 import { EditIcon } from "../../../../../Assets/Svgs";
-import { orders } from "./components/data";
 import OrderCard from "./components/order";
 import { styled } from "styled-components";
 import { useApiGet } from "../../../../../Hooks/api";
 import { getOrders } from "../../../../../Urls/orders";
 import { devices } from "../../../../../Utils";
+import { LineLoader } from "../../../../../Ui_elements";
+import EmptyOrderState from "./components/emptyState";
 
 const OrderHistory = () => {
-  const { data, isLoading, isError } = useApiGet("get-orders", getOrders, {
+  const { data, isLoading } = useApiGet("get-orders", getOrders, {
     select: (data) => data,
     onError: (error) => console.log(error),
   });
@@ -19,11 +20,12 @@ const OrderHistory = () => {
         <Title>Order History</Title>
         <EditIcon />
       </TopWrapper>
-      <BottomWrapepr>
-        {data?.map((order, idx) => (
-          <OrderCard key={idx} {...order} />
-        ))}
-      </BottomWrapepr>
+      <BottomWrapper>
+        {data?.length > 0
+          ? data?.map((order, idx) => <OrderCard key={idx} {...order} />)
+          : !isLoading && <EmptyOrderState title={"No orders found"} />}
+      </BottomWrapper>
+      <LineLoader loading={isLoading} />
     </Container>
   );
 };
@@ -55,7 +57,7 @@ const TopWrapper = styled.div`
   }
 `;
 
-const BottomWrapepr = styled.div`
+const BottomWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 11px;
@@ -73,4 +75,15 @@ const Title = styled.p`
   font-style: normal;
   font-weight: 500;
   line-height: 120%; /* 16.8px */
+`;
+
+const EmptyOrderTxt = styled.p`
+  color: var(--Black-500, #151515);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 150%;
+  margin-top: 10px;
+  width: 100%;
+  text-align: center;
 `;

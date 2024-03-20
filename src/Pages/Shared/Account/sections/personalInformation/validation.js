@@ -2,8 +2,8 @@ import * as yup from "yup";
 
 export const PersonalInformationSchema = yup.object().shape({
   phoneNumber: yup.string().required("please input your phone number"),
-  fullName: yup.string().required("please input your full name"),
-  email: yup.string().required("please input your email"),
+  firstName: yup.string().required("please input your first name"),
+  lastName: yup.string().required("please input your last name"),
   country: yup.mixed().required("please select a country"),
 });
 

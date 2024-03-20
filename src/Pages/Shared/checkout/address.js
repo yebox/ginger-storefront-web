@@ -38,7 +38,7 @@ const Address = () => {
                     <h5>Checkout</h5>
                     <InformationSection>
                         <h6>Delivery Information</h6>
-                        {data.map((item) => (
+                        {data && data.map((item) => (
                             <SelectCard
                                 key={item.id}
                                 id={item.id}

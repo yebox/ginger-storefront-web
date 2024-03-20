@@ -47,26 +47,17 @@ const Checkout = () => {
         handleSubmit,
         control,
         watch,
-        formState: { errors }
+        formState: { errors, isValid }
     } = useForm({
         resolver: yupResolver(CheckoutAddressSchema)
     })
 
-    const { mutate, isPending } = useApiSend(
-        createOrder,
-        () => {
-            toast.error('Order created successfully')
-        },
-        () => {
-            toast.error(`Something went wrong`)
-        }
-    )
-
     const { mutate: updateAddress, isPending: isUpdatingAddress } = useApiSend(
         updateUserAddress,
         () => {
-            toast.error('Address book updated')
+            toast.success('Address book updated')
             queryClient.invalidateQueries(['get-user-data'])
+            setDisplayForm(false)
         },
         () => {
             toast.error(`Something went wrong`)
@@ -81,13 +72,13 @@ const Checkout = () => {
         }
     )
 
-    console.log(userAddress, "user data")
 
     const addresses = useMemo(() => {
         const formatAddress = [userAddress?.address]
         return formatAddress
     }, [userAddress])
 
+    console.log(userAddress, "userAddress!!!")
 
     const {
         address,
@@ -116,6 +107,11 @@ const Checkout = () => {
     }
 
 
+    const isAddressIncomplete =
+    userAddress?.address &&
+        (!address || !apartment || !city || !state || !country || !zipCode || !phoneNumber);
+    
+        
     return (
         <Container>
             <BreadContainer>
@@ -126,7 +122,7 @@ const Checkout = () => {
                     <h5>Checkout</h5>
                     <InformationSection onSubmit={handleSubmit(onSubmit)}>
                         <h6>Delivery Information</h6>
-                        {addresses?.map((item, index) => (
+                        {userAddress?.address && addresses?.map((item, index) => (
                             <SelectCard
                                 key={index}
                                 id={index}
@@ -140,7 +136,13 @@ const Checkout = () => {
                             />
                         ))}
                         <Add onClick={() => setDisplayForm(!displayForm)}>
-                            <p>Add a different address</p>
+                            {
+                                userAddress?.address ?
+                                    <p>Add a different address</p>
+                                    :
+                                    <p>Add an address</p>
+                            }
+
                             <RedRightArrow />
                         </Add>
 
@@ -226,7 +228,7 @@ const Checkout = () => {
                                 /> */}
 
                                 <CheckContainer>
-                                    <GCheckbox />
+                                    <GCheckbox isTransparent />
                                     <p>Save this information for next time</p>
                                 </CheckContainer>
 
@@ -234,16 +236,8 @@ const Checkout = () => {
                                     label={"Continue"}
                                     width={"50%"}
                                     type={'submit'}
-                                    isLoading={isPending}
-                                    isDisabled={
-                                        !address ||
-                                        !apartment ||
-                                        !city ||
-                                        !state ||
-                                        !country ||
-                                        !zipCode ||
-                                        !phoneNumber
-                                    }
+                                isLoading={isUpdatingAddress}
+                                isDisabled={isAddressIncomplete || isValid}
                                 />
                             </>
                         }

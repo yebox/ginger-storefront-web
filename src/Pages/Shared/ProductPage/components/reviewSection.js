@@ -13,7 +13,7 @@ const ReviewSection = () => {
   const id = pathname.split("/").pop();
 
   const { data, isLoading, error } = useApiGet(
-    "get-product-reviews",
+    ["get-product-reviews"],
     () => getProductReviews(id),
     {
       select: (data) => data,

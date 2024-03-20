@@ -18,11 +18,13 @@ const Address = () => {
   );
 
   const addresses = useMemo(() => {
-    return [userData?.address]?.map((x) => ({
-      address: formatAddress(x),
-      phoneNumber: userData?.phoneNumber,
-      fullName: `${userData?.firstName} ${userData?.lastName}`,
-    }));
+    return userData?.address
+      ? [userData?.address]?.map((x) => ({
+          address: formatAddress(x),
+          phoneNumber: userData?.phoneNumber,
+          fullName: `${userData?.firstName} ${userData?.lastName}`,
+        }))
+      : {};
   }, [userData]);
 
   return (

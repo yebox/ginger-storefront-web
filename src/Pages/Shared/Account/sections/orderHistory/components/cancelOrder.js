@@ -1,13 +1,36 @@
 import React from "react";
 import { styled } from "styled-components";
 import { devices } from "../../../../../../Utils";
+import { useApiSend } from "../../../../../../Hooks";
+import { cancelOrder } from "../../../../../../Urls";
+import toast from "react-hot-toast";
+import { Spinner } from "../../../../../../Ui_elements";
+import { useQueryClient } from "@tanstack/react-query";
 
-const CancelOrder = () => {
+const CancelOrder = ({ orderId }) => {
+  const queryClient = useQueryClient();
+  const { mutate, isPending } = useApiSend(
+    () => cancelOrder(orderId),
+    () => {
+      queryClient.invalidateQueries("get-single-order");
+      toast.success("Order cancelled successfully");
+    },
+    () => {
+      toast.error(`Something went wrong`);
+    }
+  );
+
   return (
     <Container>
       <Title>Cancel order</Title>
       <Desc>You can only cancel an order before your order is accepted</Desc>
-      <CancelBtn>Cancel Order</CancelBtn>
+      <CancelBtn onClick={mutate}>
+        {isPending ? (
+          <Spinner width={20} height={20} color={"white"} />
+        ) : (
+          "Cancel Order"
+        )}
+      </CancelBtn>
     </Container>
   );
 };
@@ -18,7 +41,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 88px;
-  padding: 0 5vw 0 65px;
+  padding: 0 5vw 40px 65px;
 
   @media ${devices.mobileL} {
     padding: 20px;

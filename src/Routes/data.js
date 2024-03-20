@@ -134,40 +134,19 @@ export const sharedRoutes = [
     element: UnsignedCategories,
     hasLayout: false,
   },
-  {
-    path: "/categories/:id",
-    element: Categories,
-    hasLayout: false,
-  },
-  // {
-  //   path: "/categories/nails",
-  //   element: Categories,
-  //   hasLayout: false,
 
-  // },
-  // {
-  //   path: "/categories/eyelashes",
-  //   element: Categories,
-  //   hasLayout: false,
-
-  // },
-  // {
-  //   path: "/categories/skin",
-  //   element: Categories,
-  //   hasLayout: false,
-
-  // },
-  // {
-  //   path: "/categories/equipment",
-  //   element: Categories,
-  //   hasLayout: false,
-
-  // },
   {
     path: "/categories/:category",
     element: Categories,
     hasLayout: false,
   },
+  
+  {
+    path: "/categories/:categoryName",
+    element: Categories,
+    hasLayout: false,
+  },
+
   {
     path: "/categories/:category/:id",
     element: ProductPage,
@@ -204,7 +183,7 @@ export const sharedRoutes = [
     hasLayout: false,
   },
   {
-    path: "/shop/:id",
+    path: "/store",
     element: SellerStore,
     hasLayout: false,
   },

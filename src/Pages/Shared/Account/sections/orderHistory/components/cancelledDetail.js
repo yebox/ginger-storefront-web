@@ -1,49 +1,35 @@
 import React from "react";
-import { styled } from "styled-components";
-import { OrderTrackIcon, OrderTrackStar } from "../../../../../../Assets/Svgs";
-import TrackStepper from "./trackStepper";
-import CancelOrder from "./cancelOrder";
-import { devices, orderStatusMapping } from "../../../../../../Utils";
-import dayjs from "dayjs";
-import localizedFormat from "dayjs/plugin/localizedFormat";
-dayjs.extend(localizedFormat);
+import styled from "styled-components";
+import { devices } from "../../../../../../Utils";
+import { OrderRateIcon, OrderTrackStar } from "../../../../../../Assets/Svgs";
+import EmptyOrderState from "./emptyState";
 
-const OrderTracking = ({ order, status }) => {
-  let stepData = {};
-  const getDateTime = (timeStamp, key) => {
-    const processedDateTime = dayjs(timeStamp).format("L LT");
-    const processedTimeArr = processedDateTime.split(" ");
-    stepData[`date${key}`] = processedTimeArr[0];
-    stepData[`time${key}`] = processedTimeArr.slice(1).join("");
-  };
-
-  order?.dateProcessed && getDateTime(order?.dateProcessed, `Processed`);
-  order?.dateDispatched && getDateTime(order?.dateDispatched, `Dispatched`);
-  order?.dateDelivered && getDateTime(order?.dateDelivered, `Delivered`);
-
+const CancelledDetail = () => {
   return (
     <Container>
       <Header>
         <OrderTrackStar />
         <HeaderContent>
-          <HeaderTitle>Order Tracking</HeaderTitle>
+          <HeaderTitle>Cancelled Order</HeaderTitle>
           <HeaderDescription>
-            See details of the progress on your order
+            Reorder item to leave a review and rate this item{" "}
           </HeaderDescription>
         </HeaderContent>
-        <OrderTrackIcon />
+        <OrderRateIcon />
       </Header>
       <ContentWrapper>
-        <TrackStepper {...stepData} />
+        <EmptyOrderState
+          title={"We're sorry, you cannot rate and review this item"}
+          subtitle={
+            "If you have any questions or concerns, please feel free to reach out to our customer support team for assistance."
+          }
+        />
       </ContentWrapper>
-      {status === orderStatusMapping.pending && (
-        <CancelOrder orderId={order?.id} />
-      )}
     </Container>
   );
 };
 
-export default OrderTracking;
+export default CancelledDetail;
 
 const Container = styled.div`
   width: 50%;
@@ -109,6 +95,7 @@ const HeaderDescription = styled.p`
 const ContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
   padding: 57px 5vw 57px 65px;
 
   @media ${devices.mobileL} {
