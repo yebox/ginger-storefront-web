@@ -35,18 +35,7 @@ const Categories = () => {
   const decodeQueryCat = JSON.parse(decodeURIComponent(queryCat))
   const decodeQuerySubCat = JSON.parse(decodeURIComponent(querySub))
   const decodeActiveInit = decodeURIComponent(queryActive)
-
-
-  const [selectCat, setSelectCat] = useState(decodeActiveInit);
-  const [subCategory, setSubCategory] = useState(decodeQuerySubCat);
-  const [subCategoryId, setSubCategoryId] = useState(decodeQuerySubCat?._id);
-  const [selectedBrand, setSelectedBrand] = useState("");
-  const [selectedPrice, setSelectedPrice] = useState(null);
-  const [openFilter, setOpenFilter] = useState(false);
-  const dispatch = useDispatch()
-  const firstPriceSelection = useRef(true);
-  const firstBrandSelection = useRef(true);
-
+  const inittialSubcat = decodeQuerySubCat
 
   const {
     data,
@@ -61,6 +50,16 @@ const Categories = () => {
   );
 
 
+  const activeIndex = data ? data[0]?.subCategories.findIndex(item => item?._id === decodeActiveInit) : 0;
+
+  const [selectCat, setSelectCat] = useState(activeIndex !== -1 ? activeIndex : 0);
+  const [subCategory, setSubCategory] = useState(decodeQuerySubCat || null);
+  const [subCategoryId, setSubCategoryId] = useState(decodeQuerySubCat?._id);
+  const [selectedBrand, setSelectedBrand] = useState("");
+  const [selectedPrice, setSelectedPrice] = useState(null);
+  const [openFilter, setOpenFilter] = useState(false);
+
+  console.log(decodeQuerySubCat, "subCategory")
 
   const {
     data: productsData,
@@ -83,6 +82,9 @@ const Categories = () => {
   );
 
 
+  useEffect(() => {
+    setSubCategory(decodeQueryCat)
+  },[])
   const {
     data: categoryBrands,
     isLoading: isLoadingCategoryBrands } =
@@ -95,37 +97,29 @@ const Categories = () => {
 
   useEffect(() => {
     if (data) {
-      if (selectCat === null) {
-        setSelectCat(data[0]?.subCategories?.findIndex(item => item._id === decodeActiveInit));
-      }
-      setSubCategoryId(decodeQuerySubCat?._id);
-      setSubCategory(decodeQuerySubCat);
+      fetchProducts()
     }
-  }, [data, decodeQuerySubCat, decodeActiveInit, selectCat]);
-
-
-
+  }, [data])
+  
   useEffect(() => {
-    if (subCategoryId && !firstBrandSelection.current && selectedBrand && selectedPrice) {
-      fetchProducts();
+    if (data) {
+      fetchProducts()
     }
-  }, [subCategoryId, selectedBrand, selectedPrice, firstBrandSelection]);
-
-
+  }, [selectCat, subCategory])
+  
   useEffect(() => {
-    if (!firstBrandSelection.current && selectedBrand) {
-      fetchProducts();
+    if (data && selectedPrice) {
+      fetchProducts()
     }
-    firstBrandSelection.current = false;
-  }, [selectedBrand, firstBrandSelection]);
-
-
+  }, [selectedPrice])
+  
   useEffect(() => {
-    if (!firstPriceSelection.current && selectedPrice) {
-      fetchProducts();
+    if (data) {
+      fetchProducts()
     }
-    firstPriceSelection.current = false;
-  }, [selectedPrice, firstPriceSelection]);
+  },[selectedBrand])
+
+
 
 
   return (
@@ -152,11 +146,11 @@ const Categories = () => {
                 activeIndex={selectCat}
                 to={`/categories/${encodeURIComponent(decodeQueryCat?.name)}?cat=${encodeURIComponent(JSON.stringify(decodeQueryCat))}&sub_cat=${encodeURIComponent(JSON.stringify(item))}&activeInit=${decodeURIComponent(item?._id)}&init=${item?.name}`}
                 onClick={() => {
-                  setSelectCat(item?._id);
+                  setSelectCat(index);
                   setSubCategoryId(item?._id);
                   setSubCategory(item);
                 }}
-                index={decodeActiveInit}
+                index={index}
                 key={index}
               >
                 {item?.name}

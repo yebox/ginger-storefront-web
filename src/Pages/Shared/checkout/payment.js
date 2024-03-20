@@ -17,8 +17,8 @@ import { formatAmount, formatCardNumber } from '../../../Utils'
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { CardDetailsSchema } from './schema'
-import { useApiSend } from '../../../Hooks'
-import { createOrder, makePayment } from '../../../Urls'
+import { useApiGet, useApiSend } from '../../../Hooks'
+import { createOrder, getWallet, makePayment } from '../../../Urls'
 import { useSelector } from 'react-redux'
 import { toast } from 'react-hot-toast'
 
@@ -40,7 +40,6 @@ const Payment = () => {
     const address = JSON.parse(decodeURIComponent(addressString))
     const phoneNumber = JSON.parse(decodeURIComponent(phoneNumberString))
     const shipping = 2000
-
     const currentDate = new Date();
     const deliveryDate = new Date(currentDate);
     deliveryDate.setDate(currentDate.getDate() + 1);
@@ -102,6 +101,16 @@ const Payment = () => {
             setShowModal(false)
         }
     )
+
+    const { data, isLoading } = useApiGet(
+        ['get-wallet-data'],
+        () => getWallet(),
+        {
+            enabled: true
+        }
+    )
+
+    console.log(data, "wallet data")
 
     const onSubmit = () => {
         console.log('submitted')
@@ -169,7 +178,6 @@ const Payment = () => {
                         </SelectItems>
 
 
-
                         {
                             showForm &&
                             <Form>
@@ -229,7 +237,7 @@ const Payment = () => {
                                     selected={paymentMethod === "yourWallet"}
                                     onChange={handlePaymentMethodChange}
                                 />
-                                <p>Your Wallet </p>
+                                {data && <p>Your Wallet <span>({`₦ ${data?.balance}.00`})</span> </p>}
                             </div>
 
                             <div>
@@ -269,15 +277,14 @@ const Payment = () => {
                         </Flex>
 
                         <DetailItem>
-                            <p>Contact</p>
-                            <p>{phoneNumber}</p>
-                        </DetailItem>
-
-                        <DetailItem>
-                            <p>Address</p>
-                            <p>{`${address?.line1}, ${address?.line2}`}</p>
-                            <p>{`${address?.state}, ${address?.postalCode}`}</p>
-                            <p>{`${address?.country}`}</p>
+                            <Header>
+                                <p>{user?.firstName} {user?.lastName}</p>
+                            </Header>
+                            <Details>
+                                <p>{`${address?.line1}, ${address?.line2}`}</p>
+                                <Postal>{address?.postalCode},{address?.state},{address?.country}</Postal>
+                                <p>{phoneNumber}</p>
+                            </Details>
                         </DetailItem>
 
                         {/* <DetailItem>
@@ -289,7 +296,7 @@ const Payment = () => {
 
                     <Remember>Remember me</Remember>
                     <CheckContainer>
-                        <GCheckbox />
+                        <GCheckbox isTransparent />
                         <p>Save this information for next time</p>
                     </CheckContainer>
 
@@ -340,7 +347,7 @@ const Payment = () => {
                     </PriceDetailsContainer>
                 </ItemDetailsContainer>
             </Body>
-            {/* <LineLoader loading={isPending} /> */}
+            <LineLoader loading={isLoading} />
             <InstaFooter />
         </Container>
     )
@@ -445,7 +452,10 @@ const SelectItems = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-
+    span{
+        color: var(--primary-color);
+        font-weight: 600;
+    }
     div{
         display: flex;
         align-items: center;
@@ -474,15 +484,11 @@ const DetailsContainer = styled.div`
 `
 
 const DetailItem = styled.div`
-    margin-top: 2.2rem;
-    p:nth-child(1){
-        color: var(--gray-250);
-        font-size: 0.8rem;
-        margin-bottom: 1rem;
-    }
-    p:nth-child(2){
-        font-size: 1.2rem;
-    }
+    border: 1px solid var(--gray-200);
+    width: 100%;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 40px;
 `
 
 const Flex = styled.div`
@@ -497,4 +503,33 @@ const Terms = styled.div`
         color: var(--primary-color);
         text-decoration: underline;
     }
+`
+
+const Header = styled.div`
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    p{
+        font-size: 14px;
+        font-weight: 400;
+        color: var(--gray-300);
+    }
+`
+
+
+const Details = styled.div`
+    p:nth-child(1){
+        font-size: 1.2rem;
+        font-weight: 500;
+        color: var(--gray-300);
+        margin-bottom: 20px;
+    }
+    p:nth-child(2){
+        font-size: 14px;
+    }
+`
+
+const Postal = styled.p`
+    font-size: 1rem;
+    margin-bottom: 4px;
 `

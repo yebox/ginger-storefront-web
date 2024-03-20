@@ -31,6 +31,7 @@ const Login = () => {
     loginUser,
     (data) => {
       dispatch(setUser(data));
+      toast.success("Welcome")
       navigate("/");
     },
     (error) => {
