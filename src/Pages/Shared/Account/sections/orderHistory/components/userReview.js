@@ -1,12 +1,15 @@
 import React from "react";
 import { styled } from "styled-components";
 import { GRatingIcon } from "../../../../../../Ui_elements";
+import { devices } from "../../../../../../Utils";
 
-const UserReview = ({ review, rating }) => {
+const UserReview = ({ review, rating, name }) => {
   return (
     <Container>
       <Flex>
-        <Title>Your Rating</Title>
+        <Title>
+          Your Rating of <span>{name}</span>
+        </Title>
         <RatingWrapper>
           {[...Array(5)].map((_, index) => (
             <GRatingIcon
@@ -20,7 +23,6 @@ const UserReview = ({ review, rating }) => {
         </RatingWrapper>
       </Flex>
       <Flex>
-        <Title>Your Review</Title>
         <ReviewTxt>{review}</ReviewTxt>
       </Flex>
     </Container>
@@ -32,7 +34,11 @@ export default UserReview;
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 50px;
+  gap: 14px;
+
+  @media ${devices.mobileL} {
+    gap: 8px;
+  }
 `;
 
 const Title = styled.p`
@@ -41,6 +47,14 @@ const Title = styled.p`
   font-style: normal;
   font-weight: 500;
   line-height: 120%; /* 24px */
+
+  @media ${devices.mobileL} {
+    font-size: 15px;
+
+    & > span {
+      font-size: 16px;
+    }
+  }
 `;
 
 const RatingWrapper = styled.div`
@@ -51,7 +65,11 @@ const RatingWrapper = styled.div`
 const Flex = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 30px;
+
+  @media ${devices.mobileL} {
+    gap: 20px;
+  }
 `;
 
 const ReviewTxt = styled.p`
@@ -61,4 +79,8 @@ const ReviewTxt = styled.p`
   font-weight: 400;
   line-height: 120%; /* 19.2px */
   margin-bottom: 100px;
+
+  @media ${devices.mobileL} {
+    font-size: 15px;
+  }
 `;

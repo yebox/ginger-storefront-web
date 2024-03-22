@@ -2,6 +2,7 @@ import React from "react";
 import { styled } from "styled-components";
 import { devices, formatAmount, formatImage } from "../../../../../../Utils";
 import { useDeviceCheck } from "../../../../../../Hooks";
+import { GButton } from "../../../../../../Ui_elements";
 
 const ItemInfoCard = ({ item, isSelected, handleClick }) => {
   const product = item?.product;
@@ -9,7 +10,10 @@ const ItemInfoCard = ({ item, isSelected, handleClick }) => {
   const seller = `${product?.seller?.firstName} ${product?.seller?.lastName}`;
 
   return (
-    <Container $isSelected={isSelected} onClick={() => handleClick(item)}>
+    <Container
+      $isSelected={isSelected}
+      onClick={() => (isMobile ? () => {} : handleClick(item))}
+    >
       <LeftWrapper>
         <ItemImage src={formatImage(product?.mainImage)} />
         <DetailsWrapper>
@@ -28,8 +32,11 @@ const ItemInfoCard = ({ item, isSelected, handleClick }) => {
             </SellerName>
           )}
         </DetailsWrapper>
+        {isMobile && (
+          <GButton label={`Review product`} onClick={() => handleClick(item)} />
+        )}
       </LeftWrapper>
-      <QuantityWrapper>
+      <QuantityWrapper $isMobile={isMobile}>
         <Quantity>x {item?.quantity}</Quantity>
       </QuantityWrapper>
     </Container>
@@ -47,6 +54,10 @@ const Container = styled.div`
     $isSelected ? `1px solid #FF4623` : `1px solid #E8E8E8`};
   cursor: pointer;
   transition: all 0.25s ease;
+
+  @media ${devices.mobileL} {
+    padding: 10px;
+  }
 `;
 
 const LeftWrapper = styled.div`
@@ -150,7 +161,8 @@ const QuantityWrapper = styled.div`
 
   @media ${devices.mobileL} {
     top: unset;
-    bottom: 8px;
+    right: 10px;
+    bottom: ${({ $isMobile }) => ($isMobile ? `62px` : `8px`)};
   }
 `;
 

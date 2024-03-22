@@ -50,8 +50,8 @@ export const formatAmount = (amount) => {
     let amountStr = amount.toString();
     let parts = amountStr.split(".");
     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-
-    return parts.join(".");
+    const amt = parts.join(".");
+    return amt.length > 12 ? amt.substring(0, 12) : amt;
   }
 };
 

@@ -83,15 +83,12 @@ const Categories = () => {
     }
   );
 
-  useEffect(() => {
-    setSubCategory(decodeQueryCat);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
   const { data: categoryBrands, isLoading: isLoadingCategoryBrands } =
     useApiGet(["get-brands"], () => getBrands());
 
   useEffect(() => {
     fetchSubCategories();
+    setSubCategory(decodeQueryCat);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [decodeQueryCat?.name]);
 
@@ -100,28 +97,9 @@ const Categories = () => {
       fetchProducts();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data]);
+  }, [selectCat, subCategory, data, selectedPrice, selectedBrand]);
 
-  useEffect(() => {
-    if (data) {
-      fetchProducts();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectCat, subCategory]);
-
-  useEffect(() => {
-    if (data && selectedPrice) {
-      fetchProducts();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedPrice]);
-
-  useEffect(() => {
-    if (data) {
-      fetchProducts();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedBrand]);
+  console.log("sub", subCategory, decodeQuerySubCat);
 
   return (
     <Container>

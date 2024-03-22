@@ -7,9 +7,11 @@ import {
   formatImage,
   formatOrderStatus,
   orderStatusMapping,
+  truncateText,
 } from "../../../../../../Utils";
 import dayjs from "dayjs";
 import localizedFormat from "dayjs/plugin/localizedFormat";
+import { useDeviceCheck } from "../../../../../../Hooks";
 dayjs.extend(localizedFormat);
 
 const OrderCard = ({ id, items, reference, dateDelivered, status }) => {
@@ -17,6 +19,7 @@ const OrderCard = ({ id, items, reference, dateDelivered, status }) => {
   const displayProduct = itemCount > 0 && items[0]?.product;
   const orderStatus = formatOrderStatus(status);
   const dateTimeDelivered = dayjs(dateDelivered).format("L LT");
+  const { isMobile } = useDeviceCheck();
 
   return (
     <Container>
@@ -25,7 +28,9 @@ const OrderCard = ({ id, items, reference, dateDelivered, status }) => {
         <LeftWrapper>
           <DetailsWrapper>
             <NameCountWrapper>
-              <ProductName>{displayProduct?.name}</ProductName>
+              <ProductName>
+                {truncateText(displayProduct?.name, isMobile ? 14 : 28) || ""}
+              </ProductName>
               {itemCount > 1 && <ItemCount>{itemCount} items</ItemCount>}
             </NameCountWrapper>
             <OrderName>{`order ${reference}`}</OrderName>
@@ -70,7 +75,7 @@ const Container = styled.div`
 
   @media ${devices.mobileL} {
     flex-direction: column;
-    height: auto;
+    height: 175px;
     padding: 14px;
     gap: 10px;
   }
@@ -212,7 +217,7 @@ const Status = styled.div`
   }
 
   @media ${devices.mobileL} {
-    top: 110px;
+    top: 100px;
   }
 `;
 

@@ -27,7 +27,7 @@ const OtpVerify = ({
         placeholder={"0"}
         onChange={(value) => handleComplete(value)}
         autoFocus={true}
-        inputProps={{ disabled: !isTimeUp }}
+        // inputProps={{ disabled: !isTimeUp }}
       />
       {isTimeUp ? (
         <ResendTxt>

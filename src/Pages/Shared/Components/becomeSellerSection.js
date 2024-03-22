@@ -4,11 +4,11 @@ import { styled } from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { GButton } from "../../../Ui_elements";
 import { devices } from "../../../Utils";
-import { useSelector } from 'react-redux';
+import { useSelector } from "react-redux";
 
 export const BecomeSellerSection = () => {
   const navigate = useNavigate();
-  const user = useSelector(state => state.user)
+  const user = useSelector((state) => state.user);
   return (
     <CallToAction>
       <div>
@@ -18,9 +18,12 @@ export const BecomeSellerSection = () => {
           </h4>
           <p>Browse more top selling products from top brands</p>
           <div>
-            {
-              !user && <GButton label="Sign up now" onClick={() => navigate("/login")} />
-            }
+            {!user && (
+              <GButton
+                label="Sign up now"
+                onClick={() => navigate("/signup")}
+              />
+            )}
             <GButton
               outline
               onClick={() => navigate("/sell-on-ginger")}
@@ -46,7 +49,7 @@ const CallToAction = styled.section`
     left: 50%;
     bottom: -12.5rem;
     transform: translateX(-50%);
-    width:70%;
+    width: 70%;
     height: 25rem;
     display: flex;
     align-items: center;
@@ -81,12 +84,12 @@ const CallToAction = styled.section`
   }
 
   @media ${devices.mobileL} {
-    height: 400px;
+    height: 350px;
 
     & > div {
       width: 90vw;
-      bottom: -14vh;
-      padding: 32px 20px 63px;
+      bottom: -9vh;
+      padding: 32px 20px 40px;
       height: unset;
 
       & > div {

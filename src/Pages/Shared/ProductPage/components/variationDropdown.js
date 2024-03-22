@@ -2,6 +2,7 @@ import * as React from "react";
 import ArrowForwardIosSharpIcon from "@mui/icons-material/ArrowForwardIosSharp";
 import { styled } from "styled-components";
 import { ClickAwayListener, Fade } from "@mui/material";
+import { devices } from "../../../../Utils";
 
 export const VariationDropdown = ({ label, setLabel, options }) => {
   const [open, setOpen] = React.useState(false);
@@ -100,5 +101,9 @@ const Option = styled.p`
 
   &:hover {
     background: #f1f1f2;
+  }
+
+  @media ${devices.mobileL} {
+    padding: 8px;
   }
 `;

@@ -89,7 +89,7 @@ export const sharedRoutes = [
   {
     path: "/forgot-password",
     element: () => (
-      <AuthLayout>
+      <AuthLayout noLayout={true}>
         <ForgotPassword />
       </AuthLayout>
     ),
@@ -140,7 +140,7 @@ export const sharedRoutes = [
     element: Categories,
     hasLayout: false,
   },
-  
+
   {
     path: "/categories/:categoryName",
     element: Categories,
