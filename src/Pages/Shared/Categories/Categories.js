@@ -44,8 +44,6 @@ const Categories = () => {
 
   const dispatch = useDispatch()
 
-
-
   const selectedCategory = useSelector(state => state?.navbar?.selectedCategory)
   const initialSubCategory = useSelector(state => state?.navbar?.initialSubCategory)
   const activeIndex = useSelector(state => state?.navbar?.activeIndex)
@@ -68,12 +66,10 @@ const Categories = () => {
     activeIndex
   );
 
-
   const [subCategory, setSubCategory] = useState(initialSubCategory);
   const [selectedBrand, setSelectedBrand] = useState("");
   const [selectedPrice, setSelectedPrice] = useState(null);
   const [openFilter, setOpenFilter] = useState(false);
-
 
 
   const {
@@ -96,20 +92,20 @@ const Categories = () => {
   );
 
 
-  // useEffect(() => {
-  //   if (decodeQueryCat) {
-  //     dispatch(setSelectedCategory(decodeQueryCat));
-  //   }
-  //   if (decodeQuerySubCat) {
-  //     dispatch(setInitialSubCateogry(decodeQuerySubCat));
-  //   }
-  //   if (decodeActiveInit) {
-  //     dispatch(setActiveInitialSubCateogry(decodeActiveInit));
-  //   }
-  //   if (decodeQueryIndex !== null && !isNaN(decodeQueryIndex)) {
-  //     dispatch(setActiveIndex(decodeQueryIndex));
-  //   }
-  // }, [decodeQueryCat, decodeQuerySubCat, decodeActiveInit, decodeQueryIndex]);
+  useEffect(() => {
+    if (decodeQueryCat) {
+      dispatch(setSelectedCategory(decodeQueryCat));
+    }
+    if (decodeQuerySubCat) {
+      dispatch(setInitialSubCateogry(decodeQuerySubCat));
+    }
+    if (decodeActiveInit) {
+      dispatch(setActiveInitialSubCateogry(decodeActiveInit));
+    }
+    if (decodeQueryIndex !== null && !isNaN(decodeQueryIndex)) {
+      dispatch(setActiveIndex(decodeQueryIndex));
+    }
+  }, [location.search]);
 
 
   useEffect(() => {
@@ -267,7 +263,12 @@ const Categories = () => {
         <BecomeSellerSection />
       </BecomeSellerContainer>
       <LineLoader
-        loading={isLoadingProducts || isFetchingProducts || isLoadingCategory}
+        loading={
+          isLoadingProducts ||
+          isFetchingProducts ||
+          isLoadingCategory ||
+          isLoadingCategoryBrands
+        }
       />
       <InstaFooter />
     </Container>

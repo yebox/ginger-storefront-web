@@ -9,15 +9,11 @@ export const PriceFilter = ({ options, selectedPrice, setSelectedPrice }) => {
   const [currentFocus, setCurrentFocus] = useState(0);
 
   const handleApplyClick = () => {
-    // Validate price range inputs
     if (priceRangeStart !== "" && priceRangeEnd !== "") {
-      // Construct the price range object
       const priceRange = {
         gt: parseInt(priceRangeStart),
         lt: parseInt(priceRangeEnd),
       };
-
-      // Set the selected price range
       setSelectedPrice(priceRange);
     }
   };
@@ -35,8 +31,6 @@ export const PriceFilter = ({ options, selectedPrice, setSelectedPrice }) => {
     } else {
       setPriceRangeEnd(value);
     }
-
-    // Enable the apply button if both inputs are filled
     setIsApplyDisabled(!(priceRangeStart !== "" && priceRangeEnd !== ""));
   };
 

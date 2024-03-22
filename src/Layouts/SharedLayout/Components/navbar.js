@@ -300,19 +300,8 @@ export const Navbar = () => {
           <LowerNavItemContainer>
             <MenuLinksContainer>
               <NavLink to={"/categories/all"}>All</NavLink>
-
               {data?.map((category, index) => (
                 <NavLink
-                  onClick={() => {
-                    dispatch(setSelectedCategory(category));
-                    dispatch(setInitialSubCateogry(category?.subCategories[0]));
-                    dispatch(
-                      setActiveInitialSubCateogry(
-                        category?.subCategories[0]?._id
-                      )
-                    )
-                    dispatch(setActiveIndex(0))
-                  }}
                   key={index}
                   to={`/categories/${encodeURIComponent(
                     category?.name
@@ -324,7 +313,6 @@ export const Navbar = () => {
                     category?.subCategories[0]?._id
                   )}&init=${category?.subCategories[0]?.name}&activeIndex=0`}
                   onMouseEnter={() => handleNavLinkHover(index)}
-
                 >
                   {category.name}
                 </NavLink>

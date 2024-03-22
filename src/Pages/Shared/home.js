@@ -22,6 +22,7 @@ import {
 } from "./Components";
 import Partners from "../../Assets/Images/partners.png";
 import HeroImage from "../../Assets/Images/hero-image.png";
+import HeroMobile from "../../Assets/Images/landing_mobile.png"
 import {
   CircleText,
   LeftArrow,
@@ -42,6 +43,7 @@ import {
 import Cookies from "js-cookie";
 import { useSelector } from "react-redux";
 import { Skeleton } from "@mui/material";
+import { devices } from "../../Utils";
 // import InstaFooter from "./Components/instaFooter";
 
 const Home = () => {
@@ -55,6 +57,7 @@ const Home = () => {
   const acceptCookie = Cookies.get("ginger-cookie-policy");
   const swiper = new Swiper();
   const firstCatMount = useRef(true);
+  const { isMobile } = useDeviceCheck()
 
   const { data: products, isLoading } = useApiGet(
     ["get-featured-products"],
@@ -157,6 +160,15 @@ const Home = () => {
           <p>Explore, Buy Wholesale, Sell on Ginger</p>
           <h3>Discover the convenience of</h3>
           <h3>wholesale marketplace</h3>
+
+          {
+            isMobile && <MobileDetails>
+              <h4>Discover the {""}</h4>
+              <h4>convenience of</h4>
+              <h4>wholesale marketplace</h4>
+            </MobileDetails>
+          }
+
           <ButtonContainer>
             {!user && (
               <GButton
@@ -180,7 +192,7 @@ const Home = () => {
         </HeroImageContainer>
       </Hero>
 
-      <HowItWorks>
+      {/* <HowItWorks>
         <GuideCard />
         <GuideCard />
         <GuideCard />
@@ -323,7 +335,7 @@ const Home = () => {
           </div>
         </TopSellerHeader>
 
-        {/* <ChipContainer>
+        <ChipContainer>
           {categories?.map((item, index) => (
             <Chip
               activeIndex={selectCat}
@@ -337,7 +349,7 @@ const Home = () => {
               {item?.name}
             </Chip>
           ))}
-        </ChipContainer> */}
+        </ChipContainer>
 
         <SellerCardsContainer>
           <Carousel
@@ -472,7 +484,7 @@ const Home = () => {
           isLoading ||
           isFetchingTopProducts
         }
-      />
+      /> */}
     </Container>
   );
 };
@@ -491,6 +503,12 @@ const Hero = styled.section`
   /* background-color: red; */
   width: 100%;
   padding-left: 5%;
+
+  @media ${devices.mobileL}{
+    display: block;
+    position: relative;
+    padding-left: 0;
+  }
 `;
 
 const HeroImageContainer = styled.div`
@@ -528,6 +546,13 @@ const HeroImageContainer = styled.div`
       border: 1px solid white;
     }
   }
+
+  @media ${devices.mobileL}{
+    /* height: calc((100vw - 40px) * 1.2625); */
+    background-image: url(${HeroMobile});
+
+  }
+
 `;
 const HeroDetails = styled.div`
   flex: 0.39;
@@ -560,8 +585,29 @@ const HeroDetails = styled.div`
   h3:nth-child(2) {
     bottom: 25rem;
   }
+
+  @media ${devices.mobileL}{
+    position: absolute;
+    padding: 10px;
+    h3{
+      display: none;
+    }
+  }
+  
 `;
 
+const MobileDetails = styled.div`
+h4 {
+    background-color: white;
+    padding: 10px;
+    /* white-space: nowrap; */
+    position: relative;
+    font-size: 28px;
+    width: fit-content;
+    font-weight: 500;
+    z-index: 1;
+  }
+`
 const ButtonContainer = styled.div`
   display: flex;
   gap: 20px;
@@ -962,7 +1008,8 @@ const SellerCardsContainer = styled.div`
   margin-left: 5%;
   gap: 1.2rem;
   overflow-x: auto !important;
-`;
+`; import { useDeviceCheck } from '../../Hooks/useDeviceCheck';
+
 
 const Wholesale = styled.div`
   padding: 10% 5%;
