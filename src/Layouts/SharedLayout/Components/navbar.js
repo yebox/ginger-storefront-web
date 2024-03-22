@@ -28,6 +28,7 @@ import {
 } from "../../../Urls";
 import {
   logout,
+  setActiveIndex,
   setActiveInitialSubCateogry,
   setCategories,
   setInitialSubCateogry,
@@ -63,6 +64,8 @@ export const Navbar = () => {
   });
   const dispatch = useDispatch();
   const user = useSelector((state) => state?.user);
+
+  console.log(user, "user")
   const initialSubCatFromStore = useSelector(
     (state) => state.global?.initialSubCategory
   );
@@ -307,7 +310,8 @@ export const Navbar = () => {
                       setActiveInitialSubCateogry(
                         category?.subCategories[0]?._id
                       )
-                    );
+                    )
+                    dispatch(setActiveIndex(0))
                   }}
                   key={index}
                   to={`/categories/${encodeURIComponent(
@@ -318,8 +322,9 @@ export const Navbar = () => {
                     JSON.stringify(category?.subCategories[0])
                   )}&activeInit=${decodeURIComponent(
                     category?.subCategories[0]?._id
-                  )}&init=${category?.subCategories[0]?.name}`}
+                  )}&init=${category?.subCategories[0]?.name}&activeIndex=0`}
                   onMouseEnter={() => handleNavLinkHover(index)}
+
                 >
                   {category.name}
                 </NavLink>

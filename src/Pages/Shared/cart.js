@@ -163,6 +163,7 @@ export default function Cart() {
       price: cartItem?.product?.price,
       quantity: cartItem?.quantity,
       sellerId: cartItem?.product?.sellerId,
+      sellerMinSpendForThisParticularBuyerBasedOnHowMuchHasBoughtByBuyer:'',
       total: cartItem?.product?.price * cartItem?.quantity,
       remove: "",
     }));

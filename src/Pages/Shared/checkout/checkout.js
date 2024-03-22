@@ -42,6 +42,7 @@ const Checkout = () => {
 
     const queryClient = useQueryClient()
 
+    
     const {
         register,
         handleSubmit,
@@ -232,24 +233,24 @@ const Checkout = () => {
                                     <p>Save this information for next time</p>
                                 </CheckContainer>
 
-                                <GButton
+                                {/* <GButton
                                     label={"Continue"}
                                     width={"50%"}
                                     type={'submit'}
                                 isLoading={isUpdatingAddress}
                                 isDisabled={isAddressIncomplete || isValid}
-                                />
+                                /> */}
                             </>
                         }
 
                         {
-                            !displayForm &&
+                            // !displayForm &&
                             <GButton
                                 label={"Continue"}
                                 width={"50%"}
                                 type={'submit'}
                                 onClick={() => navigate(`/cart/information/payment?data=${encodeURIComponent(JSON.stringify(transformData))}&totalPrice=${totalPrice.toString()}&address=${encodeURIComponent(JSON.stringify(selectAddress))}&mobileNumber=${encodeURIComponent(JSON.stringify(userAddress?.phoneNumber))}`)}
-                                isDisabled={!selectAddress}
+                                
                             />
                         }
 

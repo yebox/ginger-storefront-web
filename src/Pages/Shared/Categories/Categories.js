@@ -21,9 +21,14 @@ import ArrowForwardIosSharpIcon from "@mui/icons-material/ArrowForwardIosSharp";
 import { useApiGet } from "../../../Hooks";
 import { getBrands, getCategories, getProducts } from "../../../Urls";
 import { useDispatch, useSelector } from "react-redux";
-import { IMAGE_BASE_URL, priceOptions } from "../../../Utils";
+import { generateQueryKey, IMAGE_BASE_URL, priceOptions } from "../../../Utils";
 import { useLocation, useNavigate } from "react-router-dom";
-import { setActiveInitialSubCateogry } from "../../../Redux/Reducers";
+import {
+  setSelectedCategory,
+  setInitialSubCateogry,
+  setActiveInitialSubCateogry,
+  setActiveIndex
+} from "../../../Redux/Reducers";
 
 const Categories = () => {
   const location = useLocation();
@@ -31,10 +36,20 @@ const Categories = () => {
   const queryCat = queryParams.get("cat");
   const querySub = queryParams.get("sub_cat");
   const queryActive = queryParams.get("activeInit");
+  const queryIndex = queryParams.get("activeIndex");
+  const decodeQueryIndex = parseInt(queryIndex)
   const decodeQueryCat = JSON.parse(decodeURIComponent(queryCat));
   const decodeQuerySubCat = JSON.parse(decodeURIComponent(querySub));
   const decodeActiveInit = decodeURIComponent(queryActive);
-  const inittialSubcat = decodeQuerySubCat;
+
+  const dispatch = useDispatch()
+
+
+
+  const selectedCategory = useSelector(state => state?.navbar?.selectedCategory)
+  const initialSubCategory = useSelector(state => state?.navbar?.initialSubCategory)
+  const activeIndex = useSelector(state => state?.navbar?.activeIndex)
+
 
   const {
     data,
@@ -42,26 +57,24 @@ const Categories = () => {
     refetch: fetchSubCategories,
   } = useApiGet(
     ["get-catefories"],
-    () => getCategories({ name: decodeQueryCat?.name }),
+    () => getCategories({ name: selectedCategory?.name }),
     {
       enabled: true,
+      cacheTime: 0
     }
   );
 
-  const activeIndex = data
-    ? data[0]?.subCategories.findIndex((item) => item?._id === decodeActiveInit)
-    : 0;
-
   const [selectCat, setSelectCat] = useState(
-    activeIndex !== -1 ? activeIndex : 0
+    activeIndex
   );
-  const [subCategory, setSubCategory] = useState(decodeQuerySubCat || null);
-  const [subCategoryId, setSubCategoryId] = useState(decodeQuerySubCat?._id);
+
+
+  const [subCategory, setSubCategory] = useState(initialSubCategory);
   const [selectedBrand, setSelectedBrand] = useState("");
   const [selectedPrice, setSelectedPrice] = useState(null);
   const [openFilter, setOpenFilter] = useState(false);
 
-  console.log(decodeQuerySubCat, "subCategory");
+
 
   const {
     data: productsData,
@@ -69,59 +82,73 @@ const Categories = () => {
     isFetching: isFetchingProducts,
     refetch: fetchProducts,
   } = useApiGet(
-    ["get-products"],
+    [generateQueryKey('nav-products', selectedCategory?._id)],
     () =>
       getProducts({
-        categoryId: decodeQueryCat?._id,
-        subCategoryId: subCategoryId,
+        categoryId: selectedCategory?._id,
+        subCategoryId: initialSubCategory?._id,
         brandId: selectedBrand?._id,
         price: selectedPrice,
       }),
     {
-      enabled: false,
-      placeholderData: (previousData) => previousData,
+      enabled: true,
     }
   );
 
+
+  // useEffect(() => {
+  //   if (decodeQueryCat) {
+  //     dispatch(setSelectedCategory(decodeQueryCat));
+  //   }
+  //   if (decodeQuerySubCat) {
+  //     dispatch(setInitialSubCateogry(decodeQuerySubCat));
+  //   }
+  //   if (decodeActiveInit) {
+  //     dispatch(setActiveInitialSubCateogry(decodeActiveInit));
+  //   }
+  //   if (decodeQueryIndex !== null && !isNaN(decodeQueryIndex)) {
+  //     dispatch(setActiveIndex(decodeQueryIndex));
+  //   }
+  // }, [decodeQueryCat, decodeQuerySubCat, decodeActiveInit, decodeQueryIndex]);
+
+
   useEffect(() => {
-    setSubCategory(decodeQueryCat);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    setSubCategory(selectedCategory);
   }, []);
+
   const { data: categoryBrands, isLoading: isLoadingCategoryBrands } =
     useApiGet(["get-brands"], () => getBrands());
 
   useEffect(() => {
     fetchSubCategories();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [decodeQueryCat?.name]);
+  }, [selectedCategory?.name]);
+
 
   useEffect(() => {
     if (data) {
       fetchProducts();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   useEffect(() => {
     if (data) {
       fetchProducts();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectCat, subCategory]);
 
   useEffect(() => {
     if (data && selectedPrice) {
       fetchProducts();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedPrice]);
 
   useEffect(() => {
     if (data) {
       fetchProducts();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedBrand]);
+
+
 
   return (
     <Container>
@@ -129,9 +156,9 @@ const Categories = () => {
         <GBreadCrumbs />
       </Breadcrumb>
 
-      <Banner subCategory={subCategory && subCategory}>
+      <Banner subCategory={initialSubCategory && initialSubCategory}>
         <div>
-          <h2>{decodeQueryCat?.name}</h2>
+          <h2>{selectedCategory?.name}</h2>
           <p>
             Ginger’s wide network of local and international suppliers gives you
             access to all of your must-have brands and products in one place.
@@ -151,13 +178,16 @@ const Categories = () => {
                   JSON.stringify(decodeQueryCat)
                 )}&sub_cat=${encodeURIComponent(
                   JSON.stringify(item)
-                )}&activeInit=${decodeURIComponent(item?._id)}&init=${
-                  item?.name
-                }`}
+                )}&activeInit=${decodeURIComponent(item?._id)}&init=${item?.name
+                  }`}
                 onClick={() => {
                   setSelectCat(index);
-                  setSubCategoryId(item?._id);
+                  // setSubCategoryId(item?._id);
                   setSubCategory(item);
+                  // dispatch(setSelectedCategory(selectedCategory?.name))
+                  dispatch(setInitialSubCateogry(item))
+                  dispatch(setActiveIndex(index))
+                  dispatch(setActiveInitialSubCateogry(item?._id))
                 }}
                 index={index}
                 key={index}
@@ -305,7 +335,7 @@ const SortBox = styled.div`
   & > svg {
     transform: rotate(90deg);
     transform: ${({ $isOpen }) =>
-      $isOpen ? `rotate(270deg)` : "rotate(90deg)"};
+    $isOpen ? `rotate(270deg)` : "rotate(90deg)"};
     width: 14px;
     transition: all 0.25s ease;
   }

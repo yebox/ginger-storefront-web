@@ -26,10 +26,10 @@ export const GButton = ({
       $paddingProp={paddingProp}
       type={type}
       onClick={onClick}
-      outline={outline}
+      $outline={outline}
       disabled={isDisabled}
-      alternate={alternate}
-      alternateOutline={alternateOutline}
+      $alternate={alternate}
+      $alternateOutline={alternateOutline}
       {...otherProps}
     >
       {isLoading ? (
@@ -51,16 +51,16 @@ export const GButton = ({
 const ButtonEl = styled.button`
   display: flex;
   align-items: center;
-  background-color: ${({ outline, alternate, alternateOutline }) =>
-    outline
+  background-color: ${({ $outline, $alternate, $alternateOutline }) =>
+    $outline
       ? "transparent"
-      : alternate
+      : $alternate
       ? "white"
-      : alternateOutline
+      : $alternateOutline
       ? "transparent"
       : "var(--black)"};
-  color: ${({ outline, alternate }) =>
-    outline || alternate ? "var(--black)" : "#ffffff"};
+  color: ${({ $outline, $alternate }) =>
+    $outline || $alternate ? "var(--black)" : "#ffffff"};
   font-weight: 500;
   padding: ${({ $paddingProp }) =>
     $paddingProp ? $paddingProp : "1rem 1.5rem"};
@@ -72,10 +72,10 @@ const ButtonEl = styled.button`
   width: ${({ width }) => (width ? width : "100%")};
   border-radius: 2px;
   outline: none;
-  border: ${({ outline, alternateOutline }) =>
-    outline
+  border: ${({ $outline, $alternateOutline }) =>
+    $outline
       ? "1px solid var(--black)"
-      : alternateOutline
+      : $alternateOutline
       ? "1px solid white"
       : "none"};
   cursor: pointer;
