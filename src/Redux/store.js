@@ -1,5 +1,5 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import { GlobalReducer, userReducer } from "./Reducers";
+import { GlobalReducer, NavbarReducer, userReducer } from "./Reducers";
 import {
   persistStore,
   persistReducer,
@@ -16,12 +16,14 @@ import storage from "redux-persist/lib/storage";
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["user", "global"],
+  whitelist: ["user", "global", "navbar"],
 };
 
 const rootReducer = combineReducers({
   user: userReducer,
   global: GlobalReducer,
+  navbar: NavbarReducer
+  
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

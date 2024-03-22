@@ -135,11 +135,11 @@ export const sharedRoutes = [
     hasLayout: false,
   },
 
-  {
-    path: "/categories/:category",
-    element: Categories,
-    hasLayout: false,
-  },
+  // {
+  //   path: "/categories/:category",
+  //   element: Categories,
+  //   hasLayout: false,
+  // },
 
   {
     path: "/categories/:categoryName",
