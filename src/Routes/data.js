@@ -303,6 +303,7 @@ export const sharedRoutes = [
   },
 ];
 
+
 // export const authRoutes = [
 //   {
 //     path: "/signup",
@@ -321,38 +322,40 @@ export const sharedRoutes = [
 //   },
 // ];
 
-// export const sellerAuthRoutes = [
-//   {
-//     path: "seller/signup",
-//     element: SellerSignup,
-//     hasLayout: true,
-//   },
-//   // {
-//   //   path: "seller/login",
-//   //   element: SellerLogin,
-//   //   hasLayout: true,
-//   // },
-//   {
-//     path: "seller/forgot-password",
-//     element: SellerForgotPassword,
-//     hasLayout: true,
-//   },
-//   {
-//     path: "seller/signup/personal_information",
-//     element: SellerSignUpPersonalInformation,
-//     hasLayout: true,
-//   },
-//   {
-//     path: "seller/signup/business_information",
-//     element: SellerSignUpBusinessInformation,
-//     hasLayout: true,
-//   },
-//   {
-//     path: "seller/signup/business_document",
-//     element: SellerSignUpBusinessDocument,
-//     hasLayout: true,
-//   },
-// ];
+export const sellerAuthRoutes = [
+  {
+    path: "seller/signup",
+    element: SellerSignup,
+    hasLayout: true,
+  },
+  // {
+  //   path: "seller/login",
+  //   element: SellerLogin,
+  //   hasLayout: true,
+  // },
+  {
+    path: "seller/forgot-password",
+    element: SellerForgotPassword,
+    hasLayout: true,
+  },
+  {
+    path: "seller/signup/personal_information",
+    element: SellerSignUpPersonalInformation,
+    hasLayout: true,
+  },
+  {
+    path: "seller/signup/business_information",
+    element: SellerSignUpBusinessInformation,
+    hasLayout: true,
+  },
+  {
+    path: "seller/signup/business_document",
+    element: SellerSignUpBusinessDocument,
+    hasLayout: true,
+  },
+];
+
+
 
 // export const accountRoutes = [
 //   {

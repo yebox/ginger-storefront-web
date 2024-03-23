@@ -91,20 +91,20 @@ const Categories = () => {
     }
   );
 
-  // useEffect(() => {
-  //   if (decodeQueryCat) {
-  //     dispatch(setSelectedCategory(decodeQueryCat));
-  //   }
-  //   if (decodeQuerySubCat) {
-  //     dispatch(setInitialSubCateogry(decodeQuerySubCat));
-  //   }
-  //   if (decodeActiveInit) {
-  //     dispatch(setActiveInitialSubCateogry(decodeActiveInit));
-  //   }
-  //   if (decodeQueryIndex !== null && !isNaN(decodeQueryIndex)) {
-  //     dispatch(setActiveIndex(decodeQueryIndex));
-  //   }
-  // }, [decodeQueryCat, decodeQuerySubCat, decodeActiveInit, decodeQueryIndex]);
+  useEffect(() => {
+    if (decodeQueryCat) {
+      dispatch(setSelectedCategory(decodeQueryCat));
+    }
+    if (decodeQuerySubCat) {
+      dispatch(setInitialSubCateogry(decodeQuerySubCat));
+    }
+    if (decodeActiveInit) {
+      dispatch(setActiveInitialSubCateogry(decodeActiveInit));
+    }
+    if (decodeQueryIndex !== null && !isNaN(decodeQueryIndex)) {
+      dispatch(setActiveIndex(decodeQueryIndex));
+    }
+  }, [location.search]);
 
   useEffect(() => {
     setSubCategory(selectedCategory);
@@ -259,7 +259,12 @@ const Categories = () => {
         <BecomeSellerSection />
       </BecomeSellerContainer>
       <LineLoader
-        loading={isLoadingProducts || isFetchingProducts || isLoadingCategory}
+        loading={
+          isLoadingProducts ||
+          isFetchingProducts ||
+          isLoadingCategory ||
+          isLoadingCategoryBrands
+        }
       />
       <InstaFooter />
     </Container>

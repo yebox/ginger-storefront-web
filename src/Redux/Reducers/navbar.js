@@ -16,6 +16,12 @@ const NavSlice = createSlice({
     setActiveIndex: (state, action) => {
       state.activeIndex = action.payload;
     },
+    setActiveBrand: (state, action) => {
+      state.activeBrand = action.payload;
+    },
+    setActivePrice: (state, action) => {
+      state.activeBrand = action.payload;
+    },
   },
 });
 
@@ -25,7 +31,9 @@ const {
   setSelectedCategory,
   setInitialSubCateogry,
   setActiveInitialSubCateogry,
-  setActiveIndex
+  setActiveIndex,
+  setActivePrice,
+  setActiveBrand
 } = actions;
 
 export {
@@ -33,5 +41,7 @@ export {
   setSelectedCategory,
   setInitialSubCateogry,
   setActiveInitialSubCateogry,
-  setActiveIndex
+  setActiveIndex,
+  setActivePrice,
+  setActiveBrand
 };
