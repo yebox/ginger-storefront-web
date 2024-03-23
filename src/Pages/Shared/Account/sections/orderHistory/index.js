@@ -9,7 +9,7 @@ import { LineLoader } from "../../../../../Ui_elements";
 import EmptyOrderState from "./components/emptyState";
 
 const OrderHistory = () => {
-  const { data, isLoading } = useApiGet("get-orders", getOrders, {
+  const { data, isLoading } = useApiGet(["get-orders"], getOrders, {
     select: (data) => data,
     onError: (error) => console.log(error),
   });
@@ -75,15 +75,4 @@ const Title = styled.p`
   font-style: normal;
   font-weight: 500;
   line-height: 120%; /* 16.8px */
-`;
-
-const EmptyOrderTxt = styled.p`
-  color: var(--Black-500, #151515);
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 150%;
-  margin-top: 10px;
-  width: 100%;
-  text-align: center;
 `;

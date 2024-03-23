@@ -8,7 +8,7 @@ import {
   formatOrderStatus,
   orderStatusMapping,
 } from "../../../../../Utils";
-import { useApiGet } from "../../../../../Hooks";
+import { useApiGet, useDeviceCheck } from "../../../../../Hooks";
 import { getSingleOrder } from "../../../../../Urls";
 import { useLocation } from "react-router-dom";
 import { LineLoader } from "../../../../../Ui_elements";
@@ -18,6 +18,8 @@ const OrderDetails = () => {
   const { pathname } = useLocation();
   const id = pathname.split("/").pop();
   const [isRendering, setIsRendering] = useState(true);
+  const [isShowingDetails, setIsShowingDetails] = useState(false);
+  const { isMobile } = useDeviceCheck();
 
   const { data, isLoading } = useApiGet(
     ["get-single-order"],
@@ -41,13 +43,31 @@ const OrderDetails = () => {
 
   return (
     <Container>
-      <Details data={data} />
-      {isCompleted ? (
-        <RateProduct orderId={id} />
-      ) : isCancelled ? (
-        <CancelledDetail />
+      {!isMobile ? (
+        <>
+          <Details data={data} />
+          {isCompleted ? (
+            <RateProduct orderId={id} />
+          ) : isCancelled ? (
+            <CancelledDetail />
+          ) : (
+            <OrderTracking order={data} status={status} />
+          )}
+        </>
+      ) : isShowingDetails ? (
+        isCompleted ? (
+          <RateProduct orderId={id} setIsShowingDetails={setIsShowingDetails} />
+        ) : isCancelled ? (
+          <CancelledDetail setIsShowingDetails={setIsShowingDetails} />
+        ) : (
+          <OrderTracking
+            order={data}
+            status={status}
+            setIsShowingDetails={setIsShowingDetails}
+          />
+        )
       ) : (
-        <OrderTracking order={data} status={status} />
+        <Details data={data} setIsShowingDetails={setIsShowingDetails} />
       )}
       <LineLoader loading={isRendering || isLoading} />
     </Container>

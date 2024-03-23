@@ -3,6 +3,7 @@ import { styled } from "styled-components";
 import { Product } from ".";
 import { LeftArrow, RightArrow } from "../../../Assets/Svgs";
 import Swiper from "swiper";
+import { devices } from "../../../Utils";
 
 export const RelatedItems = () => {
   const sliderRef = useRef(null);
@@ -45,6 +46,10 @@ export const RelatedItems = () => {
 const Container = styled.section`
   margin-top: 30vh;
   width: 100%;
+
+  @media ${devices.mobileL} {
+    margin-top: 120px;
+  }
 `;
 
 const Header = styled.div`
@@ -56,6 +61,14 @@ const Header = styled.div`
     font-size: 2.5rem;
     font-weight: 500;
     /* margin-bottom: 1.3rem; */
+  }
+
+  @media ${devices.mobileL} {
+    margin: 0 20px;
+    align-items: center;
+    h4 {
+      font-size: 22px;
+    }
   }
 `;
 
@@ -92,4 +105,9 @@ const CardsContainer = styled.div`
   padding-bottom: 10px;
   justify-content: space-between;
   overflow-x: auto; /* Add this line */
+
+  @media ${devices.mobileL} {
+    margin-left: 20px;
+    margin-top: 40px;
+  }
 `;

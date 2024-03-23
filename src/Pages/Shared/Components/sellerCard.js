@@ -3,7 +3,6 @@ import { GButton } from "../../../Ui_elements";
 import { IMAGE_BASE_URL } from "../../../Utils";
 import { useNavigate } from 'react-router-dom';
 export const SellerCard = ({ width, marginRight, item }) => {
-  console.log(item, "item")
   const navigate = useNavigate()
   return (
     <Container

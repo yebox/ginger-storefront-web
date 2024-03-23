@@ -502,7 +502,7 @@ const Title = styled.p`
   width: 55%;
 
   @media ${devices.mobileL} {
-    font-size: 28px;
+    font-size: 26px;
     width: 85%;
   }
 `;

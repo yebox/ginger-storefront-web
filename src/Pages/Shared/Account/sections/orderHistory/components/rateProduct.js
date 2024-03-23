@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { styled } from "styled-components";
 import {
+  CaretLeft,
   InfoIcon,
   OrderRateIcon,
   OrderTrackStar,
@@ -10,24 +11,32 @@ import {
   GButton,
   GRatingIcon,
   GTextField,
+  LineLoader,
 } from "../../../../../../Ui_elements";
 import { useNavigate } from "react-router-dom";
 import { devices } from "../../../../../../Utils";
-import { useSelector } from "react-redux";
-import { useApiGet, useApiSend } from "../../../../../../Hooks";
+import { useDispatch, useSelector } from "react-redux";
+import { useApiGet, useApiSend, useDeviceCheck } from "../../../../../../Hooks";
 import {
   createProductReview,
   getUserProductReview,
 } from "../../../../../../Urls/productReviews";
 import { toast } from "react-hot-toast";
 import UserReview from "./userReview";
+import { setSelectedProductName } from "../../../../../../Redux/Reducers";
 
-const RateProduct = ({ orderId }) => {
+const RateProduct = ({ orderId, setIsShowingDetails }) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [checkedCount, setCheckedCount] = useState(0);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const { selectedOrderItem } = useSelector((state) => state?.global);
+  const { selectedOrderItem, categories } = useSelector(
+    (state) => state?.global
+  );
   const user = useSelector((state) => state?.user);
   const [review, setReview] = useState("");
+  const { isMobile } = useDeviceCheck();
+  const handleGoBack = () => setIsShowingDetails && setIsShowingDetails(false);
 
   const {
     data: userReview,
@@ -63,7 +72,15 @@ const RateProduct = ({ orderId }) => {
     setReview(value);
   };
 
-  console.log(review);
+  const handleBuyAgain = () => {
+    const productCategory = categories.find(
+      (x) => x.id === selectedOrderItem?.product?.categoryId
+    );
+    dispatch(setSelectedProductName(selectedOrderItem?.product?.name));
+    navigate(
+      `/categories/${productCategory?.name}/${selectedOrderItem?.productId}`
+    );
+  };
 
   const onSubmit = () => {
     const body = {
@@ -79,9 +96,14 @@ const RateProduct = ({ orderId }) => {
   const reviewLength = userReview?.length;
   const latestreview = reviewLength > 0 && userReview[reviewLength - 1];
 
-  const navigate = useNavigate();
   return (
     <Container>
+      {isMobile && (
+        <TitleWrapper onClick={handleGoBack}>
+          <CaretLeft />
+          <Title>Go back</Title>
+        </TitleWrapper>
+      )}
       <Header>
         <OrderTrackStar />
         <HeaderContent>
@@ -105,6 +127,7 @@ const RateProduct = ({ orderId }) => {
           <UserReview
             rating={latestreview?.rating}
             review={latestreview?.review}
+            name={selectedOrderItem?.product?.name}
           />
         ) : (
           <>
@@ -159,7 +182,16 @@ const RateProduct = ({ orderId }) => {
             />
           </ReportContent>
         </ReportWrapper>
+        <BtnWrapper>
+          <GButton
+            label={`Buy again`}
+            width={`70%`}
+            mbWidth={`100%`}
+            onClick={handleBuyAgain}
+          />
+        </BtnWrapper>
       </ContentWrapper>
+      <LineLoader loading={isLoading} />
     </Container>
   );
 };
@@ -171,8 +203,42 @@ const Container = styled.div`
   border-left: 1px solid #ececee;
 
   @media ${devices.mobileL} {
-    margin-top: 70px;
     width: 100%;
+  }
+`;
+
+export const TitleWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+
+  & > svg {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    margin-top: 4px;
+  }
+
+  @media ${devices.mobileL} {
+    margin: 20px 0;
+
+    & > svg {
+      margin-top: 2px;
+      width: 20px;
+      height: 20px;
+    }
+  }
+`;
+
+export const Title = styled.p`
+  font-size: 28px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 120%;
+
+  @media ${devices.mobileL} {
+    font-size: 18px;
   }
 `;
 
@@ -185,6 +251,7 @@ const Header = styled.div`
   height: 206px;
   background: #fffbf6;
   padding: 30px 5vw 30px 65px;
+  overflow: hidden;
 
   & > svg:first-of-type {
     position: absolute;
@@ -199,6 +266,8 @@ const Header = styled.div`
 
     & > svg:first-of-type {
       height: 100%;
+      left: -90px;
+      bottom: -30px;
     }
   }
 `;
@@ -225,6 +294,10 @@ const HeaderDescription = styled.p`
   font-weight: 400;
   line-height: 120%; /* 19.2px */
   width: 85%;
+
+  @media ${devices.mobileL} {
+    font-size: 14px;
+  }
 `;
 
 const ContentWrapper = styled.div`
@@ -233,7 +306,7 @@ const ContentWrapper = styled.div`
   padding: 57px 5vw 57px 65px;
 
   @media ${devices.mobileL} {
-    padding: 20px;
+    padding: 30px 20px;
   }
 `;
 
@@ -299,7 +372,7 @@ const ReportTitle = styled.p`
 
 const ReportDesc = styled.p`
   color: var(--Black-300, #626262);
-  font-size: 10px;
+  font-size: 12px;
   font-style: normal;
   font-weight: 400;
   line-height: 140%; /* 14px */
@@ -350,5 +423,13 @@ const SubmitSubTxt = styled.p`
 
   @media ${devices.mobileL} {
     font-size: 14px;
+  }
+`;
+
+const BtnWrapper = styled.div`
+  padding: 60px 80px 32px 0;
+
+  @media ${devices.mobileL} {
+    padding: 50px 0 0;
   }
 `;

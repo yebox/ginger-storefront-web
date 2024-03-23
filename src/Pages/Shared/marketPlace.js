@@ -13,7 +13,7 @@ import {
 } from "../../Ui_elements";
 import {
   PriceFilter,
-  // TopStoresFilter,
+  TopStoresFilter,
   InstaFooter,
   BecomeSellerSection,
   RelatedItems,
@@ -22,7 +22,7 @@ import Fade from "@mui/material/Fade";
 import { useApiGet } from "../../Hooks";
 import { getProducts } from "../../Urls";
 import { useNavigate } from "react-router-dom";
-import { priceOptions } from "../../Utils";
+import { devices, priceOptions } from "../../Utils";
 
 const MarketPlace = () => {
   // const [label, setLabel] = useState("All");
@@ -52,7 +52,7 @@ const MarketPlace = () => {
       </HeaderWrapper>
       <SortWrapper>
         <SortBox onClick={() => setIsOpen(!isOpen)} $isOpen={isOpen}>
-          <SortTxt>Filter by</SortTxt>
+          <SortTxt>Filter by:</SortTxt>
           <ArrowForwardIosSharpIcon />
         </SortBox>
         {/* <SortBox>
@@ -82,7 +82,7 @@ const MarketPlace = () => {
                 />
               }
             />
-            {/* <GAccordion title={"Top Stores"} content={<TopStoresFilter />} /> */}
+            <GAccordion title={"Top Stores"} content={<TopStoresFilter />} />
           </FilterBox>
         </Fade>
         <RightContent>
@@ -93,6 +93,7 @@ const MarketPlace = () => {
                   key={index}
                   item={product}
                   width={`17.3rem`}
+                  mbWidth={`47%`}
                   skeletonNumber={6}
                   padding={"5%"}
                 />
@@ -106,7 +107,7 @@ const MarketPlace = () => {
       </ContentWrapper>
       <BecomeSellerSection />
       <RelatedItems />
-      <GSpacer size={100} />
+      <GSpacer size={100} mbSize={50} />
       <InstaFooter />
       <LineLoader loading={isLoading} />
     </Container>
@@ -125,6 +126,13 @@ const HeaderWrapper = styled.div`
   justify-content: space-between;
   padding: 0 5%;
   margin-bottom: 30px;
+
+  @media ${devices.mobileL} {
+    flex-direction: column-reverse;
+    align-items: start;
+    padding: 0 20px;
+    gap: 10px;
+  }
 `;
 
 const LeftSect = styled.div`
@@ -137,6 +145,13 @@ const LeftSect = styled.div`
     height: 24px;
     cursor: pointer;
   }
+
+  @media ${devices.mobileL} {
+    & > svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
 `;
 
 const Title = styled.p`
@@ -144,6 +159,10 @@ const Title = styled.p`
   font-style: normal;
   font-weight: 500;
   line-height: 120%;
+
+  @media ${devices.mobileL} {
+    font-size: 20px;
+  }
 `;
 
 const SortWrapper = styled.div`
@@ -153,6 +172,11 @@ const SortWrapper = styled.div`
   padding: 20px 5%;
   border-radius: 12px 12px 0px 0px;
   border-bottom: 1px solid #f1f1f1;
+
+  @media ${devices.mobileL} {
+    padding: 0 20px;
+    border-bottom: none;
+  }
 `;
 
 const SortBox = styled.div`
@@ -164,7 +188,7 @@ const SortBox = styled.div`
   & > svg {
     transform: rotate(90deg);
     transform: ${({ $isOpen }) =>
-    $isOpen ? `rotate(270deg)` : "rotate(90deg)"};
+      $isOpen ? `rotate(270deg)` : "rotate(90deg)"};
     width: 14px;
     transition: all 0.25s ease;
   }
@@ -176,11 +200,20 @@ const SortTxt = styled.p`
   font-style: normal;
   font-weight: 500;
   line-height: 120%; /* 16.8px */
+
+  @media ${devices.mobileL} {
+    font-size: 14px;
+  }
 `;
 
 const ContentWrapper = styled.div`
   display: flex;
   padding: 0 5%;
+
+  @media ${devices.mobileL} {
+    padding: 0 20px;
+    position: relative;
+  }
 `;
 
 const FilterBox = styled.div`
@@ -198,6 +231,16 @@ const FilterBox = styled.div`
     width: 100%;
     visibility: ${({ $isOpen }) => ($isOpen ? `show` : "hidden")};
   }
+
+  @media ${devices.mobileL} {
+    position: absolute;
+    top: 0px;
+    left: ${({ $isOpen }) => ($isOpen ? `0` : "-100%")};
+    z-index: 9;
+    width: 100%;
+    padding: 20px;
+    background: #fff;
+  }
 `;
 
 const RightContent = styled.div`
@@ -207,6 +250,10 @@ const RightContent = styled.div`
   flex-grow: 1;
   gap: 62px;
   padding: 38px 0 108px 18px;
+
+  @media ${devices.mobileL} {
+    padding: 30px 0 70px;
+  }
 `;
 
 const ProductsWrapper = styled.div`

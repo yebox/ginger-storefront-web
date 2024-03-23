@@ -11,12 +11,47 @@ import OtpVerify from "./components/otpVerify";
 import EmailForm from "./components/emailForm";
 import NewPassword from "./components/newPassword";
 import { devices } from "../../../Utils";
+import { useApiSend } from "../../../Hooks";
+import { changePassword, forgotPassword, validateOtp } from "../../../Urls";
+import toast from "react-hot-toast";
 
 const ForgotPassword = () => {
   const [activeStep, setActiveStep] = useState(1);
   const [otpValue, setOtpValue] = useState(null);
   const [resetTimer, setResetTimer] = useState(false);
   const [isTimeUp, setIsTimeUp] = useState(false);
+
+  const { mutate: forgotPasswordMutate, isPending: isLoadingForgotpassword } =
+    useApiSend(
+      forgotPassword,
+      () => {
+        toast.success("OTP sent successfully");
+        handleNext();
+      },
+      (error) => {
+        toast.error(error.message);
+      }
+    );
+  const { mutate: validateOtpMutate, isPending: isLoadingValidateOtp } =
+    useApiSend(
+      validateOtp,
+      () => {
+        handleNext();
+      },
+      (error) => {
+        toast.error(error.message);
+      }
+    );
+  const { mutate: changePasswordMutate, isPending: isLoadingChangePassword } =
+    useApiSend(
+      changePassword,
+      () => {
+        handleNext();
+      },
+      (error) => {
+        toast.error(error.message);
+      }
+    );
 
   const timeUpHandler = (status) => {
     setIsTimeUp(status);
@@ -49,8 +84,11 @@ const ForgotPassword = () => {
   };
 
   const onSubmit = (values) => {
-    activeStep == 1 ? console.log("1", values) : console.log("2", values);
-    handleNext();
+    activeStep == 1
+      ? forgotPasswordMutate(values)
+      : activeStep === 2
+      ? validateOtpMutate({ email: emailValue, otp: otpValue })
+      : changePasswordMutate(values);
   };
 
   const btnDisabledHandler = () => {
@@ -87,7 +125,12 @@ const ForgotPassword = () => {
           )}
           <GSpacer size={90} mbSize={50} />
           <GButton
-            isLoading={isSubmitting}
+            isLoading={
+              isSubmitting ||
+              isLoadingChangePassword ||
+              isLoadingForgotpassword ||
+              isLoadingValidateOtp
+            }
             type={"submit"}
             label={activeStep === 3 ? "Submit" : "Next"}
             isDisabled={btnDisabledHandler()}

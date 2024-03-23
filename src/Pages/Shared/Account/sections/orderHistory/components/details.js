@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { styled } from "styled-components";
 import { CaretLeft } from "../../../../../../Assets/Svgs";
-import { GButton } from "../../../../../../Ui_elements";
 import { useNavigate } from "react-router-dom";
 import StatusBagde from "./statusBagde";
 import ItemInfoCard from "./itemInfoCard";
@@ -10,23 +9,17 @@ import {
   formatAddress,
   formatAmount,
   formatOrderStatus,
-  orderStatusMapping,
 } from "../../../../../../Utils";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  setSelectedOrderItem,
-  setSelectedProductName,
-} from "../../../../../../Redux/Reducers";
+import { setSelectedOrderItem } from "../../../../../../Redux/Reducers";
 import dayjs from "dayjs";
 var localizedFormat = require("dayjs/plugin/localizedFormat");
 dayjs.extend(localizedFormat);
 
-const Details = ({ data }) => {
+const Details = ({ data, setIsShowingDetails }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { selectedOrderItem, categories } = useSelector(
-    (state) => state?.global
-  );
+  const { selectedOrderItem } = useSelector((state) => state?.global);
 
   useEffect(() => {
     data?.items?.length > 0 && dispatch(setSelectedOrderItem(data?.items[0]));
@@ -36,6 +29,7 @@ const Details = ({ data }) => {
 
   const handleClick = (item) => {
     dispatch(setSelectedOrderItem(item));
+    setIsShowingDetails && setIsShowingDetails(true);
   };
 
   const orderStatus = formatOrderStatus(data?.status);
@@ -43,16 +37,6 @@ const Details = ({ data }) => {
     (total, item) => total + (item?.quantity || 0),
     0
   );
-
-  const handleBuyAgain = () => {
-    const productCategory = categories.find(
-      (x) => x.id === selectedOrderItem?.product?.categoryId
-    );
-    dispatch(setSelectedProductName(selectedOrderItem?.product?.name));
-    navigate(
-      `/categories/${productCategory?.name}/${selectedOrderItem?.productId}`
-    );
-  };
 
   return (
     <Container>
@@ -88,6 +72,7 @@ const Details = ({ data }) => {
               key={item?.productId}
               item={item}
               handleClick={() => handleClick(item)}
+              status={orderStatus}
               isSelected={selectedOrderItem?.productId === item?.productId}
             />
           ))}
@@ -121,11 +106,6 @@ const Details = ({ data }) => {
             </Entry>
           </DeliveryInfoContentWrapper>
         </DeliveryInfoBox>
-      )}
-      {orderStatus === orderStatusMapping.completed && (
-        <BtnWrapper>
-          <GButton label={`Buy again`} width={`80%`} onClick={handleBuyAgain} />
-        </BtnWrapper>
       )}
     </Container>
   );
@@ -167,6 +147,14 @@ const TitleWrapper = styled.div`
     flex-shrink: 0;
     margin-top: 4px;
   }
+
+  @media ${devices.mobileL} {
+    & > svg {
+      margin-top: 2px;
+      width: 20px;
+      height: 20px;
+    }
+  }
 `;
 
 const Title = styled.p`
@@ -176,7 +164,7 @@ const Title = styled.p`
   line-height: 120%;
 
   @media ${devices.mobileL} {
-    font-size: 20px;
+    font-size: 18px;
   }
 `;
 
@@ -234,7 +222,7 @@ const ItemInfoBox = styled.div`
   border-bottom: 1px solid #ececee;
 
   @media ${devices.mobileL} {
-    padding: 20px;
+    padding: 20px 20px 40px;
   }
 `;
 
@@ -245,6 +233,12 @@ const CardWrapper = styled.div`
   padding-right: 7px;
   max-height: 320px;
   overflow-y: scroll;
+
+  @media ${devices.mobileL} {
+    max-height: unset;
+    overflow-y: unset;
+    padding-right: 0;
+  }
 `;
 
 const BoxTitle = styled.p`
@@ -335,12 +329,4 @@ const DeliveryValue = styled.p`
   font-weight: 400;
   line-height: 140%; /* 19.6px */
   width: 50%;
-`;
-
-const BtnWrapper = styled.div`
-  padding: 60px 80px 32px 0;
-
-  @media ${devices.mobileL} {
-    padding: 20px;
-  }
 `;

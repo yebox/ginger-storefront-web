@@ -1,11 +1,5 @@
 import styled from "styled-components";
-import {
-  DollarShield,
-  Heart,
-  LockIcon,
-  RedHeart,
-  Star,
-} from "../../Assets/Svgs";
+import { Heart, LockIcon, RedHeart, Star } from "../../Assets/Svgs";
 import { GButton } from "../Button/button";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
@@ -16,7 +10,7 @@ import {
   IMAGE_BASE_URL,
   truncateText,
 } from "../../Utils";
-import { useApiGet, useApiSend } from "../../Hooks";
+import { useApiGet, useApiSend, useDeviceCheck } from "../../Hooks";
 import {
   addToCart,
   addToWishlist,
@@ -40,6 +34,8 @@ export const Product = ({ width, item, mbWidth, skeletonNumber, padding }) => {
   const user = useSelector((state) => state.user);
   const { categories } = useSelector((state) => state.global);
   const queryClient = useQueryClient();
+  const { isMobile } = useDeviceCheck();
+  const sellerName = `${item?.seller?.firstName} ${item?.seller?.lastName}`;
 
   const { mutate, isPending } = useApiSend(
     (_) => addToCart(_, user?._id),
@@ -208,7 +204,9 @@ export const Product = ({ width, item, mbWidth, skeletonNumber, padding }) => {
               to={`/store?sellerId=${encodeURIComponent(
                 JSON.stringify(item?.seller)
               )}`}
-            >{`${item?.seller?.firstName} ${item?.seller?.lastName}`}</Link>
+            >
+              {truncateText(sellerName, isMobile ? 14 : 25)}
+            </Link>
           </div>
 
           <div>
@@ -217,7 +215,7 @@ export const Product = ({ width, item, mbWidth, skeletonNumber, padding }) => {
           </div>
         </SellerRate>
         <Itemdetail>
-          <p>{truncateText(item?.name, 28) || ""}</p>
+          <p>{truncateText(item?.name, isMobile ? 16 : 28) || ""}</p>
           {/* <BrandTag>{item?.brand?.name}</BrandTag> */}
         </Itemdetail>
         {/* <RRPContainer>
@@ -242,7 +240,7 @@ export const Product = ({ width, item, mbWidth, skeletonNumber, padding }) => {
             <div>
               <LockIcon />
             </div>
-            <p>₦{item?.price}</p>
+            <p>₦{item?.price?.toString().toFixed(2)}</p>
           </UnAuthPrice>
         )}
       </Container>
@@ -337,13 +335,13 @@ const SellerRate = styled.div`
     div:nth-child(1) {
       p,
       a {
-        font-size: 10px;
+        font-size: 12px;
       }
     }
 
     div:nth-child(2) {
       p {
-        font-size: 10px;
+        font-size: 12px;
       }
 
       svg {

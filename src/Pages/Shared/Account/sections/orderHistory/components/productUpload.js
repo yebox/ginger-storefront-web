@@ -48,7 +48,6 @@ const ProductUpload = ({ setCurrentStep, formData, orderId }) => {
         <Form onSubmit={handleSubmit(onSubmit)}>
           <GImageUpload
             register={register}
-            handleSubmit={handleSubmit}
             trigger={trigger}
             errors={errors}
             files={files}

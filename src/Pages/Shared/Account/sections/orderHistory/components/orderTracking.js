@@ -1,14 +1,21 @@
 import React from "react";
 import { styled } from "styled-components";
-import { OrderTrackIcon, OrderTrackStar } from "../../../../../../Assets/Svgs";
+import {
+  CaretLeft,
+  OrderTrackIcon,
+  OrderTrackStar,
+} from "../../../../../../Assets/Svgs";
 import TrackStepper from "./trackStepper";
 import CancelOrder from "./cancelOrder";
 import { devices, orderStatusMapping } from "../../../../../../Utils";
 import dayjs from "dayjs";
 import localizedFormat from "dayjs/plugin/localizedFormat";
+import { useDeviceCheck } from "../../../../../../Hooks";
+import { Title, TitleWrapper } from "./rateProduct";
 dayjs.extend(localizedFormat);
 
-const OrderTracking = ({ order, status }) => {
+const OrderTracking = ({ order, status, setIsShowingDetails }) => {
+  const { isMobile } = useDeviceCheck();
   let stepData = {};
   const getDateTime = (timeStamp, key) => {
     const processedDateTime = dayjs(timeStamp).format("L LT");
@@ -21,8 +28,16 @@ const OrderTracking = ({ order, status }) => {
   order?.dateDispatched && getDateTime(order?.dateDispatched, `Dispatched`);
   order?.dateDelivered && getDateTime(order?.dateDelivered, `Delivered`);
 
+  const handleGoBack = () => setIsShowingDetails && setIsShowingDetails(false);
+
   return (
     <Container>
+      {isMobile && (
+        <TitleWrapper onClick={handleGoBack}>
+          <CaretLeft />
+          <Title>Go back</Title>
+        </TitleWrapper>
+      )}
       <Header>
         <OrderTrackStar />
         <HeaderContent>
@@ -50,7 +65,6 @@ const Container = styled.div`
   border-left: 1px solid #ececee;
 
   @media ${devices.mobileL} {
-    margin-top: 70px;
     width: 100%;
   }
 `;
@@ -64,6 +78,7 @@ const Header = styled.div`
   height: 206px;
   background: #fffbf6;
   padding: 30px 5vw 30px 65px;
+  overflow: hidden;
 
   & > svg:first-of-type {
     position: absolute;
@@ -78,6 +93,8 @@ const Header = styled.div`
 
     & > svg:first-of-type {
       height: 100%;
+      left: -90px;
+      bottom: -30px;
     }
   }
 `;
@@ -104,6 +121,10 @@ const HeaderDescription = styled.p`
   font-weight: 400;
   line-height: 120%; /* 19.2px */
   width: 85%;
+
+  @media ${devices.mobileL} {
+    font-size: 14px;
+  }
 `;
 
 const ContentWrapper = styled.div`

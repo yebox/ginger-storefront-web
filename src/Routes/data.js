@@ -2,6 +2,7 @@ import { lazy } from "react";
 import { SellerAuthLayout } from "../Layouts";
 import AccountLayout from "../Layouts/AccountLayout";
 import AuthLayout from "../Layouts/AuthLayout";
+import { SellerDashboardLayout } from "../Layouts/SellerDashboardLayout";
 
 const Home = lazy(() => import("../Pages/Shared/home"));
 const MarketPlace = lazy(() => import("../Pages/Shared/marketPlace"));
@@ -89,7 +90,7 @@ export const sharedRoutes = [
   {
     path: "/forgot-password",
     element: () => (
-      <AuthLayout>
+      <AuthLayout noLayout={true}>
         <ForgotPassword />
       </AuthLayout>
     ),
@@ -135,12 +136,12 @@ export const sharedRoutes = [
     hasLayout: false,
   },
 
-  {
-    path: "/categories/:category",
-    element: Categories,
-    hasLayout: false,
-  },
-  
+  // {
+  //   path: "/categories/:category",
+  //   element: Categories,
+  //   hasLayout: false,
+  // },
+
   {
     path: "/categories/:categoryName",
     element: Categories,
@@ -301,6 +302,69 @@ export const sharedRoutes = [
     ),
     hasLayout: true,
   },
+  {
+    path: "seller/dashboard",
+    element: () => (
+      <SellerDashboardLayout>
+        <></>
+      </SellerDashboardLayout>
+    ),
+    hasLayout: true,
+  },
+  {
+    path: "seller/inventory",
+    element: () => (
+      <SellerDashboardLayout>
+        <></>
+      </SellerDashboardLayout>
+    ),
+    hasLayout: true,
+  },
+  {
+    path: "seller/order_history",
+    element: () => (
+      <SellerDashboardLayout>
+        <></>
+      </SellerDashboardLayout>
+    ),
+    hasLayout: true,
+  },
+  {
+    path: "seller/messages",
+    element: () => (
+      <SellerDashboardLayout>
+        <></>
+      </SellerDashboardLayout>
+    ),
+    hasLayout: true,
+  },
+  {
+    path: "seller/account",
+    element: () => (
+      <SellerDashboardLayout>
+        <></>
+      </SellerDashboardLayout>
+    ),
+    hasLayout: true,
+  },
+  {
+    path: "seller/wallet",
+    element: () => (
+      <SellerDashboardLayout>
+        <></>
+      </SellerDashboardLayout>
+    ),
+    hasLayout: true,
+  },
+  {
+    path: "seller/setting",
+    element: () => (
+      <SellerDashboardLayout>
+        <></>
+      </SellerDashboardLayout>
+    ),
+    hasLayout: true,
+  },
 ];
 
 // export const authRoutes = [
@@ -321,38 +385,38 @@ export const sharedRoutes = [
 //   },
 // ];
 
-// export const sellerAuthRoutes = [
-//   {
-//     path: "seller/signup",
-//     element: SellerSignup,
-//     hasLayout: true,
-//   },
-//   // {
-//   //   path: "seller/login",
-//   //   element: SellerLogin,
-//   //   hasLayout: true,
-//   // },
-//   {
-//     path: "seller/forgot-password",
-//     element: SellerForgotPassword,
-//     hasLayout: true,
-//   },
-//   {
-//     path: "seller/signup/personal_information",
-//     element: SellerSignUpPersonalInformation,
-//     hasLayout: true,
-//   },
-//   {
-//     path: "seller/signup/business_information",
-//     element: SellerSignUpBusinessInformation,
-//     hasLayout: true,
-//   },
-//   {
-//     path: "seller/signup/business_document",
-//     element: SellerSignUpBusinessDocument,
-//     hasLayout: true,
-//   },
-// ];
+export const sellerAuthRoutes = [
+  {
+    path: "seller/signup",
+    element: SellerSignup,
+    hasLayout: true,
+  },
+  // {
+  //   path: "seller/login",
+  //   element: SellerLogin,
+  //   hasLayout: true,
+  // },
+  {
+    path: "seller/forgot-password",
+    element: SellerForgotPassword,
+    hasLayout: true,
+  },
+  {
+    path: "seller/signup/personal_information",
+    element: SellerSignUpPersonalInformation,
+    hasLayout: true,
+  },
+  {
+    path: "seller/signup/business_information",
+    element: SellerSignUpBusinessInformation,
+    hasLayout: true,
+  },
+  {
+    path: "seller/signup/business_document",
+    element: SellerSignUpBusinessDocument,
+    hasLayout: true,
+  },
+];
 
 // export const accountRoutes = [
 //   {

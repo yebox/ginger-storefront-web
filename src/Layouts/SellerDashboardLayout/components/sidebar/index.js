@@ -1,30 +1,46 @@
-import styled from 'styled-components'
-import { Logo } from '../../../../Assets/Svgs'
-import { sideBarMenus } from '../../data'
-import {MenuItem} from "./components"
+import styled from "styled-components";
+import { Logo } from "../../../../Assets/Svgs";
+import { sideBarMenus } from "../../data";
+import { MenuItem } from "./components";
+import { useLocation } from "react-router-dom";
 
 export const SellerSidebar = () => {
-    return (
-        <Container>
-            <div>
-                <Logo/>
-            </div>
+  const { pathname } = useLocation();
 
-            {
-                sideBarMenus.map((item) =>
-                    <MenuItem
-                        key={item.id}
-                        item={item}
-                    />
-                )
-            }
-
-        </Container>
-    )
-}
+  return (
+    <Container>
+      <Logo />
+      <MenuWrapper>
+        {sideBarMenus.map((item) => (
+          <MenuItem
+            key={item?.id}
+            item={item}
+            active={item?.path === pathname}
+          />
+        ))}
+      </MenuWrapper>
+      <MenuItem item={`Log out`} />
+    </Container>
+  );
+};
 
 const Container = styled.aside`
-    max-width: 330px;
-    width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 100px;
+  width: 330px;
+  height: 100vh;
+  padding: 54px 70px;
+  background: #fefefe;
 
-`
+  & > svg {
+    width: 168px;
+    height: 72px;
+  }
+`;
+
+const MenuWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 45px;
+`;
