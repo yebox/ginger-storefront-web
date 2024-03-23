@@ -105,7 +105,16 @@ const TitleWrapper = styled.div`
     width: 24px;
     height: 24px;
     flex-shrink: 0;
-    margin-top: 4px;
+    margin-top: 2px;
+  }
+
+  @media ${devices.mobileL} {
+    margin: 20px 0;
+
+    & > svg {
+      width: 20px;
+      height: 20px;
+    }
   }
 `;
 
@@ -116,7 +125,7 @@ const Title = styled.p`
   line-height: 120%;
 
   @media ${devices.mobileL} {
-    font-size: 20px;
+    font-size: 18px;
   }
 `;
 

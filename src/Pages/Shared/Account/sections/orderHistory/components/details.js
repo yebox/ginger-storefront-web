@@ -72,6 +72,7 @@ const Details = ({ data, setIsShowingDetails }) => {
               key={item?.productId}
               item={item}
               handleClick={() => handleClick(item)}
+              status={orderStatus}
               isSelected={selectedOrderItem?.productId === item?.productId}
             />
           ))}
@@ -146,6 +147,14 @@ const TitleWrapper = styled.div`
     flex-shrink: 0;
     margin-top: 4px;
   }
+
+  @media ${devices.mobileL} {
+    & > svg {
+      margin-top: 2px;
+      width: 20px;
+      height: 20px;
+    }
+  }
 `;
 
 const Title = styled.p`
@@ -155,7 +164,7 @@ const Title = styled.p`
   line-height: 120%;
 
   @media ${devices.mobileL} {
-    font-size: 20px;
+    font-size: 18px;
   }
 `;
 

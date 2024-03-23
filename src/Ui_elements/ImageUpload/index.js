@@ -30,7 +30,6 @@ export const GImageUpload = ({
   );
 
   const handleFileSelect = (e) => {
-    console.log("res");
     const newFiles = [...e.target.files];
     setFiles((prevFiles) => [...prevFiles, ...newFiles]); // Update files state with selected files
     setTouched(true);

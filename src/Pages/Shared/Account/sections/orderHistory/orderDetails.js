@@ -56,23 +56,19 @@ const OrderDetails = () => {
         </>
       ) : isShowingDetails ? (
         isCompleted ? (
-          <RateProduct orderId={id} />
+          <RateProduct orderId={id} setIsShowingDetails={setIsShowingDetails} />
         ) : isCancelled ? (
-          <CancelledDetail />
+          <CancelledDetail setIsShowingDetails={setIsShowingDetails} />
         ) : (
-          <OrderTracking order={data} status={status} />
+          <OrderTracking
+            order={data}
+            status={status}
+            setIsShowingDetails={setIsShowingDetails}
+          />
         )
       ) : (
         <Details data={data} setIsShowingDetails={setIsShowingDetails} />
       )}
-
-      {/* {isCompleted ? (
-        <RateProduct orderId={id} />
-      ) : isCancelled ? (
-        <CancelledDetail />
-      ) : (
-        <OrderTracking order={data} status={status} />
-      )} */}
       <LineLoader loading={isRendering || isLoading} />
     </Container>
   );

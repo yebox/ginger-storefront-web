@@ -193,6 +193,10 @@ const MainTxt = styled.p`
   font-weight: 400;
   line-height: 140%; /* 25.2px */
   transition: all 0.25s ease;
+
+  @media ${devices.mobileL} {
+    font-size: 15px;
+  }
 `;
 
 const SubTxt = styled.p`
@@ -202,6 +206,10 @@ const SubTxt = styled.p`
   font-weight: 400;
   line-height: 140%; /* 19.6px */
   transition: all 0.25s ease;
+
+  @media ${devices.mobileL} {
+    font-size: 11px;
+  }
 `;
 
 const Status = styled(MainTxt)`

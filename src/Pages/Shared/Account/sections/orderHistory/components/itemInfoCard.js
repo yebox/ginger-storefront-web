@@ -1,13 +1,25 @@
 import React from "react";
 import { styled } from "styled-components";
-import { devices, formatAmount, formatImage } from "../../../../../../Utils";
+import {
+  devices,
+  formatAmount,
+  formatImage,
+  orderStatusMapping,
+} from "../../../../../../Utils";
 import { useDeviceCheck } from "../../../../../../Hooks";
 import { GButton } from "../../../../../../Ui_elements";
 
-const ItemInfoCard = ({ item, isSelected, handleClick }) => {
+const ItemInfoCard = ({ item, isSelected, handleClick, status }) => {
   const product = item?.product;
   const { isMobile } = useDeviceCheck();
   const seller = `${product?.seller?.firstName} ${product?.seller?.lastName}`;
+  console.log(item);
+  const getBtnTxt = () => {
+    return status === orderStatusMapping.cancelled ||
+      status === orderStatusMapping.completed
+      ? `Review product`
+      : `Track product`;
+  };
 
   return (
     <Container
@@ -33,7 +45,7 @@ const ItemInfoCard = ({ item, isSelected, handleClick }) => {
           )}
         </DetailsWrapper>
         {isMobile && (
-          <GButton label={`Review product`} onClick={() => handleClick(item)} />
+          <GButton label={getBtnTxt()} onClick={() => handleClick(item)} />
         )}
       </LeftWrapper>
       <QuantityWrapper $isMobile={isMobile}>
@@ -57,6 +69,7 @@ const Container = styled.div`
 
   @media ${devices.mobileL} {
     padding: 10px;
+    border: 1px solid #e8e8e8;
   }
 `;
 

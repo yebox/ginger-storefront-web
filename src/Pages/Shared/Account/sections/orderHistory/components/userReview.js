@@ -82,5 +82,6 @@ const ReviewTxt = styled.p`
 
   @media ${devices.mobileL} {
     font-size: 15px;
+    margin-bottom: 80px;
   }
 `;
