@@ -1,17 +1,25 @@
-import styled from 'styled-components'
-import {SellerSidebar } from './components'
+import styled from "styled-components";
+import { SellerNavbar, SellerSidebar } from "./components";
 
-export const SellerDashboardLayout =({children})=> {
+export const SellerDashboardLayout = ({ children }) => {
   return (
-      <Container>
-          <SellerNavbar />
-          {children}
-          <SellerSidebar/>
-      </Container>
-  )
-}
-
+    <Container>
+      <SellerSidebar />
+      <RightContainer>
+        <SellerNavbar />
+        {children}
+      </RightContainer>
+    </Container>
+  );
+};
 
 const Container = styled.main`
-    width: 100vw;
-`
+  display: flex;
+  width: 100vw;
+  background: #f9f9f9;
+`;
+
+const RightContainer = styled.div`
+  flex-grow: 1;
+  padding: 0 64px 32px 24px;
+`;

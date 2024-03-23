@@ -116,15 +116,16 @@ const NameCountWrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;
+  margin-bottom: 5px;
 `;
 
 const ProductName = styled.p`
   color: #000;
-  font-size: 15px;
+  font-size: 16px;
   font-style: normal;
   font-weight: 500;
   line-height: 120%; /* 14.4px */
-  max-width: 190px;
+  max-width: 210px;
 `;
 
 const ItemCount = styled.span`
@@ -151,7 +152,7 @@ const ItemCount = styled.span`
 
 const OrderName = styled.p`
   color: var(--Primary-300, #ff836c);
-  font-size: 12px;
+  font-size: 13px;
   font-style: normal;
   font-weight: 500;
   line-height: 120%; /* 12px */
@@ -160,14 +161,14 @@ const OrderName = styled.p`
 
 const DeliveryStatus = styled.p`
   color: var(--Black-100, #b6b6b6);
-  font-size: 12px;
+  font-size: 13px;
   font-style: normal;
   font-weight: 400;
   line-height: 140%; /* 14px */
 
   & > span {
     color: var(--Black-300, #626262);
-    font-size: 10px;
+    font-size: 12px;
     font-style: normal;
     font-weight: 500;
     line-height: 120%;

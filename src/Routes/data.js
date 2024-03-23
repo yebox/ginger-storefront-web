@@ -2,6 +2,7 @@ import { lazy } from "react";
 import { SellerAuthLayout } from "../Layouts";
 import AccountLayout from "../Layouts/AccountLayout";
 import AuthLayout from "../Layouts/AuthLayout";
+import { SellerDashboardLayout } from "../Layouts/SellerDashboardLayout";
 
 const Home = lazy(() => import("../Pages/Shared/home"));
 const MarketPlace = lazy(() => import("../Pages/Shared/marketPlace"));
@@ -301,8 +302,70 @@ export const sharedRoutes = [
     ),
     hasLayout: true,
   },
+  {
+    path: "seller/dashboard",
+    element: () => (
+      <SellerDashboardLayout>
+        <></>
+      </SellerDashboardLayout>
+    ),
+    hasLayout: true,
+  },
+  {
+    path: "seller/inventory",
+    element: () => (
+      <SellerDashboardLayout>
+        <></>
+      </SellerDashboardLayout>
+    ),
+    hasLayout: true,
+  },
+  {
+    path: "seller/order_history",
+    element: () => (
+      <SellerDashboardLayout>
+        <></>
+      </SellerDashboardLayout>
+    ),
+    hasLayout: true,
+  },
+  {
+    path: "seller/messages",
+    element: () => (
+      <SellerDashboardLayout>
+        <></>
+      </SellerDashboardLayout>
+    ),
+    hasLayout: true,
+  },
+  {
+    path: "seller/account",
+    element: () => (
+      <SellerDashboardLayout>
+        <></>
+      </SellerDashboardLayout>
+    ),
+    hasLayout: true,
+  },
+  {
+    path: "seller/wallet",
+    element: () => (
+      <SellerDashboardLayout>
+        <></>
+      </SellerDashboardLayout>
+    ),
+    hasLayout: true,
+  },
+  {
+    path: "seller/setting",
+    element: () => (
+      <SellerDashboardLayout>
+        <></>
+      </SellerDashboardLayout>
+    ),
+    hasLayout: true,
+  },
 ];
-
 
 // export const authRoutes = [
 //   {
@@ -354,8 +417,6 @@ export const sellerAuthRoutes = [
     hasLayout: true,
   },
 ];
-
-
 
 // export const accountRoutes = [
 //   {
