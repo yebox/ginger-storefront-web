@@ -5,19 +5,7 @@ import { Routes } from "react-router-dom";
 export const PrivateRoutes = () => {
   return (
     <Routes>
-      {/* {accountRoutes.map(({ path, element: Element }, index) => (
-        <Route
-          key={index}
-          path={path}
-          element={
-            <Suspense fallback={null}>
-              <SharedLayout>
-                <Element />
-              </SharedLayout>
-            </Suspense>
-          }
-        />
-      ))} */}
+      
     </Routes>
   );
 };

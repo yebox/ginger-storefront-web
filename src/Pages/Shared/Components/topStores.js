@@ -1,25 +1,12 @@
 import { useState } from "react";
 import { styled } from "styled-components";
 import { GCheckbox } from "../../../Ui_elements";
-import { useNavigate } from 'react-router-dom';
-import { useEffect } from "react";
 
-export const TopStoresFilter = ({
-  options,
-  selectedBrand,
-  setSelectedBrand,
-  category,
-  subCategory
-}) => {
-  const navigate = useNavigate()
+export const TopStoresFilter = ({ options, selectedBrand, setSelectedBrand }) => {
   const handleCheckboxChange = (item) => {
     setSelectedBrand(prevSelectedBrand => prevSelectedBrand === item ? '' : item);
   };
 
-
-  useEffect(() => {
-    navigate(`/categories/${encodeURIComponent(category?.name)}?cat=${encodeURIComponent(JSON.stringify(category))}&sub_cat=${encodeURIComponent(JSON.stringify(subCategory))}&activeInit=${decodeURIComponent(subCategory?._id)}&init=${subCategory?.name}&brand=${selectedBrand ? decodeURIComponent(selectedBrand) : ''}`);
-  }, [selectedBrand]);
 
   return (
     <Container>

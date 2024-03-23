@@ -127,7 +127,7 @@ const Home = () => {
   };
 
   const filterStoresWithImages = (data) => {
-    // Filter the stores that have both background and mainImage properties
+
     if (data) {
       const filteredStores = data.filter((store) => {
         return (
@@ -192,7 +192,7 @@ const Home = () => {
         </HeroImageContainer>
       </Hero>
 
-      {/* <HowItWorks>
+      <HowItWorks>
         <GuideCard />
         <GuideCard />
         <GuideCard />
@@ -484,7 +484,7 @@ const Home = () => {
           isLoading ||
           isFetchingTopProducts
         }
-      /> */}
+      />
     </Container>
   );
 };
