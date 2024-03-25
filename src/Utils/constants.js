@@ -2011,6 +2011,96 @@ export const countries = rawCountries.map(country => ({
 }))
 
 
+export const sizes = [
+  { label: 'S', value: 'S' },
+  { label: 'XS', value: 'XS' },
+  { label: 'M', value: 'M' },
+  { label: 'L', value: 'L' },
+  { label: 'XL', value: 'XL' },
+]
+
+export const colors = [
+  { label: 'Black', value: 'Black' },
+  { label: 'White', value: 'White' },
+  { label: 'Red', value: 'Red' },
+  { label: 'Blue', value: 'Blue' },
+  { label: 'Green', value: 'Green' },
+  { label: 'Yellow', value: 'Yellow' },
+  { label: 'Orange', value: 'Orange' },
+  { label: 'Purple', value: 'Purple' },
+  { label: 'Pink', value: 'Pink' },
+  { label: 'Brown', value: 'Brown' },
+  { label: 'Gray', value: 'Gray' },
+  { label: 'Beige', value: 'Beige' },
+  { label: 'Navy', value: 'Navy' },
+  { label: 'Teal', value: 'Teal' },
+  { label: 'Turquoise', value: 'Turquoise' },
+  { label: 'Lavender', value: 'Lavender' },
+  { label: 'Magenta', value: 'Magenta' },
+  { label: 'Olive', value: 'Olive' },
+  { label: 'Cyan', value: 'Cyan' },
+  { label: 'Maroon', value: 'Maroon' },
+  { label: 'Tan', value: 'Tan' },
+  { label: 'Indigo', value: 'Indigo' },
+  { label: 'Sky Blue', value: 'Sky Blue' },
+  { label: 'Salmon', value: 'Salmon' },
+  { label: 'Slate', value: 'Slate' },
+  { label: 'Charcoal', value: 'Charcoal' },
+  { label: 'Ivory', value: 'Ivory' },
+  { label: 'Pearl', value: 'Pearl' },
+  { label: 'Ruby', value: 'Ruby' },
+  { label: 'Emerald', value: 'Emerald' },
+  { label: 'Sapphire', value: 'Sapphire' },
+  // Add more colors as needed
+];
+
+
+export const materials = [
+  { label: 'Cotton', value: 'cotton' },
+  { label: 'Polyester', value: 'polyester' },
+  { label: 'Wool', value: 'wool' },
+  { label: 'Silk', value: 'silk' },
+  { label: 'Denim', value: 'denim' },
+  { label: 'Leather', value: 'leather' },
+  { label: 'Linen', value: 'linen' },
+  { label: 'Spandex', value: 'spandex' },
+  { label: 'Velvet', value: 'velvet' },
+  { label: 'Nylon', value: 'nylon' },
+  { label: 'Rayon', value: 'rayon' },
+  { label: 'Fleece', value: 'fleece' },
+  { label: 'Chiffon', value: 'chiffon' },
+  { label: 'Acrylic', value: 'acrylic' },
+  { label: 'Cashmere', value: 'cashmere' },
+  { label: 'Satin', value: 'satin' },
+  { label: 'Canvas', value: 'canvas' },
+  { label: 'Twill', value: 'twill' },
+  { label: 'Jersey', value: 'jersey' },
+  { label: 'Lace', value: 'lace' },
+  // Add more materials as needed
+];
+export const clothingStyles = [
+  { label: 'Casual', value: 'Casual' },
+  { label: 'Formal', value: 'Formal' },
+  { label: 'Business Casual', value: 'Business Casual' },
+  { label: 'Sportswear', value: 'Sportswear' },
+  { label: 'Athleisure', value: 'Athleisure' },
+  { label: 'Bohemian', value: 'Bohemian' },
+  { label: 'Vintage', value: 'Vintage' },
+  { label: 'Streetwear', value: 'Streetwear' },
+  { label: 'Gothic', value: 'Gothic' },
+  { label: 'Preppy', value: 'Preppy' },
+  { label: 'Chic', value: 'Chic' },
+  { label: 'Hipster', value: 'Hipster' }
+  // Add more styles as needed
+];
+export const variations = [
+  { label: "SIZE", value: "SIZE" },
+  { label: "COLOR", value: "COLOR" },
+  { label: "MATERIAL", value: "MATERIAL" },
+  { label: "STYLE", value: "STYLE" },
+]
+
+
 
 export const IMAGE_BASE_URL = 'http://172.104.147.51/'
 

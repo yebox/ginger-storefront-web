@@ -9,24 +9,26 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 // import Paper from '@mui/material/Paper';
 
-const StyledTableCell = styled(TableCell)(({ width, cartTotal }) => ({
+const StyledTableCell = styled(TableCell)(({ width, cartTotal, column }) => ({
     [`&.${tableCellClasses.head}`]: {
-        backgroundColor: "var(--table-yellow)",
+        backgroundColor: "transparent",
         color: "var(--black)",
-        borderRight: "0.5px solid var(--gray-200)",
+        // borderRight: "0.5px solid var(--gray-200)",
         borderBottom: "none",
-        fontSize: "1rem",
-        textAlign: cartTotal ? "start" : "center",
-        width: width || "fit-content"
+        fontSize: "16px",
+        textAlign: cartTotal ? "start" : "start",
+        width: column?.width || "fit-content",
+        maxWidth: width
     },
 
     [`&.${tableCellClasses.body}`]: {
         fontSize: "1rem",
         backgroundColor: "transparent",
         padding: "1rem",
-        whiteSpace: "nowrap",
-        textAlign: "center"
-
+        whiteSpace: "normal",
+        wordWrap: "break-word",
+        textAlign: "start",
+        width: column?.width || "fit-content"
     },
 }));
 
@@ -36,7 +38,7 @@ const StyledTableRow = styled(TableRow)(() => ({
     },
     // hide last border
     '& td, & th': {
-        borderRight: "0.2px solid var(--gray-200)",
+        // borderRight: "0.2px solid var(--gray-200)",
         borderBottom: "1px solid var(--gray-200)",
         // borderLeft: "1px solid var(--gray-200)",
 
@@ -47,15 +49,15 @@ const StyledTableRow = styled(TableRow)(() => ({
 
 const TableContainer = styled('div')(({ tableWidth }) => ({
     overflowX: 'auto',
-    width: tableWidth || 'auto',
-    // minHeight: '60vh',
+    width: '100%',
     height: "auto",
     borderBottom: '1px solid var(--gray-200)',
-    borderRight: '0.5px solid var(--gray-200)',
-    borderLeft: '0.5px solid var(--gray-200)',
+    '& table': {
+        minWidth: '100%',
+        tableLayout: 'fixed',
+    },
 }));
-
-export const GTable = ({
+export const SellerTable = ({
     columns,
     data,
     tableWidth,
@@ -92,6 +94,7 @@ export const GTable = ({
                                 key={index}
                                 width={cellWidth}
                                 cartTotal={cartTotal}
+                                column={column}
                             >
                                 {typeof column.Header === 'string' ? (
                                     <span>{column.Header}</span>
@@ -103,7 +106,7 @@ export const GTable = ({
                     </StyledTableRow>
                 </TableHead>
                 <TableBody>
-                    {data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, rowIndex) => (
+                    {data?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, rowIndex) => (
                         <StyledTableRow key={rowIndex}>
                             {columns.map((column, colIndex) => (
                                 <StyledTableCell key={colIndex}>
@@ -124,7 +127,7 @@ export const GTable = ({
                 <TablePagination
                     rowsPerPageOptions={[5, 10, 25]}
                     component="div"
-                    count={data.length}
+                    count={data?.length}
                     rowsPerPage={rowsPerPage}
                     page={page}
                     onPageChange={handleChangePage}
