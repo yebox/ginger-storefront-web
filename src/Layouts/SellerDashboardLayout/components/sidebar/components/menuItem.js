@@ -11,7 +11,7 @@ export const MenuItem = ({ item, active }) => {
 
 const Container = styled(Link)`
   color: ${({ $active }) => ($active ? `#FF4623` : `#626262`)};
-  font-size: ${({ $active }) => ($active ? `28px` : `22px`)};
+  font-size: ${({ $active }) => ($active ? `22px` : `20px`)};
   font-style: normal;
   font-weight: ${({ $active }) => ($active ? `500` : `400`)};
   line-height: 120%;

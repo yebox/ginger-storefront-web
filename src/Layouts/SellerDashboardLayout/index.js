@@ -7,7 +7,7 @@ export const SellerDashboardLayout = ({ children }) => {
       <SellerSidebar />
       <RightContainer>
         <SellerNavbar />
-        {children}
+        <ChildrenWrapper>{children}</ChildrenWrapper>
       </RightContainer>
     </Container>
   );
@@ -21,5 +21,11 @@ const Container = styled.main`
 
 const RightContainer = styled.div`
   flex-grow: 1;
-  padding: 0 64px 32px 24px;
+  padding: 0 64px 0px 24px;
+`;
+
+const ChildrenWrapper = styled.div`
+  height: calc(100vh - 125px);
+  overflow-y: scroll;
+  padding: 30px 0;
 `;
