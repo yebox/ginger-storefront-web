@@ -26,7 +26,7 @@ import { deletItemFromWishlist } from "../../Urls/wishlist";
 import { useQueryClient } from "@tanstack/react-query";
 import { setSelectedProductName } from "../../Redux/Reducers";
 
-export const Product = ({ width, item, mbWidth, skeletonNumber, padding }) => {
+export const Product = ({ width, item, mbWidth }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [items, setItems] = useState([]);
@@ -170,13 +170,7 @@ export const Product = ({ width, item, mbWidth, skeletonNumber, padding }) => {
   };
 
   if (isLoadingWishlist || isLoadingCartData) {
-    return (
-      <ProductSkeleton
-        width={width}
-        padding={padding}
-        number={skeletonNumber}
-      />
-    );
+    return <ProductSkeleton width={width} $mbWidth={mbWidth} user={user} />;
   }
 
   return (

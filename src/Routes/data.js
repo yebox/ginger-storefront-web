@@ -3,6 +3,7 @@ import { SellerAuthLayout } from "../Layouts";
 import AccountLayout from "../Layouts/AccountLayout";
 import AuthLayout from "../Layouts/AuthLayout";
 import { SellerDashboardLayout } from "../Layouts/SellerDashboardLayout";
+import SellerDashboard from "../Pages/Private/Seller/Dashboard";
 
 const Home = lazy(() => import("../Pages/Shared/home"));
 const MarketPlace = lazy(() => import("../Pages/Shared/marketPlace"));
@@ -318,7 +319,7 @@ export const sharedRoutes = [
     path: "seller/dashboard",
     element: () => (
       <SellerDashboardLayout>
-        <></>
+        <SellerDashboard />
       </SellerDashboardLayout>
     ),
     hasLayout: true,

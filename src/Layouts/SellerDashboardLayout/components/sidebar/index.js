@@ -19,7 +19,7 @@ export const SellerSidebar = () => {
           />
         ))}
       </MenuWrapper>
-      <MenuItem item={`Log out`} />
+      <Logout>Log out</Logout>
     </Container>
   );
 };
@@ -27,15 +27,16 @@ export const SellerSidebar = () => {
 const Container = styled.aside`
   display: flex;
   flex-direction: column;
-  gap: 100px;
+  gap: 84px;
   width: 330px;
   height: 100vh;
-  padding: 54px 70px;
+  padding: 32px 70px 82px;
   background: #fefefe;
 
   & > svg {
     width: 168px;
     height: 72px;
+    flex-shrink: 0;
   }
 `;
 
@@ -43,4 +44,14 @@ const MenuWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 45px;
+`;
+
+const Logout = styled.p`
+  color: var(--Ginger-Error, #ce0303);
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 140%; /* 28px */
+  margin-top: auto;
+  cursor: pointer;
 `;

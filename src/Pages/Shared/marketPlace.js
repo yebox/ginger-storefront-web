@@ -87,20 +87,18 @@ const MarketPlace = () => {
         </Fade>
         <RightContent>
           <ProductsWrapper>
-            {products?.length > 0 ? (
-              products?.map((product, index) => (
-                <Product
-                  key={index}
-                  item={product}
-                  width={`17.3rem`}
-                  mbWidth={`47%`}
-                  skeletonNumber={6}
-                  padding={"5%"}
-                />
-              ))
-            ) : (
-              <EmptyProductTxt>No product found</EmptyProductTxt>
-            )}
+            {products?.length > 0
+              ? products?.map((product, index) => (
+                  <Product
+                    key={index}
+                    item={product}
+                    width={`17.3rem`}
+                    mbWidth={`47%`}
+                  />
+                ))
+              : !isLoading && (
+                  <EmptyProductTxt>No product found</EmptyProductTxt>
+                )}
           </ProductsWrapper>
           {/* <GButton label={"See more"} outline width={"172px"} /> */}
         </RightContent>
@@ -117,7 +115,7 @@ const MarketPlace = () => {
 export default MarketPlace;
 
 const Container = styled.div`
-  margin-top: 40px;
+  padding-top: 40px;
 `;
 
 const HeaderWrapper = styled.div`

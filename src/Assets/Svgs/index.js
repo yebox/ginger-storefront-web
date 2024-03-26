@@ -77,6 +77,12 @@ import { ReactComponent as RedHeart } from "./redHeart.svg";
 import { ReactComponent as InfoIconWhiteBg } from "./infoWhite.svg";
 import { ReactComponent as OrderBag } from "./shoppingBag.svg";
 import { ReactComponent as GiftItem } from "./gift.svg";
+import { ReactComponent as TotalItems } from "./totalItems.svg";
+import { ReactComponent as TotalOrders } from "./totalOrders.svg";
+import { ReactComponent as TotalRevenue } from "./totalRev.svg";
+import { ReactComponent as TotalSold } from "./totalSold.svg";
+import { ReactComponent as PendingOrders } from "./pendingOrders.svg";
+import { ReactComponent as ChatIcon } from "./chat.svg";
 import { ReactComponent as SellerWalletIcon } from "./sellerWallet.svg";
 import { ReactComponent as TotalCubeIcon } from "./totalCube.svg";
 import { ReactComponent as InventoryItemIcon } from "./inventoryItem.svg";
@@ -86,16 +92,6 @@ import { ReactComponent as BackArrowIcon } from "./backArrow.svg";
 import { ReactComponent as CancelRedIcon } from "./cancelRed.svg";
 import { ReactComponent as ThreeDotMenuIcon } from "./threedots.svg";
 import { ReactComponent as ChatSearchIcon } from "./chatSearch.svg";
-
-
-
-
-
-
-
-
-
-
 
 export {
   Logo,
@@ -177,6 +173,12 @@ export {
   InfoIconWhiteBg,
   OrderBag,
   GiftItem,
+  PendingOrders,
+  TotalItems,
+  TotalOrders,
+  TotalRevenue,
+  TotalSold,
+  ChatIcon,
   SellerWalletIcon,
   TotalCubeIcon,
   InventoryItemIcon,
@@ -185,5 +187,5 @@ export {
   BackArrowIcon,
   CancelRedIcon,
   ThreeDotMenuIcon,
-  ChatSearchIcon
+  ChatSearchIcon,
 };
