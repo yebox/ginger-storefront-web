@@ -66,6 +66,18 @@ const SellerSignUpBusinessDocument = lazy(() =>
   import("../Pages/Shared/SellerPages/SellerBusinessDocument")
 );
 
+
+//sellerpages
+const SellerInventory = lazy(() =>
+  import("../Pages/Private/Seller/Inventory/inventory")
+);
+const SellerCreateProduct = lazy(() =>
+  import("../Pages/Private/Seller/Inventory/createNewProduct")
+);
+const SellerMessages = lazy(() =>
+  import("../Pages/Private/Seller/Messages")
+);
+
 const ErrorPage = lazy(() => import("../Ui_elements/ErrorPage"));
 
 export const sharedRoutes = [
@@ -316,7 +328,16 @@ export const sharedRoutes = [
     path: "seller/inventory",
     element: () => (
       <SellerDashboardLayout>
-        <></>
+        <SellerInventory />
+      </SellerDashboardLayout>
+    ),
+    hasLayout: true,
+  },
+  {
+    path: "seller/inventory/create_product",
+    element: () => (
+      <SellerDashboardLayout>
+        <SellerCreateProduct />
       </SellerDashboardLayout>
     ),
     hasLayout: true,
@@ -334,7 +355,7 @@ export const sharedRoutes = [
     path: "seller/messages",
     element: () => (
       <SellerDashboardLayout>
-        <></>
+        <SellerMessages/>
       </SellerDashboardLayout>
     ),
     hasLayout: true,
@@ -386,38 +407,38 @@ export const sharedRoutes = [
 //   },
 // ];
 
-export const sellerAuthRoutes = [
-  {
-    path: "seller/signup",
-    element: SellerSignup,
-    hasLayout: true,
-  },
-  // {
-  //   path: "seller/login",
-  //   element: SellerLogin,
-  //   hasLayout: true,
-  // },
-  {
-    path: "seller/forgot-password",
-    element: SellerForgotPassword,
-    hasLayout: true,
-  },
-  {
-    path: "seller/signup/personal_information",
-    element: SellerSignUpPersonalInformation,
-    hasLayout: true,
-  },
-  {
-    path: "seller/signup/business_information",
-    element: SellerSignUpBusinessInformation,
-    hasLayout: true,
-  },
-  {
-    path: "seller/signup/business_document",
-    element: SellerSignUpBusinessDocument,
-    hasLayout: true,
-  },
-];
+// export const sellerAuthRoutes = [
+//   {
+//     path: "seller/signup",
+//     element: SellerSignup,
+//     hasLayout: true,
+//   },
+//   // {
+//   //   path: "seller/login",
+//   //   element: SellerLogin,
+//   //   hasLayout: true,
+//   // },
+//   {
+//     path: "seller/forgot-password",
+//     element: SellerForgotPassword,
+//     hasLayout: true,
+//   },
+//   {
+//     path: "seller/signup/personal_information",
+//     element: SellerSignUpPersonalInformation,
+//     hasLayout: true,
+//   },
+//   {
+//     path: "seller/signup/business_information",
+//     element: SellerSignUpBusinessInformation,
+//     hasLayout: true,
+//   },
+//   {
+//     path: "seller/signup/business_document",
+//     element: SellerSignUpBusinessDocument,
+//     hasLayout: true,
+//   },
+// ];
 
 // export const accountRoutes = [
 //   {

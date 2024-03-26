@@ -55,7 +55,7 @@ const CustomMenuItem = ({ menuItem, action, handleClose }) => {
         <MenuContainer>
             <MenuItem onClick={handleItemClick}>
                 <BorderItem>
-                    <p>{menuItem}</p>
+                    <p>{typeof (menuItem) === "function" ? menuItem() : menuItem}</p>
                 </BorderItem>
 
             </MenuItem>
@@ -76,5 +76,5 @@ const MenuContainer = styled.div`
 
 
 const BorderItem = styled.div`
-    border-bottom: 1px solid red;
+    /* border-bottom: 1px solid red; */
 `

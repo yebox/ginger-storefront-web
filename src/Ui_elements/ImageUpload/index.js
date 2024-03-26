@@ -34,7 +34,8 @@ export const GImageUpload = ({
     setFiles((prevFiles) => [...prevFiles, ...newFiles]); // Update files state with selected files
     setTouched(true);
   };
-  console.log({ files });
+
+
   const removeFile = (index) => {
     setFiles((prevFiles) => prevFiles.filter((file, i) => i !== index));
   };
@@ -151,14 +152,14 @@ const UploadBox = styled.div`
   transition: all 0.25s ease;
 
   & > button {
-    font-family: "Termina Test";
+    font-family: "Barlow";
   }
 `;
 
 const UploadTxt = styled.p`
   color: var(--Primary-500, #ff4623);
-  font-family: "Termina Test";
-  font-size: 12px;
+  font-family: "Barlow";
+  font-size: 14px;
   font-style: normal;
   font-weight: 600;
   line-height: 120%; /* 14.4px */
@@ -166,8 +167,8 @@ const UploadTxt = styled.p`
 
   & > span {
     color: var(--Grey-600, #475367);
-    font-family: "Termina Test";
-    font-size: 12px;
+    font-family: "Barlow";
+    font-size: 14px;
     font-style: normal;
     font-weight: 400;
     line-height: 120%; /* 14.4px */
@@ -176,7 +177,7 @@ const UploadTxt = styled.p`
 
 const AcceptTxt = styled.p`
   color: var(--Grey-400, #98a2b3);
-  font-family: "Termina Test";
+  font-family: "Barlow";
   font-size: 10px;
   font-style: normal;
   font-weight: 400;
@@ -185,7 +186,7 @@ const AcceptTxt = styled.p`
 
 const OrTxt = styled.p`
   color: var(--Grey-400, #98a2b3);
-  font-family: "Termina Test";
+  font-family: "Barlow";
   font-size: 12px;
   font-style: normal;
   font-weight: 600;

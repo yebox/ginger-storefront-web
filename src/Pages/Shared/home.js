@@ -22,7 +22,7 @@ import {
 } from "./Components";
 import Partners from "../../Assets/Images/partners.png";
 import HeroImage from "../../Assets/Images/hero-image.png";
-import HeroMobile from "../../Assets/Images/landing_mobile.png"
+import HeroMobile from "../../Assets/Images/landing_mobile.png";
 import {
   CircleText,
   LeftArrow,
@@ -57,7 +57,7 @@ const Home = () => {
   const acceptCookie = Cookies.get("ginger-cookie-policy");
   const swiper = new Swiper();
   const firstCatMount = useRef(true);
-  const { isMobile } = useDeviceCheck()
+  const { isMobile } = useDeviceCheck();
 
   const { data: products, isLoading } = useApiGet(
     ["get-featured-products"],
@@ -112,7 +112,7 @@ const Home = () => {
     refetchOnWindowFocus: false,
   });
 
-  const lastFourFeaturedProducts = products?.slice(-5);
+  const lastFourFeaturedProducts = products?.slice(-4);
 
   const slideNext = () => {
     if (sliderRef.current) {
@@ -127,7 +127,6 @@ const Home = () => {
   };
 
   const filterStoresWithImages = (data) => {
-
     if (data) {
       const filteredStores = data.filter((store) => {
         return (
@@ -136,7 +135,7 @@ const Home = () => {
         );
       });
 
-      return filteredStores;
+      return [...filteredStores, ...filteredStores];
     }
   };
   const filteredStores = filterStoresWithImages(data);
@@ -161,21 +160,19 @@ const Home = () => {
           <h3>Discover the convenience of</h3>
           <h3>wholesale marketplace</h3>
 
-          {
-            isMobile && <MobileDetails>
+          {isMobile && (
+            <MobileDetails>
               <h4>Discover the {""}</h4>
               <h4>convenience of</h4>
               <h4>wholesale marketplace</h4>
             </MobileDetails>
-          }
+          )}
 
           <ButtonContainer>
-            {!user && (
-              <GButton
-                label="Sign up for free"
-                onClick={() => navigate("/login")}
-              />
-            )}
+            <GButton
+              label={user ? `Shop now` : "Sign up for free"}
+              onClick={() => navigate(user ? `/marketplace` : `/login`)}
+            />
 
             <GButton
               outline
@@ -186,29 +183,27 @@ const Home = () => {
         </HeroDetails>
         <HeroImageContainer>
           <div>
-            {/* <div/> */}
+            <span />
             <p>world of limitless beauty options</p>
           </div>
         </HeroImageContainer>
       </Hero>
 
-      <HowItWorks>
+      {/* <HowItWorks>
         <GuideCard />
         <GuideCard />
         <GuideCard />
         <GuideCard />
-      </HowItWorks>
+      </HowItWorks> */}
 
       <Category>
         <CategoryHeader>
           <h4>Beauty procurement, simplified for you</h4>
-          <div>
-            <p>
-              Ginger’s wide network of local and international suppliers gives
-              you access to all of your must-have brands and products in one
-              place.
-            </p>
-          </div>
+          <span />
+          <p>
+            Ginger’s wide network of local and international suppliers gives you
+            access to all of your must-have brands and products in one place.
+          </p>
         </CategoryHeader>
 
         <CatergoryGridContainer>
@@ -270,8 +265,8 @@ const Home = () => {
               <Product
                 item={product}
                 key={index}
-                skeletonNumber={5}
-                padding={"10%"}
+                width={`23.8%`}
+                mbWidth={`47%`}
               />
             ))
           ) : (
@@ -300,15 +295,14 @@ const Home = () => {
             <GButton
               label={"Shop now"}
               outline
+              width={`178px`}
               onClick={() => navigate("/categories/all")}
             />
           </div>
         </AdContainer>
 
         <CircleItem>
-          <div>
-            <CircleText />
-          </div>
+          <CircleText />
           <h5>01</h5>
         </CircleItem>
       </LargeAd>
@@ -340,8 +334,8 @@ const Home = () => {
             <Chip
               activeIndex={selectCat}
               onClick={() => {
-                setCategoryId(item?._id)
-                setSelectCat(index)
+                setCategoryId(item?._id);
+                setSelectCat(index);
               }}
               index={index}
               key={index}
@@ -357,7 +351,7 @@ const Home = () => {
             data={filteredStores}
             ref={sliderRef}
             renderCard={(item) => {
-              return <SellerCard item={item} />;
+              return <TopSellerCard item={item} />;
             }}
           />
         </SellerCardsContainer>
@@ -370,20 +364,12 @@ const Home = () => {
           <p>
             Start exploring thousands of brands and enjoy wholesale purchases
           </p>
-          <div>
-            {!user && (
-              <GButton
-                label="Get started"
-                alternate
-                onClick={() => navigate("/signup")}
-              />
-            )}
-            <GButton
-              label="Shop now"
-              alternate
-              onClick={() => navigate("/marketplace")}
-            />
-          </div>
+          <GButton
+            label="Shop now"
+            alternate
+            width={`178px`}
+            onClick={() => navigate("/marketplace")}
+          />
         </div>
       </Wholesale>
 
@@ -504,7 +490,7 @@ const Hero = styled.section`
   width: 100%;
   padding-left: 5%;
 
-  @media ${devices.mobileL}{
+  @media ${devices.mobileL} {
     display: block;
     position: relative;
     padding-left: 0;
@@ -512,10 +498,8 @@ const Hero = styled.section`
 `;
 
 const HeroImageContainer = styled.div`
-  /* background-color: green; */
   background-image: url(${HeroImage});
-  width: 100%;
-  flex: 1;
+  width: 70%;
   height: 46.8rem;
   position: relative;
   background-position: center;
@@ -530,32 +514,42 @@ const HeroImageContainer = styled.div`
 
   div {
     position: absolute;
-    /* width: 500px; */
     bottom: 5%;
     right: 5%;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 20%;
+    gap: 7px;
     p {
-      color: white;
+      color: var(--White, #fefefe);
+      text-align: right;
+      font-size: 14px;
+      font-style: italic;
+      font-weight: 400;
+      line-height: 140%; /* 19.6px */
+      letter-spacing: 0.42px;
     }
     div {
       width: 18.75rem;
       display: inline;
       border: 1px solid white;
     }
+    span {
+      width: 320px;
+      height: 1px;
+      flex-shrink: 0;
+      background-color: #d5d5d559;
+      margin-top: 10px;
+    }
   }
 
-  @media ${devices.mobileL}{
+  @media ${devices.mobileL} {
     /* height: calc((100vw - 40px) * 1.2625); */
     background-image: url(${HeroMobile});
-
   }
-
 `;
 const HeroDetails = styled.div`
-  flex: 0.39;
+  width: 30%;
   height: 46.87rem;
   display: flex;
   flex-direction: column;
@@ -571,7 +565,7 @@ const HeroDetails = styled.div`
   h3 {
     background-color: white;
     position: absolute;
-    padding: 10px 20px;
+    padding: 0px 20px 10px;
     white-space: nowrap;
     font-size: 3.7rem;
     font-weight: 500;
@@ -581,23 +575,24 @@ const HeroDetails = styled.div`
   }
   h3:nth-child(3) {
     top: 21.8rem;
+    padding-bottom: 26px;
   }
   h3:nth-child(2) {
     bottom: 25rem;
+    padding-top: 14px;
   }
 
-  @media ${devices.mobileL}{
+  @media ${devices.mobileL} {
     position: absolute;
     padding: 10px;
-    h3{
+    h3 {
       display: none;
     }
   }
-  
 `;
 
 const MobileDetails = styled.div`
-h4 {
+  h4 {
     background-color: white;
     padding: 10px;
     /* white-space: nowrap; */
@@ -607,45 +602,49 @@ h4 {
     font-weight: 500;
     z-index: 1;
   }
-`
+`;
 const ButtonContainer = styled.div`
   display: flex;
-  gap: 20px;
+  gap: 12px;
   width: calc(100% - 3.56rem);
+  margin-top: -10px;
 `;
 
 const Category = styled.section`
   height: auto;
 `;
+
 const CategoryHeader = styled.div`
   display: flex;
   align-items: center;
-  /* width: 100%; */
   padding: 5%;
+  gap: 38px;
   h4 {
     font-weight: 500;
     font-size: 2.5rem;
-    flex: 0.3;
-    width: 100%;
+    width: 35%;
+    max-width: 430px;
   }
-  div {
+  span {
+    height: 86px;
+    width: 1px;
+    background: #c5c5c5;
+  }
+  p {
     display: flex;
     align-items: center;
-    padding-left: 2rem;
-    flex: 0.7;
     height: 6.25rem;
-    border-left: 1px solid var(--gray-200);
-
-    p {
-      width: 50%;
-      font-size: 1.25rem;
-    }
+    width: 45%;
+    max-width: 530px;
+    font-size: 1.25rem;
+    color: #151515;
+    line-height: 140%;
   }
 `;
 
 const CatergoryGridContainer = styled.div`
   display: flex;
-  padding: 5%;
+  padding: 0 5% 75px;
   gap: 2%;
   height: 100%;
 `;
@@ -653,7 +652,7 @@ const CatergoryGridContainer = styled.div`
 const CatFirstBox = styled.div`
   flex: 0.5;
   width: 100%;
-  height: 43.75rem;
+  height: 580px;
 `;
 const CatSecondBox = styled.div`
   flex: 0.5;
@@ -668,7 +667,7 @@ const CatSecondBox = styled.div`
   background-repeat: no-repeat;
   transition: all 0.3s ease;
   position: relative;
-  height: 43.75rem;
+  height: 580px;
 
   &:hover {
     background-size: 105%;
@@ -702,11 +701,10 @@ const Barber = styled.div`
   flex-direction: column;
   justify-content: flex-end;
   padding-bottom: 20px;
-  height: 50px;
   padding: 1.2rem;
   margin-bottom: 20px;
   background-color: var(--hover-color);
-  height: 18.75rem;
+  height: 280px;
   background-image: url("https://images.unsplash.com/photo-1567894340315-735d7c361db0?q=80&w=3044&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
   background-position: center;
   background-size: cover;
@@ -744,7 +742,7 @@ const NailSkinContianer = styled.div`
 const Nails = styled.div`
   width: 100%;
   background-color: var(--hover-color);
-  height: 23.75rem;
+  height: 280px;
   display: flex;
   flex-direction: column;
   padding: 1.2rem;
@@ -755,6 +753,7 @@ const Nails = styled.div`
   background-size: cover;
   background-repeat: no-repeat;
   position: relative;
+  transition: all 0.25s ease;
 
   &:hover {
     background-size: 100%;
@@ -788,7 +787,7 @@ const Skin = styled.div`
   padding-bottom: 20px;
   background-image: url("https://images.unsplash.com/photo-1561228987-8e7379dde477?q=80&w=3387&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
   background-position: center;
-  height: 23.75rem;
+  height: 280px;
   background-size: cover;
   background-repeat: no-repeat;
 
@@ -853,7 +852,7 @@ const ViewAllCat = styled.div`
 `;
 const FeatureProductsContainer = styled.section`
   width: 100vw;
-  padding: 5%;
+  padding: 90px 5% 67px;
 
   h4 {
     font-weight: 500;
@@ -872,7 +871,7 @@ const FeaturedItemContainer = styled.div`
 const LargeAd = styled.section`
   padding: 10% 5%;
   width: 100%;
-  margin-top: 5%;
+  margin-top: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -885,27 +884,30 @@ const LargeAd = styled.section`
 const AdContainer = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-evenly;
+  gap: 160px;
   position: relative;
   width: 100%;
+
   p {
     margin-bottom: 1rem;
+    width: 75%;
   }
-  /* gap:2rem; */
+
   h4 {
-    font-size: 3rem;
+    color: var(--Black-500, #151515);
     font-family: "Roboto Serif";
+    font-size: 52px;
+    font-style: normal;
     font-weight: 400;
+    line-height: 110%; /* 57.2px */
   }
-  > div:nth-child(1) {
-    /* flex: 0.5; */
-  }
+
   > div:nth-child(2) {
-    /* flex: 0.5; */
-    margin-left: -40px;
-    width: 20rem;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
     height: inherit;
-    /* max-width: 400px; */
+    width: 360px;
   }
 `;
 const rotateAnimation = keyframes`
@@ -919,23 +921,18 @@ const rotateAnimation = keyframes`
 
 const CircleItem = styled.div`
   position: absolute;
-  left: 45%;
+  left: 560px;
   background-color: white;
-  width: 16rem;
-  height: 16rem;
+  width: 225px;
+  height: 225px;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
 
-  /* Apply animation */
-  /* Adjust duration and timing function as needed */
-
-  div {
-    position: absolute;
-    left: 10%;
-    top: 10%;
-    transform: translate(-50%, -50%);
+  svg {
+    width: 190px;
+    height: 190px;
     animation: ${rotateAnimation} 10s linear infinite;
   }
 
@@ -944,13 +941,14 @@ const CircleItem = styled.div`
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    font-size: 6rem;
+    font-size: 70px;
+    font-weight: 700;
     color: var(--light-lavendar);
   }
 `;
 
 const TopSellerContainer = styled.section`
-  margin-top: 18.75rem;
+  margin-top: 250px;
   width: 100%;
 `;
 
@@ -963,11 +961,12 @@ const TopSellerHeader = styled.div`
     h4 {
       font-size: 2.5rem;
       font-weight: 500;
-      margin-bottom: 1.75rem;
+      margin-bottom: 18px;
     }
     p {
       width: 80%;
       font-size: 1.25rem;
+      color: #151515;
     }
   }
 
@@ -998,18 +997,19 @@ const ChipContainer = styled.div`
   align-items: center;
   gap: 10px;
   margin-left: 5%;
-  margin-top: 5%;
+  margin-top: 60px;
 `;
 
 const SellerCardsContainer = styled.div`
   max-width: 100vw;
-  margin-top: 5%;
+  margin-top: 53px;
   display: flex;
   margin-left: 5%;
   gap: 1.2rem;
   overflow-x: auto !important;
-`; import { useDeviceCheck } from '../../Hooks/useDeviceCheck';
-
+`;
+import { useDeviceCheck } from "../../Hooks/useDeviceCheck";
+import TopSellerCard from "./Components/topSellerCard";
 
 const Wholesale = styled.div`
   padding: 10% 5%;
@@ -1019,6 +1019,7 @@ const Wholesale = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  height: 334px;
 
   img {
     position: absolute;
@@ -1035,24 +1036,26 @@ const Wholesale = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 1.8rem;
+    gap: 8px;
     position: relative;
     z-index: 2;
     h4 {
-      color: white;
-      font-size: 3rem;
+      color: var(--White, #fefefe);
+      text-align: center;
+      font-family: "Roboto Serif";
+      font-size: 52px;
+      font-style: normal;
       font-weight: 500;
+      line-height: 120%; /* 62.4px */
     }
     p {
-      color: white;
+      color: var(--White, #fefefe);
       text-align: center;
-    }
-    > div {
-      display: flex;
-      gap: 20px;
-      width: fit-content;
-      width: 60%;
-      margin: 0 auto;
+      font-size: 20px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 140%;
+      margin-bottom: 20px;
     }
   }
 `;
@@ -1115,13 +1118,17 @@ const Subscribe = styled.section`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 10% 0;
+  margin: 8% 0;
   h4 {
-    font-size: 1.3rem;
+    color: #0f0f0f;
+    font-size: 34px;
+    font-family: Barlow;
+    font-style: normal;
     font-weight: 400;
+    line-height: 120%; /* 40.8px */
   }
   > div {
-    width: 30%;
+    width: 600px;
     display: flex;
     gap: 4rem;
     flex-direction: column;

@@ -513,7 +513,6 @@ const SellerStore = () => {
               //         return (
               //             <Product
               //                 item={item}
-              //                 skeletonNumber={5}
               //                 key={index}
               //             // width={'17'}
               //             />
@@ -521,13 +520,7 @@ const SellerStore = () => {
               //     }}
               // />
               topProducts?.map((item, index) => (
-                <Product
-                  item={item}
-                  skeletonNumber={5}
-                  key={index}
-                  padding={"5%"}
-                  width={`17.3rem`}
-                />
+                <Product item={item} key={index} width={`17.3rem`} />
               ))
             ) : (
               <Empty />
@@ -549,13 +542,7 @@ const SellerStore = () => {
           <ProductsWrapper>
             {allProducts?.length > 0 ? (
               allProducts?.map((item, index) => (
-                <Product
-                  item={item}
-                  key={index}
-                  skeletonNumber={5}
-                  padding={"5%"}
-                  width={`17.3rem`}
-                />
+                <Product item={item} key={index} width={`17.3rem`} />
               ))
             ) : (
               <Empty />
