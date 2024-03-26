@@ -104,10 +104,12 @@ const Categories = () => {
     if (decodeQueryIndex !== null && !isNaN(decodeQueryIndex)) {
       dispatch(setActiveIndex(decodeQueryIndex));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.search]);
 
   useEffect(() => {
     setSubCategory(selectedCategory);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const { data: categoryBrands, isLoading: isLoadingCategoryBrands } =
@@ -115,30 +117,35 @@ const Categories = () => {
 
   useEffect(() => {
     fetchSubCategories();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedCategory?.name]);
 
   useEffect(() => {
     if (data) {
       fetchProducts();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   useEffect(() => {
     if (data) {
       fetchProducts();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectCat, subCategory]);
 
   useEffect(() => {
     if (data && selectedPrice) {
       fetchProducts();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedPrice]);
 
   useEffect(() => {
     if (data) {
       fetchProducts();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedBrand]);
 
   return (
