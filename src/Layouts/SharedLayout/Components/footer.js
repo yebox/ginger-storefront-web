@@ -143,8 +143,20 @@ const LeftWrapper = styled.div`
 // `
 
 const LogoContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  & > svg {
+    width: 243.978px;
+    height: 46.49px;
+  }
   p {
-    margin-top: 10px;
+    color: var(--Black-500, #151515);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 120%; /* 19.2px */
+    width: 75%;
   }
 `;
 

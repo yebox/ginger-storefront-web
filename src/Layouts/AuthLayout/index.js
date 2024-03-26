@@ -6,26 +6,32 @@ import { WhiteLogo } from "../../Assets/Svgs";
 import { devices } from "../../Utils/mediaQueryBreakPoints";
 import { useNavigate } from "react-router-dom";
 
-const AuthLayout = ({ children }) => {
+const AuthLayout = ({ children, noLayout }) => {
   const navigate = useNavigate();
   return (
-    <Container>
-      <LeftSection>
-        <BgImage src={mainAuthBg} />
-        <AuthBgGradient src={authGradient} />
-        <AuthWhiteLogo onClick={() => navigate("/")} />
-        <LeftTextWrapper>
-          <LeftTitle>Infinite beauty awaits</LeftTitle>
-          <LeftSubtitle>
-            Building the best and more efficient product for businesses
-          </LeftSubtitle>
-        </LeftTextWrapper>
-      </LeftSection>
+    <>
+      {noLayout ? (
+        children
+      ) : (
+        <Container>
+          <LeftSection>
+            <BgImage src={mainAuthBg} />
+            <AuthBgGradient src={authGradient} />
+            <AuthWhiteLogo onClick={() => navigate("/")} />
+            <LeftTextWrapper>
+              <LeftTitle>Infinite beauty awaits</LeftTitle>
+              <LeftSubtitle>
+                Building the best and more efficient product for businesses
+              </LeftSubtitle>
+            </LeftTextWrapper>
+          </LeftSection>
 
-      <RightSection>
-        <ContentWrapper>{children}</ContentWrapper>
-      </RightSection>
-    </Container>
+          <RightSection>
+            <ContentWrapper>{children}</ContentWrapper>
+          </RightSection>
+        </Container>
+      )}
+    </>
   );
 };
 

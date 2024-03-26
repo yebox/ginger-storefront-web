@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { styled } from "styled-components";
 import { accountNavInfo } from "../../Pages/Shared/Account/data";
 import { Link, useLocation } from "react-router-dom";
@@ -14,12 +14,14 @@ import { useApiGet, useDeviceCheck } from "../../Hooks";
 import { logout } from "../../Redux/Reducers";
 import { getUserWallet } from "../../Urls";
 import toast from "react-hot-toast";
+import MobileAccountTab from "./components/mobileTabs";
 
 const AccountLayout = ({ children }) => {
   const user = useSelector((state) => state?.user);
   const { pathname } = useLocation();
   const dispatch = useDispatch();
   const { isMobile } = useDeviceCheck();
+  const [currentTabPos, setCurrentTabPos] = useState(20);
 
   const { data, error } = useApiGet(
     ["get-product-details"],
@@ -63,11 +65,22 @@ const AccountLayout = ({ children }) => {
           <LeftSectionWrapper>
             <AccountTitle>Account information</AccountTitle>
             <SideNavWrapper>
-              {accountNavInfo.map(({ label, link, id }) => (
-                <SideNav $active={link === pathname} key={id} to={link}>
-                  {label}
-                </SideNav>
-              ))}
+              {accountNavInfo.map(({ label, link, id }) => {
+                return isMobile ? (
+                  <MobileAccountTab
+                    label={label}
+                    to={link}
+                    key={id}
+                    isActive={link === pathname}
+                    setCurrentTabPos={setCurrentTabPos}
+                    currentTabPos={currentTabPos}
+                  />
+                ) : (
+                  <SideNav $active={link === pathname} key={id} to={link}>
+                    {label}
+                  </SideNav>
+                );
+              })}
             </SideNavWrapper>
             {!isMobile && <GSpacer size={120} />}
             {!isMobile && (
@@ -229,7 +242,7 @@ const LeftSectionWrapper = styled.div`
 
   @media ${devices.mobileL} {
     padding: 20px;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     border: unset;
   }
 `;
@@ -247,13 +260,20 @@ const SideNavWrapper = styled.div`
   flex-direction: column;
   gap: 40px;
   margin-top: 83px;
+  white-space: nowrap;
 
   @media ${devices.mobileL} {
     flex-direction: row;
     gap: 20px;
     overflow-x: scroll;
+    width: 100%;
     margin-top: 30px;
     padding-bottom: 7px;
+
+    &::-webkit-scrollbar {
+      width: 0px;
+      height: 0px;
+    }
   }
 `;
 
@@ -274,7 +294,7 @@ const SideNav = styled(Link)`
 
   @media ${devices.mobileL} {
     font-size: ${({ $active }) => ($active ? `16px` : `15px`)};
-    width: unset;
+    width: fit-content;
     flex-shrink: 0;
   }
 `;

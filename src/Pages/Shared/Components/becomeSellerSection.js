@@ -4,11 +4,12 @@ import { styled } from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { GButton } from "../../../Ui_elements";
 import { devices } from "../../../Utils";
-import { useSelector } from 'react-redux';
+import { useSelector } from "react-redux";
+import { UpArrow } from "../../../Assets/Svgs";
 
 export const BecomeSellerSection = () => {
   const navigate = useNavigate();
-  const user = useSelector(state => state.user)
+  const user = useSelector((state) => state.user);
   return (
     <CallToAction>
       <div>
@@ -18,13 +19,18 @@ export const BecomeSellerSection = () => {
           </h4>
           <p>Browse more top selling products from top brands</p>
           <div>
-            {
-              !user && <GButton label="Sign up now" onClick={() => navigate("/login")} />
-            }
+            {!user && (
+              <GButton
+                label="Sign up now"
+                onClick={() => navigate("/signup")}
+              />
+            )}
             <GButton
               outline
               onClick={() => navigate("/sell-on-ginger")}
               label={"Learn more"}
+              paddingProp={`0.875rem 1.5rem`}
+              icon={<UpArrow />}
             />
           </div>
         </div>
@@ -38,16 +44,17 @@ const CallToAction = styled.section`
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
-  height: 31.2rem;
+  height: 431px;
   position: relative;
 
   > div {
     position: absolute;
     left: 50%;
-    bottom: -12.5rem;
+    bottom: -107px;
     transform: translateX(-50%);
-    width:70%;
-    height: 25rem;
+    width: 70%;
+    max-width: 850px;
+    height: 272px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -57,16 +64,16 @@ const CallToAction = styled.section`
       h4 {
         font-size: 2.5rem;
         font-weight: 500;
-        margin-bottom: 1.3rem;
+        margin-bottom: 7px;
 
         & > span {
           color: var(--Primary-500, #ff4623);
         }
       }
       p {
-        font-size: 1.1rem;
+        font-size: 20px;
         text-align: center;
-        margin-bottom: 1.6rem;
+        margin-bottom: 32px;
         color: var(--Black-500, #151515);
       }
 
@@ -81,12 +88,12 @@ const CallToAction = styled.section`
   }
 
   @media ${devices.mobileL} {
-    height: 400px;
+    height: 350px;
 
     & > div {
       width: 90vw;
-      bottom: -14vh;
-      padding: 32px 20px 63px;
+      bottom: -9vh;
+      padding: 32px 20px 40px;
       height: unset;
 
       & > div {

@@ -26,10 +26,10 @@ export const GButton = ({
       $paddingProp={paddingProp}
       type={type}
       onClick={onClick}
-      outline={outline}
+      $outline={outline}
       disabled={isDisabled}
-      alternate={alternate}
-      alternateOutline={alternateOutline}
+      $alternate={alternate}
+      $alternateOutline={alternateOutline}
       {...otherProps}
     >
       {isLoading ? (
@@ -51,16 +51,16 @@ export const GButton = ({
 const ButtonEl = styled.button`
   display: flex;
   align-items: center;
-  background-color: ${({ outline, alternate, alternateOutline }) =>
-    outline
+  background-color: ${({ $outline, $alternate, $alternateOutline }) =>
+    $outline
       ? "transparent"
-      : alternate
+      : $alternate
       ? "white"
-      : alternateOutline
+      : $alternateOutline
       ? "transparent"
       : "var(--black)"};
-  color: ${({ outline, alternate }) =>
-    outline || alternate ? "var(--black)" : "#ffffff"};
+  color: ${({ $outline, $alternate }) =>
+    $outline || $alternate ? "var(--black)" : "#ffffff"};
   font-weight: 500;
   padding: ${({ $paddingProp }) =>
     $paddingProp ? $paddingProp : "1rem 1.5rem"};
@@ -68,22 +68,24 @@ const ButtonEl = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: ${({ $fontsize }) => ($fontsize ? $fontsize : "0.9vw")};
+  font-size: ${({ $fontsize }) => ($fontsize ? $fontsize : "16px")};
   width: ${({ width }) => (width ? width : "100%")};
   border-radius: 2px;
   outline: none;
-  border: ${({ outline, alternateOutline }) =>
-    outline
-      ? "1px solid var(--black)"
-      : alternateOutline
-      ? "1px solid white"
-      : "none"};
+  border: ${({ $alternateOutline }) =>
+    $alternateOutline ? "1.5px solid white" : "1.5px solid #151515"};
   cursor: pointer;
+  opacity: 0.95;
   transition: all 0.25s ease;
 
   &:disabled {
     background: var(--black50);
+    border: 1.5px solid var(--black50);
     cursor: not-allowed;
+  }
+
+  &:hover {
+    opacity: 1;
   }
 
   /* @media ${devices.tablet} {

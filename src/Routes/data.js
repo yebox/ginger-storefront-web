@@ -2,6 +2,8 @@ import { lazy } from "react";
 import { SellerAuthLayout } from "../Layouts";
 import AccountLayout from "../Layouts/AccountLayout";
 import AuthLayout from "../Layouts/AuthLayout";
+import { SellerDashboardLayout } from "../Layouts/SellerDashboardLayout";
+import SellerDashboard from "../Pages/Private/Seller/Dashboard";
 
 const Home = lazy(() => import("../Pages/Shared/home"));
 const MarketPlace = lazy(() => import("../Pages/Shared/marketPlace"));
@@ -64,6 +66,18 @@ const SellerSignUpBusinessDocument = lazy(() =>
   import("../Pages/Shared/SellerPages/SellerBusinessDocument")
 );
 
+
+//sellerpages
+const SellerInventory = lazy(() =>
+  import("../Pages/Private/Seller/Inventory/inventory")
+);
+const SellerCreateProduct = lazy(() =>
+  import("../Pages/Private/Seller/Inventory/createNewProduct")
+);
+const SellerMessages = lazy(() =>
+  import("../Pages/Private/Seller/Messages")
+);
+
 const ErrorPage = lazy(() => import("../Ui_elements/ErrorPage"));
 
 export const sharedRoutes = [
@@ -89,7 +103,7 @@ export const sharedRoutes = [
   {
     path: "/forgot-password",
     element: () => (
-      <AuthLayout>
+      <AuthLayout noLayout={true}>
         <ForgotPassword />
       </AuthLayout>
     ),
@@ -135,12 +149,12 @@ export const sharedRoutes = [
     hasLayout: false,
   },
 
-  {
-    path: "/categories/:category",
-    element: Categories,
-    hasLayout: false,
-  },
-  
+  // {
+  //   path: "/categories/:category",
+  //   element: Categories,
+  //   hasLayout: false,
+  // },
+
   {
     path: "/categories/:categoryName",
     element: Categories,
@@ -298,6 +312,78 @@ export const sharedRoutes = [
       <SellerAuthLayout>
         <SellerSignUpBusinessDocument />
       </SellerAuthLayout>
+    ),
+    hasLayout: true,
+  },
+  {
+    path: "seller/dashboard",
+    element: () => (
+      <SellerDashboardLayout>
+        <SellerDashboard />
+      </SellerDashboardLayout>
+    ),
+    hasLayout: true,
+  },
+  {
+    path: "seller/inventory",
+    element: () => (
+      <SellerDashboardLayout>
+        <SellerInventory />
+      </SellerDashboardLayout>
+    ),
+    hasLayout: true,
+  },
+  {
+    path: "seller/inventory/create_product",
+    element: () => (
+      <SellerDashboardLayout>
+        <SellerCreateProduct />
+      </SellerDashboardLayout>
+    ),
+    hasLayout: true,
+  },
+  {
+    path: "seller/order_history",
+    element: () => (
+      <SellerDashboardLayout>
+        <></>
+      </SellerDashboardLayout>
+    ),
+    hasLayout: true,
+  },
+  {
+    path: "seller/messages",
+    element: () => (
+      <SellerDashboardLayout>
+        <SellerMessages/>
+      </SellerDashboardLayout>
+    ),
+    hasLayout: true,
+  },
+  {
+    path: "seller/account",
+    element: () => (
+      <SellerDashboardLayout>
+        <></>
+      </SellerDashboardLayout>
+    ),
+    hasLayout: true,
+  },
+  {
+    path: "seller/wallet",
+    element: () => (
+      <SellerDashboardLayout>
+        <></>
+      </SellerDashboardLayout>
+    ),
+    hasLayout: true,
+  },
+  {
+    path: "seller/setting",
+    element: () => (
+      <SellerDashboardLayout>
+        <></>
+      </SellerDashboardLayout>
     ),
     hasLayout: true,
   },

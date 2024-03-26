@@ -15,11 +15,7 @@ import { useState, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Avatar, Skeleton } from "@mui/material";
 import { useApiGet } from "../../../Hooks";
-import {
-  LineLoader,
-  PopMenu,
-  SearchOverlay,
-} from "../../../Ui_elements";
+import { LineLoader, PopMenu, SearchOverlay } from "../../../Ui_elements";
 import {
   getBrands,
   getCartItems,
@@ -28,6 +24,7 @@ import {
 } from "../../../Urls";
 import {
   logout,
+  setActiveIndex,
   setActiveInitialSubCateogry,
   setCategories,
   setInitialSubCateogry,
@@ -36,6 +33,7 @@ import {
 import { debounce } from "lodash";
 import { filterSearchParams, generateQueryKey } from "../../../Utils";
 import Badge from "@mui/material/Badge";
+import useScrollHandler from "../../../Utils/useScrollHandler";
 
 const imageLinks = [
   "https://images.unsplash.com/photo-1546877625-cb8c71916608?q=80&w=3270&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -63,6 +61,9 @@ export const Navbar = () => {
   });
   const dispatch = useDispatch();
   const user = useSelector((state) => state?.user);
+  const { scrolledDown } = useScrollHandler();
+  console.log({ scrolledDown });
+
   const initialSubCatFromStore = useSelector(
     (state) => state.global?.initialSubCategory
   );
@@ -216,7 +217,7 @@ export const Navbar = () => {
 
   return (
     <OuterContainer>
-      <Container>
+      <Container $scrolledDown={scrolledDown}>
         <LogoContainer>
           <NavLink to={"/"}>
             <Logo />
@@ -283,7 +284,7 @@ export const Navbar = () => {
           </Icons>
         </Utility>
       </Container>
-      <LowerNav onMouseLeave={handleLowerNavLeave}>
+      <LowerNav onMouseLeave={handleLowerNavLeave} $scrolledDown={scrolledDown}>
         {isLoading ? (
           <SkeletonContainer>
             <Skeleton width={100} height={30} />
@@ -297,18 +298,8 @@ export const Navbar = () => {
           <LowerNavItemContainer>
             <MenuLinksContainer>
               <NavLink to={"/categories/all"}>All</NavLink>
-
               {data?.map((category, index) => (
                 <NavLink
-                  onClick={() => {
-                    dispatch(setSelectedCategory(category));
-                    dispatch(setInitialSubCateogry(category?.subCategories[0]));
-                    dispatch(
-                      setActiveInitialSubCateogry(
-                        category?.subCategories[0]?._id
-                      )
-                    );
-                  }}
                   key={index}
                   to={`/categories/${encodeURIComponent(
                     category?.name
@@ -318,7 +309,7 @@ export const Navbar = () => {
                     JSON.stringify(category?.subCategories[0])
                   )}&activeInit=${decodeURIComponent(
                     category?.subCategories[0]?._id
-                  )}&init=${category?.subCategories[0]?.name}`}
+                  )}&init=${category?.subCategories[0]?.name}&activeIndex=0`}
                   onMouseEnter={() => handleNavLinkHover(index)}
                 >
                   {category.name}
@@ -420,8 +411,11 @@ const OuterContainer = styled.nav`
   top: 0;
   left: 0;
   background-color: white;
+  height: 79px;
+  isolation: isolate;
   z-index: 50 !important;
 `;
+
 const Container = styled.div`
   width: 100%;
   padding: 0 5%;
@@ -430,6 +424,11 @@ const Container = styled.div`
   align-items: center;
   justify-content: space-between;
   position: relative;
+  background: white;
+  z-index: 3;
+  transition: all 0.3s ease;
+  box-shadow: ${({ $scrolledDown }) =>
+    $scrolledDown ? `3px 1px 12px #00000040` : `none`};
 `;
 
 const ImageHolder = styled.div`
@@ -494,7 +493,9 @@ const LowerNav = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-
+  transform: ${({ $scrolledDown }) =>
+    $scrolledDown ? `translateY(-100%)` : `translateY(0%)`};
+  z-index: 1;
   transition: all 0.3s ease;
 
   > a {
@@ -517,6 +518,7 @@ const LowerNavItemContainer = styled.div`
   padding: 0 3%;
   justify-content: space-between;
 `;
+
 const LogoContainer = styled.div``;
 
 const FullOptions = styled.div`

@@ -149,7 +149,7 @@ const SignUp = () => {
               {...field}
               placeholder="Select a country"
               options={countries}
-              id="country"
+              id="country" 
               searchable={true}
               isError={!!errors.country}
               errorText={errors.country && errors.country.message}
