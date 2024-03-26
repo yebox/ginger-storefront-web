@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { GButton } from "../../../Ui_elements";
 import { devices } from "../../../Utils";
 import { useSelector } from "react-redux";
+import { UpArrow } from "../../../Assets/Svgs";
 
 export const BecomeSellerSection = () => {
   const navigate = useNavigate();
@@ -28,6 +29,8 @@ export const BecomeSellerSection = () => {
               outline
               onClick={() => navigate("/sell-on-ginger")}
               label={"Learn more"}
+              paddingProp={`0.875rem 1.5rem`}
+              icon={<UpArrow />}
             />
           </div>
         </div>
@@ -41,16 +44,17 @@ const CallToAction = styled.section`
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
-  height: 31.2rem;
+  height: 431px;
   position: relative;
 
   > div {
     position: absolute;
     left: 50%;
-    bottom: -12.5rem;
+    bottom: -107px;
     transform: translateX(-50%);
     width: 70%;
-    height: 25rem;
+    max-width: 850px;
+    height: 272px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -60,16 +64,16 @@ const CallToAction = styled.section`
       h4 {
         font-size: 2.5rem;
         font-weight: 500;
-        margin-bottom: 1.3rem;
+        margin-bottom: 7px;
 
         & > span {
           color: var(--Primary-500, #ff4623);
         }
       }
       p {
-        font-size: 1.1rem;
+        font-size: 20px;
         text-align: center;
-        margin-bottom: 1.6rem;
+        margin-bottom: 32px;
         color: var(--Black-500, #151515);
       }
 
