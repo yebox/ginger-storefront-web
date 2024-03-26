@@ -101,6 +101,7 @@ export const GSelectField = ({
   disabled,
   loading,
   defaultInputValue,
+  isMulti,
   value,
   searchable,
   id,
@@ -124,6 +125,7 @@ export const GSelectField = ({
           placeholder={placeholder}
           onChange={handleChange}
           styles={selectStyles()}
+          isMulti={isMulti}
           isDisabled={disabled}
           isLoading={loading}
           onFocus={() => setIsFocus(true)}
